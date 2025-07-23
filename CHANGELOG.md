@@ -1,9 +1,85 @@
-# Changelog - Revoluna
+# Histórico de Versões - Revoluna
 
-Todas as mudanças importantes deste projeto serão documentadas neste arquivo.
+## [2.0.0] - 21/07/2025
 
-O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
-e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
+### 🎉 Lançamento Principal: Evolução Completa da Plataforma
+
+Este lançamento transforma o Revoluna em uma plataforma abrangente de gestão de escalas médicas com recursos avançados para profissionais de saúde e instituições hospitalares.
+
+---
+
+### ✨ **Novas Funcionalidades**
+
+#### 📱 **Funcionalidades Principais**
+- **Aba Escalas**: Nova seção para gerenciar horários e plantões médicos
+- **Sistema de Check-in/Check-out**: Rastreamento de presença baseado em GPS com validação de geofencing de 100m para localizações hospitalares
+- **Integração com Calendário**: Adicione plantões diretamente aos calendários do seu dispositivo
+- **Central de Notificações**: Página dedicada para gerenciar todas as notificações e comunicações do app
+
+#### 🔗 **Sistema de Deep Linking**
+- Suporte a links universais do app
+- Navegação direta para vagas específicas a partir de fontes externas
+- Integração com deep links de notificações
+
+#### 📍 **Localização e Mapas**
+- Geofencing hospitalar com validação de limites GPS
+- Cálculos de distância em tempo real para locais de trabalho
+- Integração aprimorada com Google Maps com marcadores hospitalares interativos
+- Sistema de verificação de presença baseado em localização
+
+---
+
+### 🔄 **Funcionalidades Melhoradas**
+
+#### 🔐 **Melhorias na Autenticação**
+- Autenticação por magic link para login por email sem senha
+- Sistema OTP aprimorado para verificação por telefone
+- Integração melhorada com Google e Apple Sign-In
+- Suporte a múltiplos métodos de autenticação
+
+#### 🔔 **Sistema de Notificações**
+- Notificações em primeiro e segundo plano
+- Gerenciamento de contagem de badges
+- Otimização específica por plataforma (iOS/Android)
+- Integração de deep links com notificações
+
+#### 💼 **Gerenciamento de Vagas**
+- Bottom sheet de detalhes de vagas aprimorado com recursos interativos
+- Sistema de candidatura a vagas com rastreamento de status
+- Recursos avançados de filtragem e busca
+- Gerenciamento de vagas favoritas
+
+#### 👤 **Experiência do Usuário**
+- Estados de carregamento e indicadores de progresso aprimorados
+- Componentes de card profissionais para melhor apresentação de dados
+- Sistema de diálogos melhorado para interações do usuário
+
+#### 🏗️ **Arquitetura**
+- Views aprimoradas para métricas de dashboard e analytics
+- Otimização e redução na quantidade de consultas ao banco de dados
+
+---
+
+### 🎨 **Melhorias de UI/UX**
+
+#### 🎯 **Novos Componentes**
+- **Calendário Personalizado**: Widget de calendário avançado com visualização de eventos
+- **Cards Aprimorados**: Cards profissionais para horários e listagem de vagas
+- **Estados de Carregamento**: Componentes de carregamento diferentes para melhor UX
+- **Sistema de Diálogos**: Diálogos especializados para várias interações
+
+---
+
+### 🔧 **Correções de Bugs e Otimizações**
+
+#### 🐛 **Problemas Resolvidos**
+- Corrigido aspas duplas em parâmetros UUID em chamadas de API
+- Resolvidas solicitações concorrentes de permissão de localização
+
+#### ⚡ **Performance**
+- Reduzido tempo de inicialização do app
+- Melhorias eficientes no gerenciamento de estado
+- Otimizações de uso de memória
 
 ## [1.0.3] - 2025-04-29
 

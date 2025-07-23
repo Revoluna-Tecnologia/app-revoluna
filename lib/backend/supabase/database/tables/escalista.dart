@@ -14,8 +14,9 @@ class EscalistaRow extends SupabaseDataRow {
   @override
   SupabaseTable get table => EscalistaTable();
 
-  String get escalistaId => getField<String>('escalista_id')!;
-  set escalistaId(String value) => setField<String>('escalista_id', value);
+  String get escalistaAuthId => getField<String>('escalista_auth_id')!;
+  set escalistaAuthId(String value) =>
+      setField<String>('escalista_auth_id', value);
 
   String get escalistaNome => getField<String>('escalista_nome')!;
   set escalistaNome(String value) => setField<String>('escalista_nome', value);
@@ -24,8 +25,8 @@ class EscalistaRow extends SupabaseDataRow {
   set escalistaTelefone(String value) =>
       setField<String>('escalista_telefone', value);
 
-  String get escalistaEmail => getField<String>('escalista_email')!;
-  set escalistaEmail(String value) =>
+  String? get escalistaEmail => getField<String>('escalista_email');
+  set escalistaEmail(String? value) =>
       setField<String>('escalista_email', value);
 
   String? get grupoId => getField<String>('grupo_id');
@@ -43,4 +44,7 @@ class EscalistaRow extends SupabaseDataRow {
   String? get escalistaUpdateby => getField<String>('escalista_updateby');
   set escalistaUpdateby(String? value) =>
       setField<String>('escalista_updateby', value);
+
+  String get escalistaId => getField<String>('escalista_id')!;
+  set escalistaId(String value) => setField<String>('escalista_id', value);
 }

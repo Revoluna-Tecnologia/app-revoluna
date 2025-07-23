@@ -26,7 +26,17 @@
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLSchemes</key>
-        <array></array>
+        <array>
+          <string>com.googleusercontent.apps.860967636914-8o9r3eg8edofseug9k9pb3q087u82ve5</string>
+        </array>
+      </dict>
+      <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>com.googleusercontent.apps.860967636914-8o9r3eg8edofseug9k9pb3q087u82ve5</string>
+        </array>
       </dict>
       <dict>
         <key>CFBundleTypeRole</key>
@@ -38,17 +48,7 @@
           <string>revoluna</string>
         </array>
       </dict>
-      <dict>
-        <key>CFBundleTypeRole</key>
-        <string>Editor</string>
-        <key>CFBundleURLSchemes</key>
-        <array>
-          <string>com.googleusercontent.apps.860967636914-183a1dc9b04iio0r79mo2t565q14n8lr</string>
-        </array>
-      </dict>
     </array>
-    <key>GIDClientID</key>
-    <string>860967636914-183a1dc9b04iio0r79mo2t565q14n8lr.apps.googleusercontent.com</string>
     <key>FlutterDeepLinkingEnabled</key>
     <true/>
     <key>CFBundleVersion</key>
@@ -56,17 +56,84 @@
     <key>LSRequiresIPhoneOS</key>
     <true/>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Deseja poder saber quais oportunidades de plantão estão mais próximas?</string>
+    <string>Precisamos da sua localização para detectar automaticamente chegada e saída dos plantões e também ajudar a encontrar vagas de plantão próximas de você.</string>
     <key>NSCameraUsageDescription</key>
     <string>Deseja poder tirar uma foto de perfil com a sua câmera?</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Deseja poder escolher uma foto de perfil da sua galeria?</string>
     <key>PermissionGroupNotification</key>
-    <string>Deseja ser avisado quando surgirem vagas e outros alertas relevantes?</string>
+    <string>As notificações precisam estar ativas para que o sistema de chegada e saída dos plantões funcione adequadamente e também para enviarmos avisos sobre os seus plantões</string>
     <key>NSUserTrackingUsageDescription</key>
     <string>Usamos esta informação para fornecer anúncios e conteúdo personalizado e melhorar sua experiência no aplicativo.</string>
+    <key>NSCalendarsUsageDescription</key>
+    <string>Deseja permitir que o aplicativo adicione eventos aos seus calendários?</string>
+    <key>NSContactsUsageDescription</key>
+    <string>Deseja permitir que o aplicativo crie eventos nos seus calendários?</string>
+    <key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+    <string>Gostaria de salvar seus plantões no seu calendário?</string>
+    <key>NSRemindersUsageDescription</key>
+    <string>Gostaria de adicionar seus plantões aos seus lembretes?</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Usamos sua localização para te ajudar a traçar rotas para os plantões utilizando os aplicativos de navegação.</string>
+    <string>Precisamos da sua localização para detectar automaticamente sua chegada e saída dos plantões médicos, mesmo quando o app não estiver aberto ou o celular estiver bloqueado. Isso garante registro preciso de presença sem intervenção manual.</string>
+    <!-- Start of Queries Schemes -->
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <!-- APLICATIVOS DE MAPAS E NAVEGAÇÃO -->
+      <string>waze</string>
+      <string>comgooglemaps</string>
+      <string>taxis99</string>
+      <!-- APLICATIVOS DE E-MAIL E MENSAGEM -->
+      <string>whatsapp</string>
+      <string>googlegmail</string>
+      <string>ms-outlook</string>
+      <!-- APLICATIVOS DE CALENDÁRIO -->
+      <string>calshow</string>
+      <string>x-apple-calevent</string>
+      <string>fantastical2</string>
+      <string>readdle-spark</string>
+      <string>ms-outlook-calendar</string>
+      <string>googlecalendar</string>
+    </array>
+    <!-- End of Queries Schemes -->
+    <!-- Start of Background Modes -->
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>location</string>
+      <string>processing</string>
+      <string>fetch</string>
+      <string>remote-notification</string>
+    </array>
+    <!-- End of Background Modes -->
+    <!-- Start of Background Scheduler -->
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+      <string>$(PRODUCT_BUNDLE_IDENTIFIER).background-task</string>
+    </array>
+    <!-- End of Background Scheduler -->
+    <!-- Start of Device Capabilities -->
+    <key>UIRequiredDeviceCapabilities</key>
+    <array>
+      <string>location-services</string>
+    </array>
+    <!-- End of Device Capabilities -->
+    <!-- Start of Notification Settings -->
+    <key>UIUserNotificationAlerts</key>
+    <true/>
+    <key>UIUserNotificationBadges</key>
+    <true/>
+    <key>UIUserNotificationSounds</key>
+    <true/>
+    <key>com.apple.developer.usernotifications.critical-alerts</key>
+    <true/>
+    <key>UIUserInterfaceStyle</key>
+    <string>Light</string>
+    <key>UISupportsDocumentBrowser</key>
+    <false/>
+    <!-- End of Notification Settings -->
+    <!-- Start of FirebaseAppDelegateProxy -->
+    <key>FirebaseAppDelegateProxyEnabled</key>
+    <true/>
+    <!-- End of FirebaseAppDelegateProxy -->
     <key>UILaunchStoryboardName</key>
     <string>LaunchScreen</string>
     <key>UIMainStoryboardFile</key>
@@ -86,18 +153,5 @@
     </array>
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-      <string>waze</string>
-      <string>comgooglemaps</string>
-      <string>taxis99</string>
-      <string>whatsapp</string>
-      <string>googlegmail</string>
-      <string>ms-outlook</string>
-    </array>
-  	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-</dict>
+  </dict>
 </plist>

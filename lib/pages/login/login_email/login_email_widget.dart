@@ -37,8 +37,11 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
     super.initState();
     _model = createModel(context, () => LoginEmailModel());
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'LoginEmail'});
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('LOGIN_EMAIL_LoginEmail_ON_INIT_STATE');
+      logFirebaseEvent('LoginEmail_update_page_state');
       _model.emailborder = Color(4293256677);
       safeSetState(() {});
     });
@@ -184,15 +187,21 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                           '_model.eMailTextController',
                                           Duration(milliseconds: 0),
                                           () async {
+                                            logFirebaseEvent(
+                                                'LOGIN_EMAIL_E-mail_ON_TEXTFIELD_CHANGE');
                                             if (_model
                                                     .eMailTextController.text !=
                                                 '') {
+                                              logFirebaseEvent(
+                                                  'E-mail_update_page_state');
                                               _model.emailborder =
                                                   FlutterFlowTheme.of(context)
                                                       .primaryText;
                                               safeSetState(() {});
                                               return;
                                             } else {
+                                              logFirebaseEvent(
+                                                  'E-mail_update_page_state');
                                               _model.emailborder =
                                                   FlutterFlowTheme.of(context)
                                                       .accent2;
@@ -310,10 +319,14 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                                   onTap: () async {
                                                     _model.eMailTextController
                                                         ?.clear();
+                                                    logFirebaseEvent(
+                                                        'LOGIN_EMAIL_E-mail_ON_TEXTFIELD_CHANGE');
                                                     if (_model
                                                             .eMailTextController
                                                             .text !=
                                                         '') {
+                                                      logFirebaseEvent(
+                                                          'E-mail_update_page_state');
                                                       _model.emailborder =
                                                           FlutterFlowTheme.of(
                                                                   context)
@@ -321,6 +334,8 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                                       safeSetState(() {});
                                                       return;
                                                     } else {
+                                                      logFirebaseEvent(
+                                                          'E-mail_update_page_state');
                                                       _model.emailborder =
                                                           FlutterFlowTheme.of(
                                                                   context)
@@ -431,7 +446,10 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                       _model.eMailTextController.text == '')
                                   ? null
                                   : () async {
+                                      logFirebaseEvent(
+                                          'LOGIN_EMAIL_PAGE_CONTINUAR_BTN_ON_TAP');
                                       var _shouldSetState = false;
+                                      logFirebaseEvent('Button_backend_call');
                                       _model.getemail =
                                           await GetIdfromEmailCall.call(
                                         inputEmail: _model
@@ -440,6 +458,8 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                       );
 
                                       _shouldSetState = true;
+                                      logFirebaseEvent(
+                                          'Button_update_app_state');
                                       FFAppState().wasUser =
                                           (_model.getemail?.bodyText ?? '') !=
                                               'null';
@@ -448,18 +468,18 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                           .toLowerCase();
                                       FFAppState().update(() {});
                                       if (FFAppState().wasUser) {
-                                        FFAppState().userID =
-                                            (_model.getemail?.jsonBody ?? '')
-                                                .toString();
-                                        FFAppState().update(() {});
+                                        logFirebaseEvent('Button_backend_call');
                                         _model.queryUser =
                                             await UserProfileTable().queryRows(
                                           queryFn: (q) => q.eqOrNull(
                                             'id',
-                                            FFAppState().userID,
+                                            (_model.getemail?.jsonBody ?? '')
+                                                .toString(),
                                           ),
                                         );
                                         _shouldSetState = true;
+                                        logFirebaseEvent(
+                                            'Button_update_app_state');
                                         FFAppState().displayName = _model
                                             .queryUser!
                                             .firstOrNull!
@@ -470,27 +490,36 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                             .queryUser!
                                             .firstOrNull!
                                             .profilepicture!;
+                                        FFAppState().estadoUF = _model
+                                            .queryUser!.firstOrNull!.uFindex;
                                         FFAppState().update(() {});
+                                        logFirebaseEvent('Button_backend_call');
                                         _model.isTester =
                                             await AretheytesterCall.call(
-                                          userId: FFAppState().userID,
+                                          userId:
+                                              (_model.getemail?.jsonBody ?? '')
+                                                  .toString(),
                                         );
 
                                         _shouldSetState = true;
                                         if ((_model.isTester?.jsonBody ?? '')) {
+                                          logFirebaseEvent(
+                                              'Button_navigate_to');
+
                                           context.pushNamed(
                                               LoginPasswordWidget.routeName);
                                         } else {
+                                          logFirebaseEvent(
+                                              'Button_custom_action');
                                           _model.magiclinksent =
                                               await actions.otpEmailMagic(
                                             _model.eMailTextController.text
                                                 .toLowerCase(),
                                           );
                                           _shouldSetState = true;
-                                          if (_model.magiclinksent!) {
-                                            context.pushNamed(
-                                                LoginMagicLinkWidget.routeName);
-                                          } else {
+                                          if (!_model.magiclinksent!) {
+                                            logFirebaseEvent(
+                                                'Button_update_page_state');
                                             _model.emailborder =
                                                 FlutterFlowTheme.of(context)
                                                     .error;
@@ -500,6 +529,7 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                           }
                                         }
                                       } else {
+                                        logFirebaseEvent('Button_backend_call');
                                         _model.sendVerifyEmail =
                                             await SendVerifyEmailCall.call(
                                           email: _model.eMailTextController.text
@@ -507,12 +537,11 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                         );
 
                                         _shouldSetState = true;
-                                        if ((_model
+                                        if (!(_model
                                                 .sendVerifyEmail?.succeeded ??
                                             true)) {
-                                          context.pushNamed(
-                                              LoginMagicLinkWidget.routeName);
-                                        } else {
+                                          logFirebaseEvent(
+                                              'Button_update_page_state');
                                           _model.emailborder =
                                               FlutterFlowTheme.of(context)
                                                   .error;
@@ -521,6 +550,11 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                           return;
                                         }
                                       }
+
+                                      logFirebaseEvent('Button_navigate_to');
+
+                                      context.pushNamed(
+                                          LoginMagicLinkWidget.routeName);
 
                                       if (_shouldSetState) safeSetState(() {});
                                     },
@@ -662,6 +696,10 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                           children: [
                             FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'LOGIN_EMAIL_CONTINUAR_COM_TELEFONE_BTN_O');
+                                logFirebaseEvent('Button_navigate_to');
+
                                 context.pushNamed(LoginPhoneWidget.routeName);
                               },
                               text: 'Continuar com Telefone',
@@ -713,13 +751,17 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                             ),
                             FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'LOGIN_EMAIL_CONTINUAR_COM_GOOGLE_BTN_ON_');
                                 var _shouldSetState = false;
+                                logFirebaseEvent('Button_auth');
                                 GoRouter.of(context).prepareAuthEvent();
                                 final user =
                                     await authManager.signInWithGoogle(context);
                                 if (user == null) {
                                   return;
                                 }
+                                logFirebaseEvent('Button_backend_call');
                                 _model.queryUserGoogle =
                                     await UserProfileTable().queryRows(
                                   queryFn: (q) => q.eqOrNull(
@@ -728,16 +770,15 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                   ),
                                 );
                                 _shouldSetState = true;
+                                logFirebaseEvent('Button_custom_action');
                                 _model.googleFullName =
                                     await actions.getGoogleNames();
                                 _shouldSetState = true;
-                                FFAppState().wasUser = _model.queryUserGoogle!
+                                if (_model.queryUserGoogle!
                                     .where((e) => e.role == 'free')
                                     .toList()
-                                    .isNotEmpty;
-                                safeSetState(() {});
-                                if (FFAppState().wasUser) {
-                                  FFAppState().userID = currentUserUid;
+                                    .isNotEmpty) {
+                                  logFirebaseEvent('Button_update_app_state');
                                   FFAppState().displayName = _model
                                       .queryUserGoogle!
                                       .firstOrNull!
@@ -748,18 +789,22 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                       .queryUserGoogle!
                                       .firstOrNull!
                                       .profilepicture!;
+                                  FFAppState().wasUser = true;
                                   safeSetState(() {});
+                                  logFirebaseEvent('Button_navigate_to');
 
                                   context.pushNamedAuth(
                                       HomePageWidget.routeName,
                                       context.mounted);
                                 } else {
-                                  FFAppState().userID = currentUserUid;
+                                  logFirebaseEvent('Button_update_app_state');
                                   FFAppState().inputEmail = currentUserEmail;
+                                  FFAppState().wasUser = false;
                                   safeSetState(() {});
                                   if (_model
-                                          .queryUserGoogle?.firstOrNull?.role ==
-                                      'astronauta') {
+                                          .queryUserGoogle?.firstOrNull?.role !=
+                                      'signup') {
+                                    logFirebaseEvent('Button_alert_dialog');
                                     await showDialog(
                                       context: context,
                                       builder: (alertDialogContext) {
@@ -780,6 +825,8 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                     if (_shouldSetState) safeSetState(() {});
                                     return;
                                   } else {
+                                    logFirebaseEvent('Button_navigate_to');
+
                                     context.pushNamedAuth(
                                       Cadastro1Widget.routeName,
                                       context.mounted,
@@ -846,164 +893,149 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                   0.0,
                                 )),
                               ),
+                              showLoadingIndicator: false,
                             ),
-                            isAndroid
-                                ? Container()
-                                : FFButtonWidget(
-                                    onPressed: () async {
-                                      var _shouldSetState = false;
-                                      GoRouter.of(context).prepareAuthEvent();
-                                      final user = await authManager
-                                          .signInWithApple(context);
-                                      if (user == null) {
-                                        return;
-                                      }
-                                      _model.queryUserApple =
-                                          await UserProfileTable().queryRows(
-                                        queryFn: (q) => q.eqOrNull(
-                                          'id',
-                                          currentUserUid,
-                                        ),
-                                      );
-                                      _shouldSetState = true;
-                                      FFAppState().wasUser = _model
-                                          .queryUserApple!
-                                          .where((e) => e.role == 'free')
-                                          .toList()
-                                          .isNotEmpty;
-                                      safeSetState(() {});
-                                      if (_model.queryUserApple!
-                                          .where((e) => e.role == 'free')
-                                          .toList()
-                                          .isNotEmpty) {
-                                        FFAppState().userID = currentUserUid;
-                                        FFAppState().displayName = _model
-                                            .queryUserGoogle!
-                                            .firstOrNull!
-                                            .displayname!;
-                                        FFAppState().gender = _model
-                                            .queryUserApple!
-                                            .firstOrNull!
-                                            .gender!;
-                                        FFAppState().profilepicture = _model
-                                            .queryUserApple!
-                                            .firstOrNull!
-                                            .profilepicture!;
-                                        safeSetState(() {});
-
-                                        context.pushNamedAuth(
-                                            HomePageWidget.routeName,
-                                            context.mounted);
-                                      } else {
-                                        if (_model.queryUserApple?.firstOrNull
-                                                ?.role ==
-                                            'astronauta') {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                title: Text(
-                                                    'E-mail já cadastrado!'),
-                                                content: Text(
-                                                    'Por favor, tente com outro método de entrada'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext),
-                                                    child: Text('Ok'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                          if (_shouldSetState)
-                                            safeSetState(() {});
-                                          return;
-                                        } else {
-                                          FFAppState().userID = currentUserUid;
-                                          FFAppState().inputEmail =
-                                              currentUserEmail != null &&
-                                                      currentUserEmail != ''
-                                                  ? currentUserEmail
-                                                  : FFAppState()
-                                                      .appleData
-                                                      .elementAtOrNull(2)!;
-                                          safeSetState(() {});
-
-                                          context.pushNamedAuth(
-                                            Cadastro1Widget.routeName,
-                                            context.mounted,
-                                            queryParameters: {
-                                              'camefrom': serializeParam(
-                                                'apple',
-                                                ParamType.String,
-                                              ),
-                                              'appleFullName': serializeParam(
-                                                FFAppState().appleData,
-                                                ParamType.String,
-                                                isList: true,
-                                              ),
-                                            }.withoutNulls,
-                                          );
-                                        }
-                                      }
-
-                                      if (_shouldSetState) safeSetState(() {});
-                                    },
-                                    text: 'Continuar com Apple',
-                                    icon: FaIcon(
-                                      FontAwesomeIcons.apple,
-                                      size: 20.0,
-                                    ),
-                                    options: FFButtonOptions(
-                                      width: double.infinity,
-                                      height:
-                                          MediaQuery.sizeOf(context).height *
-                                              0.05,
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 0.0),
-                                      iconPadding:
-                                          EdgeInsetsDirectional.fromSTEB(
-                                              0.0, 0.0, 0.0, 0.0),
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryBackground,
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            font: GoogleFonts.geologica(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontStyle,
-                                            ),
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontStyle,
-                                          ),
-                                      elevation: 0.0,
-                                      borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryText,
-                                        width: FFAppConstants.stroke,
-                                      ),
-                                      borderRadius: BorderRadius.circular(
-                                          valueOrDefault<double>(
-                                        FFAppConstants.borderS,
-                                        0.0,
-                                      )),
-                                    ),
+                            FFButtonWidget(
+                              onPressed: () async {
+                                logFirebaseEvent(
+                                    'LOGIN_EMAIL_CONTINUAR_COM_APPLE_BTN_ON_T');
+                                var _shouldSetState = false;
+                                logFirebaseEvent('Button_custom_action');
+                                _model.appleData = await actions.loginApple(
+                                  context,
+                                );
+                                _shouldSetState = true;
+                                logFirebaseEvent('Button_backend_call');
+                                _model.queryAppleUser =
+                                    await UserProfileTable().queryRows(
+                                  queryFn: (q) => q.eqOrNull(
+                                    'id',
+                                    _model.appleData?.elementAtOrNull(2),
                                   ),
+                                );
+                                _shouldSetState = true;
+                                if (_model.queryAppleUser!
+                                    .where((e) => e.role == 'free')
+                                    .toList()
+                                    .isNotEmpty) {
+                                  logFirebaseEvent('Button_update_app_state');
+                                  FFAppState().displayName = _model
+                                      .queryAppleUser!
+                                      .firstOrNull!
+                                      .displayname!;
+                                  FFAppState().gender = _model
+                                      .queryAppleUser!.firstOrNull!.gender!;
+                                  FFAppState().profilepicture = _model
+                                      .queryAppleUser!
+                                      .firstOrNull!
+                                      .profilepicture!;
+                                  FFAppState().wasUser = true;
+                                  safeSetState(() {});
+                                  logFirebaseEvent('Button_navigate_to');
+
+                                  context.pushNamed(HomePageWidget.routeName);
+                                } else {
+                                  if (_model
+                                          .queryAppleUser?.firstOrNull?.role !=
+                                      'signup') {
+                                    logFirebaseEvent('Button_alert_dialog');
+                                    await showDialog(
+                                      context: context,
+                                      builder: (alertDialogContext) {
+                                        return AlertDialog(
+                                          title: Text('E-mail já cadastrado!'),
+                                          content: Text(
+                                              'Por favor, tente com outro método de entrada'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  alertDialogContext),
+                                              child: Text('Ok'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                    if (_shouldSetState) safeSetState(() {});
+                                    return;
+                                  } else {
+                                    logFirebaseEvent('Button_update_app_state');
+                                    FFAppState().inputEmail =
+                                        currentUserEmail != null &&
+                                                currentUserEmail != ''
+                                            ? currentUserEmail
+                                            : _model.appleData!.lastOrNull!;
+                                    FFAppState().wasUser = false;
+                                    safeSetState(() {});
+                                    logFirebaseEvent('Button_navigate_to');
+
+                                    context.pushNamed(
+                                      Cadastro1Widget.routeName,
+                                      queryParameters: {
+                                        'camefrom': serializeParam(
+                                          'apple',
+                                          ParamType.String,
+                                        ),
+                                        'appleFullName': serializeParam(
+                                          _model.appleData,
+                                          ParamType.String,
+                                          isList: true,
+                                        ),
+                                      }.withoutNulls,
+                                    );
+                                  }
+                                }
+
+                                if (_shouldSetState) safeSetState(() {});
+                              },
+                              text: 'Continuar com Apple',
+                              icon: FaIcon(
+                                FontAwesomeIcons.apple,
+                                size: 20.0,
+                              ),
+                              options: FFButtonOptions(
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.05,
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                color: FlutterFlowTheme.of(context)
+                                    .primaryBackground,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      font: GoogleFonts.geologica(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontStyle,
+                                      ),
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
+                                elevation: 0.0,
+                                borderSide: BorderSide(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  width: FFAppConstants.stroke,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                    valueOrDefault<double>(
+                                  FFAppConstants.borderS,
+                                  0.0,
+                                )),
+                              ),
+                              showLoadingIndicator: false,
+                            ),
                           ].divide(SizedBox(height: FFAppConstants.Gap)),
                         ),
                       ),
@@ -1016,6 +1048,9 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                   children: [
                     FFButtonWidget(
                       onPressed: () async {
+                        logFirebaseEvent(
+                            'LOGIN_EMAIL_PRECISA_DE_AJUDA_BTN_ON_TAP');
+                        logFirebaseEvent('Button_custom_action');
                         await actions.launchWhatsAppChat(
                           'Olá, estou tendo dificuldades para entrar no app',
                         );
@@ -1055,6 +1090,10 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                     ),
                     FFButtonWidget(
                       onPressed: () async {
+                        logFirebaseEvent(
+                            'LOGIN_EMAIL_TERMOS_DE_USO_BTN_ON_TAP');
+                        logFirebaseEvent('Button_navigate_to');
+
                         context.pushNamed(TermosWidget.routeName);
                       },
                       text: 'Termos de uso',
@@ -1114,7 +1153,9 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                         ),
                   ),
                 ),
-              ].divide(SizedBox(height: 40.0)).around(SizedBox(height: 40.0)),
+              ]
+                  .divide(SizedBox(height: 40.0))
+                  .addToStart(SizedBox(height: FFAppConstants.doubleGap)),
             ),
           ),
         ),

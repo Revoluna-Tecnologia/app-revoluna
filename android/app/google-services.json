@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "860967636914",
+    "project_id": "revoluna",
+    "storage_bucket": "revoluna.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860967636914:android:7778eb12860c476bf09eab",
+        "android_client_info": {
+          "package_name": "com.mycompany.revoluna"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "860967636914-19jrprdmdid8culfpm54vj97oahh4q18.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mycompany.revoluna",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "860967636914-hc87jboiplihdl5fs0q3add02i9p6h4j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6PE5fONjnpz_1ANfz96k8vDIfozpaoeo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "860967636914-hc87jboiplihdl5fs0q3add02i9p6h4j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "860967636914-8o9r3eg8edofseug9k9pb3q087u82ve5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.revoluna",
+                "app_store_id": "6744747736"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,7 @@
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -77,6 +78,8 @@ class _BackTopBarWidgetState extends State<BackTopBarWidget> {
                 size: 30.0,
               ),
               onPressed: () async {
+                logFirebaseEvent('BACK_TOP_BAR_COMP_chevronLeft_ICN_ON_TAP');
+                logFirebaseEvent('IconButton_execute_callback');
                 await widget.backButton?.call();
               },
             ),

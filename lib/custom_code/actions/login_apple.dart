@@ -1,5 +1,7 @@
 // Automatic FlutterFlow imports
+import '/backend/backend.dart';
 import '/backend/supabase/supabase.dart';
+import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'index.dart'; // Imports other custom actions
@@ -8,29 +10,22 @@ import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
+import 'index.dart'; // Imports other custom actions
+
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:crypto/crypto.dart';
-//import 'package:revoluna/app_state.dart';
-import '../../backend/supabase/supabase.dart';
 
-//Future<User?> loginApple() async {
-Future<void> loginApple(BuildContext context) async {
-//  if (kIsWeb) {
-//    await SupaFlow.client.auth.signInWithOAuth(
-//      OAuthProvider.apple,
-//      authScreenLaunchMode: LaunchMode.platformDefault,
-//    );
-
-//    return SupaFlow.client.auth.onAuthStateChange
-//        .timeout(const Duration(minutes: 5))
-//        .firstWhere((event) => event.event == AuthChangeEvent.signedIn)
-//        .then((event) => SupaFlow.client.auth.currentUser);
-//  }
+Future<List<String>> loginApple(BuildContext context) async {
+  // Initialize return list with empty values
+  List<String> appleData = ['', '', '', ''];
 
   final rawNonce = SupaFlow.client.auth.generateRawNonce();
   final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
+
+  debugPrint('rawNonce: $rawNonce');
+  debugPrint('hashedNonce: $hashedNonce');
 
   final credential = await SignInWithApple.getAppleIDCredential(
     scopes: [
@@ -40,25 +35,42 @@ Future<void> loginApple(BuildContext context) async {
     nonce: hashedNonce,
   );
 
+  //debugPrint('credential: $credential.toString()');
+
+  // Capture the name data from Apple credential
+  final String firstName = credential.givenName ?? "";
+  final String lastName = credential.familyName ?? "";
+  final String email = credential.email ?? "";
+
+  debugPrint('Apple Data: $firstName $lastName $email');
+
+  // Now prepare auth event and complete authentication
+  GoRouter.of(context).prepareAuthEvent();
+
   final idToken = credential.identityToken;
   if (idToken == null) {
     throw const AuthException(
         'Could not find ID Token from generated credential.');
   }
 
-  final String firstname = credential.givenName ?? "";
-  final String lastname = credential.familyName ?? "";
-  final String email = credential.email ?? "";
+  //debugPrint('idToken: $idToken');
 
-  FFAppState().update(() {
-    FFAppState().appleData = [firstname, lastname, email];
-  });
-
-  final authResponse = await SupaFlow.client.auth.signInWithIdToken(
+  // Complete the authentication
+  await SupaFlow.client.auth.signInWithIdToken(
     provider: OAuthProvider.apple,
     idToken: idToken,
     nonce: rawNonce,
   );
 
-//return authResponse.user;
+  final user = SupaFlow.client.auth.currentUser;
+
+  // Construct return list
+  appleData[0] = firstName;
+  appleData[1] = lastName;
+  appleData[2] = user!.id;
+  appleData[3] = email;
+
+  //debugPrint('$appleData');
+
+  return appleData;
 }

@@ -55,14 +55,18 @@ class _PerfilWidgetState extends State<PerfilWidget> {
     super.initState();
     _model = createModel(context, () => PerfilModel());
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Perfil'});
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('PERFIL_PAGE_Perfil_ON_INIT_STATE');
+      logFirebaseEvent('Perfil_backend_call');
       _model.queryMedicos = await MedicosTable().queryRows(
         queryFn: (q) => q.eqOrNull(
           'id',
           currentUserUid,
         ),
       );
+      logFirebaseEvent('Perfil_update_page_state');
       _model.formatedDate =
           _model.queryMedicos?.firstOrNull?.medicoDatanascimento;
       safeSetState(() {});
@@ -79,9 +83,11 @@ class _PerfilWidgetState extends State<PerfilWidget> {
 
     _model.birthDateFocusNode ??= FocusNode();
     _model.birthDateFocusNode!.addListener(() => safeSetState(() {}));
+    _model.birthDateMask = MaskTextInputFormatter(mask: '##/##/####');
 
     _model.cpfFocusNode ??= FocusNode();
     _model.cpfFocusNode!.addListener(() => safeSetState(() {}));
+    _model.cpfMask = MaskTextInputFormatter(mask: '###.###.###-##');
 
     _model.crmFocusNode ??= FocusNode();
     _model.crmFocusNode!.addListener(() => safeSetState(() {}));
@@ -216,6 +222,10 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                   child: BackTopBarWidget(
                                     logo: true,
                                     backButton: () async {
+                                      logFirebaseEvent(
+                                          'PERFIL_PAGE_Container_ogjqkhak_CALLBACK');
+                                      logFirebaseEvent(
+                                          'BackTopBar_navigate_back');
                                       context.safePop();
                                     },
                                   ),
@@ -327,7 +337,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                 Builder(
                                                   builder: (context) {
                                                     if (_model
-                                                        .isDataUploading1) {
+                                                        .isDataUploading_uploadedPic) {
                                                       return Lottie.asset(
                                                         'assets/jsons/81EfiEihcA.json',
                                                         width:
@@ -340,10 +350,10 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                         animate: true,
                                                       );
                                                     } else if (_model
-                                                                .uploadedLocalFile1 !=
+                                                                .uploadedLocalFile_uploadedPic !=
                                                             null &&
                                                         (_model
-                                                                .uploadedLocalFile1
+                                                                .uploadedLocalFile_uploadedPic
                                                                 .bytes
                                                                 ?.isNotEmpty ??
                                                             false)) {
@@ -367,7 +377,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                 BoxShape.circle,
                                                           ),
                                                           child: Image.memory(
-                                                            _model.uploadedLocalFile1
+                                                            _model.uploadedLocalFile_uploadedPic
                                                                     .bytes ??
                                                                 Uint8List
                                                                     .fromList(
@@ -449,6 +459,10 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                 ),
                                                 FFButtonWidget(
                                                   onPressed: () async {
+                                                    logFirebaseEvent(
+                                                        'PERFIL_PAGE__BTN_ON_TAP');
+                                                    logFirebaseEvent(
+                                                        'Button_store_media_for_upload');
                                                     final selectedMedia =
                                                         await selectMediaWithSourceBottomSheet(
                                                       context: context,
@@ -472,7 +486,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                 m.storagePath,
                                                                 context))) {
                                                       safeSetState(() => _model
-                                                              .isDataUploading1 =
+                                                              .isDataUploading_uploadedPic =
                                                           true);
                                                       var selectedUploadedFiles =
                                                           <FFUploadedFile>[];
@@ -500,7 +514,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                     ))
                                                                 .toList();
                                                       } finally {
-                                                        _model.isDataUploading1 =
+                                                        _model.isDataUploading_uploadedPic =
                                                             false;
                                                       }
                                                       if (selectedUploadedFiles
@@ -508,7 +522,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                           selectedMedia
                                                               .length) {
                                                         safeSetState(() {
-                                                          _model.uploadedLocalFile1 =
+                                                          _model.uploadedLocalFile_uploadedPic =
                                                               selectedUploadedFiles
                                                                   .first;
                                                         });
@@ -518,13 +532,15 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                       }
                                                     }
 
-                                                    if (_model.uploadedLocalFile1 !=
+                                                    if (_model.uploadedLocalFile_uploadedPic !=
                                                             null &&
                                                         (_model
-                                                                .uploadedLocalFile1
+                                                                .uploadedLocalFile_uploadedPic
                                                                 .bytes
                                                                 ?.isNotEmpty ??
                                                             false)) {
+                                                      logFirebaseEvent(
+                                                          'Button_update_page_state');
                                                       _model.hasChanged = true;
                                                       safeSetState(() {});
                                                     }
@@ -764,6 +780,10 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                         ].toList(),
                                                         onChanged: (val) async {
                                                           safeSetState(() {});
+                                                          logFirebaseEvent(
+                                                              'PERFIL_RadioButton_l7vki09n_ON_FORM_WIDG');
+                                                          logFirebaseEvent(
+                                                              'RadioButton_update_page_state');
                                                           _model.hasChanged =
                                                               true;
                                                           safeSetState(() {});
@@ -874,10 +894,14 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                 milliseconds:
                                                                     0),
                                                             () async {
+                                                              logFirebaseEvent(
+                                                                  'PERFIL_FirstName_ON_TEXTFIELD_CHANGE');
                                                               if (_model
                                                                       .firstNameTextController
                                                                       .text !=
                                                                   '') {
+                                                                logFirebaseEvent(
+                                                                    'FirstName_update_page_state');
                                                                 _model.firstnameborder =
                                                                     FlutterFlowTheme.of(
                                                                             context)
@@ -885,6 +909,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                 safeSetState(
                                                                     () {});
                                                               } else {
+                                                                logFirebaseEvent(
+                                                                    'FirstName_update_page_state');
                                                                 _model.firstnameborder =
                                                                     FlutterFlowTheme.of(
                                                                             context)
@@ -893,6 +919,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                     () {});
                                                               }
 
+                                                              logFirebaseEvent(
+                                                                  'FirstName_update_page_state');
                                                               _model.hasChanged =
                                                                   true;
                                                               safeSetState(
@@ -1059,10 +1087,14 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                       _model
                                                                           .firstNameTextController
                                                                           ?.clear();
+                                                                      logFirebaseEvent(
+                                                                          'PERFIL_FirstName_ON_TEXTFIELD_CHANGE');
                                                                       if (_model
                                                                               .firstNameTextController
                                                                               .text !=
                                                                           '') {
+                                                                        logFirebaseEvent(
+                                                                            'FirstName_update_page_state');
                                                                         _model
                                                                             .firstnameborder = FlutterFlowTheme.of(
                                                                                 context)
@@ -1070,6 +1102,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                         safeSetState(
                                                                             () {});
                                                                       } else {
+                                                                        logFirebaseEvent(
+                                                                            'FirstName_update_page_state');
                                                                         _model
                                                                             .firstnameborder = FlutterFlowTheme.of(
                                                                                 context)
@@ -1078,6 +1112,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                             () {});
                                                                       }
 
+                                                                      logFirebaseEvent(
+                                                                          'FirstName_update_page_state');
                                                                       _model.hasChanged =
                                                                           true;
                                                                       safeSetState(
@@ -1171,10 +1207,14 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                 milliseconds:
                                                                     0),
                                                             () async {
+                                                              logFirebaseEvent(
+                                                                  'PERFIL_PAGE_LastName_ON_TEXTFIELD_CHANGE');
                                                               if (_model
                                                                       .lastNameTextController
                                                                       .text !=
                                                                   '') {
+                                                                logFirebaseEvent(
+                                                                    'LastName_update_page_state');
                                                                 _model.lastnameborder =
                                                                     FlutterFlowTheme.of(
                                                                             context)
@@ -1182,6 +1222,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                 safeSetState(
                                                                     () {});
                                                               } else {
+                                                                logFirebaseEvent(
+                                                                    'LastName_update_page_state');
                                                                 _model.lastnameborder =
                                                                     FlutterFlowTheme.of(
                                                                             context)
@@ -1190,6 +1232,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                     () {});
                                                               }
 
+                                                              logFirebaseEvent(
+                                                                  'LastName_update_page_state');
                                                               _model.hasChanged =
                                                                   true;
                                                               safeSetState(
@@ -1359,10 +1403,14 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                       _model
                                                                           .lastNameTextController
                                                                           ?.clear();
+                                                                      logFirebaseEvent(
+                                                                          'PERFIL_PAGE_LastName_ON_TEXTFIELD_CHANGE');
                                                                       if (_model
                                                                               .lastNameTextController
                                                                               .text !=
                                                                           '') {
+                                                                        logFirebaseEvent(
+                                                                            'LastName_update_page_state');
                                                                         _model
                                                                             .lastnameborder = FlutterFlowTheme.of(
                                                                                 context)
@@ -1370,6 +1418,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                         safeSetState(
                                                                             () {});
                                                                       } else {
+                                                                        logFirebaseEvent(
+                                                                            'LastName_update_page_state');
                                                                         _model
                                                                             .lastnameborder = FlutterFlowTheme.of(
                                                                                 context)
@@ -1378,6 +1428,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                             () {});
                                                                       }
 
+                                                                      logFirebaseEvent(
+                                                                          'LastName_update_page_state');
                                                                       _model.hasChanged =
                                                                           true;
                                                                       safeSetState(
@@ -1919,6 +1971,10 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                             safeSetState(() =>
                                                                 _model.dropCodigoPaisValue =
                                                                     val);
+                                                            logFirebaseEvent(
+                                                                'PERFIL_dropCodigoPais_ON_FORM_WIDGET_SEL');
+                                                            logFirebaseEvent(
+                                                                'dropCodigoPais_set_form_field');
                                                             safeSetState(() {
                                                               _model
                                                                   .campoTelefoneTextController
@@ -2546,12 +2602,16 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                 milliseconds:
                                                                     0),
                                                             () async {
+                                                              logFirebaseEvent(
+                                                                  'PERFIL_BirthDate_ON_TEXTFIELD_CHANGE');
                                                               if (_model.birthDateTextController
                                                                           .text !=
                                                                       null &&
                                                                   _model.birthDateTextController
                                                                           .text !=
                                                                       '') {
+                                                                logFirebaseEvent(
+                                                                    'BirthDate_update_page_state');
                                                                 _model.birthborder =
                                                                     FlutterFlowTheme.of(
                                                                             context)
@@ -2559,6 +2619,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                 safeSetState(
                                                                     () {});
                                                               } else {
+                                                                logFirebaseEvent(
+                                                                    'BirthDate_update_page_state');
                                                                 _model.birthborder =
                                                                     FlutterFlowTheme.of(
                                                                             context)
@@ -2567,6 +2629,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                     () {});
                                                               }
 
+                                                              logFirebaseEvent(
+                                                                  'BirthDate_update_page_state');
                                                               _model.hasChanged =
                                                                   true;
                                                               safeSetState(
@@ -2707,10 +2771,14 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                       _model
                                                                           .birthDateTextController
                                                                           ?.clear();
+                                                                      logFirebaseEvent(
+                                                                          'PERFIL_BirthDate_ON_TEXTFIELD_CHANGE');
                                                                       if (_model.birthDateTextController.text !=
                                                                               null &&
                                                                           _model.birthDateTextController.text !=
                                                                               '') {
+                                                                        logFirebaseEvent(
+                                                                            'BirthDate_update_page_state');
                                                                         _model
                                                                             .birthborder = FlutterFlowTheme.of(
                                                                                 context)
@@ -2718,6 +2786,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                         safeSetState(
                                                                             () {});
                                                                       } else {
+                                                                        logFirebaseEvent(
+                                                                            'BirthDate_update_page_state');
                                                                         _model
                                                                             .birthborder = FlutterFlowTheme.of(
                                                                                 context)
@@ -2726,6 +2796,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                             () {});
                                                                       }
 
+                                                                      logFirebaseEvent(
+                                                                          'BirthDate_update_page_state');
                                                                       _model.hasChanged =
                                                                           true;
                                                                       safeSetState(
@@ -2813,6 +2885,10 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                         highlightColor:
                                                             Colors.transparent,
                                                         onTap: () async {
+                                                          logFirebaseEvent(
+                                                              'PERFIL_PAGE_Container_zizlx9lr_ON_TAP');
+                                                          logFirebaseEvent(
+                                                              'Container_date_time_picker');
                                                           await showModalBottomSheet<
                                                                   bool>(
                                                               context: context,
@@ -2885,6 +2961,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                   ),
                                                                 );
                                                               });
+                                                          logFirebaseEvent(
+                                                              'Container_set_form_field');
                                                           safeSetState(() {
                                                             _model.birthDateTextController
                                                                     ?.text =
@@ -2905,6 +2983,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                               ),
                                                             );
                                                           });
+                                                          logFirebaseEvent(
+                                                              'Container_update_page_state');
                                                           _model.birthborder =
                                                               FlutterFlowTheme.of(
                                                                       context)
@@ -3068,12 +3148,16 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                 milliseconds:
                                                                     0),
                                                             () async {
+                                                              logFirebaseEvent(
+                                                                  'PERFIL_PAGE_CPF_ON_TEXTFIELD_CHANGE');
                                                               if (_model.cpfTextController
                                                                           .text !=
                                                                       null &&
                                                                   _model.cpfTextController
                                                                           .text !=
                                                                       '') {
+                                                                logFirebaseEvent(
+                                                                    'CPF_update_page_state');
                                                                 _model.cpfborder =
                                                                     FlutterFlowTheme.of(
                                                                             context)
@@ -3081,6 +3165,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                 safeSetState(
                                                                     () {});
                                                               } else {
+                                                                logFirebaseEvent(
+                                                                    'CPF_update_page_state');
                                                                 _model.cpfborder =
                                                                     FlutterFlowTheme.of(
                                                                             context)
@@ -3089,6 +3175,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                     () {});
                                                               }
 
+                                                              logFirebaseEvent(
+                                                                  'CPF_update_page_state');
                                                               _model.hasChanged =
                                                                   true;
                                                               safeSetState(
@@ -3097,8 +3185,12 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                           ),
                                                           onFieldSubmitted:
                                                               (_) async {
+                                                            logFirebaseEvent(
+                                                                'PERFIL_PAGE_CPF_ON_TEXTFIELD_SUBMIT');
                                                             var _shouldSetState =
                                                                 false;
+                                                            logFirebaseEvent(
+                                                                'CPF_custom_action');
                                                             _model.validCPF =
                                                                 await actions
                                                                     .isValidCPF(
@@ -3116,6 +3208,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                               return;
                                                             }
 
+                                                            logFirebaseEvent(
+                                                                'CPF_update_page_state');
                                                             _model.cpfborder =
                                                                 FlutterFlowTheme.of(
                                                                         context)
@@ -3261,10 +3355,14 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                       _model
                                                                           .cpfTextController
                                                                           ?.clear();
+                                                                      logFirebaseEvent(
+                                                                          'PERFIL_PAGE_CPF_ON_TEXTFIELD_CHANGE');
                                                                       if (_model.cpfTextController.text !=
                                                                               null &&
                                                                           _model.cpfTextController.text !=
                                                                               '') {
+                                                                        logFirebaseEvent(
+                                                                            'CPF_update_page_state');
                                                                         _model
                                                                             .cpfborder = FlutterFlowTheme.of(
                                                                                 context)
@@ -3272,6 +3370,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                         safeSetState(
                                                                             () {});
                                                                       } else {
+                                                                        logFirebaseEvent(
+                                                                            'CPF_update_page_state');
                                                                         _model
                                                                             .cpfborder = FlutterFlowTheme.of(
                                                                                 context)
@@ -3280,6 +3380,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                             () {});
                                                                       }
 
+                                                                      logFirebaseEvent(
+                                                                          'CPF_update_page_state');
                                                                       _model.hasChanged =
                                                                           true;
                                                                       safeSetState(
@@ -4540,13 +4642,17 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                 .checkboxValue =
                                                             newValue!);
                                                       },
-                                                      side: BorderSide(
-                                                        width: 2,
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .accent2,
-                                                      ),
+                                                      side: (FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .accent2 !=
+                                                              null)
+                                                          ? BorderSide(
+                                                              width: 2,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .accent2!,
+                                                            )
+                                                          : null,
                                                       activeColor:
                                                           FlutterFlowTheme.of(
                                                                   context)
@@ -4724,6 +4830,11 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                 children: [
                                                   FFButtonWidget(
                                                     onPressed: () async {
+                                                      logFirebaseEvent(
+                                                          'PERFIL_PAGE_TERMOS_DE_USO_BTN_ON_TAP');
+                                                      logFirebaseEvent(
+                                                          'Button_navigate_to');
+
                                                       context.pushNamed(
                                                           TermosWidget
                                                               .routeName);
@@ -4802,8 +4913,12 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                   ),
                                                   FFButtonWidget(
                                                     onPressed: () async {
+                                                      logFirebaseEvent(
+                                                          'PERFIL_PAGE_SAIR_BTN_ON_TAP');
                                                       Function() _navigate =
                                                           () {};
+                                                      logFirebaseEvent(
+                                                          'Button_alert_dialog');
                                                       var confirmDialogResponse =
                                                           await showDialog<
                                                                   bool>(
@@ -4837,6 +4952,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                               ) ??
                                                               false;
                                                       if (!confirmDialogResponse) {
+                                                        logFirebaseEvent(
+                                                            'Button_auth');
                                                         GoRouter.of(context)
                                                             .prepareAuthEvent();
                                                         await authManager
@@ -4850,6 +4967,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                     .routeName,
                                                                 context
                                                                     .mounted);
+                                                        logFirebaseEvent(
+                                                            'Button_update_app_state');
                                                         FFAppState()
                                                             .inputAreacode = '';
                                                         FFAppState()
@@ -4860,13 +4979,10 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                             .inputAreacodeIndex = 0;
                                                         FFAppState().wasUser =
                                                             false;
-                                                        FFAppState().userID =
-                                                            '';
                                                         FFAppState().userRole =
                                                             '';
                                                         FFAppState()
-                                                                .profilepicture =
-                                                            'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png';
+                                                            .profilepicture = '';
                                                         FFAppState()
                                                             .displayName = '';
                                                         FFAppState().gender =
@@ -4953,6 +5069,10 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                   ),
                                                   FFButtonWidget(
                                                     onPressed: () async {
+                                                      logFirebaseEvent(
+                                                          'PERFIL_PAGE_EXCLUIR_CONTA_BTN_ON_TAP');
+                                                      logFirebaseEvent(
+                                                          'Button_alert_dialog');
                                                       var confirmDialogResponse =
                                                           await showDialog<
                                                                   bool>(
@@ -4986,9 +5106,17 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                               ) ??
                                                               false;
                                                       if (!confirmDialogResponse) {
-                                                        FFAppState().userID =
-                                                            currentUserUid;
-                                                        safeSetState(() {});
+                                                        logFirebaseEvent(
+                                                            'Button_backend_call');
+                                                        _model.deletedUser =
+                                                            await DeleteUserCall
+                                                                .call(
+                                                          userId:
+                                                              currentUserUid,
+                                                        );
+
+                                                        logFirebaseEvent(
+                                                            'Button_auth');
                                                         GoRouter.of(context)
                                                             .prepareAuthEvent();
                                                         await authManager
@@ -4996,17 +5124,16 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                         GoRouter.of(context)
                                                             .clearRedirectLocation();
 
-                                                        await DeleteUserCall
-                                                            .call(
-                                                          userId: FFAppState()
-                                                              .userID,
-                                                        );
+                                                        logFirebaseEvent(
+                                                            'Button_navigate_to');
 
                                                         context.goNamedAuth(
                                                             LoginPhoneWidget
                                                                 .routeName,
                                                             context.mounted);
 
+                                                        logFirebaseEvent(
+                                                            'Button_update_app_state');
                                                         FFAppState()
                                                             .inputAreacode = '';
                                                         FFAppState()
@@ -5017,13 +5144,10 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                             .inputAreacodeIndex = 0;
                                                         FFAppState().wasUser =
                                                             false;
-                                                        FFAppState().userID =
-                                                            '';
                                                         FFAppState().userRole =
                                                             '';
                                                         FFAppState()
-                                                                .profilepicture =
-                                                            'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png';
+                                                            .profilepicture = '';
                                                         FFAppState()
                                                             .displayName = '';
                                                         FFAppState().gender =
@@ -5033,6 +5157,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                             false;
                                                         safeSetState(() {});
                                                       }
+
+                                                      safeSetState(() {});
                                                     },
                                                     text: 'Excluir conta',
                                                     options: FFButtonOptions(
@@ -5181,6 +5307,10 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                         ''))
                                             ? null
                                             : () async {
+                                                logFirebaseEvent(
+                                                    'PERFIL_PAGE_SALVAR_BTN_ON_TAP');
+                                                logFirebaseEvent(
+                                                    'Button_validate_form');
                                                 if (_model.formKey
                                                             .currentState ==
                                                         null ||
@@ -5189,9 +5319,12 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                         .validate()) {
                                                   return;
                                                 }
+                                                logFirebaseEvent(
+                                                    'Button_upload_media_to_supabase');
                                                 {
                                                   safeSetState(() => _model
-                                                      .isDataUploading2 = true);
+                                                          .isDataUploading_uploadedPicSupa =
+                                                      true);
                                                   var selectedUploadedFiles =
                                                       <FFUploadedFile>[];
                                                   var selectedMedia =
@@ -5199,12 +5332,12 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                   var downloadUrls = <String>[];
                                                   try {
                                                     selectedUploadedFiles = _model
-                                                            .uploadedLocalFile1
+                                                            .uploadedLocalFile_uploadedPic
                                                             .bytes!
                                                             .isNotEmpty
                                                         ? [
                                                             _model
-                                                                .uploadedLocalFile1
+                                                                .uploadedLocalFile_uploadedPic
                                                           ]
                                                         : <FFUploadedFile>[];
                                                     selectedMedia =
@@ -5221,7 +5354,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                           selectedMedia,
                                                     );
                                                   } finally {
-                                                    _model.isDataUploading2 =
+                                                    _model.isDataUploading_uploadedPicSupa =
                                                         false;
                                                   }
                                                   if (selectedUploadedFiles
@@ -5232,10 +5365,10 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                           selectedMedia
                                                               .length) {
                                                     safeSetState(() {
-                                                      _model.uploadedLocalFile2 =
+                                                      _model.uploadedLocalFile_uploadedPicSupa =
                                                           selectedUploadedFiles
                                                               .first;
-                                                      _model.uploadedFileUrl2 =
+                                                      _model.uploadedFileUrl_uploadedPicSupa =
                                                           downloadUrls.first;
                                                     });
                                                   } else {
@@ -5244,15 +5377,19 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                   }
                                                 }
 
+                                                logFirebaseEvent(
+                                                    'Button_update_app_state');
                                                 FFAppState().gender =
                                                     _model.radioButtonValue!;
                                                 FFAppState().displayName =
                                                     _model
                                                         .firstNameTextController
                                                         .text;
-                                                FFAppState().profilepicture =
-                                                    _model.uploadedFileUrl2;
+                                                FFAppState().profilepicture = _model
+                                                    .uploadedFileUrl_uploadedPicSupa;
                                                 FFAppState().update(() {});
+                                                logFirebaseEvent(
+                                                    'Button_backend_call');
                                                 unawaited(
                                                   () async {
                                                     _model.updateProfile1 =
@@ -5279,6 +5416,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                     );
                                                   }(),
                                                 );
+                                                logFirebaseEvent(
+                                                    'Button_backend_call');
                                                 unawaited(
                                                   () async {
                                                     _model.updateMedicos =
@@ -5312,6 +5451,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                     );
                                                   }(),
                                                 );
+                                                logFirebaseEvent(
+                                                    'Button_update_page_state');
                                                 _model.hasChanged = false;
                                                 safeSetState(() {});
 

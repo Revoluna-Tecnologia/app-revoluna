@@ -35,6 +35,8 @@ class _LoginPasswordWidgetState extends State<LoginPasswordWidget> {
     super.initState();
     _model = createModel(context, () => LoginPasswordModel());
 
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'LoginPassword'});
     _model.passwordTextController ??= TextEditingController();
     _model.passwordFocusNode ??= FocusNode();
     _model.passwordFocusNode!.addListener(() => safeSetState(() {}));
@@ -69,7 +71,12 @@ class _LoginPasswordWidgetState extends State<LoginPasswordWidget> {
                 updateCallback: () => safeSetState(() {}),
                 child: BackTopBarWidget(
                   logo: false,
-                  backButton: () async {},
+                  backButton: () async {
+                    logFirebaseEvent(
+                        'LOGIN_PASSWORD_Container_auua36w1_CALLBA');
+                    logFirebaseEvent('BackTopBar_navigate_back');
+                    context.safePop();
+                  },
                 ),
               ),
               Padding(
@@ -242,14 +249,20 @@ class _LoginPasswordWidgetState extends State<LoginPasswordWidget> {
                                   '_model.passwordTextController',
                                   Duration(milliseconds: 0),
                                   () async {
+                                    logFirebaseEvent(
+                                        'LOGIN_PASSWORD_Password_ON_TEXTFIELD_CHA');
                                     if (_model.passwordTextController.text !=
                                         '') {
+                                      logFirebaseEvent(
+                                          'Password_update_page_state');
                                       _model.passwordborder =
                                           FlutterFlowTheme.of(context)
                                               .primaryText;
                                       safeSetState(() {});
                                       return;
                                     } else {
+                                      logFirebaseEvent(
+                                          'Password_update_page_state');
                                       _model.passwordborder =
                                           FlutterFlowTheme.of(context).accent2;
                                       safeSetState(() {});
@@ -448,10 +461,14 @@ class _LoginPasswordWidgetState extends State<LoginPasswordWidget> {
                                 _model.passwordTextController.text == '')
                             ? null
                             : () async {
+                                logFirebaseEvent(
+                                    'LOGIN_PASSWORD_PAGE_CONTINUAR_BTN_ON_TAP');
+                                logFirebaseEvent('Button_validate_form');
                                 if (_model.formKey.currentState == null ||
                                     !_model.formKey.currentState!.validate()) {
                                   return;
                                 }
+                                logFirebaseEvent('Button_auth');
                                 GoRouter.of(context).prepareAuthEvent();
 
                                 final user = await authManager.signInWithEmail(
@@ -464,15 +481,19 @@ class _LoginPasswordWidgetState extends State<LoginPasswordWidget> {
                                 }
 
                                 if (loggedIn) {
-                                  context.pushNamedAuth(
-                                      HomePageWidget.routeName,
+                                  logFirebaseEvent('Button_navigate_to');
+
+                                  context.goNamedAuth(HomePageWidget.routeName,
                                       context.mounted);
                                 } else {
+                                  logFirebaseEvent('Button_update_page_state');
                                   _model.passwordborder =
                                       FlutterFlowTheme.of(context).error;
                                   safeSetState(() {});
                                 }
 
+                                logFirebaseEvent(
+                                    'Button_clear_text_fields_pin_codes');
                                 safeSetState(() {
                                   _model.passwordTextController?.clear();
                                 });

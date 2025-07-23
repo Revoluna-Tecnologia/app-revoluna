@@ -1,4 +1,3 @@
-import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
@@ -43,11 +42,20 @@ class _CheckemailbottomWidgetState extends State<CheckemailbottomWidget> {
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await Future.delayed(const Duration(milliseconds: 2000));
+      logFirebaseEvent('CHECKEMAILBOTTOM_checkemailbottom_ON_INI');
+      logFirebaseEvent('checkemailbottom_wait__delay');
+      await Future.delayed(
+        Duration(
+          milliseconds: 2000,
+        ),
+      );
+      logFirebaseEvent('checkemailbottom_timer');
       _model.timerController.onStartTimer();
+      logFirebaseEvent('checkemailbottom_start_periodic_action');
       _model.instantTimer = InstantTimer.periodic(
         duration: Duration(milliseconds: 500),
         callback: (timer) async {
+          logFirebaseEvent('checkemailbottom_backend_call');
           _model.listenVerifyEmail = await ListenVerifyEmailCall.call(
             email: widget!.email,
           );
@@ -55,11 +63,14 @@ class _CheckemailbottomWidgetState extends State<CheckemailbottomWidget> {
           if ((_model.listenVerifyEmail?.succeeded ?? true)) {
             if ((_model.listenVerifyEmail?.bodyText ?? '') ==
                 '{\"verified\":true}') {
+              logFirebaseEvent('checkemailbottom_stop_periodic_action');
               _model.instantTimer?.cancel();
+              logFirebaseEvent('checkemailbottom_update_component_state');
               _model.emailVerified = true;
               safeSetState(() {});
               return;
             } else {
+              logFirebaseEvent('checkemailbottom_update_component_state');
               _model.emailVerified = false;
               safeSetState(() {});
             }
@@ -218,6 +229,9 @@ class _CheckemailbottomWidgetState extends State<CheckemailbottomWidget> {
                     onPressed: _model.emailVerified
                         ? null
                         : () async {
+                            logFirebaseEvent(
+                                'CHECKEMAILBOTTOM_ABRIR_E_MAIL_BTN_ON_TAP');
+                            logFirebaseEvent('Button_custom_action');
                             await actions.openMail(
                               context,
                             );
@@ -265,6 +279,9 @@ class _CheckemailbottomWidgetState extends State<CheckemailbottomWidget> {
                     onPressed: !_model.emailVerified
                         ? null
                         : () async {
+                            logFirebaseEvent(
+                                'CHECKEMAILBOTTOM_CONTINUAR_BTN_ON_TAP');
+                            logFirebaseEvent('Button_bottom_sheet');
                             Navigator.pop(context, true);
                           },
                     text: 'Continuar',
@@ -359,12 +376,6 @@ class _CheckemailbottomWidgetState extends State<CheckemailbottomWidget> {
                                   _model.timerValue = displayTime;
                                   if (shouldUpdate) safeSetState(() {});
                                 },
-                                onEnded: () async {
-                                  FFAppState().userID = (String var1) {
-                                    return var1.replaceAll(' ', '');
-                                  }(currentUserUid);
-                                  safeSetState(() {});
-                                },
                                 textAlign: TextAlign.start,
                                 style: FlutterFlowTheme.of(context)
                                     .titleSmall
@@ -392,6 +403,9 @@ class _CheckemailbottomWidgetState extends State<CheckemailbottomWidget> {
                       } else {
                         return FFButtonWidget(
                           onPressed: () async {
+                            logFirebaseEvent(
+                                'CHECKEMAILBOTTOM_REENVIAR_LINK_BTN_ON_TA');
+                            logFirebaseEvent('Button_alert_dialog');
                             var confirmDialogResponse = await showDialog<bool>(
                                   context: context,
                                   builder: (alertDialogContext) {
@@ -419,10 +433,12 @@ class _CheckemailbottomWidgetState extends State<CheckemailbottomWidget> {
                               return;
                             }
 
+                            logFirebaseEvent('Button_backend_call');
                             await SendVerifyEmailCall.call(
                               email: widget!.email,
                             );
 
+                            logFirebaseEvent('Button_show_snack_bar');
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
@@ -457,8 +473,10 @@ class _CheckemailbottomWidgetState extends State<CheckemailbottomWidget> {
                                     FlutterFlowTheme.of(context).secondary,
                               ),
                             );
+                            logFirebaseEvent('Button_timer');
                             _model.timerController.onResetTimer();
 
+                            logFirebaseEvent('Button_timer');
                             _model.timerController.onStartTimer();
                             return;
                           },
@@ -501,6 +519,9 @@ class _CheckemailbottomWidgetState extends State<CheckemailbottomWidget> {
                   ),
                   FFButtonWidget(
                     onPressed: () async {
+                      logFirebaseEvent(
+                          'CHECKEMAILBOTTOM_QUER_TROCAR_DE_E_MAIL_B');
+                      logFirebaseEvent('Button_alert_dialog');
                       var confirmDialogResponse = await showDialog<bool>(
                             context: context,
                             builder: (alertDialogContext) {
@@ -526,6 +547,7 @@ class _CheckemailbottomWidgetState extends State<CheckemailbottomWidget> {
                         return;
                       }
 
+                      logFirebaseEvent('Button_bottom_sheet');
                       Navigator.pop(context, false);
                       return;
                     },

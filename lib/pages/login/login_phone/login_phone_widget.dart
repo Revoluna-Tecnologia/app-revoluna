@@ -39,6 +39,7 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
     super.initState();
     _model = createModel(context, () => LoginPhoneModel());
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'LoginPhone'});
     _model.campoTelefoneTextController ??= TextEditingController(text: '');
     _model.campoTelefoneFocusNode ??= FocusNode();
   }
@@ -217,6 +218,10 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                         onChanged: (val) async {
                                           safeSetState(() =>
                                               _model.dropCodigoPaisValue = val);
+                                          logFirebaseEvent(
+                                              'LOGIN_PHONE_dropCodigoPais_ON_FORM_WIDGE');
+                                          logFirebaseEvent(
+                                              'dropCodigoPais_set_form_field');
                                           safeSetState(() {
                                             _model.campoTelefoneTextController
                                                 ?.text = '';
@@ -358,6 +363,10 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                             '_model.campoTelefoneTextController',
                                             Duration(milliseconds: 0),
                                             () async {
+                                              logFirebaseEvent(
+                                                  'LOGIN_PHONE_campoTelefone_ON_TEXTFIELD_C');
+                                              logFirebaseEvent(
+                                                  'campoTelefone_set_form_field');
                                               safeSetState(() {
                                                 _model.campoTelefoneTextController?.text =
                                                     functions.aplicarmascara(
@@ -386,12 +395,16 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                       .campoTelefoneTextController
                                                       .text !=
                                                   '') {
+                                                logFirebaseEvent(
+                                                    'campoTelefone_update_page_state');
                                                 _model.phoneborder =
                                                     FlutterFlowTheme.of(context)
                                                         .primaryText;
                                                 safeSetState(() {});
                                                 return;
                                               } else {
+                                                logFirebaseEvent(
+                                                    'campoTelefone_update_page_state');
                                                 _model.phoneborder =
                                                     FlutterFlowTheme.of(context)
                                                         .accent2;
@@ -485,6 +498,10 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                       _model
                                                           .campoTelefoneTextController
                                                           ?.clear();
+                                                      logFirebaseEvent(
+                                                          'LOGIN_PHONE_campoTelefone_ON_TEXTFIELD_C');
+                                                      logFirebaseEvent(
+                                                          'campoTelefone_set_form_field');
                                                       safeSetState(() {
                                                         _model.campoTelefoneTextController?.text =
                                                             functions.aplicarmascara(
@@ -517,6 +534,8 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                               .campoTelefoneTextController
                                                               .text !=
                                                           '') {
+                                                        logFirebaseEvent(
+                                                            'campoTelefone_update_page_state');
                                                         _model.phoneborder =
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -524,6 +543,8 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                         safeSetState(() {});
                                                         return;
                                                       } else {
+                                                        logFirebaseEvent(
+                                                            'campoTelefone_update_page_state');
                                                         _model.phoneborder =
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -643,7 +664,11 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                     )
                                         ? null
                                         : () async {
+                                            logFirebaseEvent(
+                                                'LOGIN_PHONE_PAGE_CONTINUAR_BTN_ON_TAP');
                                             var _shouldSetState = false;
+                                            logFirebaseEvent(
+                                                'Button_update_app_state');
                                             FFAppState().inputPhone = _model
                                                 .campoTelefoneTextController
                                                 .text;
@@ -655,6 +680,8 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                             FFAppState().inputAreacodeIndex =
                                                 _model.dropCodigoPaisValue!;
                                             safeSetState(() {});
+                                            logFirebaseEvent(
+                                                'Button_update_page_state');
                                             _model.phoneOnlynumbers =
                                                 '${(String var1) {
                                               return var1.replaceFirst('+', '');
@@ -663,6 +690,8 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                   RegExp(r'\D'), '');
                                             }(FFAppState().inputPhone)}';
                                             safeSetState(() {});
+                                            logFirebaseEvent(
+                                                'Button_backend_call');
                                             _model.getphonenumber =
                                                 await GetphonenumberCall.call(
                                               numeroDigitado:
@@ -673,6 +702,8 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                             if ((_model
                                                     .getphonenumber?.jsonBody ??
                                                 '')) {
+                                              logFirebaseEvent(
+                                                  'Button_update_app_state');
                                               FFAppState().wasUser = (_model
                                                       .getphonenumber
                                                       ?.jsonBody ??
@@ -680,12 +711,16 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                               safeSetState(() {});
                                             }
                                             if (FFAppState().wasUser) {
+                                              logFirebaseEvent(
+                                                  'Button_custom_action');
                                               _model.oTPcheck =
                                                   await actions.otpPhone(
                                                 _model.phoneOnlynumbers!,
                                               );
                                               _shouldSetState = true;
                                               if (_model.oTPcheck!) {
+                                                logFirebaseEvent(
+                                                    'Button_backend_call');
                                                 _model.idFromPhone =
                                                     await GetIdfromphoneCall
                                                         .call(
@@ -694,10 +729,8 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                 );
 
                                                 _shouldSetState = true;
-                                                FFAppState().userID = (_model
-                                                        .idFromPhone
-                                                        ?.bodyText ??
-                                                    '');
+                                                logFirebaseEvent(
+                                                    'Button_backend_call');
                                                 _model.queryUser =
                                                     await UserProfileTable()
                                                         .queryRows(
@@ -710,6 +743,8 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                   ),
                                                 );
                                                 _shouldSetState = true;
+                                                logFirebaseEvent(
+                                                    'Button_update_app_state');
                                                 FFAppState().displayName =
                                                     _model
                                                         .queryUser!
@@ -724,6 +759,12 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                         .queryUser!
                                                         .firstOrNull!
                                                         .profilepicture!;
+                                                FFAppState().estadoUF = _model
+                                                    .queryUser!
+                                                    .firstOrNull!
+                                                    .uFindex;
+                                                logFirebaseEvent(
+                                                    'Button_navigate_to');
 
                                                 context.pushNamed(
                                                   LoginPhoneCodeWidget
@@ -737,6 +778,8 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                   }.withoutNulls,
                                                 );
                                               } else {
+                                                logFirebaseEvent(
+                                                    'Button_update_page_state');
                                                 _model.phoneborder =
                                                     FlutterFlowTheme.of(context)
                                                         .error;
@@ -746,6 +789,8 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                 return;
                                               }
                                             } else {
+                                              logFirebaseEvent(
+                                                  'Button_backend_call');
                                               _model.sendSMS =
                                                   await SendSMSverifyCall.call(
                                                 phone: _model.phoneOnlynumbers,
@@ -754,6 +799,9 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                               _shouldSetState = true;
                                               if ((_model.sendSMS?.succeeded ??
                                                   true)) {
+                                                logFirebaseEvent(
+                                                    'Button_navigate_to');
+
                                                 context.pushNamed(
                                                   LoginPhoneCodeWidget
                                                       .routeName,
@@ -766,6 +814,8 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                   }.withoutNulls,
                                                 );
                                               } else {
+                                                logFirebaseEvent(
+                                                    'Button_update_page_state');
                                                 _model.phoneborder =
                                                     FlutterFlowTheme.of(context)
                                                         .error;
@@ -776,10 +826,14 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                               }
                                             }
 
+                                            logFirebaseEvent(
+                                                'Button_clear_text_fields_pin_codes');
                                             safeSetState(() {
                                               _model.campoTelefoneTextController
                                                   ?.clear();
                                             });
+                                            logFirebaseEvent(
+                                                'Button_reset_form_fields');
                                             safeSetState(() {
                                               _model
                                                   .dropCodigoPaisValueController
@@ -919,6 +973,10 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                           children: [
                             FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'LOGIN_PHONE_CONTINUAR_COM_EMAIL_BTN_ON_T');
+                                logFirebaseEvent('Button_navigate_to');
+
                                 context.pushNamed(LoginEmailWidget.routeName);
                               },
                               text: 'Continuar com Email',
@@ -971,13 +1029,17 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                             ),
                             FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'LOGIN_PHONE_CONTINUAR_COM_GOOGLE_BTN_ON_');
                                 var _shouldSetState = false;
+                                logFirebaseEvent('Button_auth');
                                 GoRouter.of(context).prepareAuthEvent();
                                 final user =
                                     await authManager.signInWithGoogle(context);
                                 if (user == null) {
                                   return;
                                 }
+                                logFirebaseEvent('Button_backend_call');
                                 _model.queryUserGoogle =
                                     await UserProfileTable().queryRows(
                                   queryFn: (q) => q.eqOrNull(
@@ -986,16 +1048,15 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                   ),
                                 );
                                 _shouldSetState = true;
+                                logFirebaseEvent('Button_custom_action');
                                 _model.googleFullName =
                                     await actions.getGoogleNames();
                                 _shouldSetState = true;
-                                FFAppState().wasUser = _model.queryUserGoogle!
+                                if (_model.queryUserGoogle!
                                     .where((e) => e.role == 'free')
                                     .toList()
-                                    .isNotEmpty;
-                                safeSetState(() {});
-                                if (FFAppState().wasUser) {
-                                  FFAppState().userID = currentUserUid;
+                                    .isNotEmpty) {
+                                  logFirebaseEvent('Button_update_app_state');
                                   FFAppState().displayName = _model
                                       .queryUserGoogle!
                                       .firstOrNull!
@@ -1006,18 +1067,22 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                       .queryUserGoogle!
                                       .firstOrNull!
                                       .profilepicture!;
+                                  FFAppState().wasUser = true;
                                   safeSetState(() {});
+                                  logFirebaseEvent('Button_navigate_to');
 
                                   context.pushNamedAuth(
                                       HomePageWidget.routeName,
                                       context.mounted);
                                 } else {
-                                  FFAppState().userID = currentUserUid;
+                                  logFirebaseEvent('Button_update_app_state');
                                   FFAppState().inputEmail = currentUserEmail;
+                                  FFAppState().wasUser = false;
                                   safeSetState(() {});
                                   if (_model
-                                          .queryUserGoogle?.firstOrNull?.role ==
-                                      'astronauta') {
+                                          .queryUserGoogle?.firstOrNull?.role !=
+                                      'signup') {
+                                    logFirebaseEvent('Button_alert_dialog');
                                     await showDialog(
                                       context: context,
                                       builder: (alertDialogContext) {
@@ -1038,6 +1103,8 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                     if (_shouldSetState) safeSetState(() {});
                                     return;
                                   } else {
+                                    logFirebaseEvent('Button_navigate_to');
+
                                     context.pushNamedAuth(
                                       Cadastro1Widget.routeName,
                                       context.mounted,
@@ -1106,163 +1173,147 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                               ),
                               showLoadingIndicator: false,
                             ),
-                            isAndroid
-                                ? Container()
-                                : FFButtonWidget(
-                                    onPressed: () async {
-                                      var _shouldSetState = false;
-                                      GoRouter.of(context).prepareAuthEvent();
-                                      final user = await authManager
-                                          .signInWithApple(context);
-                                      if (user == null) {
-                                        return;
-                                      }
-                                      _model.queryAppleUser =
-                                          await UserProfileTable().queryRows(
-                                        queryFn: (q) => q.eqOrNull(
-                                          'id',
-                                          currentUserUid,
-                                        ),
-                                      );
-                                      _shouldSetState = true;
-                                      FFAppState().wasUser = _model
-                                          .queryAppleUser!
-                                          .where((e) => e.role == 'free')
-                                          .toList()
-                                          .isNotEmpty;
-                                      safeSetState(() {});
-                                      if (_model.queryAppleUser!
-                                          .where((e) => e.role == 'free')
-                                          .toList()
-                                          .isNotEmpty) {
-                                        FFAppState().userID = currentUserUid;
-                                        FFAppState().displayName = _model
-                                            .queryAppleUser!
-                                            .firstOrNull!
-                                            .displayname!;
-                                        FFAppState().gender = _model
-                                            .queryAppleUser!
-                                            .firstOrNull!
-                                            .gender!;
-                                        FFAppState().profilepicture = _model
-                                            .queryAppleUser!
-                                            .firstOrNull!
-                                            .profilepicture!;
-                                        safeSetState(() {});
-
-                                        context.pushNamedAuth(
-                                            HomePageWidget.routeName,
-                                            context.mounted);
-                                      } else {
-                                        if (_model.queryAppleUser?.firstOrNull
-                                                ?.role ==
-                                            'astronauta') {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                title: Text(
-                                                    'E-mail já cadastrado!'),
-                                                content: Text(
-                                                    'Por favor, tente com outro método de entrada'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext),
-                                                    child: Text('Ok'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                          if (_shouldSetState)
-                                            safeSetState(() {});
-                                          return;
-                                        } else {
-                                          FFAppState().inputEmail =
-                                              currentUserEmail != null &&
-                                                      currentUserEmail != ''
-                                                  ? currentUserEmail
-                                                  : FFAppState()
-                                                      .appleData
-                                                      .elementAtOrNull(2)!;
-                                          safeSetState(() {});
-
-                                          context.pushNamedAuth(
-                                            Cadastro1Widget.routeName,
-                                            context.mounted,
-                                            queryParameters: {
-                                              'camefrom': serializeParam(
-                                                'apple',
-                                                ParamType.String,
-                                              ),
-                                              'appleFullName': serializeParam(
-                                                FFAppState().appleData,
-                                                ParamType.String,
-                                                isList: true,
-                                              ),
-                                            }.withoutNulls,
-                                          );
-                                        }
-                                      }
-
-                                      if (_shouldSetState) safeSetState(() {});
-                                    },
-                                    text: 'Continuar com Apple',
-                                    icon: FaIcon(
-                                      FontAwesomeIcons.apple,
-                                      size: 20.0,
-                                    ),
-                                    options: FFButtonOptions(
-                                      width: double.infinity,
-                                      height:
-                                          MediaQuery.sizeOf(context).height *
-                                              0.05,
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 0.0),
-                                      iconPadding:
-                                          EdgeInsetsDirectional.fromSTEB(
-                                              0.0, 0.0, 0.0, 0.0),
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryBackground,
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            font: GoogleFonts.geologica(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontStyle,
-                                            ),
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontStyle,
-                                          ),
-                                      elevation: 0.0,
-                                      borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryText,
-                                        width: FFAppConstants.stroke,
-                                      ),
-                                      borderRadius: BorderRadius.circular(
-                                          valueOrDefault<double>(
-                                        FFAppConstants.borderS,
-                                        0.0,
-                                      )),
-                                    ),
-                                    showLoadingIndicator: false,
+                            FFButtonWidget(
+                              onPressed: () async {
+                                logFirebaseEvent(
+                                    'LOGIN_PHONE_CONTINUAR_COM_APPLE_BTN_ON_T');
+                                var _shouldSetState = false;
+                                logFirebaseEvent('Button_custom_action');
+                                _model.appleData = await actions.loginApple(
+                                  context,
+                                );
+                                _shouldSetState = true;
+                                logFirebaseEvent('Button_backend_call');
+                                _model.queryAppleUser =
+                                    await UserProfileTable().queryRows(
+                                  queryFn: (q) => q.eqOrNull(
+                                    'id',
+                                    _model.appleData?.elementAtOrNull(2),
                                   ),
+                                );
+                                _shouldSetState = true;
+                                if (_model.queryAppleUser!
+                                    .where((e) => e.role == 'free')
+                                    .toList()
+                                    .isNotEmpty) {
+                                  logFirebaseEvent('Button_update_app_state');
+                                  FFAppState().displayName = _model
+                                      .queryAppleUser!
+                                      .firstOrNull!
+                                      .displayname!;
+                                  FFAppState().gender = _model
+                                      .queryAppleUser!.firstOrNull!.gender!;
+                                  FFAppState().profilepicture = _model
+                                      .queryAppleUser!
+                                      .firstOrNull!
+                                      .profilepicture!;
+                                  FFAppState().wasUser = true;
+                                  safeSetState(() {});
+                                  logFirebaseEvent('Button_navigate_to');
+
+                                  context.pushNamed(HomePageWidget.routeName);
+                                } else {
+                                  if (_model
+                                          .queryAppleUser?.firstOrNull?.role !=
+                                      'signup') {
+                                    logFirebaseEvent('Button_alert_dialog');
+                                    await showDialog(
+                                      context: context,
+                                      builder: (alertDialogContext) {
+                                        return AlertDialog(
+                                          title: Text('E-mail já cadastrado!'),
+                                          content: Text(
+                                              'Por favor, tente com outro método de entrada'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  alertDialogContext),
+                                              child: Text('Ok'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                    if (_shouldSetState) safeSetState(() {});
+                                    return;
+                                  } else {
+                                    logFirebaseEvent('Button_update_app_state');
+                                    FFAppState().inputEmail =
+                                        currentUserEmail != null &&
+                                                currentUserEmail != ''
+                                            ? currentUserEmail
+                                            : _model.appleData!.lastOrNull!;
+                                    FFAppState().wasUser = false;
+                                    safeSetState(() {});
+                                    logFirebaseEvent('Button_navigate_to');
+
+                                    context.pushNamed(
+                                      Cadastro1Widget.routeName,
+                                      queryParameters: {
+                                        'camefrom': serializeParam(
+                                          'apple',
+                                          ParamType.String,
+                                        ),
+                                        'appleFullName': serializeParam(
+                                          _model.appleData,
+                                          ParamType.String,
+                                          isList: true,
+                                        ),
+                                      }.withoutNulls,
+                                    );
+                                  }
+                                }
+
+                                if (_shouldSetState) safeSetState(() {});
+                              },
+                              text: 'Continuar com Apple',
+                              icon: FaIcon(
+                                FontAwesomeIcons.apple,
+                                size: 20.0,
+                              ),
+                              options: FFButtonOptions(
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.05,
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                color: FlutterFlowTheme.of(context)
+                                    .primaryBackground,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      font: GoogleFonts.geologica(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontStyle,
+                                      ),
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
+                                elevation: 0.0,
+                                borderSide: BorderSide(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  width: FFAppConstants.stroke,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                    valueOrDefault<double>(
+                                  FFAppConstants.borderS,
+                                  0.0,
+                                )),
+                              ),
+                              showLoadingIndicator: false,
+                            ),
                           ].divide(SizedBox(height: FFAppConstants.Gap)),
                         ),
                       ),
@@ -1275,6 +1326,9 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                   children: [
                     FFButtonWidget(
                       onPressed: () async {
+                        logFirebaseEvent(
+                            'LOGIN_PHONE_PRECISA_DE_AJUDA_BTN_ON_TAP');
+                        logFirebaseEvent('Button_custom_action');
                         await actions.launchWhatsAppChat(
                           'Olá, estou tendo dificuldades para entrar no app',
                         );
@@ -1314,6 +1368,10 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                     ),
                     FFButtonWidget(
                       onPressed: () async {
+                        logFirebaseEvent(
+                            'LOGIN_PHONE_TERMOS_DE_USO_BTN_ON_TAP');
+                        logFirebaseEvent('Button_navigate_to');
+
                         context.pushNamed(TermosWidget.routeName);
                       },
                       text: 'Termos de uso',
@@ -1373,7 +1431,9 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                         ),
                   ),
                 ),
-              ].divide(SizedBox(height: 40.0)).around(SizedBox(height: 40.0)),
+              ]
+                  .divide(SizedBox(height: 40.0))
+                  .addToStart(SizedBox(height: FFAppConstants.doubleGap)),
             ),
           ),
         ),

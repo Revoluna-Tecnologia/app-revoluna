@@ -1,4 +1,3 @@
-import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
@@ -44,7 +43,14 @@ class _CheckphonebottomWidgetState extends State<CheckphonebottomWidget> {
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await Future.delayed(const Duration(milliseconds: 2000));
+      logFirebaseEvent('CHECKPHONEBOTTOM_checkphonebottom_ON_INI');
+      logFirebaseEvent('checkphonebottom_wait__delay');
+      await Future.delayed(
+        Duration(
+          milliseconds: 2000,
+        ),
+      );
+      logFirebaseEvent('checkphonebottom_timer');
       _model.timerController.onStartTimer();
     });
 
@@ -285,12 +291,18 @@ class _CheckphonebottomWidgetState extends State<CheckphonebottomWidget> {
                             ),
                             controller: _model.pinCodeController,
                             onChanged: (_) async {
+                              logFirebaseEvent(
+                                  'CHECKPHONEBOTTOM_PinCode_wuxlk23k_ON_TEX');
                               if (_model.pinCodeController!.text != null &&
                                   _model.pinCodeController!.text != '') {
+                                logFirebaseEvent(
+                                    'PinCode_update_component_state');
                                 _model.pincodecolor =
                                     FlutterFlowTheme.of(context).primaryText;
                                 safeSetState(() {});
                               } else {
+                                logFirebaseEvent(
+                                    'PinCode_update_component_state');
                                 _model.pincodecolor =
                                     FlutterFlowTheme.of(context).accent2;
                                 safeSetState(() {});
@@ -337,7 +349,10 @@ class _CheckphonebottomWidgetState extends State<CheckphonebottomWidget> {
                               (_model.timerMilliseconds == 0))
                           ? null
                           : () async {
+                              logFirebaseEvent(
+                                  'CHECKPHONEBOTTOM_CONTINUAR_BTN_ON_TAP');
                               var _shouldSetState = false;
+                              logFirebaseEvent('Button_backend_call');
                               _model.verifySMS =
                                   await ConfirmSMSverifyCall.call(
                                 phone: widget!.phoneOnlynumbers,
@@ -346,10 +361,13 @@ class _CheckphonebottomWidgetState extends State<CheckphonebottomWidget> {
 
                               _shouldSetState = true;
                               if ((_model.verifySMS?.succeeded ?? true)) {
+                                logFirebaseEvent('Button_bottom_sheet');
                                 Navigator.pop(context, true);
                                 if (_shouldSetState) safeSetState(() {});
                                 return;
                               } else {
+                                logFirebaseEvent(
+                                    'Button_update_component_state');
                                 _model.pincodecolor =
                                     FlutterFlowTheme.of(context).error;
                                 safeSetState(() {});
@@ -451,12 +469,6 @@ class _CheckphonebottomWidgetState extends State<CheckphonebottomWidget> {
                                   _model.timerValue = displayTime;
                                   if (shouldUpdate) safeSetState(() {});
                                 },
-                                onEnded: () async {
-                                  FFAppState().userID = (String var1) {
-                                    return var1.replaceAll(' ', '');
-                                  }(currentUserUid);
-                                  safeSetState(() {});
-                                },
                                 textAlign: TextAlign.start,
                                 style: FlutterFlowTheme.of(context)
                                     .titleSmall
@@ -483,6 +495,9 @@ class _CheckphonebottomWidgetState extends State<CheckphonebottomWidget> {
                         } else {
                           return FFButtonWidget(
                             onPressed: () async {
+                              logFirebaseEvent(
+                                  'CHECKPHONEBOTTOM_REENVIAR_CDIGO_BTN_ON_T');
+                              logFirebaseEvent('Button_alert_dialog');
                               var confirmDialogResponse =
                                   await showDialog<bool>(
                                         context: context,
@@ -508,13 +523,16 @@ class _CheckphonebottomWidgetState extends State<CheckphonebottomWidget> {
                                       ) ??
                                       false;
                               if (!confirmDialogResponse) {
+                                logFirebaseEvent('Button_backend_call');
                                 await SendSMSverifyCall.call(
                                   phone: widget!.phoneOnlynumbers,
                                 );
 
+                                logFirebaseEvent('Button_reset_form_fields');
                                 safeSetState(() {
                                   _model.pinCodeController?.clear();
                                 });
+                                logFirebaseEvent('Button_show_snack_bar');
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
@@ -551,8 +569,10 @@ class _CheckphonebottomWidgetState extends State<CheckphonebottomWidget> {
                                         FlutterFlowTheme.of(context).secondary,
                                   ),
                                 );
+                                logFirebaseEvent('Button_timer');
                                 _model.timerController.onResetTimer();
 
+                                logFirebaseEvent('Button_timer');
                                 _model.timerController.onStartTimer();
                                 return;
                               }
@@ -596,6 +616,9 @@ class _CheckphonebottomWidgetState extends State<CheckphonebottomWidget> {
                     ),
                     FFButtonWidget(
                       onPressed: () async {
+                        logFirebaseEvent(
+                            'CHECKPHONEBOTTOM_QUER_TROCAR_SEU_NMERO_B');
+                        logFirebaseEvent('Button_bottom_sheet');
                         Navigator.pop(context, false);
                       },
                       text: 'Quer trocar seu número?',

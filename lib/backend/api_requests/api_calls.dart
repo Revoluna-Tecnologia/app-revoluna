@@ -433,6 +433,69 @@ class AretheytesterCall {
   }
 }
 
+class RegisterTwilioBindingCall {
+  static Future<ApiCallResponse> call({
+    String? userId = '',
+    String? bindingType = '',
+    String? token = '',
+  }) async {
+    return ApiManager.instance.makeApiCall(
+      callName: 'registerTwilioBinding',
+      apiUrl:
+          'https://notify.twilio.com/v1/Services/IS2607c14dea8c3081dc4a75639e52979c/Bindings',
+      callType: ApiCallType.POST,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization':
+            'Basic QUM1MjgwOWNjNGUyMjBhMjg2N2MwYjFiMmJjMTNmYzU4MjpkMDNjMjYzNGNmOWY5MWI5NDVhNmVlM2FmYTQ0YzJkOA==',
+      },
+      params: {
+        'Address': token,
+        'Identity': userId,
+        'BindingType': bindingType,
+      },
+      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class NotificationreadCall {
+  static Future<ApiCallResponse> call({
+    String? userId = '',
+  }) async {
+    final ffApiRequestBody = '''
+{
+  "user_id": "${escapeStringForJson(userId)}"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'notificationread',
+      apiUrl:
+          'https://hxgbaruenomkfeeafmff.supabase.co/functions/v1/notification-read',
+      callType: ApiCallType.POST,
+      headers: {
+        'apikey':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MzgxNTMyOCwiZXhwIjoyMDU5MzkxMzI4fQ.WyALA-swQaR4wdLSOtwLSW32rxY_eAVtEWTpL3T1Wms',
+        'Content-Type': 'application/json',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
 class ApiPagingParams {
   int nextPageNumber = 0;
   int numItems = 0;
@@ -450,6 +513,9 @@ class ApiPagingParams {
 }
 
 String _toEncodable(dynamic item) {
+  if (item is DocumentReference) {
+    return item.path;
+  }
   return item;
 }
 

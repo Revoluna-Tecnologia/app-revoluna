@@ -54,23 +54,29 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
     super.initState();
     _model = createModel(context, () => Cadastro1Model());
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Cadastro1'});
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('CADASTRO1_PAGE_Cadastro1_ON_INIT_STATE');
       if (FFAppState().inputPhone != null && FFAppState().inputPhone != '') {
+        logFirebaseEvent('Cadastro1_update_page_state');
         _model.phoneborder = FlutterFlowTheme.of(context).primaryText;
         safeSetState(() {});
       }
       if (FFAppState().inputEmail != null && FFAppState().inputEmail != '') {
+        logFirebaseEvent('Cadastro1_update_page_state');
         _model.emailborder = FlutterFlowTheme.of(context).primaryText;
         safeSetState(() {});
       }
       if (_model.firstNameTextController.text != null &&
           _model.firstNameTextController.text != '') {
+        logFirebaseEvent('Cadastro1_update_page_state');
         _model.firstnameborder = FlutterFlowTheme.of(context).primaryText;
         safeSetState(() {});
       }
       if (_model.lastNameTextController.text != null &&
           _model.lastNameTextController.text != '') {
+        logFirebaseEvent('Cadastro1_update_page_state');
         _model.lastnameborder = FlutterFlowTheme.of(context).primaryText;
         safeSetState(() {});
       }
@@ -148,12 +154,16 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                   child: BackTopBarWidget(
                     logo: false,
                     backButton: () async {
+                      logFirebaseEvent('CADASTRO1_Container_gx1u2v5a_CALLBACK');
+                      logFirebaseEvent('BackTopBar_reset_form_fields');
                       safeSetState(() {
                         _model.dropCodigoPaisValueController?.reset();
                       });
+                      logFirebaseEvent('BackTopBar_reset_form_fields');
                       safeSetState(() {
                         _model.radioButtonValueController?.reset();
                       });
+                      logFirebaseEvent('BackTopBar_reset_form_fields');
                       safeSetState(() {
                         _model.firstNameTextController?.text = () {
                           if (widget!.googleFullName != null &&
@@ -193,6 +203,7 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                 ? FFAppState().inputPhone
                                 : '';
                       });
+                      logFirebaseEvent('BackTopBar_navigate_to');
 
                       context.goNamedAuth(
                         LoginPhoneWidget.routeName,
@@ -206,19 +217,24 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                       );
 
                       if (loggedIn) {
+                        logFirebaseEvent('BackTopBar_backend_call');
+                        await DeleteUserCall.call(
+                          userId: currentUserUid,
+                        );
+
+                        logFirebaseEvent('BackTopBar_auth');
                         GoRouter.of(context).prepareAuthEvent();
                         await authManager.signOut();
                         GoRouter.of(context).clearRedirectLocation();
                       }
+                      logFirebaseEvent('BackTopBar_update_app_state');
                       FFAppState().inputAreacode = '';
                       FFAppState().inputPhone = '';
                       FFAppState().inputEmail = '';
                       FFAppState().inputAreacodeIndex = 0;
                       FFAppState().wasUser = false;
-                      FFAppState().userID = '';
                       FFAppState().userRole = '';
-                      FFAppState().profilepicture =
-                          'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png';
+                      FFAppState().profilepicture = '';
                       FFAppState().displayName = '';
                       FFAppState().gender = '';
                       FFAppState().valuesPrivacy = false;
@@ -403,185 +419,203 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
-                                        Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Text(
-                                                  'O primeiro passo é agora!',
-                                                  textAlign: TextAlign.start,
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0,
+                                                  0.0,
+                                                  0.0,
+                                                  valueOrDefault<double>(
+                                                    FFAppConstants.doubleGap,
+                                                    0.0,
+                                                  )),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Text(
+                                                    'O primeiro passo é agora!',
+                                                    textAlign: TextAlign.start,
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .titleMedium
+                                                        .override(
+                                                          font: GoogleFonts
+                                                              .geologica(
+                                                            fontWeight:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleMedium
+                                                                    .fontWeight,
+                                                            fontStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleMedium
+                                                                    .fontStyle,
+                                                          ),
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleMedium
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleMedium
+                                                                  .fontStyle,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                              RichText(
+                                                textScaler:
+                                                    MediaQuery.of(context)
+                                                        .textScaler,
+                                                text: TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text:
+                                                          'Qual o seu nome completo?',
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .override(
+                                                                font: GoogleFonts
+                                                                    .geologica(
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .fontStyle,
+                                                                ),
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                fontWeight: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleSmall
+                                                                    .fontWeight,
+                                                                fontStyle: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleSmall
+                                                                    .fontStyle,
+                                                              ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: ' *',
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .override(
+                                                                font: GoogleFonts
+                                                                    .geologica(
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .fontStyle,
+                                                                ),
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .tertiary,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                fontWeight: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleSmall
+                                                                    .fontWeight,
+                                                                fontStyle: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleSmall
+                                                                    .fontStyle,
+                                                              ),
+                                                    )
+                                                  ],
                                                   style: FlutterFlowTheme.of(
                                                           context)
-                                                      .titleMedium
+                                                      .titleSmall
                                                       .override(
                                                         font: GoogleFonts
                                                             .geologica(
                                                           fontWeight:
                                                               FlutterFlowTheme.of(
                                                                       context)
-                                                                  .titleMedium
+                                                                  .titleSmall
                                                                   .fontWeight,
                                                           fontStyle:
                                                               FlutterFlowTheme.of(
                                                                       context)
-                                                                  .titleMedium
+                                                                  .titleSmall
                                                                   .fontStyle,
                                                         ),
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
                                                         letterSpacing: 0.0,
                                                         fontWeight:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .titleMedium
+                                                                .titleSmall
                                                                 .fontWeight,
                                                         fontStyle:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .titleMedium
+                                                                .titleSmall
                                                                 .fontStyle,
                                                       ),
                                                 ),
-                                              ],
-                                            ),
-                                            RichText(
-                                              textScaler: MediaQuery.of(context)
-                                                  .textScaler,
-                                              text: TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text:
-                                                        'Qual o seu nome completo?',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .titleSmall
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .geologica(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontStyle,
-                                                        ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: ' *',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .titleSmall
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .geologica(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .tertiary,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontStyle,
-                                                        ),
-                                                  )
-                                                ],
-                                                style: FlutterFlowTheme.of(
-                                                        context)
-                                                    .titleSmall
-                                                    .override(
-                                                      font:
-                                                          GoogleFonts.geologica(
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleSmall
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleSmall
-                                                                .fontStyle,
-                                                      ),
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryText,
-                                                      letterSpacing: 0.0,
-                                                      fontWeight:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .titleSmall
-                                                              .fontWeight,
-                                                      fontStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .titleSmall
-                                                              .fontStyle,
-                                                    ),
+                                                textAlign: TextAlign.start,
                                               ),
-                                              textAlign: TextAlign.start,
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                FlutterFlowRadioButton(
-                                                  options: [
-                                                    'Dr.',
-                                                    'Dra.',
-                                                    'Prefiro não informar'
-                                                  ].toList(),
-                                                  onChanged: (val) =>
-                                                      safeSetState(() {}),
-                                                  controller: _model
-                                                          .radioButtonValueController ??=
-                                                      FormFieldController<
-                                                          String>(null),
-                                                  optionHeight: 20.0,
-                                                  textStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .override(
-                                                            font: GoogleFonts
-                                                                .geologica(
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  FlutterFlowRadioButton(
+                                                    options: [
+                                                      'Dr.',
+                                                      'Dra.',
+                                                      'Prefiro não informar'
+                                                    ].toList(),
+                                                    onChanged: (val) =>
+                                                        safeSetState(() {}),
+                                                    controller: _model
+                                                            .radioButtonValueController ??=
+                                                        FormFieldController<
+                                                            String>(null),
+                                                    optionHeight: 20.0,
+                                                    textStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .override(
+                                                              font: GoogleFonts
+                                                                  .geologica(
+                                                                fontWeight: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .labelMedium
+                                                                    .fontWeight,
+                                                                fontStyle: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .labelMedium
+                                                                    .fontStyle,
+                                                              ),
+                                                              letterSpacing:
+                                                                  0.0,
                                                               fontWeight:
                                                                   FlutterFlowTheme.of(
                                                                           context)
@@ -593,25 +627,24 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                       .labelMedium
                                                                       .fontStyle,
                                                             ),
-                                                            letterSpacing: 0.0,
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
+                                                    selectedTextStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMedium
+                                                            .override(
+                                                              font: GoogleFonts
+                                                                  .geologica(
+                                                                fontWeight: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .labelMedium
+                                                                    .bodyMedium
                                                                     .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
+                                                                fontStyle: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .labelMedium
+                                                                    .bodyMedium
                                                                     .fontStyle,
-                                                          ),
-                                                  selectedTextStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .override(
-                                                            font: GoogleFonts
-                                                                .geologica(
+                                                              ),
+                                                              letterSpacing:
+                                                                  0.0,
                                                               fontWeight:
                                                                   FlutterFlowTheme.of(
                                                                           context)
@@ -623,89 +656,102 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                       .bodyMedium
                                                                       .fontStyle,
                                                             ),
-                                                            letterSpacing: 0.0,
-                                                            fontWeight:
+                                                    buttonPosition:
+                                                        RadioButtonPosition
+                                                            .left,
+                                                    direction: Axis.horizontal,
+                                                    radioButtonColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primaryText,
+                                                    inactiveRadioButtonColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .accent2,
+                                                    toggleable: false,
+                                                    horizontalAlignment:
+                                                        WrapAlignment.start,
+                                                    verticalAlignment:
+                                                        WrapCrossAlignment
+                                                            .start,
+                                                  ),
+                                                ],
+                                              ),
+                                              Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Container(
+                                                    width: double.infinity,
+                                                    child: TextFormField(
+                                                      controller: _model
+                                                          .firstNameTextController,
+                                                      focusNode: _model
+                                                          .firstNameFocusNode,
+                                                      onChanged: (_) =>
+                                                          EasyDebounce.debounce(
+                                                        '_model.firstNameTextController',
+                                                        Duration(
+                                                            milliseconds: 100),
+                                                        () async {
+                                                          logFirebaseEvent(
+                                                              'CADASTRO1_FirstName_ON_TEXTFIELD_CHANGE');
+                                                          if (_model
+                                                                  .firstNameTextController
+                                                                  .text !=
+                                                              '') {
+                                                            logFirebaseEvent(
+                                                                'FirstName_update_page_state');
+                                                            _model.firstnameborder =
                                                                 FlutterFlowTheme.of(
                                                                         context)
-                                                                    .bodyMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
+                                                                    .primaryText;
+                                                            safeSetState(() {});
+                                                          } else {
+                                                            logFirebaseEvent(
+                                                                'FirstName_update_page_state');
+                                                            _model.firstnameborder =
                                                                 FlutterFlowTheme.of(
                                                                         context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                  buttonPosition:
-                                                      RadioButtonPosition.left,
-                                                  direction: Axis.horizontal,
-                                                  radioButtonColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primaryText,
-                                                  inactiveRadioButtonColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .accent2,
-                                                  toggleable: false,
-                                                  horizontalAlignment:
-                                                      WrapAlignment.start,
-                                                  verticalAlignment:
-                                                      WrapCrossAlignment.start,
-                                                ),
-                                              ],
-                                            ),
-                                            Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Container(
-                                                  width: double.infinity,
-                                                  child: TextFormField(
-                                                    controller: _model
-                                                        .firstNameTextController,
-                                                    focusNode: _model
-                                                        .firstNameFocusNode,
-                                                    onChanged: (_) =>
-                                                        EasyDebounce.debounce(
-                                                      '_model.firstNameTextController',
-                                                      Duration(
-                                                          milliseconds: 100),
-                                                      () async {
-                                                        if (_model
-                                                                .firstNameTextController
-                                                                .text !=
-                                                            '') {
-                                                          _model.firstnameborder =
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .primaryText;
-                                                          safeSetState(() {});
-                                                        } else {
-                                                          _model.firstnameborder =
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .accent2;
-                                                          safeSetState(() {});
-                                                        }
-                                                      },
-                                                    ),
-                                                    autofocus: false,
-                                                    textCapitalization:
-                                                        TextCapitalization
-                                                            .words,
-                                                    textInputAction:
-                                                        TextInputAction.next,
-                                                    obscureText: false,
-                                                    decoration: InputDecoration(
-                                                      isDense: true,
-                                                      alignLabelWithHint: false,
-                                                      hintText: 'Primeiro nome',
-                                                      errorStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .labelSmall
-                                                              .override(
-                                                                font: GoogleFonts
-                                                                    .geologica(
+                                                                    .accent2;
+                                                            safeSetState(() {});
+                                                          }
+                                                        },
+                                                      ),
+                                                      autofocus: false,
+                                                      textCapitalization:
+                                                          TextCapitalization
+                                                              .words,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      obscureText: false,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        isDense: true,
+                                                        alignLabelWithHint:
+                                                            false,
+                                                        hintText:
+                                                            'Primeiro nome',
+                                                        errorStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelSmall
+                                                                .override(
+                                                                  font: GoogleFonts
+                                                                      .geologica(
+                                                                    fontWeight: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .labelSmall
+                                                                        .fontWeight,
+                                                                    fontStyle: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .labelSmall
+                                                                        .fontStyle,
+                                                                  ),
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .error,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight: FlutterFlowTheme.of(
                                                                           context)
                                                                       .labelSmall
@@ -714,235 +760,255 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                           context)
                                                                       .labelSmall
                                                                       .fontStyle,
+                                                                  lineHeight:
+                                                                      1.0,
                                                                 ),
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .error,
+                                                        enabledBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: _model
+                                                                .firstnameborder,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                            FFAppConstants
+                                                                .borderS,
+                                                            0.0,
+                                                          )),
+                                                        ),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primary,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                            FFAppConstants
+                                                                .borderS,
+                                                            0.0,
+                                                          )),
+                                                        ),
+                                                        errorBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .error,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                            FFAppConstants
+                                                                .borderS,
+                                                            0.0,
+                                                          )),
+                                                        ),
+                                                        focusedErrorBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .error,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                            FFAppConstants
+                                                                .borderS,
+                                                            0.0,
+                                                          )),
+                                                        ),
+                                                        suffixIcon: _model
+                                                                .firstNameTextController!
+                                                                .text
+                                                                .isNotEmpty
+                                                            ? InkWell(
+                                                                onTap:
+                                                                    () async {
+                                                                  _model
+                                                                      .firstNameTextController
+                                                                      ?.clear();
+                                                                  logFirebaseEvent(
+                                                                      'CADASTRO1_FirstName_ON_TEXTFIELD_CHANGE');
+                                                                  if (_model
+                                                                          .firstNameTextController
+                                                                          .text !=
+                                                                      '') {
+                                                                    logFirebaseEvent(
+                                                                        'FirstName_update_page_state');
+                                                                    _model
+                                                                        .firstnameborder = FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primaryText;
+                                                                    safeSetState(
+                                                                        () {});
+                                                                  } else {
+                                                                    logFirebaseEvent(
+                                                                        'FirstName_update_page_state');
+                                                                    _model
+                                                                        .firstnameborder = FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .accent2;
+                                                                    safeSetState(
+                                                                        () {});
+                                                                  }
+
+                                                                  safeSetState(
+                                                                      () {});
+                                                                },
+                                                                child: Icon(
+                                                                  Icons.clear,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .accent3,
+                                                                  size: 14.0,
+                                                                ),
+                                                              )
+                                                            : null,
+                                                      ),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                font: GoogleFonts
+                                                                    .geologica(
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .fontStyle,
+                                                                ),
                                                                 letterSpacing:
                                                                     0.0,
                                                                 fontWeight: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .labelSmall
+                                                                    .bodyMedium
                                                                     .fontWeight,
                                                                 fontStyle: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .labelSmall
-                                                                    .fontStyle,
-                                                                lineHeight: 1.0,
-                                                              ),
-                                                      enabledBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: _model
-                                                              .firstnameborder,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                valueOrDefault<
-                                                                    double>(
-                                                          FFAppConstants
-                                                              .borderS,
-                                                          0.0,
-                                                        )),
-                                                      ),
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primary,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                valueOrDefault<
-                                                                    double>(
-                                                          FFAppConstants
-                                                              .borderS,
-                                                          0.0,
-                                                        )),
-                                                      ),
-                                                      errorBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .error,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                valueOrDefault<
-                                                                    double>(
-                                                          FFAppConstants
-                                                              .borderS,
-                                                          0.0,
-                                                        )),
-                                                      ),
-                                                      focusedErrorBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .error,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                valueOrDefault<
-                                                                    double>(
-                                                          FFAppConstants
-                                                              .borderS,
-                                                          0.0,
-                                                        )),
-                                                      ),
-                                                      suffixIcon: _model
-                                                              .firstNameTextController!
-                                                              .text
-                                                              .isNotEmpty
-                                                          ? InkWell(
-                                                              onTap: () async {
-                                                                _model
-                                                                    .firstNameTextController
-                                                                    ?.clear();
-                                                                if (_model
-                                                                        .firstNameTextController
-                                                                        .text !=
-                                                                    '') {
-                                                                  _model.firstnameborder =
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .primaryText;
-                                                                  safeSetState(
-                                                                      () {});
-                                                                } else {
-                                                                  _model.firstnameborder =
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .accent2;
-                                                                  safeSetState(
-                                                                      () {});
-                                                                }
-
-                                                                safeSetState(
-                                                                    () {});
-                                                              },
-                                                              child: Icon(
-                                                                Icons.clear,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .accent3,
-                                                                size: 14.0,
-                                                              ),
-                                                            )
-                                                          : null,
-                                                    ),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .geologica(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
                                                                     .bodyMedium
                                                                     .fontStyle,
-                                                          ),
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                    maxLines: null,
-                                                    cursorColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .primaryText,
-                                                    validator: _model
-                                                        .firstNameTextControllerValidator
-                                                        .asValidator(context),
-                                                    inputFormatters: [
-                                                      if (!isAndroid && !isiOS)
-                                                        TextInputFormatter
-                                                            .withFunction(
-                                                                (oldValue,
-                                                                    newValue) {
-                                                          return TextEditingValue(
-                                                            selection: newValue
-                                                                .selection,
-                                                            text: newValue.text
-                                                                .toCapitalization(
-                                                                    TextCapitalization
-                                                                        .words),
-                                                          );
-                                                        }),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: double.infinity,
-                                                  child: TextFormField(
-                                                    controller: _model
-                                                        .lastNameTextController,
-                                                    focusNode: _model
-                                                        .lastNameFocusNode,
-                                                    onChanged: (_) =>
-                                                        EasyDebounce.debounce(
-                                                      '_model.lastNameTextController',
-                                                      Duration(
-                                                          milliseconds: 100),
-                                                      () async {
-                                                        if (_model
-                                                                .lastNameTextController
-                                                                .text !=
-                                                            '') {
-                                                          _model.lastnameborder =
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .primaryText;
-                                                          safeSetState(() {});
-                                                        } else {
-                                                          _model.lastnameborder =
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .accent2;
-                                                          safeSetState(() {});
-                                                        }
-                                                      },
-                                                    ),
-                                                    autofocus: false,
-                                                    textCapitalization:
-                                                        TextCapitalization
-                                                            .words,
-                                                    textInputAction:
-                                                        TextInputAction.next,
-                                                    obscureText: false,
-                                                    decoration: InputDecoration(
-                                                      isDense: true,
-                                                      alignLabelWithHint: false,
-                                                      hintText:
-                                                          'Último sobrenome',
-                                                      errorStyle:
+                                                              ),
+                                                      maxLines: null,
+                                                      cursorColor:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .labelSmall
-                                                              .override(
-                                                                font: GoogleFonts
-                                                                    .geologica(
+                                                              .primaryText,
+                                                      validator: _model
+                                                          .firstNameTextControllerValidator
+                                                          .asValidator(context),
+                                                      inputFormatters: [
+                                                        if (!isAndroid &&
+                                                            !isiOS)
+                                                          TextInputFormatter
+                                                              .withFunction(
+                                                                  (oldValue,
+                                                                      newValue) {
+                                                            return TextEditingValue(
+                                                              selection: newValue
+                                                                  .selection,
+                                                              text: newValue
+                                                                  .text
+                                                                  .toCapitalization(
+                                                                      TextCapitalization
+                                                                          .words),
+                                                            );
+                                                          }),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    child: TextFormField(
+                                                      controller: _model
+                                                          .lastNameTextController,
+                                                      focusNode: _model
+                                                          .lastNameFocusNode,
+                                                      onChanged: (_) =>
+                                                          EasyDebounce.debounce(
+                                                        '_model.lastNameTextController',
+                                                        Duration(
+                                                            milliseconds: 100),
+                                                        () async {
+                                                          logFirebaseEvent(
+                                                              'CADASTRO1_LastName_ON_TEXTFIELD_CHANGE');
+                                                          if (_model
+                                                                  .lastNameTextController
+                                                                  .text !=
+                                                              '') {
+                                                            logFirebaseEvent(
+                                                                'LastName_update_page_state');
+                                                            _model.lastnameborder =
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText;
+                                                            safeSetState(() {});
+                                                          } else {
+                                                            logFirebaseEvent(
+                                                                'LastName_update_page_state');
+                                                            _model.lastnameborder =
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .accent2;
+                                                            safeSetState(() {});
+                                                          }
+                                                        },
+                                                      ),
+                                                      autofocus: false,
+                                                      textCapitalization:
+                                                          TextCapitalization
+                                                              .words,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      obscureText: false,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        isDense: true,
+                                                        alignLabelWithHint:
+                                                            false,
+                                                        hintText:
+                                                            'Último sobrenome',
+                                                        errorStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelSmall
+                                                                .override(
+                                                                  font: GoogleFonts
+                                                                      .geologica(
+                                                                    fontWeight: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .labelSmall
+                                                                        .fontWeight,
+                                                                    fontStyle: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .labelSmall
+                                                                        .fontStyle,
+                                                                  ),
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .error,
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight: FlutterFlowTheme.of(
                                                                           context)
                                                                       .labelSmall
@@ -951,231 +1017,291 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                           context)
                                                                       .labelSmall
                                                                       .fontStyle,
+                                                                  lineHeight:
+                                                                      1.0,
                                                                 ),
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .error,
+                                                        enabledBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: _model
+                                                                .lastnameborder,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                            FFAppConstants
+                                                                .borderS,
+                                                            0.0,
+                                                          )),
+                                                        ),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primary,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                            FFAppConstants
+                                                                .borderS,
+                                                            0.0,
+                                                          )),
+                                                        ),
+                                                        errorBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .error,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                            FFAppConstants
+                                                                .borderS,
+                                                            0.0,
+                                                          )),
+                                                        ),
+                                                        focusedErrorBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .error,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                            FFAppConstants
+                                                                .borderS,
+                                                            0.0,
+                                                          )),
+                                                        ),
+                                                        filled: true,
+                                                        fillColor:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryBackground,
+                                                        suffixIcon: _model
+                                                                .lastNameTextController!
+                                                                .text
+                                                                .isNotEmpty
+                                                            ? InkWell(
+                                                                onTap:
+                                                                    () async {
+                                                                  _model
+                                                                      .lastNameTextController
+                                                                      ?.clear();
+                                                                  logFirebaseEvent(
+                                                                      'CADASTRO1_LastName_ON_TEXTFIELD_CHANGE');
+                                                                  if (_model
+                                                                          .lastNameTextController
+                                                                          .text !=
+                                                                      '') {
+                                                                    logFirebaseEvent(
+                                                                        'LastName_update_page_state');
+                                                                    _model
+                                                                        .lastnameborder = FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primaryText;
+                                                                    safeSetState(
+                                                                        () {});
+                                                                  } else {
+                                                                    logFirebaseEvent(
+                                                                        'LastName_update_page_state');
+                                                                    _model
+                                                                        .lastnameborder = FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .accent2;
+                                                                    safeSetState(
+                                                                        () {});
+                                                                  }
+
+                                                                  safeSetState(
+                                                                      () {});
+                                                                },
+                                                                child: Icon(
+                                                                  Icons.clear,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .accent3,
+                                                                  size: 14.0,
+                                                                ),
+                                                              )
+                                                            : null,
+                                                      ),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                font: GoogleFonts
+                                                                    .geologica(
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .fontStyle,
+                                                                ),
                                                                 letterSpacing:
                                                                     0.0,
                                                                 fontWeight: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .labelSmall
+                                                                    .bodyMedium
                                                                     .fontWeight,
                                                                 fontStyle: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .labelSmall
+                                                                    .bodyMedium
                                                                     .fontStyle,
-                                                                lineHeight: 1.0,
                                                               ),
-                                                      enabledBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: _model
-                                                              .lastnameborder,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                valueOrDefault<
-                                                                    double>(
-                                                          FFAppConstants
-                                                              .borderS,
-                                                          0.0,
-                                                        )),
-                                                      ),
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primary,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                valueOrDefault<
-                                                                    double>(
-                                                          FFAppConstants
-                                                              .borderS,
-                                                          0.0,
-                                                        )),
-                                                      ),
-                                                      errorBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .error,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                valueOrDefault<
-                                                                    double>(
-                                                          FFAppConstants
-                                                              .borderS,
-                                                          0.0,
-                                                        )),
-                                                      ),
-                                                      focusedErrorBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .error,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                valueOrDefault<
-                                                                    double>(
-                                                          FFAppConstants
-                                                              .borderS,
-                                                          0.0,
-                                                        )),
-                                                      ),
-                                                      filled: true,
-                                                      fillColor:
+                                                      maxLines: null,
+                                                      cursorColor:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .primaryBackground,
-                                                      suffixIcon: _model
-                                                              .lastNameTextController!
-                                                              .text
-                                                              .isNotEmpty
-                                                          ? InkWell(
-                                                              onTap: () async {
-                                                                _model
-                                                                    .lastNameTextController
-                                                                    ?.clear();
-                                                                if (_model
-                                                                        .lastNameTextController
-                                                                        .text !=
-                                                                    '') {
-                                                                  _model.lastnameborder =
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .primaryText;
-                                                                  safeSetState(
-                                                                      () {});
-                                                                } else {
-                                                                  _model.lastnameborder =
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .accent2;
-                                                                  safeSetState(
-                                                                      () {});
-                                                                }
-
-                                                                safeSetState(
-                                                                    () {});
-                                                              },
-                                                              child: Icon(
-                                                                Icons.clear,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .accent3,
-                                                                size: 14.0,
-                                                              ),
-                                                            )
-                                                          : null,
+                                                              .primaryText,
+                                                      validator: _model
+                                                          .lastNameTextControllerValidator
+                                                          .asValidator(context),
+                                                      inputFormatters: [
+                                                        if (!isAndroid &&
+                                                            !isiOS)
+                                                          TextInputFormatter
+                                                              .withFunction(
+                                                                  (oldValue,
+                                                                      newValue) {
+                                                            return TextEditingValue(
+                                                              selection: newValue
+                                                                  .selection,
+                                                              text: newValue
+                                                                  .text
+                                                                  .toCapitalization(
+                                                                      TextCapitalization
+                                                                          .words),
+                                                            );
+                                                          }),
+                                                      ],
                                                     ),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .geologica(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                    maxLines: null,
-                                                    cursorColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .primaryText,
-                                                    validator: _model
-                                                        .lastNameTextControllerValidator
-                                                        .asValidator(context),
-                                                    inputFormatters: [
-                                                      if (!isAndroid && !isiOS)
-                                                        TextInputFormatter
-                                                            .withFunction(
-                                                                (oldValue,
-                                                                    newValue) {
-                                                          return TextEditingValue(
-                                                            selection: newValue
-                                                                .selection,
-                                                            text: newValue.text
-                                                                .toCapitalization(
-                                                                    TextCapitalization
-                                                                        .words),
-                                                          );
-                                                        }),
-                                                    ],
                                                   ),
-                                                ),
-                                              ].divide(SizedBox(
-                                                  height:
-                                                      FFAppConstants.halfGap)),
-                                            ),
-                                          ].divide(SizedBox(
-                                              height: FFAppConstants.Gap)),
+                                                ].divide(SizedBox(
+                                                    height: FFAppConstants
+                                                        .halfGap)),
+                                              ),
+                                            ].divide(SizedBox(
+                                                height: FFAppConstants.Gap)),
+                                          ),
                                         ),
-                                        Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            RichText(
-                                              textScaler: MediaQuery.of(context)
-                                                  .textScaler,
-                                              text: TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text:
-                                                        'Agora, seu e-mail principal?',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .titleSmall
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .geologica(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0,
+                                                  0.0,
+                                                  0.0,
+                                                  valueOrDefault<double>(
+                                                    FFAppConstants.doubleGap,
+                                                    0.0,
+                                                  )),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              RichText(
+                                                textScaler:
+                                                    MediaQuery.of(context)
+                                                        .textScaler,
+                                                text: TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text:
+                                                          'Agora, seu e-mail principal?',
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .override(
+                                                                font: GoogleFonts
+                                                                    .geologica(
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .fontStyle,
+                                                                ),
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                fontWeight: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleSmall
                                                                     .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
+                                                                fontStyle: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleSmall
                                                                     .fontStyle,
-                                                          ),
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                          letterSpacing: 0.0,
+                                                              ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: ' *',
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .override(
+                                                                font: GoogleFonts
+                                                                    .geologica(
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .fontStyle,
+                                                                ),
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .tertiary,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                fontWeight: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleSmall
+                                                                    .fontWeight,
+                                                                fontStyle: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleSmall
+                                                                    .fontStyle,
+                                                              ),
+                                                    )
+                                                  ],
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .titleSmall
+                                                      .override(
+                                                        font: GoogleFonts
+                                                            .geologica(
                                                           fontWeight:
                                                               FlutterFlowTheme.of(
                                                                       context)
@@ -1187,49 +1313,11 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                   .titleSmall
                                                                   .fontStyle,
                                                         ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: ' *',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .titleSmall
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .geologica(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .tertiary,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontStyle,
-                                                        ),
-                                                  )
-                                                ],
-                                                style: FlutterFlowTheme.of(
-                                                        context)
-                                                    .titleSmall
-                                                    .override(
-                                                      font:
-                                                          GoogleFonts.geologica(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -1241,76 +1329,282 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                 .titleSmall
                                                                 .fontStyle,
                                                       ),
-                                                      color:
+                                                ),
+                                                textAlign: TextAlign.start,
+                                              ),
+                                              Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width: double.infinity,
+                                                    child: TextFormField(
+                                                      controller: _model
+                                                          .eMailTextController,
+                                                      focusNode:
+                                                          _model.eMailFocusNode,
+                                                      onChanged: (_) =>
+                                                          EasyDebounce.debounce(
+                                                        '_model.eMailTextController',
+                                                        Duration(
+                                                            milliseconds: 100),
+                                                        () async {
+                                                          logFirebaseEvent(
+                                                              'CADASTRO1_E-mail_ON_TEXTFIELD_CHANGE');
+                                                          if (_model
+                                                                  .eMailTextController
+                                                                  .text !=
+                                                              '') {
+                                                            logFirebaseEvent(
+                                                                'E-mail_update_page_state');
+                                                            _model.emailborder =
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText;
+                                                            safeSetState(() {});
+                                                            return;
+                                                          } else {
+                                                            logFirebaseEvent(
+                                                                'E-mail_update_page_state');
+                                                            _model.emailborder =
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .accent2;
+                                                            safeSetState(() {});
+                                                            return;
+                                                          }
+                                                        },
+                                                      ),
+                                                      autofocus: false,
+                                                      autofillHints: [
+                                                        AutofillHints.email
+                                                      ],
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      obscureText: false,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        isDense: true,
+                                                        alignLabelWithHint:
+                                                            false,
+                                                        hintText:
+                                                            'e-mail@dominio.com',
+                                                        errorStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelSmall
+                                                                .override(
+                                                                  font: GoogleFonts
+                                                                      .geologica(
+                                                                    fontWeight: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .labelSmall
+                                                                        .fontWeight,
+                                                                    fontStyle: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .labelSmall
+                                                                        .fontStyle,
+                                                                  ),
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .error,
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .labelSmall
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .labelSmall
+                                                                      .fontStyle,
+                                                                  lineHeight:
+                                                                      1.0,
+                                                                ),
+                                                        enabledBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: _model
+                                                                .emailborder,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                            FFAppConstants
+                                                                .borderS,
+                                                            0.0,
+                                                          )),
+                                                        ),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primary,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                            FFAppConstants
+                                                                .borderS,
+                                                            0.0,
+                                                          )),
+                                                        ),
+                                                        errorBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .error,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                            FFAppConstants
+                                                                .borderS,
+                                                            0.0,
+                                                          )),
+                                                        ),
+                                                        focusedErrorBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .error,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                            FFAppConstants
+                                                                .borderS,
+                                                            0.0,
+                                                          )),
+                                                        ),
+                                                        filled: true,
+                                                        fillColor:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryBackground,
+                                                        prefixIcon: Icon(
+                                                          FFIcons.kmail,
+                                                          size: 14.0,
+                                                        ),
+                                                        suffixIcon: _model
+                                                                .eMailTextController!
+                                                                .text
+                                                                .isNotEmpty
+                                                            ? InkWell(
+                                                                onTap:
+                                                                    () async {
+                                                                  _model
+                                                                      .eMailTextController
+                                                                      ?.clear();
+                                                                  logFirebaseEvent(
+                                                                      'CADASTRO1_E-mail_ON_TEXTFIELD_CHANGE');
+                                                                  if (_model
+                                                                          .eMailTextController
+                                                                          .text !=
+                                                                      '') {
+                                                                    logFirebaseEvent(
+                                                                        'E-mail_update_page_state');
+                                                                    _model
+                                                                        .emailborder = FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primaryText;
+                                                                    safeSetState(
+                                                                        () {});
+                                                                    return;
+                                                                  } else {
+                                                                    logFirebaseEvent(
+                                                                        'E-mail_update_page_state');
+                                                                    _model
+                                                                        .emailborder = FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .accent2;
+                                                                    safeSetState(
+                                                                        () {});
+                                                                    return;
+                                                                  }
+
+                                                                  safeSetState(
+                                                                      () {});
+                                                                },
+                                                                child: Icon(
+                                                                  Icons.clear,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .accent3,
+                                                                  size: 14.0,
+                                                                ),
+                                                              )
+                                                            : null,
+                                                      ),
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                font: GoogleFonts
+                                                                    .geologica(
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .fontStyle,
+                                                                ),
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                fontWeight: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontWeight,
+                                                                fontStyle: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontStyle,
+                                                              ),
+                                                      maxLines: null,
+                                                      keyboardType:
+                                                          TextInputType
+                                                              .emailAddress,
+                                                      cursorColor:
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .primaryText,
-                                                      letterSpacing: 0.0,
-                                                      fontWeight:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .titleSmall
-                                                              .fontWeight,
-                                                      fontStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .titleSmall
-                                                              .fontStyle,
+                                                      validator: _model
+                                                          .eMailTextControllerValidator
+                                                          .asValidator(context),
                                                     ),
-                                              ),
-                                              textAlign: TextAlign.start,
-                                            ),
-                                            Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  width: double.infinity,
-                                                  child: TextFormField(
-                                                    controller: _model
-                                                        .eMailTextController,
-                                                    focusNode:
-                                                        _model.eMailFocusNode,
-                                                    onChanged: (_) =>
-                                                        EasyDebounce.debounce(
-                                                      '_model.eMailTextController',
-                                                      Duration(
-                                                          milliseconds: 100),
-                                                      () async {
-                                                        if (_model
-                                                                .eMailTextController
+                                                  ),
+                                                  if (valueOrDefault<bool>(
+                                                    (_model.emailborder ==
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .error) &&
+                                                        (_model.eMailTextController
                                                                 .text !=
-                                                            '') {
-                                                          _model.emailborder =
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .primaryText;
-                                                          safeSetState(() {});
-                                                          return;
-                                                        } else {
-                                                          _model.emailborder =
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .accent2;
-                                                          safeSetState(() {});
-                                                          return;
-                                                        }
-                                                      },
-                                                    ),
-                                                    autofocus: false,
-                                                    autofillHints: [
-                                                      AutofillHints.email
-                                                    ],
-                                                    textInputAction:
-                                                        TextInputAction.next,
-                                                    obscureText: false,
-                                                    decoration: InputDecoration(
-                                                      isDense: true,
-                                                      alignLabelWithHint: false,
-                                                      hintText:
-                                                          'e-mail@dominio.com',
-                                                      errorStyle:
+                                                            ''),
+                                                    false,
+                                                  ))
+                                                    Text(
+                                                      'Endereço de e-mail inválido',
+                                                      style:
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .labelSmall
@@ -1339,219 +1633,15 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                         context)
                                                                     .labelSmall
                                                                     .fontStyle,
-                                                                lineHeight: 1.0,
                                                               ),
-                                                      enabledBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: _model
-                                                              .emailborder,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                valueOrDefault<
-                                                                    double>(
-                                                          FFAppConstants
-                                                              .borderS,
-                                                          0.0,
-                                                        )),
-                                                      ),
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primary,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                valueOrDefault<
-                                                                    double>(
-                                                          FFAppConstants
-                                                              .borderS,
-                                                          0.0,
-                                                        )),
-                                                      ),
-                                                      errorBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .error,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                valueOrDefault<
-                                                                    double>(
-                                                          FFAppConstants
-                                                              .borderS,
-                                                          0.0,
-                                                        )),
-                                                      ),
-                                                      focusedErrorBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .error,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                valueOrDefault<
-                                                                    double>(
-                                                          FFAppConstants
-                                                              .borderS,
-                                                          0.0,
-                                                        )),
-                                                      ),
-                                                      filled: true,
-                                                      fillColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryBackground,
-                                                      prefixIcon: Icon(
-                                                        FFIcons.kmail,
-                                                        size: 14.0,
-                                                      ),
-                                                      suffixIcon: _model
-                                                              .eMailTextController!
-                                                              .text
-                                                              .isNotEmpty
-                                                          ? InkWell(
-                                                              onTap: () async {
-                                                                _model
-                                                                    .eMailTextController
-                                                                    ?.clear();
-                                                                if (_model
-                                                                        .eMailTextController
-                                                                        .text !=
-                                                                    '') {
-                                                                  _model.emailborder =
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .primaryText;
-                                                                  safeSetState(
-                                                                      () {});
-                                                                  return;
-                                                                } else {
-                                                                  _model.emailborder =
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .accent2;
-                                                                  safeSetState(
-                                                                      () {});
-                                                                  return;
-                                                                }
-
-                                                                safeSetState(
-                                                                    () {});
-                                                              },
-                                                              child: Icon(
-                                                                Icons.clear,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .accent3,
-                                                                size: 14.0,
-                                                              ),
-                                                            )
-                                                          : null,
                                                     ),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .geologica(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                    maxLines: null,
-                                                    keyboardType: TextInputType
-                                                        .emailAddress,
-                                                    cursorColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .primaryText,
-                                                    validator: _model
-                                                        .eMailTextControllerValidator
-                                                        .asValidator(context),
-                                                  ),
-                                                ),
-                                                if (valueOrDefault<bool>(
-                                                  (_model.emailborder ==
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .error) &&
-                                                      (_model.eMailTextController
-                                                              .text !=
-                                                          ''),
-                                                  false,
-                                                ))
-                                                  Text(
-                                                    'Endereço de e-mail inválido',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .labelSmall
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .geologica(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelSmall
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelSmall
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .error,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .labelSmall
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .labelSmall
-                                                                  .fontStyle,
-                                                        ),
-                                                  ),
-                                              ].divide(SizedBox(
-                                                  height:
-                                                      FFAppConstants.halfGap)),
-                                            ),
-                                          ].divide(SizedBox(
-                                              height: FFAppConstants.Gap)),
+                                                ].divide(SizedBox(
+                                                    height: FFAppConstants
+                                                        .halfGap)),
+                                              ),
+                                            ].divide(SizedBox(
+                                                height: FFAppConstants.Gap)),
+                                          ),
                                         ),
                                         Column(
                                           mainAxisSize: MainAxisSize.max,
@@ -1650,19 +1740,12 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                       .dropCodigoPaisValueController ??=
                                                   FormFieldController<int>(
                                                 _model.dropCodigoPaisValue ??=
-                                                    FFAppState().inputAreacodeIndex ==
-                                                            null
-                                                        ? 0
-                                                        : FFAppState()
-                                                            .inputAreacodeIndex,
+                                                    FFAppState()
+                                                        .inputAreacodeIndex,
                                               ),
                                               options: List<int>.from(
                                                   containerCodigosdeareaRowList
-                                                      .map((e) =>
-                                                          valueOrDefault<int>(
-                                                            e.index,
-                                                            0,
-                                                          ))
+                                                      .map((e) => e.index)
                                                       .toList()),
                                               optionLabels:
                                                   containerCodigosdeareaRowList
@@ -1672,6 +1755,10 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                               onChanged: (val) async {
                                                 safeSetState(() => _model
                                                     .dropCodigoPaisValue = val);
+                                                logFirebaseEvent(
+                                                    'CADASTRO1_dropCodigoPais_ON_FORM_WIDGET_');
+                                                logFirebaseEvent(
+                                                    'dropCodigoPais_set_form_field');
                                                 safeSetState(() {
                                                   _model
                                                       .campoTelefoneTextController
@@ -1833,12 +1920,16 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                       Duration(
                                                           milliseconds: 100),
                                                       () async {
+                                                        logFirebaseEvent(
+                                                            'CADASTRO1_campoTelefone_ON_TEXTFIELD_CHA');
                                                         if (_model.campoTelefoneTextController
                                                                     .text !=
                                                                 null &&
                                                             _model.campoTelefoneTextController
                                                                     .text !=
                                                                 '') {
+                                                          logFirebaseEvent(
+                                                              'campoTelefone_set_form_field');
                                                           safeSetState(() {
                                                             _model.campoTelefoneTextController?.text = functions.aplicarmascara(
                                                                 _model
@@ -1850,6 +1941,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                             .dropCodigoPaisValue!)!
                                                                     .formato!)!;
                                                           });
+                                                          logFirebaseEvent(
+                                                              'campoTelefone_update_page_state');
                                                           _model.phoneborder =
                                                               FlutterFlowTheme.of(
                                                                       context)
@@ -1857,6 +1950,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                           safeSetState(() {});
                                                           return;
                                                         } else {
+                                                          logFirebaseEvent(
+                                                              'campoTelefone_update_page_state');
                                                           _model.phoneborder =
                                                               FlutterFlowTheme.of(
                                                                       context)
@@ -1868,6 +1963,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                     ),
                                                     onFieldSubmitted:
                                                         (_) async {
+                                                      logFirebaseEvent(
+                                                          'CADASTRO1_campoTelefone_ON_TEXTFIELD_SUB');
                                                       if ((String var1,
                                                               String var2) {
                                                         return var1.length !=
@@ -1882,6 +1979,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                       .dropCodigoPaisValue!)!
                                                               .caracteresMax!
                                                               .toString())) {
+                                                        logFirebaseEvent(
+                                                            'campoTelefone_update_page_state');
                                                         _model.phoneborder =
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -2024,12 +2123,16 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                 _model
                                                                     .campoTelefoneTextController
                                                                     ?.clear();
+                                                                logFirebaseEvent(
+                                                                    'CADASTRO1_campoTelefone_ON_TEXTFIELD_CHA');
                                                                 if (_model.campoTelefoneTextController
                                                                             .text !=
                                                                         null &&
                                                                     _model.campoTelefoneTextController
                                                                             .text !=
                                                                         '') {
+                                                                  logFirebaseEvent(
+                                                                      'campoTelefone_set_form_field');
                                                                   safeSetState(
                                                                       () {
                                                                     _model.campoTelefoneTextController?.text = functions.aplicarmascara(
@@ -2040,6 +2143,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                             .elementAtOrNull(_model.dropCodigoPaisValue!)!
                                                                             .formato!)!;
                                                                   });
+                                                                  logFirebaseEvent(
+                                                                      'campoTelefone_update_page_state');
                                                                   _model.phoneborder =
                                                                       FlutterFlowTheme.of(
                                                                               context)
@@ -2048,6 +2153,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                       () {});
                                                                   return;
                                                                 } else {
+                                                                  logFirebaseEvent(
+                                                                      'campoTelefone_update_page_state');
                                                                   _model.phoneborder =
                                                                       FlutterFlowTheme.of(
                                                                               context)
@@ -2211,8 +2318,7 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                           ].divide(SizedBox(
                                               height: FFAppConstants.halfGap)),
                                         ),
-                                      ].divide(SizedBox(
-                                          height: FFAppConstants.doubleGap)),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -2266,7 +2372,11 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                             .error)))
                                             ? null
                                             : () async {
+                                                logFirebaseEvent(
+                                                    'CADASTRO1_PAGE_CONTINUAR_BTN_ON_TAP');
                                                 var _shouldSetState = false;
+                                                logFirebaseEvent(
+                                                    'Button_validate_form');
                                                 _model.validation = true;
                                                 if (_model.formKey
                                                             .currentState ==
@@ -2287,6 +2397,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                 _shouldSetState = true;
                                                 if (widget!.camefrom ==
                                                     'phone') {
+                                                  logFirebaseEvent(
+                                                      'Button_alert_dialog');
                                                   var confirmDialogResponse =
                                                       await showDialog<bool>(
                                                             context: context,
@@ -2326,6 +2438,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                     return;
                                                   }
 
+                                                  logFirebaseEvent(
+                                                      'Button_backend_call');
                                                   _model.emailInUse =
                                                       await GetemailaddressCall
                                                           .call(
@@ -2339,6 +2453,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                   if ((_model.emailInUse
                                                           ?.jsonBody ??
                                                       '')) {
+                                                    logFirebaseEvent(
+                                                        'Button_set_form_field');
                                                     safeSetState(() {
                                                       _model.eMailTextController
                                                               ?.text =
@@ -2362,6 +2478,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                         );
                                                       });
                                                     });
+                                                    logFirebaseEvent(
+                                                        'Button_show_snack_bar');
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(
@@ -2406,6 +2524,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                 .warning,
                                                       ),
                                                     );
+                                                    logFirebaseEvent(
+                                                        'Button_update_page_state');
                                                     _model.emailborder =
                                                         FlutterFlowTheme.of(
                                                                 context)
@@ -2415,6 +2535,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                       safeSetState(() {});
                                                     return;
                                                   } else {
+                                                    logFirebaseEvent(
+                                                        'Button_backend_call');
                                                     _model.sendVerifyEmail =
                                                         await SendVerifyEmailCall
                                                             .call(
@@ -2428,6 +2550,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                     if ((_model.sendVerifyEmail
                                                             ?.succeeded ??
                                                         true)) {
+                                                      logFirebaseEvent(
+                                                          'Button_bottom_sheet');
                                                       await showModalBottomSheet(
                                                         isScrollControlled:
                                                             true,
@@ -2467,6 +2591,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                       _shouldSetState = true;
                                                       if (_model
                                                           .emailchanged!) {
+                                                        logFirebaseEvent(
+                                                            'Button_update_app_state');
                                                         FFAppState()
                                                                 .inputEmail =
                                                             _model
@@ -2475,6 +2601,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                 .toLowerCase();
                                                         safeSetState(() {});
                                                       } else {
+                                                        logFirebaseEvent(
+                                                            'Button_set_form_field');
                                                         safeSetState(() {
                                                           _model.eMailTextController
                                                                   ?.text =
@@ -2504,6 +2632,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                         return;
                                                       }
                                                     } else {
+                                                      logFirebaseEvent(
+                                                          'Button_set_form_field');
                                                       safeSetState(() {
                                                         _model.eMailTextController
                                                                 ?.text =
@@ -2527,11 +2657,15 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                           );
                                                         });
                                                       });
+                                                      logFirebaseEvent(
+                                                          'Button_update_page_state');
                                                       _model.emailborder =
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .error;
                                                       safeSetState(() {});
+                                                      logFirebaseEvent(
+                                                          'Button_show_snack_bar');
                                                       ScaffoldMessenger.of(
                                                               context)
                                                           .showSnackBar(
@@ -2588,6 +2722,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                         'google') ||
                                                     (widget!.camefrom ==
                                                         'apple')) {
+                                                  logFirebaseEvent(
+                                                      'Button_alert_dialog');
                                                   var confirmDialogResponse =
                                                       await showDialog<bool>(
                                                             context: context,
@@ -2626,6 +2762,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                     return;
                                                   }
 
+                                                  logFirebaseEvent(
+                                                      'Button_backend_call');
                                                   _model.phoneInUse =
                                                       await GetphonenumberCall
                                                           .call(
@@ -2641,6 +2779,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                   if ((_model.phoneInUse
                                                           ?.jsonBody ??
                                                       '')) {
+                                                    logFirebaseEvent(
+                                                        'Button_set_form_field');
                                                     safeSetState(() {
                                                       _model.campoTelefoneTextController
                                                               ?.text =
@@ -2664,12 +2804,14 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                         );
                                                       });
                                                     });
+                                                    logFirebaseEvent(
+                                                        'Button_show_snack_bar');
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(
                                                       SnackBar(
                                                         content: Text(
-                                                          'Número de telefone já cadastrado. Utilize outro ou toque em \"Já tenho uma conta\".',
+                                                          'Número de telefone já cadastrado.',
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .bodyMedium
@@ -2708,6 +2850,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                 .warning,
                                                       ),
                                                     );
+                                                    logFirebaseEvent(
+                                                        'Button_update_page_state');
                                                     _model.phoneborder =
                                                         FlutterFlowTheme.of(
                                                                 context)
@@ -2717,6 +2861,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                       safeSetState(() {});
                                                     return;
                                                   } else {
+                                                    logFirebaseEvent(
+                                                        'Button_backend_call');
                                                     _model.sendSMSverify =
                                                         await SendSMSverifyCall
                                                             .call(
@@ -2731,6 +2877,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                     if ((_model.sendSMSverify
                                                             ?.succeeded ??
                                                         true)) {
+                                                      logFirebaseEvent(
+                                                          'Button_bottom_sheet');
                                                       await showModalBottomSheet(
                                                         isScrollControlled:
                                                             true,
@@ -2777,6 +2925,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
 
                                                       _shouldSetState = true;
                                                       if (_model.checkphone!) {
+                                                        logFirebaseEvent(
+                                                            'Button_update_app_state');
                                                         FFAppState()
                                                                 .inputAreacode =
                                                             containerCodigosdeareaRowList
@@ -2795,6 +2945,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                 .text;
                                                         safeSetState(() {});
                                                       } else {
+                                                        logFirebaseEvent(
+                                                            'Button_set_form_field');
                                                         safeSetState(() {
                                                           _model.campoTelefoneTextController
                                                                   ?.text =
@@ -2824,6 +2976,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                         return;
                                                       }
                                                     } else {
+                                                      logFirebaseEvent(
+                                                          'Button_set_form_field');
                                                       safeSetState(() {
                                                         _model.campoTelefoneTextController
                                                                 ?.text =
@@ -2847,11 +3001,15 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                           );
                                                         });
                                                       });
+                                                      logFirebaseEvent(
+                                                          'Button_update_page_state');
                                                       _model.phoneborder =
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .error;
                                                       safeSetState(() {});
+                                                      logFirebaseEvent(
+                                                          'Button_show_snack_bar');
                                                       ScaffoldMessenger.of(
                                                               context)
                                                           .showSnackBar(
@@ -2908,6 +3066,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                         _model
                                                             .campoTelefoneTextController
                                                             .text)) {
+                                                  logFirebaseEvent(
+                                                      'Button_show_snack_bar');
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(
                                                     SnackBar(
@@ -2952,11 +3112,15 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                               .warning,
                                                     ),
                                                   );
+                                                  logFirebaseEvent(
+                                                      'Button_update_page_state');
                                                   _model.phoneborder =
                                                       FlutterFlowTheme.of(
                                                               context)
                                                           .error;
                                                   safeSetState(() {});
+                                                  logFirebaseEvent(
+                                                      'Button_set_form_field');
                                                   safeSetState(() {
                                                     _model.eMailTextController
                                                             ?.text =
@@ -2988,6 +3152,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                         _model
                                                             .eMailTextController
                                                             .text)) {
+                                                  logFirebaseEvent(
+                                                      'Button_show_snack_bar');
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(
                                                     SnackBar(
@@ -3032,11 +3198,15 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                               .warning,
                                                     ),
                                                   );
+                                                  logFirebaseEvent(
+                                                      'Button_update_page_state');
                                                   _model.emailborder =
                                                       FlutterFlowTheme.of(
                                                               context)
                                                           .error;
                                                   safeSetState(() {});
+                                                  logFirebaseEvent(
+                                                      'Button_set_form_field');
                                                   safeSetState(() {
                                                     _model.campoTelefoneTextController
                                                             ?.text =
@@ -3064,6 +3234,8 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                     safeSetState(() {});
                                                   return;
                                                 } else {
+                                                  logFirebaseEvent(
+                                                      'Button_show_snack_bar');
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(
                                                     SnackBar(
@@ -3112,6 +3284,9 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                     safeSetState(() {});
                                                   return;
                                                 }
+
+                                                logFirebaseEvent(
+                                                    'Button_navigate_to');
 
                                                 context.pushNamed(
                                                   Cadastro2Widget.routeName,

@@ -62,6 +62,8 @@ class LoginPhoneModel extends FlutterFlowModel<LoginPhoneWidget> {
   List<UserProfileRow>? queryUserGoogle;
   // Stores action output result for [Custom Action - getGoogleNames] action in Button widget.
   List<String>? googleFullName;
+  // Stores action output result for [Custom Action - loginApple] action in Button widget.
+  List<String>? appleData;
   // Stores action output result for [Backend Call - Query Rows] action in Button widget.
   List<UserProfileRow>? queryAppleUser;
 

@@ -8,7 +8,7 @@ export '/pages/login/login_magic_link/login_magic_link_widget.dart'
     show LoginMagicLinkWidget;
 export '/pages/cadastro/cadastro2/cadastro2_widget.dart' show Cadastro2Widget;
 export '/pages/other/perfil/perfil_widget.dart' show PerfilWidget;
-export '/pages/nav/escala/escala_widget.dart' show EscalaWidget;
+export '/pages/nav/plantoes/plantoes_widget.dart' show PlantoesWidget;
 export '/pages/login/login_email/login_email_widget.dart' show LoginEmailWidget;
 export '/pages/other/termos/termos_widget.dart' show TermosWidget;
 export '/pages/cadastro/cadastro1/cadastro1_widget.dart' show Cadastro1Widget;
@@ -17,3 +17,6 @@ export '/pages/login/login_password/login_password_widget.dart'
 export '/pages/cadastro/cadastro3/cadastro3_widget.dart' show Cadastro3Widget;
 export '/pages/other/privacidade/privacidade_widget.dart'
     show PrivacidadeWidget;
+export '/pages/other/notificacoes/notificacoes_widget.dart'
+    show NotificacoesWidget;
+export '/pages/nav/escalas/escalas_widget.dart' show EscalasWidget;

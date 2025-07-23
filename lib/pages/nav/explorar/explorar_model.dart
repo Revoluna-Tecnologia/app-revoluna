@@ -1,15 +1,20 @@
 import '/backend/supabase/supabase.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/components/header/header_widget.dart';
-import '/components/vagas/card_vagas/card_vagas_widget.dart';
-import '/components/vagas/vaga_bottom_sheet/vaga_bottom_sheet_widget.dart';
+import '/components/loading/header_loading/header_loading_widget.dart';
+import '/components/loading/lista_explorar_loading/lista_explorar_loading_widget.dart';
+import '/components/loading/pages/explora_loading/explora_loading_widget.dart';
+import '/components/vagas/card_vagas_slim/card_vagas_slim_widget.dart';
+import '/components/vagas/empty_list/empty_list_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/pages/other/vaga_bottom_sheet/vaga_bottom_sheet_widget.dart';
 import 'dart:ui';
-import 'dart:async';
+import '/actions/actions.dart' as action_blocks;
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'explorar_widget.dart' show ExplorarWidget;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,22 +27,7 @@ class ExplorarModel extends FlutterFlowModel<ExplorarWidget> {
 
   bool isBottomSheetLoading = false;
 
-  List<String> shiftFilter = [
-    'Diurno',
-    'Noturno',
-    'Cinderela',
-    'Meio período (manhã)',
-    'Meio período (tarde)'
-  ];
-  void addToShiftFilter(String item) => shiftFilter.add(item);
-  void removeFromShiftFilter(String item) => shiftFilter.remove(item);
-  void removeAtIndexFromShiftFilter(int index) => shiftFilter.removeAt(index);
-  void insertAtIndexInShiftFilter(int index, String item) =>
-      shiftFilter.insert(index, item);
-  void updateShiftFilterAtIndex(int index, Function(String) updateFn) =>
-      shiftFilter[index] = updateFn(shiftFilter[index]);
-
-  bool hideTable = true;
+  bool hideTable = false;
 
   List<String> typeFilter = ['Fixo', 'Cobertura', 'Ambulatorial'];
   void addToTypeFilter(String item) => typeFilter.add(item);
@@ -48,66 +38,53 @@ class ExplorarModel extends FlutterFlowModel<ExplorarWidget> {
   void updateTypeFilterAtIndex(int index, Function(String) updateFn) =>
       typeFilter[index] = updateFn(typeFilter[index]);
 
+  String sortBy = 'vagas_createdate';
+
+  bool ascendingOrder = false;
+
+  List<VwVagasCandidaturasRow> variableQuery = [];
+  void addToVariableQuery(VwVagasCandidaturasRow item) =>
+      variableQuery.add(item);
+  void removeFromVariableQuery(VwVagasCandidaturasRow item) =>
+      variableQuery.remove(item);
+  void removeAtIndexFromVariableQuery(int index) =>
+      variableQuery.removeAt(index);
+  void insertAtIndexInVariableQuery(int index, VwVagasCandidaturasRow item) =>
+      variableQuery.insert(index, item);
+  void updateVariableQueryAtIndex(
+          int index, Function(VwVagasCandidaturasRow) updateFn) =>
+      variableQuery[index] = updateFn(variableQuery[index]);
+
+  String? vagaId;
+
   ///  State fields for stateful widgets in this page.
 
   // Model for Header component.
   late HeaderModel headerModel;
-  Completer<List<VagasCompletoRow>>? requestCompleter1;
   // State field(s) for DropDown widget.
-  int? dropDownValue;
-  FormFieldController<int>? dropDownValueController;
-  Completer<List<EspecialidadesRow>>? requestCompleter2;
-  // Models for cardVagas dynamic component.
-  late FlutterFlowDynamicModels<CardVagasModel> cardVagasModels1;
-  // Models for cardVagas dynamic component.
-  late FlutterFlowDynamicModels<CardVagasModel> cardVagasModels2;
+  List<String>? dropDownValue;
+  FormFieldController<List<String>>? dropDownValueController;
+  Stream<List<CleanHospitalRow>>? containerSupabaseStream;
+  // Models for cardVagasSlim dynamic component.
+  late FlutterFlowDynamicModels<CardVagasSlimModel> cardVagasSlimModels1;
+  // Models for cardVagasSlim dynamic component.
+  late FlutterFlowDynamicModels<CardVagasSlimModel> cardVagasSlimModels2;
   // Model for drawerMenu component.
   late DrawerMenuModel drawerMenuModel;
 
   @override
   void initState(BuildContext context) {
     headerModel = createModel(context, () => HeaderModel());
-    cardVagasModels1 = FlutterFlowDynamicModels(() => CardVagasModel());
-    cardVagasModels2 = FlutterFlowDynamicModels(() => CardVagasModel());
+    cardVagasSlimModels1 = FlutterFlowDynamicModels(() => CardVagasSlimModel());
+    cardVagasSlimModels2 = FlutterFlowDynamicModels(() => CardVagasSlimModel());
     drawerMenuModel = createModel(context, () => DrawerMenuModel());
   }
 
   @override
   void dispose() {
     headerModel.dispose();
-    cardVagasModels1.dispose();
-    cardVagasModels2.dispose();
+    cardVagasSlimModels1.dispose();
+    cardVagasSlimModels2.dispose();
     drawerMenuModel.dispose();
-  }
-
-  /// Additional helper methods.
-  Future waitForRequestCompleted1({
-    double minWait = 0,
-    double maxWait = double.infinity,
-  }) async {
-    final stopwatch = Stopwatch()..start();
-    while (true) {
-      await Future.delayed(Duration(milliseconds: 50));
-      final timeElapsed = stopwatch.elapsedMilliseconds;
-      final requestComplete = requestCompleter1?.isCompleted ?? false;
-      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
-        break;
-      }
-    }
-  }
-
-  Future waitForRequestCompleted2({
-    double minWait = 0,
-    double maxWait = double.infinity,
-  }) async {
-    final stopwatch = Stopwatch()..start();
-    while (true) {
-      await Future.delayed(Duration(milliseconds: 50));
-      final timeElapsed = stopwatch.elapsedMilliseconds;
-      final requestComplete = requestCompleter2?.isCompleted ?? false;
-      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
-        break;
-      }
-    }
   }
 }

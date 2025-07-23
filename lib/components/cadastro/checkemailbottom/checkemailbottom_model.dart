@@ -1,4 +1,3 @@
-import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
@@ -18,8 +17,6 @@ class CheckemailbottomModel extends FlutterFlowModel<CheckemailbottomWidget> {
   ///  Local state fields for this component.
 
   Color? pincodecolor = Color(4293256677);
-
-  double? refreshAux;
 
   bool emailVerified = false;
 

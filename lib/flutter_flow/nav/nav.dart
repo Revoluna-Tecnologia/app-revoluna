@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import '/backend/backend.dart';
 
 import '/backend/supabase/supabase.dart';
 
@@ -96,27 +97,25 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-          name: HomePageWidget.routeName,
-          path: HomePageWidget.routePath,
-          requireAuth: true,
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'HomePage')
-              : NavBarPage(
-                  initialPage: 'HomePage',
-                  page: HomePageWidget(),
-                ),
-        ),
+            name: HomePageWidget.routeName,
+            path: HomePageWidget.routePath,
+            requireAuth: true,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'HomePage')
+                : NavBarPage(
+                    initialPage: 'HomePage',
+                    page: HomePageWidget(),
+                  )),
         FFRoute(
-          name: ExplorarWidget.routeName,
-          path: ExplorarWidget.routePath,
-          requireAuth: true,
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'Explorar')
-              : NavBarPage(
-                  initialPage: 'Explorar',
-                  page: ExplorarWidget(),
-                ),
-        ),
+            name: ExplorarWidget.routeName,
+            path: ExplorarWidget.routePath,
+            requireAuth: true,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'Explorar')
+                : NavBarPage(
+                    initialPage: 'Explorar',
+                    page: ExplorarWidget(),
+                  )),
         FFRoute(
           name: LoginPhoneWidget.routeName,
           path: LoginPhoneWidget.routePath,
@@ -191,21 +190,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-          name: EscalaWidget.routeName,
-          path: EscalaWidget.routePath,
-          requireAuth: true,
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'Escala')
-              : NavBarPage(
-                  initialPage: 'Escala',
-                  page: EscalaWidget(
-                    fromhome: params.getParam(
-                      'fromhome',
-                      ParamType.bool,
+            name: PlantoesWidget.routeName,
+            path: PlantoesWidget.routePath,
+            requireAuth: true,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'Plantoes')
+                : NavBarPage(
+                    initialPage: 'Plantoes',
+                    page: PlantoesWidget(
+                      fromhome: params.getParam(
+                        'fromhome',
+                        ParamType.bool,
+                      ),
                     ),
-                  ),
-                ),
-        ),
+                  )),
         FFRoute(
           name: LoginEmailWidget.routeName,
           path: LoginEmailWidget.routePath,
@@ -333,6 +331,30 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ParamType.String,
             ),
           ),
+        ),
+        FFRoute(
+          name: NotificacoesWidget.routeName,
+          path: NotificacoesWidget.routePath,
+          builder: (context, params) => NotificacoesWidget(
+            notificationsQuery: params.getParam<NotificationsRow>(
+              'notificationsQuery',
+              ParamType.SupabaseRow,
+              isList: true,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: EscalasWidget.routeName,
+          path: EscalasWidget.routePath,
+          requireAuth: true,
+          builder: (context, params) => params.isEmpty
+              ? NavBarPage(initialPage: 'Escalas')
+              : EscalasWidget(
+                  fromhome: params.getParam(
+                    'fromhome',
+                    ParamType.bool,
+                  ),
+                ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -451,6 +473,7 @@ class FFParameters {
     String paramName,
     ParamType type, {
     bool isList = false,
+    List<String>? collectionNamePath,
   }) {
     if (futureParamValues.containsKey(paramName)) {
       return futureParamValues[paramName];
@@ -468,6 +491,7 @@ class FFParameters {
       param,
       type,
       isList,
+      collectionNamePath: collectionNamePath,
     );
   }
 }

@@ -57,8 +57,10 @@ class LoginEmailModel extends FlutterFlowModel<LoginEmailWidget> {
   List<UserProfileRow>? queryUserGoogle;
   // Stores action output result for [Custom Action - getGoogleNames] action in Button widget.
   List<String>? googleFullName;
+  // Stores action output result for [Custom Action - loginApple] action in Button widget.
+  List<String>? appleData;
   // Stores action output result for [Backend Call - Query Rows] action in Button widget.
-  List<UserProfileRow>? queryUserApple;
+  List<UserProfileRow>? queryAppleUser;
 
   @override
   void initState(BuildContext context) {
@@ -69,45 +71,5 @@ class LoginEmailModel extends FlutterFlowModel<LoginEmailWidget> {
   void dispose() {
     eMailFocusNode?.dispose();
     eMailTextController?.dispose();
-  }
-
-  /// Action blocks.
-  Future submit(BuildContext context) async {
-    ApiCallResponse? apiresult;
-    bool? emailcheckold;
-    ApiCallResponse? idfromemail;
-    ApiCallResponse? deleteresult;
-
-    apiresult = await GetemailaddressCall.call(
-      emaildigitado: eMailTextController.text,
-    );
-
-    FFAppState().wasUser = valueOrDefault<bool>(
-      (apiresult?.jsonBody ?? ''),
-      false,
-    );
-    emailcheckold = await actions.otpEmailMagic(
-      eMailTextController.text,
-    );
-    if (emailcheckold!) {
-      FFAppState().userID = currentUserUid;
-      FFAppState().inputEmail = eMailTextController.text;
-      FFAppState().update(() {});
-
-      context.pushNamed(LoginMagicLinkWidget.routeName);
-
-      return;
-    } else {
-      emailborder = FlutterFlowTheme.of(context).error;
-      idfromemail = await GetIdfromEmailCall.call(
-        inputEmail: eMailTextController.text,
-      );
-
-      deleteresult = await DeleteUserCall.call(
-        userId: (idfromemail?.jsonBody ?? '').toString(),
-      );
-
-      return;
-    }
   }
 }

@@ -61,15 +61,19 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
     super.initState();
     _model = createModel(context, () => Cadastro2Model());
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Cadastro2'});
     _model.birthDateTextController ??= TextEditingController(text: '');
     _model.birthDateFocusNode ??= FocusNode();
     _model.birthDateFocusNode!.addListener(
       () async {
+        logFirebaseEvent('CADASTRO2_PAGE_BirthDate_ON_FOCUS_CHANGE');
         if (_model.birthDateTextController.text != '') {
+          logFirebaseEvent('BirthDate_update_page_state');
           _model.birthdateborder = FlutterFlowTheme.of(context).primaryText;
           safeSetState(() {});
           return;
         } else {
+          logFirebaseEvent('BirthDate_update_page_state');
           _model.birthdateborder = FlutterFlowTheme.of(context).accent2;
           safeSetState(() {});
           return;
@@ -79,12 +83,10 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
     _model.cpfTextController ??= TextEditingController(text: '');
     _model.cpfFocusNode ??= FocusNode();
     _model.cpfFocusNode!.addListener(() => safeSetState(() {}));
+    _model.cpfMask = MaskTextInputFormatter(mask: '###.###.###-##');
     _model.crmTextController ??= TextEditingController(text: '');
     _model.crmFocusNode ??= FocusNode();
     _model.crmFocusNode!.addListener(() => safeSetState(() {}));
-    _model.rqeTextController ??= TextEditingController(text: '');
-    _model.rqeFocusNode ??= FocusNode();
-    _model.rqeFocusNode!.addListener(() => safeSetState(() {}));
   }
 
   @override
@@ -115,6 +117,8 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                 child: BackTopBarWidget(
                   logo: false,
                   backButton: () async {
+                    logFirebaseEvent('CADASTRO2_Container_v2h7p89w_CALLBACK');
+                    logFirebaseEvent('BackTopBar_navigate_back');
                     context.safePop();
                   },
                 ),
@@ -475,10 +479,14 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                   milliseconds:
                                                                       0),
                                                               () async {
+                                                                logFirebaseEvent(
+                                                                    'CADASTRO2_BirthDate_ON_TEXTFIELD_CHANGE');
                                                                 if (_model
                                                                         .birthDateTextController
                                                                         .text !=
                                                                     '') {
+                                                                  logFirebaseEvent(
+                                                                      'BirthDate_update_page_state');
                                                                   _model.birthdateborder =
                                                                       FlutterFlowTheme.of(
                                                                               context)
@@ -487,6 +495,8 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                       () {});
                                                                   return;
                                                                 } else {
+                                                                  logFirebaseEvent(
+                                                                      'BirthDate_update_page_state');
                                                                   _model.birthdateborder =
                                                                       FlutterFlowTheme.of(
                                                                               context)
@@ -499,10 +509,14 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                             ),
                                                             onFieldSubmitted:
                                                                 (_) async {
+                                                              logFirebaseEvent(
+                                                                  'CADASTRO2_BirthDate_ON_TEXTFIELD_SUBMIT');
                                                               if (_model
                                                                       .birthDateTextController
                                                                       .text !=
                                                                   '') {
+                                                                logFirebaseEvent(
+                                                                    'BirthDate_update_page_state');
                                                                 _model.birthdateborder =
                                                                     FlutterFlowTheme.of(
                                                                             context)
@@ -511,6 +525,8 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                     () {});
                                                                 return;
                                                               } else {
+                                                                logFirebaseEvent(
+                                                                    'BirthDate_update_page_state');
                                                                 _model.birthdateborder =
                                                                     FlutterFlowTheme.of(
                                                                             context)
@@ -651,14 +667,20 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                         _model
                                                                             .birthDateTextController
                                                                             ?.clear();
+                                                                        logFirebaseEvent(
+                                                                            'CADASTRO2_BirthDate_ON_TEXTFIELD_CHANGE');
                                                                         if (_model.birthDateTextController.text !=
                                                                             '') {
+                                                                          logFirebaseEvent(
+                                                                              'BirthDate_update_page_state');
                                                                           _model.birthdateborder =
                                                                               FlutterFlowTheme.of(context).primaryText;
                                                                           safeSetState(
                                                                               () {});
                                                                           return;
                                                                         } else {
+                                                                          logFirebaseEvent(
+                                                                              'BirthDate_update_page_state');
                                                                           _model.birthdateborder =
                                                                               FlutterFlowTheme.of(context).accent2;
                                                                           safeSetState(
@@ -730,6 +752,10 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                           highlightColor: Colors
                                                               .transparent,
                                                           onTap: () async {
+                                                            logFirebaseEvent(
+                                                                'CADASTRO2_PAGE_Container_47412fr2_ON_TAP');
+                                                            logFirebaseEvent(
+                                                                'Container_date_time_picker');
                                                             await showModalBottomSheet<
                                                                     bool>(
                                                                 context:
@@ -798,6 +824,8 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                     ),
                                                                   );
                                                                 });
+                                                            logFirebaseEvent(
+                                                                'Container_set_form_field');
                                                             safeSetState(() {
                                                               _model.birthDateTextController
                                                                       ?.text =
@@ -827,6 +855,8 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                 );
                                                               });
                                                             });
+                                                            logFirebaseEvent(
+                                                                'Container_update_page_state');
                                                             _model.birthdateborder =
                                                                 FlutterFlowTheme.of(
                                                                         context)
@@ -985,10 +1015,14 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                   milliseconds:
                                                                       0),
                                                               () async {
+                                                                logFirebaseEvent(
+                                                                    'CADASTRO2_PAGE_CPF_ON_TEXTFIELD_CHANGE');
                                                                 if (_model
                                                                         .cpfTextController
                                                                         .text !=
                                                                     '') {
+                                                                  logFirebaseEvent(
+                                                                      'CPF_update_page_state');
                                                                   _model.cpfborder =
                                                                       FlutterFlowTheme.of(
                                                                               context)
@@ -997,6 +1031,8 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                       () {});
                                                                   return;
                                                                 } else {
+                                                                  logFirebaseEvent(
+                                                                      'CPF_update_page_state');
                                                                   _model.cpfborder =
                                                                       FlutterFlowTheme.of(
                                                                               context)
@@ -1129,14 +1165,20 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                         _model
                                                                             .cpfTextController
                                                                             ?.clear();
+                                                                        logFirebaseEvent(
+                                                                            'CADASTRO2_PAGE_CPF_ON_TEXTFIELD_CHANGE');
                                                                         if (_model.cpfTextController.text !=
                                                                             '') {
+                                                                          logFirebaseEvent(
+                                                                              'CPF_update_page_state');
                                                                           _model.cpfborder =
                                                                               FlutterFlowTheme.of(context).primaryText;
                                                                           safeSetState(
                                                                               () {});
                                                                           return;
                                                                         } else {
+                                                                          logFirebaseEvent(
+                                                                              'CPF_update_page_state');
                                                                           _model.cpfborder =
                                                                               FlutterFlowTheme.of(context).accent2;
                                                                           safeSetState(
@@ -1382,6 +1424,10 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                         safeSetState(() => _model
                                                                 .dropdownEstadosValue =
                                                             val);
+                                                        logFirebaseEvent(
+                                                            'CADASTRO2_dropdownEstados_ON_FORM_WIDGET');
+                                                        logFirebaseEvent(
+                                                            'dropdownEstados_update_page_state');
                                                         _model.ufborder =
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -1571,10 +1617,14 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                   milliseconds:
                                                                       0),
                                                               () async {
+                                                                logFirebaseEvent(
+                                                                    'CADASTRO2_PAGE_CRM_ON_TEXTFIELD_CHANGE');
                                                                 if (_model
                                                                         .crmTextController
                                                                         .text !=
                                                                     '') {
+                                                                  logFirebaseEvent(
+                                                                      'CRM_update_page_state');
                                                                   _model.crmborder =
                                                                       FlutterFlowTheme.of(
                                                                               context)
@@ -1582,6 +1632,8 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                   safeSetState(
                                                                       () {});
                                                                 } else {
+                                                                  logFirebaseEvent(
+                                                                      'CRM_update_page_state');
                                                                   _model.crmborder =
                                                                       FlutterFlowTheme.of(
                                                                               context)
@@ -1688,13 +1740,19 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                         _model
                                                                             .crmTextController
                                                                             ?.clear();
+                                                                        logFirebaseEvent(
+                                                                            'CADASTRO2_PAGE_CRM_ON_TEXTFIELD_CHANGE');
                                                                         if (_model.crmTextController.text !=
                                                                             '') {
+                                                                          logFirebaseEvent(
+                                                                              'CRM_update_page_state');
                                                                           _model.crmborder =
                                                                               FlutterFlowTheme.of(context).primaryText;
                                                                           safeSetState(
                                                                               () {});
                                                                         } else {
+                                                                          logFirebaseEvent(
+                                                                              'CRM_update_page_state');
                                                                           _model.crmborder =
                                                                               FlutterFlowTheme.of(context).accent2;
                                                                           safeSetState(
@@ -1911,6 +1969,10 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                         safeSetState(() => _model
                                                                 .dropdownEspecialidadesValue =
                                                             val);
+                                                        logFirebaseEvent(
+                                                            'CADASTRO2_dropdownEspecialidades_ON_FORM');
+                                                        logFirebaseEvent(
+                                                            'dropdownEspecialidades_update_page_state');
                                                         _model.specialtyborder =
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -2081,368 +2143,42 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                       height:
                                                           FFAppConstants.Gap)),
                                                 ),
-                                                Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    RichText(
-                                                      textScaler:
-                                                          MediaQuery.of(context)
-                                                              .textScaler,
-                                                      text: TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            text: 'RQE: ',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .titleSmall
-                                                                .override(
-                                                                  font: GoogleFonts
-                                                                      .geologica(
-                                                                    fontWeight: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .titleSmall
-                                                                        .fontWeight,
-                                                                    fontStyle: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .titleSmall
-                                                                        .fontStyle,
-                                                                  ),
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primaryText,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .fontWeight,
-                                                                  fontStyle: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .fontStyle,
-                                                                ),
-                                                          )
-                                                        ],
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleSmall
-                                                                .override(
-                                                                  font: GoogleFonts
-                                                                      .geologica(
-                                                                    fontWeight: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .titleSmall
-                                                                        .fontWeight,
-                                                                    fontStyle: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .titleSmall
-                                                                        .fontStyle,
-                                                                  ),
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primaryText,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .fontWeight,
-                                                                  fontStyle: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .fontStyle,
-                                                                ),
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                    ),
-                                                    Container(
-                                                      width: double.infinity,
-                                                      child: TextFormField(
-                                                        controller: _model
-                                                            .rqeTextController,
-                                                        focusNode:
-                                                            _model.rqeFocusNode,
-                                                        onChanged: (_) =>
-                                                            EasyDebounce
-                                                                .debounce(
-                                                          '_model.rqeTextController',
-                                                          Duration(
-                                                              milliseconds: 0),
-                                                          () async {
-                                                            if (_model
-                                                                    .rqeTextController
-                                                                    .text !=
-                                                                '') {
-                                                              _model.rqeborder =
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primaryText;
-                                                              safeSetState(
-                                                                  () {});
-                                                              return;
-                                                            } else {
-                                                              _model.rqeborder =
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .accent2;
-                                                              safeSetState(
-                                                                  () {});
-                                                              return;
-                                                            }
-                                                          },
-                                                        ),
-                                                        autofocus: false,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        obscureText: false,
-                                                        decoration:
-                                                            InputDecoration(
-                                                          isDense: true,
-                                                          alignLabelWithHint:
-                                                              false,
-                                                          hintText:
-                                                              'Somente números',
-                                                          errorStyle:
+                                                Text(
+                                                  '* Campos obrigatórios',
+                                                  textAlign: TextAlign.center,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .labelMedium
+                                                      .override(
+                                                        font: GoogleFonts
+                                                            .geologica(
+                                                          fontWeight:
                                                               FlutterFlowTheme.of(
                                                                       context)
-                                                                  .bodyMedium
-                                                                  .override(
-                                                                    font: GoogleFonts
-                                                                        .geologica(
-                                                                      fontWeight: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .fontWeight,
-                                                                      fontStyle: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .fontStyle,
-                                                                    ),
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .error,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                    fontWeight: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .fontWeight,
-                                                                    fontStyle: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .fontStyle,
-                                                                    lineHeight:
-                                                                        1.0,
-                                                                  ),
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide:
-                                                                BorderSide(
-                                                              color: _model
-                                                                  .rqeborder,
-                                                              width: 1.0,
-                                                            ),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                    valueOrDefault<
-                                                                        double>(
-                                                              FFAppConstants
-                                                                  .borderS,
-                                                              0.0,
-                                                            )),
-                                                          ),
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide:
-                                                                BorderSide(
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .primary,
-                                                              width: 1.0,
-                                                            ),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                    valueOrDefault<
-                                                                        double>(
-                                                              FFAppConstants
-                                                                  .borderS,
-                                                              0.0,
-                                                            )),
-                                                          ),
-                                                          errorBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide:
-                                                                BorderSide(
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .error,
-                                                              width: 1.0,
-                                                            ),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                    valueOrDefault<
-                                                                        double>(
-                                                              FFAppConstants
-                                                                  .borderS,
-                                                              0.0,
-                                                            )),
-                                                          ),
-                                                          focusedErrorBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide:
-                                                                BorderSide(
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .error,
-                                                              width: 1.0,
-                                                            ),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                    valueOrDefault<
-                                                                        double>(
-                                                              FFAppConstants
-                                                                  .borderS,
-                                                              0.0,
-                                                            )),
-                                                          ),
-                                                          filled: true,
-                                                          fillColor: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryBackground,
-                                                          suffixIcon: _model
-                                                                  .rqeTextController!
-                                                                  .text
-                                                                  .isNotEmpty
-                                                              ? InkWell(
-                                                                  onTap:
-                                                                      () async {
-                                                                    _model
-                                                                        .rqeTextController
-                                                                        ?.clear();
-                                                                    if (_model
-                                                                            .rqeTextController
-                                                                            .text !=
-                                                                        '') {
-                                                                      _model
-                                                                          .rqeborder = FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .primaryText;
-                                                                      safeSetState(
-                                                                          () {});
-                                                                      return;
-                                                                    } else {
-                                                                      _model
-                                                                          .rqeborder = FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .accent2;
-                                                                      safeSetState(
-                                                                          () {});
-                                                                      return;
-                                                                    }
-
-                                                                    safeSetState(
-                                                                        () {});
-                                                                  },
-                                                                  child: Icon(
-                                                                    Icons.clear,
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .accent3,
-                                                                    size: 14.0,
-                                                                  ),
-                                                                )
-                                                              : null,
+                                                                  .labelMedium
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelMedium
+                                                                  .fontStyle,
                                                         ),
-                                                        style:
+                                                        color:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  font: GoogleFonts
-                                                                      .geologica(
-                                                                    fontWeight: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .fontWeight,
-                                                                    fontStyle: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .fontStyle,
-                                                                  ),
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .fontWeight,
-                                                                  fontStyle: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .fontStyle,
-                                                                ),
-                                                        maxLines: null,
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        cursorColor:
+                                                                .tertiary,
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .primaryText,
-                                                        validator: _model
-                                                            .rqeTextControllerValidator
-                                                            .asValidator(
-                                                                context),
-                                                        inputFormatters: [
-                                                          FilteringTextInputFormatter
-                                                              .allow(RegExp(
-                                                                  '[0-9]'))
-                                                        ],
+                                                                .labelMedium
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelMedium
+                                                                .fontStyle,
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      '* Campos obrigatórios',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .labelMedium
-                                                              .override(
-                                                                font: GoogleFonts
-                                                                    .geologica(
-                                                                  fontWeight: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMedium
-                                                                      .fontWeight,
-                                                                  fontStyle: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMedium
-                                                                      .fontStyle,
-                                                                ),
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .tertiary,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                fontWeight: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelMedium
-                                                                    .fontWeight,
-                                                                fontStyle: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelMedium
-                                                                    .fontStyle,
-                                                              ),
-                                                    ),
-                                                  ].divide(SizedBox(
-                                                      height:
-                                                          FFAppConstants.Gap)),
                                                 ),
                                               ]
                                                   .divide(SizedBox(
@@ -2464,85 +2200,141 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                       0.0,
                                                     )),
                                             child: FFButtonWidget(
-                                              onPressed:
-                                                  (((_model.birthDateTextController.text == null || _model.birthDateTextController.text == '') ||
-                                                              (_model.cpfTextController.text == null ||
-                                                                  _model.cpfTextController.text ==
-                                                                      '') ||
-                                                              (_model.dropdownEstadosValue ==
-                                                                  null) ||
-                                                              (_model.crmTextController
-                                                                          .text ==
-                                                                      null ||
-                                                                  _model.crmTextController
-                                                                          .text ==
-                                                                      '')) ||
-                                                          ((_model
-                                                                      .birthdateborder ==
-                                                                  FlutterFlowTheme.of(context)
-                                                                      .error) &&
-                                                              (_model.cpfborder ==
-                                                                  FlutterFlowTheme.of(context)
-                                                                      .error) &&
-                                                              (_model.crmborder ==
-                                                                  FlutterFlowTheme.of(context)
-                                                                      .error) &&
-                                                              (_model.rqeborder ==
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .error)))
-                                                      ? null
-                                                      : () async {
-                                                          var _shouldSetState =
-                                                              false;
-                                                          if (_model.formKey
-                                                                      .currentState ==
-                                                                  null ||
-                                                              !_model.formKey
-                                                                  .currentState!
-                                                                  .validate()) {
+                                              onPressed: (((_model.birthDateTextController.text == null || _model.birthDateTextController.text == '') ||
+                                                          (_model.cpfTextController.text == null ||
+                                                              _model.cpfTextController.text ==
+                                                                  '') ||
+                                                          (_model.dropdownEstadosValue ==
+                                                              null) ||
+                                                          (_model.crmTextController.text == null ||
+                                                              _model.crmTextController.text ==
+                                                                  '')) ||
+                                                      ((_model.birthdateborder ==
+                                                              FlutterFlowTheme.of(context)
+                                                                  .error) &&
+                                                          (_model.cpfborder ==
+                                                              FlutterFlowTheme.of(context)
+                                                                  .error) &&
+                                                          (_model.crmborder ==
+                                                              FlutterFlowTheme.of(context)
+                                                                  .error) &&
+                                                          (_model.rqeborder ==
+                                                              FlutterFlowTheme.of(context)
+                                                                  .error)))
+                                                  ? null
+                                                  : () async {
+                                                      logFirebaseEvent(
+                                                          'CADASTRO2_PAGE_CONTINUAR_BTN_ON_TAP');
+                                                      var _shouldSetState =
+                                                          false;
+                                                      logFirebaseEvent(
+                                                          'Button_validate_form');
+                                                      if (_model.formKey
+                                                                  .currentState ==
+                                                              null ||
+                                                          !_model.formKey
+                                                              .currentState!
+                                                              .validate()) {
+                                                        return;
+                                                      }
+                                                      logFirebaseEvent(
+                                                          'Button_custom_action');
+                                                      _model.isCpfValid =
+                                                          await actions
+                                                              .isValidCPF(
+                                                        _model.cpfTextController
+                                                            .text,
+                                                      );
+                                                      _shouldSetState = true;
+                                                      if (_model.isCpfValid!) {
+                                                        logFirebaseEvent(
+                                                            'Button_backend_call');
+                                                        _model.getCpf =
+                                                            await GetcpfCall
+                                                                .call(
+                                                          cpf: _model
+                                                              .cpfTextController
+                                                              .text,
+                                                        );
+
+                                                        _shouldSetState = true;
+                                                        if ((_model.getCpf
+                                                                ?.succeeded ??
+                                                            true)) {
+                                                          if ((_model.getCpf
+                                                                  ?.jsonBody ??
+                                                              '')) {
+                                                            logFirebaseEvent(
+                                                                'Button_update_page_state');
+                                                            _model.cpfborder =
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .error;
+                                                            safeSetState(() {});
+                                                            logFirebaseEvent(
+                                                                'Button_show_snack_bar');
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                content: Text(
+                                                                  'Este CPF já está cadastrado por outro usuário.',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primaryText,
+                                                                  ),
+                                                                ),
+                                                                duration: Duration(
+                                                                    milliseconds:
+                                                                        4000),
+                                                                backgroundColor:
+                                                                    FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondary,
+                                                              ),
+                                                            );
+                                                            if (_shouldSetState)
+                                                              safeSetState(
+                                                                  () {});
                                                             return;
-                                                          }
-                                                          _model.isCpfValid =
-                                                              await actions
-                                                                  .isValidCPF(
-                                                            _model
-                                                                .cpfTextController
-                                                                .text,
-                                                          );
-                                                          _shouldSetState =
-                                                              true;
-                                                          if (_model
-                                                              .isCpfValid!) {
-                                                            _model.getCpf =
-                                                                await GetcpfCall
+                                                          } else {
+                                                            logFirebaseEvent(
+                                                                'Button_backend_call');
+                                                            _model.getcrm =
+                                                                await GetcrmCall
                                                                     .call(
-                                                              cpf: _model
-                                                                  .cpfTextController
+                                                              crm: _model
+                                                                  .crmTextController
                                                                   .text,
                                                             );
 
                                                             _shouldSetState =
                                                                 true;
-                                                            if ((_model.getCpf
+                                                            if ((_model.getcrm
                                                                     ?.succeeded ??
                                                                 true)) {
-                                                              if ((_model.getCpf
+                                                              if ((_model.getcrm
                                                                       ?.jsonBody ??
                                                                   '')) {
-                                                                _model.cpfborder =
+                                                                logFirebaseEvent(
+                                                                    'Button_update_page_state');
+                                                                _model.crmborder =
                                                                     FlutterFlowTheme.of(
                                                                             context)
                                                                         .error;
                                                                 safeSetState(
                                                                     () {});
+                                                                logFirebaseEvent(
+                                                                    'Button_show_snack_bar');
                                                                 ScaffoldMessenger.of(
                                                                         context)
                                                                     .showSnackBar(
                                                                   SnackBar(
                                                                     content:
                                                                         Text(
-                                                                      'Este CPF já está cadastrado por outro usuário.',
+                                                                      'Este CRM já está cadastrado por outro usuário.',
                                                                       style:
                                                                           TextStyle(
                                                                         color: FlutterFlowTheme.of(context)
@@ -2562,57 +2354,13 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                       () {});
                                                                 return;
                                                               } else {
-                                                                _model.getcrm =
-                                                                    await GetcrmCall
-                                                                        .call(
-                                                                  crm: _model
-                                                                      .crmTextController
-                                                                      .text,
-                                                                );
-
-                                                                _shouldSetState =
-                                                                    true;
-                                                                if ((_model
-                                                                        .getcrm
-                                                                        ?.succeeded ??
-                                                                    true)) {
-                                                                  if ((_model
-                                                                          .getcrm
-                                                                          ?.jsonBody ??
-                                                                      '')) {
-                                                                    _model.crmborder =
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .error;
-                                                                    safeSetState(
-                                                                        () {});
-                                                                    ScaffoldMessenger.of(
-                                                                            context)
-                                                                        .showSnackBar(
-                                                                      SnackBar(
-                                                                        content:
-                                                                            Text(
-                                                                          'Este CRM já está cadastrado por outro usuário.',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).primaryText,
-                                                                          ),
-                                                                        ),
-                                                                        duration:
-                                                                            Duration(milliseconds: 4000),
-                                                                        backgroundColor:
-                                                                            FlutterFlowTheme.of(context).secondary,
-                                                                      ),
-                                                                    );
-                                                                    if (_shouldSetState)
-                                                                      safeSetState(
-                                                                          () {});
-                                                                    return;
-                                                                  } else {
-                                                                    if (_model
-                                                                            .dropdownEspecialidadesValue ==
-                                                                        null) {
-                                                                      var confirmDialogResponse = await showDialog<
+                                                                if (_model
+                                                                        .dropdownEspecialidadesValue ==
+                                                                    null) {
+                                                                  logFirebaseEvent(
+                                                                      'Button_alert_dialog');
+                                                                  var confirmDialogResponse =
+                                                                      await showDialog<
                                                                               bool>(
                                                                             context:
                                                                                 context,
@@ -2635,193 +2383,167 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                             },
                                                                           ) ??
                                                                           false;
-                                                                      if (confirmDialogResponse) {
-                                                                        if (_shouldSetState)
-                                                                          safeSetState(
-                                                                              () {});
-                                                                        return;
-                                                                      }
-
-                                                                      safeSetState(
-                                                                          () {
-                                                                        _model
-                                                                            .dropdownEspecialidadesValueController
-                                                                            ?.value = 15;
-                                                                      });
-                                                                    }
-
-                                                                    context
-                                                                        .pushNamed(
-                                                                      Cadastro3Widget
-                                                                          .routeName,
-                                                                      queryParameters:
-                                                                          {
-                                                                        'firstname':
-                                                                            serializeParam(
-                                                                          widget!
-                                                                              .firstname,
-                                                                          ParamType
-                                                                              .String,
-                                                                        ),
-                                                                        'lastname':
-                                                                            serializeParam(
-                                                                          widget!
-                                                                              .lastname,
-                                                                          ParamType
-                                                                              .String,
-                                                                        ),
-                                                                        'email':
-                                                                            serializeParam(
-                                                                          widget!
-                                                                              .email,
-                                                                          ParamType
-                                                                              .String,
-                                                                        ),
-                                                                        'phone':
-                                                                            serializeParam(
-                                                                          widget!
-                                                                              .phone,
-                                                                          ParamType
-                                                                              .String,
-                                                                        ),
-                                                                        'termsAccept':
-                                                                            serializeParam(
-                                                                          widget!
-                                                                              .termsAccept,
-                                                                          ParamType
-                                                                              .bool,
-                                                                        ),
-                                                                        'gender':
-                                                                            serializeParam(
-                                                                          widget!
-                                                                              .gender,
-                                                                          ParamType
-                                                                              .String,
-                                                                        ),
-                                                                        'estadoUF':
-                                                                            serializeParam(
-                                                                          cadastroForm2EstadosBrasilRowList
-                                                                              .elementAtOrNull(_model.dropdownEstadosValue!)
-                                                                              ?.sigla,
-                                                                          ParamType
-                                                                              .String,
-                                                                        ),
-                                                                        'crm':
-                                                                            serializeParam(
-                                                                          _model
-                                                                              .crmTextController
-                                                                              .text,
-                                                                          ParamType
-                                                                              .String,
-                                                                        ),
-                                                                        'cpf':
-                                                                            serializeParam(
-                                                                          _model
-                                                                              .cpfTextController
-                                                                              .text,
-                                                                          ParamType
-                                                                              .String,
-                                                                        ),
-                                                                        'rqe':
-                                                                            serializeParam(
-                                                                          _model.rqeTextController.text == null || _model.rqeTextController.text == ''
-                                                                              ? 'Não informado'
-                                                                              : _model.rqeTextController.text,
-                                                                          ParamType
-                                                                              .String,
-                                                                        ),
-                                                                        'birthdate':
-                                                                            serializeParam(
-                                                                          _model
-                                                                              .datePicked,
-                                                                          ParamType
-                                                                              .DateTime,
-                                                                        ),
-                                                                        'arecodeindex':
-                                                                            serializeParam(
-                                                                          widget!
-                                                                              .areacodeIndex,
-                                                                          ParamType
-                                                                              .int,
-                                                                        ),
-                                                                        'estadoUFindex':
-                                                                            serializeParam(
-                                                                          _model
-                                                                              .dropdownEstadosValue,
-                                                                          ParamType
-                                                                              .int,
-                                                                        ),
-                                                                        'specialty':
-                                                                            serializeParam(
-                                                                          containerEspecialidadesRowList
-                                                                              .elementAtOrNull(_model.dropdownEspecialidadesValue!)
-                                                                              ?.especialidadeId,
-                                                                          ParamType
-                                                                              .String,
-                                                                        ),
-                                                                        'camefrom':
-                                                                            serializeParam(
-                                                                          widget!
-                                                                              .camefrom,
-                                                                          ParamType
-                                                                              .String,
-                                                                        ),
-                                                                        'specialtyindex':
-                                                                            serializeParam(
-                                                                          _model
-                                                                              .dropdownEspecialidadesValue,
-                                                                          ParamType
-                                                                              .int,
-                                                                        ),
-                                                                      }.withoutNulls,
-                                                                    );
-
+                                                                  if (confirmDialogResponse) {
                                                                     if (_shouldSetState)
                                                                       safeSetState(
                                                                           () {});
                                                                     return;
                                                                   }
-                                                                } else {
-                                                                  _model.crmborder =
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .error;
+
+                                                                  logFirebaseEvent(
+                                                                      'Button_set_form_field');
+                                                                  safeSetState(
+                                                                      () {
+                                                                    _model
+                                                                        .dropdownEspecialidadesValueController
+                                                                        ?.value = 15;
+                                                                  });
+                                                                }
+                                                                logFirebaseEvent(
+                                                                    'Button_navigate_to');
+
+                                                                context
+                                                                    .pushNamed(
+                                                                  Cadastro3Widget
+                                                                      .routeName,
+                                                                  queryParameters:
+                                                                      {
+                                                                    'firstname':
+                                                                        serializeParam(
+                                                                      widget!
+                                                                          .firstname,
+                                                                      ParamType
+                                                                          .String,
+                                                                    ),
+                                                                    'lastname':
+                                                                        serializeParam(
+                                                                      widget!
+                                                                          .lastname,
+                                                                      ParamType
+                                                                          .String,
+                                                                    ),
+                                                                    'email':
+                                                                        serializeParam(
+                                                                      widget!
+                                                                          .email,
+                                                                      ParamType
+                                                                          .String,
+                                                                    ),
+                                                                    'phone':
+                                                                        serializeParam(
+                                                                      widget!
+                                                                          .phone,
+                                                                      ParamType
+                                                                          .String,
+                                                                    ),
+                                                                    'termsAccept':
+                                                                        serializeParam(
+                                                                      widget!
+                                                                          .termsAccept,
+                                                                      ParamType
+                                                                          .bool,
+                                                                    ),
+                                                                    'gender':
+                                                                        serializeParam(
+                                                                      widget!
+                                                                          .gender,
+                                                                      ParamType
+                                                                          .String,
+                                                                    ),
+                                                                    'estadoUF':
+                                                                        serializeParam(
+                                                                      cadastroForm2EstadosBrasilRowList
+                                                                          .elementAtOrNull(
+                                                                              _model.dropdownEstadosValue!)
+                                                                          ?.sigla,
+                                                                      ParamType
+                                                                          .String,
+                                                                    ),
+                                                                    'crm':
+                                                                        serializeParam(
+                                                                      _model
+                                                                          .crmTextController
+                                                                          .text,
+                                                                      ParamType
+                                                                          .String,
+                                                                    ),
+                                                                    'cpf':
+                                                                        serializeParam(
+                                                                      _model
+                                                                          .cpfTextController
+                                                                          .text,
+                                                                      ParamType
+                                                                          .String,
+                                                                    ),
+                                                                    'rqe':
+                                                                        serializeParam(
+                                                                      'Não informado',
+                                                                      ParamType
+                                                                          .String,
+                                                                    ),
+                                                                    'birthdate':
+                                                                        serializeParam(
+                                                                      _model
+                                                                          .datePicked,
+                                                                      ParamType
+                                                                          .DateTime,
+                                                                    ),
+                                                                    'arecodeindex':
+                                                                        serializeParam(
+                                                                      widget!
+                                                                          .areacodeIndex,
+                                                                      ParamType
+                                                                          .int,
+                                                                    ),
+                                                                    'estadoUFindex':
+                                                                        serializeParam(
+                                                                      _model
+                                                                          .dropdownEstadosValue,
+                                                                      ParamType
+                                                                          .int,
+                                                                    ),
+                                                                    'specialty':
+                                                                        serializeParam(
+                                                                      containerEspecialidadesRowList
+                                                                          .elementAtOrNull(
+                                                                              _model.dropdownEspecialidadesValue!)
+                                                                          ?.especialidadeId,
+                                                                      ParamType
+                                                                          .String,
+                                                                    ),
+                                                                    'camefrom':
+                                                                        serializeParam(
+                                                                      widget!
+                                                                          .camefrom,
+                                                                      ParamType
+                                                                          .String,
+                                                                    ),
+                                                                    'specialtyindex':
+                                                                        serializeParam(
+                                                                      _model
+                                                                          .dropdownEspecialidadesValue,
+                                                                      ParamType
+                                                                          .int,
+                                                                    ),
+                                                                  }.withoutNulls,
+                                                                );
+
+                                                                if (_shouldSetState)
                                                                   safeSetState(
                                                                       () {});
-                                                                  ScaffoldMessenger.of(
-                                                                          context)
-                                                                      .showSnackBar(
-                                                                    SnackBar(
-                                                                      content:
-                                                                          Text(
-                                                                        'Ocorreu um erro em nossos servidores. Por favor, tente novamente.',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).primaryText,
-                                                                        ),
-                                                                      ),
-                                                                      duration: Duration(
-                                                                          milliseconds:
-                                                                              4000),
-                                                                      backgroundColor:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .secondary,
-                                                                    ),
-                                                                  );
-                                                                  if (_shouldSetState)
-                                                                    safeSetState(
-                                                                        () {});
-                                                                  return;
-                                                                }
+                                                                return;
                                                               }
                                                             } else {
-                                                              _model.cpfborder =
+                                                              logFirebaseEvent(
+                                                                  'Button_update_page_state');
+                                                              _model.crmborder =
                                                                   FlutterFlowTheme.of(
                                                                           context)
                                                                       .error;
                                                               safeSetState(
                                                                   () {});
+                                                              logFirebaseEvent(
+                                                                  'Button_show_snack_bar');
                                                               ScaffoldMessenger
                                                                       .of(context)
                                                                   .showSnackBar(
@@ -2849,21 +2571,59 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                     () {});
                                                               return;
                                                             }
-                                                          } else {
-                                                            _model.cpfborder =
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .error;
-                                                            safeSetState(() {});
-                                                            if (_shouldSetState)
-                                                              safeSetState(
-                                                                  () {});
-                                                            return;
                                                           }
-
+                                                        } else {
+                                                          logFirebaseEvent(
+                                                              'Button_update_page_state');
+                                                          _model.cpfborder =
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .error;
+                                                          safeSetState(() {});
+                                                          logFirebaseEvent(
+                                                              'Button_show_snack_bar');
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              content: Text(
+                                                                'Ocorreu um erro em nossos servidores. Por favor, tente novamente.',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText,
+                                                                ),
+                                                              ),
+                                                              duration: Duration(
+                                                                  milliseconds:
+                                                                      4000),
+                                                              backgroundColor:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondary,
+                                                            ),
+                                                          );
                                                           if (_shouldSetState)
                                                             safeSetState(() {});
-                                                        },
+                                                          return;
+                                                        }
+                                                      } else {
+                                                        logFirebaseEvent(
+                                                            'Button_update_page_state');
+                                                        _model.cpfborder =
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .error;
+                                                        safeSetState(() {});
+                                                        if (_shouldSetState)
+                                                          safeSetState(() {});
+                                                        return;
+                                                      }
+
+                                                      if (_shouldSetState)
+                                                        safeSetState(() {});
+                                                    },
                                               text: 'Continuar',
                                               options: FFButtonOptions(
                                                 width: double.infinity,

@@ -1,12 +1,9 @@
-import '/auth/base_auth_user_provider.dart';
 import '/auth/supabase_auth/auth_util.dart';
-import '/backend/api_requests/api_calls.dart';
 import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/instant_timer.dart';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/index.dart';
@@ -25,10 +22,6 @@ class LoginMagicLinkModel extends FlutterFlowModel<LoginMagicLinkWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  InstantTimer? timerCurrent;
-  InstantTimer? timerNew;
-  // Stores action output result for [Backend Call - API (listenVerifyEmail)] action in LoginMagicLink widget.
-  ApiCallResponse? listenVerifyEmail;
   // Model for BackTopBar component.
   late BackTopBarModel backTopBarModel;
   // State field(s) for Timer widget.
@@ -42,11 +35,6 @@ class LoginMagicLinkModel extends FlutterFlowModel<LoginMagicLinkWidget> {
   FlutterFlowTimerController timerController =
       FlutterFlowTimerController(StopWatchTimer(mode: StopWatchMode.countDown));
 
-  // Stores action output result for [Custom Action - otpEmailMagic] action in Button widget.
-  bool? sendMagic;
-  // Stores action output result for [Backend Call - API (sendVerifyEmail)] action in Button widget.
-  ApiCallResponse? sendVerifyEmail;
-
   @override
   void initState(BuildContext context) {
     backTopBarModel = createModel(context, () => BackTopBarModel());
@@ -54,8 +42,6 @@ class LoginMagicLinkModel extends FlutterFlowModel<LoginMagicLinkWidget> {
 
   @override
   void dispose() {
-    timerCurrent?.cancel();
-    timerNew?.cancel();
     backTopBarModel.dispose();
     timerController.dispose();
   }

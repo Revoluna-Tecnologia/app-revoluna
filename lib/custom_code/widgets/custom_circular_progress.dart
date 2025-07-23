@@ -1,5 +1,7 @@
 // Automatic FlutterFlow imports
+import '/backend/backend.dart';
 import '/backend/supabase/supabase.dart';
+import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'index.dart'; // Imports other custom widgets
@@ -9,9 +11,6 @@ import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import '/custom_code/widgets/index.dart';
-import '/custom_code/actions/index.dart';
-import '/flutter_flow/custom_functions.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 
 class CustomCircularProgress extends StatefulWidget {

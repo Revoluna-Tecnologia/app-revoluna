@@ -41,4 +41,13 @@ class UserProfileRow extends SupabaseDataRow {
 
   int get specialtyIndex => getField<int>('specialtyIndex')!;
   set specialtyIndex(int value) => setField<int>('specialtyIndex', value);
+
+  String? get fcmToken => getField<String>('fcm_token');
+  set fcmToken(String? value) => setField<String>('fcm_token', value);
+
+  String? get platform => getField<String>('platform');
+  set platform(String? value) => setField<String>('platform', value);
+
+  String? get apnToken => getField<String>('apn_token');
+  set apnToken(String? value) => setField<String>('apn_token', value);
 }

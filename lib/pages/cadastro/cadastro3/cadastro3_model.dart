@@ -1,7 +1,7 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
-import '/components/positive_dialog_box/positive_dialog_box_widget.dart';
+import '/components/dialogs/positive_dialog_box/positive_dialog_box_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -40,19 +40,17 @@ class Cadastro3Model extends FlutterFlowModel<Cadastro3Widget> {
   String? googleProfilePic;
   // Model for BackTopBar component.
   late BackTopBarModel backTopBarModel;
-  bool isDataUploading1 = false;
-  FFUploadedFile uploadedLocalFile1 =
+  bool isDataUploading_localupload = false;
+  FFUploadedFile uploadedLocalFile_localupload =
       FFUploadedFile(bytes: Uint8List.fromList([]));
 
   // State field(s) for Checkbox widget.
   bool? checkboxValue;
-  bool isDataUploading2 = false;
-  FFUploadedFile uploadedLocalFile2 =
+  bool isDataUploading_uploadDataTxi = false;
+  FFUploadedFile uploadedLocalFile_uploadDataTxi =
       FFUploadedFile(bytes: Uint8List.fromList([]));
-  String uploadedFileUrl2 = '';
+  String uploadedFileUrl_uploadDataTxi = '';
 
-  // Stores action output result for [Custom Action - updateUserPhone] action in Button widget.
-  bool? updatePhone;
   // Stores action output result for [Backend Call - Update Row(s)] action in Button widget.
   List<UserProfileRow>? updaterole;
   // Stores action output result for [Backend Call - Insert Row] action in Button widget.

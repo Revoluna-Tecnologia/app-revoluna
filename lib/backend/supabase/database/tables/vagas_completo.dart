@@ -62,12 +62,6 @@ class VagasCompletoRow extends SupabaseDataRow {
   String? get tipoNome => getField<String>('tipo_nome');
   set tipoNome(String? value) => setField<String>('tipo_nome', value);
 
-  String? get escalistaNome => getField<String>('escalista_nome');
-  set escalistaNome(String? value) => setField<String>('escalista_nome', value);
-
-  String? get escalistaId => getField<String>('escalista_id');
-  set escalistaId(String? value) => setField<String>('escalista_id', value);
-
   String? get especialidadeNome => getField<String>('especialidade_nome');
   set especialidadeNome(String? value) =>
       setField<String>('especialidade_nome', value);
@@ -90,6 +84,12 @@ class VagasCompletoRow extends SupabaseDataRow {
 
   String? get vagasStatus => getField<String>('vagas_status');
   set vagasStatus(String? value) => setField<String>('vagas_status', value);
+
+  String? get escalistaNome => getField<String>('escalista_nome');
+  set escalistaNome(String? value) => setField<String>('escalista_nome', value);
+
+  String? get escalistaId => getField<String>('escalista_id');
+  set escalistaId(String? value) => setField<String>('escalista_id', value);
 
   String? get escalistaTelefone => getField<String>('escalista_telefone');
   set escalistaTelefone(String? value) =>

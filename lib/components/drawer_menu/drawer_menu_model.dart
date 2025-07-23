@@ -1,4 +1,5 @@
 import '/auth/supabase_auth/auth_util.dart';
+import '/backend/supabase/supabase.dart';
 import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -16,6 +17,8 @@ class DrawerMenuModel extends FlutterFlowModel<DrawerMenuWidget> {
 
   // Model for BackTopBar component.
   late BackTopBarModel backTopBarModel;
+  // Stores action output result for [Backend Call - Query Rows] action in Button widget.
+  List<NotificationsRow>? notificationsQuery;
 
   @override
   void initState(BuildContext context) {

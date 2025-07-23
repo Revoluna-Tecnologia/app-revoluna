@@ -1,7 +1,7 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
-import '/components/positive_dialog_box/positive_dialog_box_widget.dart';
+import '/components/dialogs/positive_dialog_box/positive_dialog_box_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -75,12 +75,17 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
     super.initState();
     _model = createModel(context, () => Cadastro3Model());
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Cadastro3'});
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('CADASTRO3_PAGE_Cadastro3_ON_INIT_STATE');
       if (widget!.camefrom == 'google') {
+        logFirebaseEvent('Cadastro3_custom_action');
         _model.googleProfilePic = await actions.getGooglePicture();
+        logFirebaseEvent('Cadastro3_update_app_state');
         FFAppState().profilepicture = _model.googleProfilePic!;
         FFAppState().update(() {});
+        logFirebaseEvent('Cadastro3_update_page_state');
         _model.picWasSet = true;
         _model.ready = true;
         safeSetState(() {});
@@ -120,6 +125,8 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                   child: BackTopBarWidget(
                     logo: false,
                     backButton: () async {
+                      logFirebaseEvent('CADASTRO3_Container_159mc222_CALLBACK');
+                      logFirebaseEvent('BackTopBar_navigate_back');
                       context.safePop();
                     },
                   ),
@@ -315,10 +322,10 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                           FFAppState().profilepicture != '') {
                                         return Builder(
                                           builder: (context) {
-                                            if (_model.uploadedLocalFile1 !=
+                                            if (_model.uploadedLocalFile_localupload !=
                                                     null &&
-                                                (_model.uploadedLocalFile1.bytes
-                                                        ?.isNotEmpty ??
+                                                (_model.uploadedLocalFile_localupload
+                                                        .bytes?.isNotEmpty ??
                                                     false)) {
                                               return Container(
                                                 width: 120.0,
@@ -328,7 +335,7 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                                   shape: BoxShape.circle,
                                                 ),
                                                 child: Image.memory(
-                                                  _model.uploadedLocalFile1
+                                                  _model.uploadedLocalFile_localupload
                                                           .bytes ??
                                                       Uint8List.fromList([]),
                                                   fit: BoxFit.cover,
@@ -365,7 +372,8 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                             }
                                           },
                                         );
-                                      } else if (_model.isDataUploading1) {
+                                      } else if (_model
+                                          .isDataUploading_localupload) {
                                         return Lottie.asset(
                                           'assets/jsons/81EfiEihcA.json',
                                           width:
@@ -422,6 +430,10 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                     alignment: AlignmentDirectional(0.0, 0.0),
                                     child: FFButtonWidget(
                                       onPressed: () async {
+                                        logFirebaseEvent(
+                                            'CADASTRO3_PAGE__BTN_ON_TAP');
+                                        logFirebaseEvent(
+                                            'Button_store_media_for_upload');
                                         final selectedMedia =
                                             await selectMediaWithSourceBottomSheet(
                                           context: context,
@@ -440,8 +452,9 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                             selectedMedia.every((m) =>
                                                 validateFileFormat(
                                                     m.storagePath, context))) {
-                                          safeSetState(() =>
-                                              _model.isDataUploading1 = true);
+                                          safeSetState(() => _model
+                                                  .isDataUploading_localupload =
+                                              true);
                                           var selectedUploadedFiles =
                                               <FFUploadedFile>[];
 
@@ -461,12 +474,13 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                                         ))
                                                     .toList();
                                           } finally {
-                                            _model.isDataUploading1 = false;
+                                            _model.isDataUploading_localupload =
+                                                false;
                                           }
                                           if (selectedUploadedFiles.length ==
                                               selectedMedia.length) {
                                             safeSetState(() {
-                                              _model.uploadedLocalFile1 =
+                                              _model.uploadedLocalFile_localupload =
                                                   selectedUploadedFiles.first;
                                             });
                                           } else {
@@ -475,15 +489,22 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                           }
                                         }
 
-                                        if (_model.uploadedLocalFile1 != null &&
-                                            (_model.uploadedLocalFile1.bytes
-                                                    ?.isNotEmpty ??
+                                        if (_model.uploadedLocalFile_localupload !=
+                                                null &&
+                                            (_model.uploadedLocalFile_localupload
+                                                    .bytes?.isNotEmpty ??
                                                 false)) {
+                                          logFirebaseEvent(
+                                              'Button_update_page_state');
                                           _model.ready = true;
                                           safeSetState(() {});
+                                          logFirebaseEvent(
+                                              'Button_update_page_state');
                                           _model.picWasSet = false;
                                           safeSetState(() {});
                                         } else {
+                                          logFirebaseEvent(
+                                              'Button_show_snack_bar');
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             SnackBar(
@@ -588,6 +609,9 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                     )),
                                 child: FFButtonWidget(
                                   onPressed: () async {
+                                    logFirebaseEvent(
+                                        'CADASTRO3_QUERO_SEGUIR_SEM_UMA_FOTO_BTN_');
+                                    logFirebaseEvent('Button_alert_dialog');
                                     var confirmDialogResponse =
                                         await showDialog<bool>(
                                               context: context,
@@ -617,21 +641,29 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                             ) ??
                                             false;
                                     if (!confirmDialogResponse) {
-                                      if (_model.uploadedLocalFile1 != null &&
-                                          (_model.uploadedLocalFile1.bytes
-                                                  ?.isNotEmpty ??
+                                      if (_model.uploadedLocalFile_localupload !=
+                                              null &&
+                                          (_model.uploadedLocalFile_localupload
+                                                  .bytes?.isNotEmpty ??
                                               false)) {
+                                        logFirebaseEvent(
+                                            'Button_clear_uploaded_data');
                                         safeSetState(() {
-                                          _model.isDataUploading1 = false;
-                                          _model.uploadedLocalFile1 =
+                                          _model.isDataUploading_localupload =
+                                              false;
+                                          _model.uploadedLocalFile_localupload =
                                               FFUploadedFile(
                                                   bytes:
                                                       Uint8List.fromList([]));
                                         });
                                       }
+                                      logFirebaseEvent(
+                                          'Button_update_app_state');
                                       FFAppState().profilepicture =
                                           'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png';
                                       FFAppState().update(() {});
+                                      logFirebaseEvent(
+                                          'Button_update_page_state');
                                       _model.picWasSet = true;
                                       _model.ready = true;
                                       safeSetState(() {});
@@ -714,10 +746,14 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                     safeSetState(
                                         () => _model.checkboxValue = newValue!);
                                   },
-                                  side: BorderSide(
-                                    width: 2,
-                                    color: FlutterFlowTheme.of(context).accent2,
-                                  ),
+                                  side: (FlutterFlowTheme.of(context).accent2 !=
+                                          null)
+                                      ? BorderSide(
+                                          width: 2,
+                                          color: FlutterFlowTheme.of(context)
+                                              .accent2!,
+                                        )
+                                      : null,
                                   activeColor:
                                       FlutterFlowTheme.of(context).primary,
                                   checkColor: FlutterFlowTheme.of(context).info,
@@ -787,6 +823,11 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                         mouseCursor: SystemMouseCursors.click,
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () async {
+                                            logFirebaseEvent(
+                                                'CADASTRO3_RichTextSpan_ovm1fv34_ON_TAP');
+                                            logFirebaseEvent(
+                                                'RichTextSpan_navigate_to');
+
                                             context.pushNamed(
                                                 TermosWidget.routeName);
                                           },
@@ -842,8 +883,11 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                       (_model.checkboxValue == false))
                                   ? null
                                   : () async {
+                                      logFirebaseEvent(
+                                          'CADASTRO3_PAGE_FINALIZAR_BTN_ON_TAP');
                                       if (!(currentUserUid != null &&
                                           currentUserUid != '')) {
+                                        logFirebaseEvent('Button_auth');
                                         GoRouter.of(context).prepareAuthEvent();
                                         if ('${widget!.cpf}${widget!.crm}' !=
                                             '${widget!.cpf}${widget!.crm}') {
@@ -868,26 +912,33 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                           return;
                                         }
                                       }
+                                      logFirebaseEvent(
+                                          'Button_update_app_state');
                                       FFAppState().userRole = 'free';
-                                      FFAppState().userID = currentUserUid;
                                       FFAppState().gender = widget!.gender!;
                                       FFAppState().displayName =
                                           widget!.firstname!;
                                       FFAppState().update(() {});
                                       if (!_model.picWasSet) {
+                                        logFirebaseEvent(
+                                            'Button_upload_media_to_supabase');
                                         {
-                                          safeSetState(() =>
-                                              _model.isDataUploading2 = true);
+                                          safeSetState(() => _model
+                                                  .isDataUploading_uploadDataTxi =
+                                              true);
                                           var selectedUploadedFiles =
                                               <FFUploadedFile>[];
                                           var selectedMedia = <SelectedFile>[];
                                           var downloadUrls = <String>[];
                                           try {
                                             selectedUploadedFiles = _model
-                                                    .uploadedLocalFile1
+                                                    .uploadedLocalFile_localupload
                                                     .bytes!
                                                     .isNotEmpty
-                                                ? [_model.uploadedLocalFile1]
+                                                ? [
+                                                    _model
+                                                        .uploadedLocalFile_localupload
+                                                  ]
                                                 : <FFUploadedFile>[];
                                             selectedMedia =
                                                 selectedFilesFromUploadedFiles(
@@ -900,16 +951,17 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                               selectedFiles: selectedMedia,
                                             );
                                           } finally {
-                                            _model.isDataUploading2 = false;
+                                            _model.isDataUploading_uploadDataTxi =
+                                                false;
                                           }
                                           if (selectedUploadedFiles.length ==
                                                   selectedMedia.length &&
                                               downloadUrls.length ==
                                                   selectedMedia.length) {
                                             safeSetState(() {
-                                              _model.uploadedLocalFile2 =
+                                              _model.uploadedLocalFile_uploadDataTxi =
                                                   selectedUploadedFiles.first;
-                                              _model.uploadedFileUrl2 =
+                                              _model.uploadedFileUrl_uploadDataTxi =
                                                   downloadUrls.first;
                                             });
                                           } else {
@@ -918,20 +970,18 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                           }
                                         }
 
-                                        FFAppState().profilepicture =
-                                            _model.uploadedFileUrl2;
+                                        logFirebaseEvent(
+                                            'Button_update_app_state');
+                                        FFAppState().profilepicture = _model
+                                            .uploadedFileUrl_uploadDataTxi;
                                         FFAppState().update(() {});
                                       }
-                                      _model.updatePhone =
-                                          await actions.updateUserPhone(
-                                        '${(String var1) {
-                                          return var1.replaceFirst('+', '');
-                                        }(FFAppState().inputAreacode)}${(String var1) {
-                                          return var1.replaceAll(
-                                              RegExp(r'\D'), '');
-                                        }(widget!.phone!)}',
+                                      logFirebaseEvent('Button_custom_action');
+                                      await actions.updateUserPhone(
+                                        widget!.phone!,
                                         currentUserUid,
                                       );
+                                      logFirebaseEvent('Button_backend_call');
                                       _model.updaterole =
                                           await UserProfileTable().update(
                                         data: {
@@ -951,6 +1001,7 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                         ),
                                         returnRows: true,
                                       );
+                                      logFirebaseEvent('Button_backend_call');
                                       _model.updateMedicosRow =
                                           await MedicosTable().insert({
                                         'medico_primeironome':
@@ -970,6 +1021,7 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                                 widget!.birthdate),
                                         'id': currentUserUid,
                                       });
+                                      logFirebaseEvent('Button_alert_dialog');
                                       await showDialog(
                                         context: context,
                                         builder: (dialogContext) {
@@ -996,6 +1048,8 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                           );
                                         },
                                       );
+
+                                      logFirebaseEvent('Button_navigate_to');
 
                                       context.pushNamedAuth(
                                           HomePageWidget.routeName,

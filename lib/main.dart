@@ -1,3 +1,4 @@
+import '/custom_code/actions/index.dart' as actions;
 import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'auth/supabase_auth/supabase_user_provider.dart';
 import 'auth/supabase_auth/auth_util.dart';
 
 import '/backend/supabase/supabase.dart';
+import 'backend/firebase/firebase_config.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
@@ -21,10 +23,17 @@ void main() async {
   GoRouter.optionURLReflectsImperativeAPIs = true;
   usePathUrlStrategy();
 
+  await initFirebase();
+
   await SupaFlow.initialize();
 
   final appState = FFAppState(); // Initialize FFAppState
   await appState.initializePersistedState();
+
+  // Start final custom actions code
+  await actions.initializeDeeplinks();
+  await actions.initializeFirebaseMessaging();
+  // End final custom actions code
 
   runApp(ChangeNotifierProvider(
     create: (context) => appState,
@@ -61,7 +70,6 @@ class _MyAppState extends State<MyApp> {
       _router.routerDelegate.currentConfiguration.matches
           .map((e) => getRoute(e))
           .toList();
-
   late Stream<BaseAuthUser> userStream;
 
   @override
@@ -108,6 +116,19 @@ class _MyAppState extends State<MyApp> {
       ],
       theme: ThemeData(
         brightness: Brightness.light,
+        scrollbarTheme: ScrollbarThemeData(
+          thickness: MaterialStateProperty.all(2.0),
+          radius: Radius.circular(2.0),
+          thumbColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.dragged)) {
+              return Color(4288899565);
+            }
+            if (states.contains(MaterialState.hovered)) {
+              return Color(4288899565);
+            }
+            return Color(4288899565);
+          }),
+        ),
       ),
       themeMode: _themeMode,
       routerConfig: _router,
@@ -116,10 +137,16 @@ class _MyAppState extends State<MyApp> {
 }
 
 class NavBarPage extends StatefulWidget {
-  NavBarPage({Key? key, this.initialPage, this.page}) : super(key: key);
+  NavBarPage({
+    Key? key,
+    this.initialPage,
+    this.page,
+    this.disableResizeToAvoidBottomInset = false,
+  }) : super(key: key);
 
   final String? initialPage;
   final Widget? page;
+  final bool disableResizeToAvoidBottomInset;
 
   @override
   _NavBarPageState createState() => _NavBarPageState();
@@ -142,11 +169,13 @@ class _NavBarPageState extends State<NavBarPage> {
     final tabs = {
       'HomePage': HomePageWidget(),
       'Explorar': ExplorarWidget(),
-      'Escala': EscalaWidget(),
+      'Plantoes': PlantoesWidget(),
+      'Escalas': EscalasWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
 
     return Scaffold(
+      resizeToAvoidBottomInset: !widget.disableResizeToAvoidBottomInset,
       body: _currentPage ?? tabs[_currentPageName],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
@@ -184,6 +213,14 @@ class _NavBarPageState extends State<NavBarPage> {
           BottomNavigationBarItem(
             icon: Icon(
               FFIcons.kcalendar,
+              size: 25.0,
+            ),
+            label: 'Explorar',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              FFIcons.kusers,
               size: 25.0,
             ),
             label: 'Explorar',

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:crypto/crypto.dart';
-import 'package:revoluna/app_state.dart';
+
 import '../../backend/supabase/supabase.dart';
 
 Future<User?> appleSignInFunc() async {
@@ -35,14 +35,6 @@ Future<User?> appleSignInFunc() async {
     throw const AuthException(
         'Could not find ID Token from generated credential.');
   }
-
-  final String firstname = credential.givenName ?? "";
-  final String lastname = credential.familyName ?? "";
-  final String email = credential.email ?? "";
-
-  FFAppState().update(() {
-    FFAppState().appleData = [firstname, lastname, email];
-  });
 
   final authResponse = await SupaFlow.client.auth.signInWithIdToken(
     provider: OAuthProvider.apple,

@@ -120,4 +120,8 @@ class MedicosRow extends SupabaseDataRow {
 
   bool? get trackingPrivacy => getField<bool>('tracking_privacy');
   set trackingPrivacy(bool? value) => setField<bool>('tracking_privacy', value);
+
+  String? get especialidadeNome => getField<String>('especialidade_nome');
+  set especialidadeNome(String? value) =>
+      setField<String>('especialidade_nome', value);
 }

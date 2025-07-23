@@ -1,4 +1,3 @@
-import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -43,9 +42,18 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
     super.initState();
     _model = createModel(context, () => LoginPhoneCodeModel());
 
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'LoginPhoneCode'});
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await Future.delayed(const Duration(milliseconds: 1000));
+      logFirebaseEvent('LOGIN_PHONE_CODE_LoginPhoneCode_ON_INIT_');
+      logFirebaseEvent('LoginPhoneCode_wait__delay');
+      await Future.delayed(
+        Duration(
+          milliseconds: 1000,
+        ),
+      );
+      logFirebaseEvent('LoginPhoneCode_timer');
       _model.timerController.onStartTimer();
     });
 
@@ -86,7 +94,12 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
                   updateCallback: () => safeSetState(() {}),
                   child: BackTopBarWidget(
                     logo: false,
-                    backButton: () async {},
+                    backButton: () async {
+                      logFirebaseEvent(
+                          'LOGIN_PHONE_CODE_Container_idz4yefd_CALL');
+                      logFirebaseEvent('BackTopBar_navigate_back');
+                      context.safePop();
+                    },
                   ),
                 ),
                 Align(
@@ -522,15 +535,21 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
                                   ),
                                   controller: _model.pinCodeController,
                                   onChanged: (_) async {
+                                    logFirebaseEvent(
+                                        'LOGIN_PHONE_CODE_PinCode_za0pm7ac_ON_TEX');
                                     if (_model.pinCodeController!.text !=
                                             null &&
                                         _model.pinCodeController!.text != '') {
+                                      logFirebaseEvent(
+                                          'PinCode_update_page_state');
                                       _model.pincodeborder =
                                           FlutterFlowTheme.of(context)
                                               .primaryText;
                                       safeSetState(() {});
                                       return;
                                     } else {
+                                      logFirebaseEvent(
+                                          'PinCode_update_page_state');
                                       _model.pincodeborder =
                                           FlutterFlowTheme.of(context).accent2;
                                       safeSetState(() {});
@@ -582,22 +601,32 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
                                       (_model.timerMilliseconds == 0))
                                   ? null
                                   : () async {
+                                      logFirebaseEvent(
+                                          'LOGIN_PHONE_CODE_CONTINUAR_BTN_ON_TAP');
                                       if (FFAppState().wasUser) {
+                                        logFirebaseEvent(
+                                            'Button_custom_action');
                                         _model.otpPhoneConfirm =
                                             await actions.otpPhoneConfirm(
                                           _model.pinCodeController!.text,
                                           widget!.phoneOnlynumbers!,
                                         );
                                         if (_model.otpPhoneConfirm!) {
-                                          context.pushNamed(
+                                          logFirebaseEvent(
+                                              'Button_navigate_to');
+
+                                          context.goNamed(
                                               HomePageWidget.routeName);
                                         } else {
+                                          logFirebaseEvent(
+                                              'Button_update_page_state');
                                           _model.pincodeborder =
                                               FlutterFlowTheme.of(context)
                                                   .error;
                                           safeSetState(() {});
                                         }
                                       } else {
+                                        logFirebaseEvent('Button_backend_call');
                                         _model.verifySMS =
                                             await ConfirmSMSverifyCall.call(
                                           phone: widget!.phoneOnlynumbers,
@@ -606,6 +635,11 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
 
                                         if ((_model.verifySMS?.succeeded ??
                                             true)) {
+                                          logFirebaseEvent(
+                                              'Button_navigate_to');
+                                          if (Navigator.of(context).canPop()) {
+                                            context.pop();
+                                          }
                                           context.pushNamed(
                                             Cadastro1Widget.routeName,
                                             queryParameters: {
@@ -616,16 +650,14 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
                                             }.withoutNulls,
                                           );
                                         } else {
+                                          logFirebaseEvent(
+                                              'Button_update_page_state');
                                           _model.pincodeborder =
                                               FlutterFlowTheme.of(context)
                                                   .error;
                                           safeSetState(() {});
                                         }
                                       }
-
-                                      safeSetState(() {
-                                        _model.pinCodeController?.clear();
-                                      });
 
                                       safeSetState(() {});
                                     },
@@ -734,12 +766,6 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
                                       _model.timerValue = displayTime;
                                       if (shouldUpdate) safeSetState(() {});
                                     },
-                                    onEnded: () async {
-                                      FFAppState().userID = (String var1) {
-                                        return var1.replaceAll(' ', '');
-                                      }(currentUserUid);
-                                      FFAppState().update(() {});
-                                    },
                                     textAlign: TextAlign.start,
                                     style: FlutterFlowTheme.of(context)
                                         .titleSmall
@@ -771,6 +797,9 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
                           } else {
                             return FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'LOGIN_PHONE_CODE_REENVIAR_CDIGO_BTN_ON_T');
+                                logFirebaseEvent('Button_alert_dialog');
                                 var confirmDialogResponse =
                                     await showDialog<bool>(
                                           context: context,
@@ -800,24 +829,29 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
                                         ) ??
                                         false;
                                 if (confirmDialogResponse) {
+                                  logFirebaseEvent('Button_reset_form_fields');
                                   safeSetState(() {
                                     _model.pinCodeController?.clear();
                                   });
                                 } else {
+                                  logFirebaseEvent('Button_reset_form_fields');
                                   safeSetState(() {
                                     _model.pinCodeController?.clear();
                                   });
                                   if (FFAppState().wasUser) {
+                                    logFirebaseEvent('Button_custom_action');
                                     await actions.otpPhone(
                                       widget!.phoneOnlynumbers!,
                                     );
                                   } else {
+                                    logFirebaseEvent('Button_backend_call');
                                     _model.apiResultst3 =
                                         await SendSMSverifyCall.call(
                                       phone: widget!.phoneOnlynumbers,
                                     );
                                   }
 
+                                  logFirebaseEvent('Button_show_snack_bar');
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
@@ -856,8 +890,10 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
                                               .secondary,
                                     ),
                                   );
+                                  logFirebaseEvent('Button_timer');
                                   _model.timerController.onResetTimer();
 
+                                  logFirebaseEvent('Button_timer');
                                   _model.timerController.onStartTimer();
                                 }
 

@@ -28,4 +28,7 @@ class BannerMKTRow extends SupabaseDataRow {
 
   String? get description => getField<String>('description');
   set description(String? value) => setField<String>('description', value);
+
+  String? get url => getField<String>('URL');
+  set url(String? value) => setField<String>('URL', value);
 }

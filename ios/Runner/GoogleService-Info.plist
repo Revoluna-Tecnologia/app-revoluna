@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>860967636914-8o9r3eg8edofseug9k9pb3q087u82ve5.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.860967636914-8o9r3eg8edofseug9k9pb3q087u82ve5</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>860967636914-19jrprdmdid8culfpm54vj97oahh4q18.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBHzcEPF1Nma-QtC5Vpc8e1rIOCsx89nlA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>860967636914</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.mycompany.revoluna</string>
+	<key>PROJECT_ID</key>
+	<string>revoluna</string>
+	<key>STORAGE_BUCKET</key>
+	<string>revoluna.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:860967636914:ios:ac89bbdf7d8c90e5f09eab</string>
+</dict>
+</plist>

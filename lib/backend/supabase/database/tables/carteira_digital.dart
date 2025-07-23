@@ -18,8 +18,8 @@ class CarteiraDigitalRow extends SupabaseDataRow {
   String get carteiraId => getField<String>('carteira_id')!;
   set carteiraId(String value) => setField<String>('carteira_id', value);
 
-  String get medicosId => getField<String>('medicos_id')!;
-  set medicosId(String value) => setField<String>('medicos_id', value);
+  String get medicoId => getField<String>('medico_id')!;
+  set medicoId(String value) => setField<String>('medico_id', value);
 
   DateTime get carteiraCreatedate => getField<DateTime>('carteira_createdate')!;
   set carteiraCreatedate(DateTime value) =>

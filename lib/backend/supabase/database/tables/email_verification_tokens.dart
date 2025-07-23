@@ -33,4 +33,13 @@ class EmailVerificationTokensRow extends SupabaseDataRow {
 
   DateTime? get createdAt => getField<DateTime>('created_at');
   set createdAt(DateTime? value) => setField<DateTime>('created_at', value);
+
+  String? get firstname => getField<String>('firstname');
+  set firstname(String? value) => setField<String>('firstname', value);
+
+  String? get lastname => getField<String>('lastname');
+  set lastname(String? value) => setField<String>('lastname', value);
+
+  String? get phone => getField<String>('phone');
+  set phone(String? value) => setField<String>('phone', value);
 }

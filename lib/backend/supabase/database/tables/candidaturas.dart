@@ -28,8 +28,8 @@ class CandidaturasRow extends SupabaseDataRow {
   set candidatosDataconfirmacao(DateTime? value) =>
       setField<DateTime>('candidatos_dataconfirmacao', value);
 
-  String get medicosId => getField<String>('medicos_id')!;
-  set medicosId(String value) => setField<String>('medicos_id', value);
+  String get medicoId => getField<String>('medico_id')!;
+  set medicoId(String value) => setField<String>('medico_id', value);
 
   String get vagasId => getField<String>('vagas_id')!;
   set vagasId(String value) => setField<String>('vagas_id', value);
@@ -49,4 +49,7 @@ class CandidaturasRow extends SupabaseDataRow {
 
   int get vagasValor => getField<int>('vagas_valor')!;
   set vagasValor(int value) => setField<int>('vagas_valor', value);
+
+  String? get medicosId => getField<String>('medicos_id');
+  set medicosId(String? value) => setField<String>('medicos_id', value);
 }

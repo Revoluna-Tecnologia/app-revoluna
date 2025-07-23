@@ -61,8 +61,8 @@ class PerfilModel extends FlutterFlowModel<PerfilWidget> {
   List<MedicosRow>? queryMedicos;
   // Model for BackTopBar component.
   late BackTopBarModel backTopBarModel;
-  bool isDataUploading1 = false;
-  FFUploadedFile uploadedLocalFile1 =
+  bool isDataUploading_uploadedPic = false;
+  FFUploadedFile uploadedLocalFile_uploadedPic =
       FFUploadedFile(bytes: Uint8List.fromList([]));
 
   // State field(s) for RadioButton widget.
@@ -124,7 +124,7 @@ class PerfilModel extends FlutterFlowModel<PerfilWidget> {
   // State field(s) for BirthDate widget.
   FocusNode? birthDateFocusNode;
   TextEditingController? birthDateTextController;
-  final birthDateMask = MaskTextInputFormatter(mask: '##/##/####');
+  late MaskTextInputFormatter birthDateMask;
   String? Function(BuildContext, String?)? birthDateTextControllerValidator;
   String? _birthDateTextControllerValidator(BuildContext context, String? val) {
     if (val == null || val.isEmpty) {
@@ -142,7 +142,7 @@ class PerfilModel extends FlutterFlowModel<PerfilWidget> {
   // State field(s) for CPF widget.
   FocusNode? cpfFocusNode;
   TextEditingController? cpfTextController;
-  final cpfMask = MaskTextInputFormatter(mask: '###.###.###-##');
+  late MaskTextInputFormatter cpfMask;
   String? Function(BuildContext, String?)? cpfTextControllerValidator;
   String? _cpfTextControllerValidator(BuildContext context, String? val) {
     if (val == null || val.isEmpty) {
@@ -173,10 +173,12 @@ class PerfilModel extends FlutterFlowModel<PerfilWidget> {
   String? Function(BuildContext, String?)? rqeTextControllerValidator;
   // State field(s) for Checkbox widget.
   bool? checkboxValue;
-  bool isDataUploading2 = false;
-  FFUploadedFile uploadedLocalFile2 =
+  // Stores action output result for [Backend Call - API (deleteUser)] action in Button widget.
+  ApiCallResponse? deletedUser;
+  bool isDataUploading_uploadedPicSupa = false;
+  FFUploadedFile uploadedLocalFile_uploadedPicSupa =
       FFUploadedFile(bytes: Uint8List.fromList([]));
-  String uploadedFileUrl2 = '';
+  String uploadedFileUrl_uploadedPicSupa = '';
 
   // Stores action output result for [Backend Call - Update Row(s)] action in Button widget.
   List<UserProfileRow>? updateProfile1;

@@ -66,7 +66,7 @@ class Cadastro2Model extends FlutterFlowModel<Cadastro2Widget> {
   // State field(s) for CPF widget.
   FocusNode? cpfFocusNode;
   TextEditingController? cpfTextController;
-  final cpfMask = MaskTextInputFormatter(mask: '###.###.###-##');
+  late MaskTextInputFormatter cpfMask;
   String? Function(BuildContext, String?)? cpfTextControllerValidator;
   String? _cpfTextControllerValidator(BuildContext context, String? val) {
     if (val == null || val.isEmpty) {
@@ -105,10 +105,6 @@ class Cadastro2Model extends FlutterFlowModel<Cadastro2Widget> {
   // State field(s) for dropdownEspecialidades widget.
   int? dropdownEspecialidadesValue;
   FormFieldController<int>? dropdownEspecialidadesValueController;
-  // State field(s) for RQE widget.
-  FocusNode? rqeFocusNode;
-  TextEditingController? rqeTextController;
-  String? Function(BuildContext, String?)? rqeTextControllerValidator;
   // Stores action output result for [Custom Action - isValidCPF] action in Button widget.
   bool? isCpfValid;
   // Stores action output result for [Backend Call - API (getcpf)] action in Button widget.
@@ -135,8 +131,5 @@ class Cadastro2Model extends FlutterFlowModel<Cadastro2Widget> {
 
     crmFocusNode?.dispose();
     crmTextController?.dispose();
-
-    rqeFocusNode?.dispose();
-    rqeTextController?.dispose();
   }
 }

@@ -1,15 +1,20 @@
 import '/backend/supabase/supabase.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/components/header/header_widget.dart';
-import '/components/vagas/card_vagas/card_vagas_widget.dart';
-import '/components/vagas/vaga_bottom_sheet/vaga_bottom_sheet_widget.dart';
+import '/components/loading/header_loading/header_loading_widget.dart';
+import '/components/loading/lista_explorar_loading/lista_explorar_loading_widget.dart';
+import '/components/loading/pages/explora_loading/explora_loading_widget.dart';
+import '/components/vagas/card_vagas_slim/card_vagas_slim_widget.dart';
+import '/components/vagas/empty_list/empty_list_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/pages/other/vaga_bottom_sheet/vaga_bottom_sheet_widget.dart';
 import 'dart:ui';
-import 'dart:async';
+import '/actions/actions.dart' as action_blocks;
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -30,11 +35,16 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
   late ExplorarModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  LatLng? currentUserLocationValue;
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => ExplorarModel());
+
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Explorar'});
+    getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0), cached: true)
+        .then((loc) => safeSetState(() => currentUserLocationValue = loc));
   }
 
   @override
@@ -46,1528 +56,1610 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<EspecialidadesRow>>(
-      future: (_model.requestCompleter2 ??= Completer<List<EspecialidadesRow>>()
-            ..complete(EspecialidadesTable().queryRows(
-              queryFn: (q) => q,
-            )))
-          .future,
-      builder: (context, snapshot) {
-        // Customize what your widget looks like when it's loading.
-        if (!snapshot.hasData) {
-          return Scaffold(
-            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-            body: Center(
-              child: SizedBox(
-                width: 50.0,
-                height: 50.0,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    FlutterFlowTheme.of(context).primary,
-                  ),
-                ),
+    if (currentUserLocationValue == null) {
+      return Container(
+        color: FlutterFlowTheme.of(context).primaryBackground,
+        child: Center(
+          child: SizedBox(
+            width: 50.0,
+            height: 50.0,
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                FlutterFlowTheme.of(context).primary,
               ),
             ),
-          );
-        }
-        List<EspecialidadesRow> explorarEspecialidadesRowList = snapshot.data!;
+          ),
+        ),
+      );
+    }
 
-        return GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
-          child: Scaffold(
-            key: scaffoldKey,
-            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-            endDrawer: Container(
-              width: MediaQuery.sizeOf(context).width * 0.8,
-              child: Drawer(
-                child: wrapWithModel(
-                  model: _model.drawerMenuModel,
-                  updateCallback: () => safeSetState(() {}),
-                  child: DrawerMenuWidget(),
-                ),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        endDrawer: Container(
+          width: MediaQuery.sizeOf(context).width * 0.8,
+          child: Drawer(
+            child: wrapWithModel(
+              model: _model.drawerMenuModel,
+              updateCallback: () => safeSetState(() {}),
+              child: DrawerMenuWidget(),
+            ),
+          ),
+        ),
+        body: SafeArea(
+          top: true,
+          child: FutureBuilder<List<VwVagasCandidaturasRow>>(
+            future: FFAppState().vagasCandidaturas(
+              requestFn: () => VwVagasCandidaturasTable().queryRows(
+                queryFn: (q) => q,
               ),
             ),
-            body: SafeArea(
-              top: true,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).primaryBackground,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 4.0,
-                          color: Color(0x26A369ED),
-                          offset: Offset(
+            builder: (context, snapshot) {
+              // Customize what your widget looks like when it's loading.
+              if (!snapshot.hasData) {
+                return ExploraLoadingWidget();
+              }
+              List<VwVagasCandidaturasRow> containerVwVagasCandidaturasRowList =
+                  snapshot.data!;
+
+              return Container(
+                decoration: BoxDecoration(),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                          valueOrDefault<double>(
+                            FFAppConstants.doubleGap,
                             0.0,
-                            6.0,
                           ),
-                          spreadRadius: 2.0,
-                        )
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              valueOrDefault<double>(
-                                FFAppConstants.doubleGap,
-                                0.0,
-                              ),
-                              valueOrDefault<double>(
-                                FFAppConstants.doubleGap,
-                                0.0,
-                              ),
-                              valueOrDefault<double>(
-                                FFAppConstants.doubleGap,
-                                0.0,
-                              ),
-                              0.0),
-                          child: wrapWithModel(
+                          valueOrDefault<double>(
+                            FFAppConstants.doubleGap,
+                            0.0,
+                          ),
+                          valueOrDefault<double>(
+                            FFAppConstants.doubleGap,
+                            0.0,
+                          ),
+                          0.0),
+                      child: FutureBuilder<List<EstadosBrasilRow>>(
+                        future: FFAppState().estados(
+                          requestFn: () => EstadosBrasilTable().queryRows(
+                            queryFn: (q) => q,
+                          ),
+                        ),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return HeaderLoadingWidget();
+                          }
+                          List<EstadosBrasilRow> headerEstadosBrasilRowList =
+                              snapshot.data!;
+
+                          return wrapWithModel(
                             model: _model.headerModel,
                             updateCallback: () => safeSetState(() {}),
-                            child: HeaderWidget(),
-                          ),
-                        ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Container(
-                                width: MediaQuery.sizeOf(context).width * 0.2,
-                                decoration: BoxDecoration(),
-                                child: Stack(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          FFIcons.klayers,
-                                          color: _model.shiftFilter.length == 5
-                                              ? FlutterFlowTheme.of(context)
-                                                  .tertiary
-                                              : FlutterFlowTheme.of(context)
-                                                  .accent3,
-                                          size: 25.0,
-                                        ),
-                                        Text(
-                                          'Todas',
-                                          textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
-                                              .labelMedium
-                                              .override(
-                                                font: GoogleFonts.geologica(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontStyle,
-                                                ),
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                      ].divide(SizedBox(
-                                          height: FFAppConstants.halfGap)),
-                                    ),
-                                    FFButtonWidget(
-                                      onPressed: () async {
-                                        _model.shiftFilter = [
-                                          'Diurno',
-                                          'Noturno',
-                                          'Cinderela',
-                                          'Meio período (manhã)',
-                                          'Meio período (tarde)'
-                                        ].toList().cast<String>();
-                                        safeSetState(() {});
-                                        safeSetState(() =>
-                                            _model.requestCompleter1 = null);
-                                        await _model.waitForRequestCompleted1(
-                                            maxWait: 2);
-                                      },
-                                      text: '',
-                                      options: FFButtonOptions(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height:
-                                            MediaQuery.sizeOf(context).height *
-                                                0.06,
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        iconPadding:
-                                            EdgeInsetsDirectional.fromSTEB(
-                                                0.0, 0.0, 0.0, 0.0),
-                                        color: Color(0x00A369ED),
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .titleSmall
-                                            .override(
-                                              font: GoogleFonts.geologica(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .fontStyle,
-                                              ),
-                                              color: Colors.white,
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .fontStyle,
-                                            ),
-                                        elevation: 0.0,
-                                        borderRadius: BorderRadius.circular(
-                                            valueOrDefault<double>(
-                                          FFAppConstants.borderM,
-                                          0.0,
-                                        )),
-                                      ),
-                                      showLoadingIndicator: false,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.sizeOf(context).width * 0.2,
-                                decoration: BoxDecoration(),
-                                child: Stack(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          FFIcons.ksun,
-                                          color: (_model.shiftFilter.length ==
-                                                      1) &&
-                                                  (_model.shiftFilter
-                                                          .lastOrNull ==
-                                                      'Diurno')
-                                              ? FlutterFlowTheme.of(context)
-                                                  .tertiary
-                                              : FlutterFlowTheme.of(context)
-                                                  .accent3,
-                                          size: 25.0,
-                                        ),
-                                        Text(
-                                          'Diurno',
-                                          textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
-                                              .labelMedium
-                                              .override(
-                                                font: GoogleFonts.geologica(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontStyle,
-                                                ),
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                      ].divide(SizedBox(
-                                          height: FFAppConstants.halfGap)),
-                                    ),
-                                    Align(
-                                      alignment: AlignmentDirectional(0.0, 0.0),
-                                      child: FFButtonWidget(
-                                        onPressed: () async {
-                                          _model.shiftFilter = ['Diurno']
-                                              .toList()
-                                              .cast<String>();
-                                          safeSetState(() {});
-                                          safeSetState(() =>
-                                              _model.requestCompleter1 = null);
-                                          await _model.waitForRequestCompleted1(
-                                              maxWait: 2);
-                                        },
-                                        text: '',
-                                        options: FFButtonOptions(
-                                          width:
-                                              MediaQuery.sizeOf(context).width *
-                                                  1.0,
-                                          height: MediaQuery.sizeOf(context)
-                                                  .height *
-                                              0.06,
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 0.0, 0.0),
-                                          iconPadding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 0.0, 0.0),
-                                          color: Color(0x00A369ED),
-                                          textStyle: FlutterFlowTheme.of(
-                                                  context)
-                                              .titleSmall
-                                              .override(
-                                                font: GoogleFonts.geologica(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleSmall
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleSmall
-                                                          .fontStyle,
-                                                ),
-                                                color: Colors.white,
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .fontStyle,
-                                              ),
-                                          elevation: 0.0,
-                                          borderRadius: BorderRadius.circular(
-                                              valueOrDefault<double>(
-                                            FFAppConstants.borderM,
-                                            0.0,
-                                          )),
-                                        ),
-                                        showLoadingIndicator: false,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.sizeOf(context).width * 0.2,
-                                decoration: BoxDecoration(),
-                                child: Stack(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          FFIcons.kmoon,
-                                          color: (_model.shiftFilter.length ==
-                                                      1) &&
-                                                  (_model.shiftFilter
-                                                          .lastOrNull ==
-                                                      'Noturno')
-                                              ? FlutterFlowTheme.of(context)
-                                                  .tertiary
-                                              : FlutterFlowTheme.of(context)
-                                                  .accent3,
-                                          size: 25.0,
-                                        ),
-                                        Text(
-                                          'Noturno',
-                                          textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
-                                              .labelMedium
-                                              .override(
-                                                font: GoogleFonts.geologica(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontStyle,
-                                                ),
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                      ].divide(SizedBox(
-                                          height: FFAppConstants.halfGap)),
-                                    ),
-                                    FFButtonWidget(
-                                      onPressed: () async {
-                                        _model.shiftFilter =
-                                            ['Noturno'].toList().cast<String>();
-                                        safeSetState(() {});
-                                        safeSetState(() =>
-                                            _model.requestCompleter1 = null);
-                                        await _model.waitForRequestCompleted1(
-                                            maxWait: 2);
-                                      },
-                                      text: '',
-                                      options: FFButtonOptions(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height:
-                                            MediaQuery.sizeOf(context).height *
-                                                0.06,
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        iconPadding:
-                                            EdgeInsetsDirectional.fromSTEB(
-                                                0.0, 0.0, 0.0, 0.0),
-                                        color: Color(0x00A369ED),
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .titleSmall
-                                            .override(
-                                              font: GoogleFonts.geologica(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .fontStyle,
-                                              ),
-                                              color: Colors.white,
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .fontStyle,
-                                            ),
-                                        elevation: 0.0,
-                                        borderRadius: BorderRadius.circular(
-                                            valueOrDefault<double>(
-                                          FFAppConstants.borderM,
-                                          0.0,
-                                        )),
-                                      ),
-                                      showLoadingIndicator: false,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.sizeOf(context).width * 0.2,
-                                decoration: BoxDecoration(),
-                                child: Stack(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          FFIcons.kcinderela,
-                                          color: (_model.shiftFilter.length ==
-                                                      1) &&
-                                                  (_model.shiftFilter
-                                                          .lastOrNull ==
-                                                      'Cinderela')
-                                              ? FlutterFlowTheme.of(context)
-                                                  .tertiary
-                                              : FlutterFlowTheme.of(context)
-                                                  .accent3,
-                                          size: 25.0,
-                                        ),
-                                        Text(
-                                          'Cinderela',
-                                          textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
-                                              .labelMedium
-                                              .override(
-                                                font: GoogleFonts.geologica(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontStyle,
-                                                ),
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                      ].divide(SizedBox(
-                                          height: FFAppConstants.halfGap)),
-                                    ),
-                                    FFButtonWidget(
-                                      onPressed: () async {
-                                        _model.shiftFilter = ['Cinderela']
-                                            .toList()
-                                            .cast<String>();
-                                        safeSetState(() {});
-                                        safeSetState(() =>
-                                            _model.requestCompleter1 = null);
-                                        await _model.waitForRequestCompleted1();
-                                      },
-                                      text: '',
-                                      options: FFButtonOptions(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height:
-                                            MediaQuery.sizeOf(context).height *
-                                                0.06,
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        iconPadding:
-                                            EdgeInsetsDirectional.fromSTEB(
-                                                0.0, 0.0, 0.0, 0.0),
-                                        color: Color(0x00A369ED),
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .titleSmall
-                                            .override(
-                                              font: GoogleFonts.geologica(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .fontStyle,
-                                              ),
-                                              color: Colors.white,
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .fontStyle,
-                                            ),
-                                        elevation: 0.0,
-                                        borderRadius: BorderRadius.circular(
-                                            valueOrDefault<double>(
-                                          FFAppConstants.borderM,
-                                          0.0,
-                                        )),
-                                      ),
-                                      showLoadingIndicator: false,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.sizeOf(context).width * 0.2,
-                                decoration: BoxDecoration(),
-                                child: Stack(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          FFIcons.ksunrise,
-                                          color: (_model.shiftFilter.length ==
-                                                      1) &&
-                                                  (_model.shiftFilter
-                                                          .lastOrNull ==
-                                                      'Meio período (manhã)')
-                                              ? FlutterFlowTheme.of(context)
-                                                  .tertiary
-                                              : FlutterFlowTheme.of(context)
-                                                  .accent3,
-                                          size: 25.0,
-                                        ),
-                                        Text(
-                                          'Manhã',
-                                          textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
-                                              .labelMedium
-                                              .override(
-                                                font: GoogleFonts.geologica(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontStyle,
-                                                ),
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                      ].divide(SizedBox(
-                                          height: FFAppConstants.halfGap)),
-                                    ),
-                                    FFButtonWidget(
-                                      onPressed: () async {
-                                        _model.shiftFilter = [
-                                          'Meio período (manhã)'
-                                        ].toList().cast<String>();
-                                        safeSetState(() {});
-                                        safeSetState(() =>
-                                            _model.requestCompleter1 = null);
-                                        await _model.waitForRequestCompleted1();
-                                      },
-                                      text: '',
-                                      options: FFButtonOptions(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height:
-                                            MediaQuery.sizeOf(context).height *
-                                                0.06,
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        iconPadding:
-                                            EdgeInsetsDirectional.fromSTEB(
-                                                0.0, 0.0, 0.0, 0.0),
-                                        color: Color(0x00A369ED),
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .titleSmall
-                                            .override(
-                                              font: GoogleFonts.geologica(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .fontStyle,
-                                              ),
-                                              color: Colors.white,
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .fontStyle,
-                                            ),
-                                        elevation: 0.0,
-                                        borderRadius: BorderRadius.circular(
-                                            valueOrDefault<double>(
-                                          FFAppConstants.borderM,
-                                          0.0,
-                                        )),
-                                      ),
-                                      showLoadingIndicator: false,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.sizeOf(context).width * 0.2,
-                                decoration: BoxDecoration(),
-                                child: Stack(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          FFIcons.ksunset,
-                                          color: (_model.shiftFilter.length ==
-                                                      1) &&
-                                                  (_model.shiftFilter
-                                                          .lastOrNull ==
-                                                      'Meio período (tarde)')
-                                              ? FlutterFlowTheme.of(context)
-                                                  .tertiary
-                                              : FlutterFlowTheme.of(context)
-                                                  .accent3,
-                                          size: 25.0,
-                                        ),
-                                        Text(
-                                          'Tarde',
-                                          textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
-                                              .labelMedium
-                                              .override(
-                                                font: GoogleFonts.geologica(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontStyle,
-                                                ),
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                      ].divide(SizedBox(
-                                          height: FFAppConstants.halfGap)),
-                                    ),
-                                    FFButtonWidget(
-                                      onPressed: () async {
-                                        _model.shiftFilter = [
-                                          'Meio período (tarde)'
-                                        ].toList().cast<String>();
-                                        safeSetState(() {});
-                                        safeSetState(() =>
-                                            _model.requestCompleter1 = null);
-                                        await _model.waitForRequestCompleted1();
-                                      },
-                                      text: '',
-                                      options: FFButtonOptions(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height:
-                                            MediaQuery.sizeOf(context).height *
-                                                0.06,
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        iconPadding:
-                                            EdgeInsetsDirectional.fromSTEB(
-                                                0.0, 0.0, 0.0, 0.0),
-                                        color: Color(0x00A369ED),
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .titleSmall
-                                            .override(
-                                              font: GoogleFonts.geologica(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .fontStyle,
-                                              ),
-                                              color: Colors.white,
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .fontStyle,
-                                            ),
-                                        elevation: 0.0,
-                                        borderRadius: BorderRadius.circular(
-                                            valueOrDefault<double>(
-                                          FFAppConstants.borderM,
-                                          0.0,
-                                        )),
-                                      ),
-                                      showLoadingIndicator: false,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ]
-                                .divide(SizedBox(width: FFAppConstants.Gap))
-                                .addToEnd(
-                                    SizedBox(width: FFAppConstants.doubleGap)),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              valueOrDefault<double>(
-                                FFAppConstants.doubleGap,
-                                0.0,
-                              ),
+                            child: HeaderWidget(
+                              estados: headerEstadosBrasilRowList,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 4.0,
+                            color: Color(0x26A369ED),
+                            offset: Offset(
                               0.0,
-                              valueOrDefault<double>(
-                                FFAppConstants.doubleGap,
+                              6.0,
+                            ),
+                            spreadRadius: 2.0,
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                valueOrDefault<double>(
+                                  FFAppConstants.doubleGap,
+                                  0.0,
+                                ),
                                 0.0,
-                              ),
-                              0.0),
-                          child: Stack(
-                            alignment: AlignmentDirectional(1.0, 0.0),
-                            children: [
-                              Align(
-                                alignment: AlignmentDirectional(-1.0, 0.0),
-                                child: Container(
-                                  height:
-                                      MediaQuery.sizeOf(context).height * 0.045,
-                                  decoration: BoxDecoration(),
-                                  child: FlutterFlowDropDown<int>(
-                                    controller:
-                                        _model.dropDownValueController ??=
-                                            FormFieldController<int>(null),
-                                    options: List<int>.from(
-                                        explorarEspecialidadesRowList
-                                            .map((e) => e.especialidadeIndex)
-                                            .withoutNulls
-                                            .toList()
-                                            .sortedList(
-                                                keyOf: (e) => e, desc: false)),
-                                    optionLabels: explorarEspecialidadesRowList
-                                        .map((e) => e.especialidadeNome)
-                                        .withoutNulls
-                                        .toList(),
-                                    onChanged: (val) async {
-                                      safeSetState(
-                                          () => _model.dropDownValue = val);
-                                      _model.clearDropColor =
-                                          FlutterFlowTheme.of(context).primary;
-                                      _model.hideTable = false;
-                                      safeSetState(() {});
-                                    },
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.8,
-                                    maxHeight:
-                                        MediaQuery.sizeOf(context).height *
-                                            0.45,
-                                    searchHintTextStyle:
-                                        FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .override(
-                                              font: GoogleFonts.geologica(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
-                                              ),
-                                              fontSize: 14.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelMedium
-                                                      .fontStyle,
-                                              lineHeight: 1.0,
-                                            ),
-                                    searchTextStyle:
-                                        FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              font: GoogleFonts.geologica(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontStyle,
-                                              ),
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontStyle,
-                                            ),
-                                    textStyle: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          font: GoogleFonts.geologica(
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontStyle,
-                                          ),
-                                          letterSpacing: 0.0,
+                                valueOrDefault<double>(
+                                  FFAppConstants.doubleGap,
+                                  0.0,
+                                ),
+                                0.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Explorar',
+                                  style: FlutterFlowTheme.of(context)
+                                      .titleLarge
+                                      .override(
+                                        font: GoogleFonts.geologica(
                                           fontWeight:
                                               FlutterFlowTheme.of(context)
-                                                  .bodyMedium
+                                                  .titleLarge
                                                   .fontWeight,
                                           fontStyle:
                                               FlutterFlowTheme.of(context)
-                                                  .bodyMedium
+                                                  .titleLarge
                                                   .fontStyle,
-                                          lineHeight: 1.0,
                                         ),
-                                    hintText: 'Todas especialidades',
-                                    searchHintText: 'Pesquisar...',
-                                    searchCursorColor:
-                                        FlutterFlowTheme.of(context)
-                                            .secondaryBackground,
-                                    icon: Icon(
-                                      Icons.keyboard_arrow_down_rounded,
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
-                                      size: 35.0,
-                                    ),
-                                    fillColor: FlutterFlowTheme.of(context)
-                                        .primaryBackground,
-                                    elevation: 2.0,
-                                    borderColor:
-                                        FlutterFlowTheme.of(context).secondary,
-                                    borderWidth: 0.0,
-                                    borderRadius: FFAppConstants.borderS,
-                                    margin: EdgeInsetsDirectional.fromSTEB(
-                                        valueOrDefault<double>(
-                                          FFAppConstants.Gap,
-                                          0.0,
-                                        ),
-                                        0.0,
-                                        valueOrDefault<double>(
-                                          FFAppConstants.Gap,
-                                          0.0,
-                                        ),
-                                        0.0),
-                                    hidesUnderline: true,
-                                    isOverButton: false,
-                                    isSearchable: true,
-                                    isMultiSelect: false,
-                                  ),
+                                        color: FlutterFlowTheme.of(context)
+                                            .primary,
+                                        letterSpacing: 0.0,
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .titleLarge
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .titleLarge
+                                            .fontStyle,
+                                      ),
                                 ),
-                              ),
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  safeSetState(() {
-                                    _model.dropDownValueController?.reset();
-                                  });
-                                  _model.clearDropColor =
-                                      FlutterFlowTheme.of(context).accent2;
-                                  _model.hideTable = true;
-                                  safeSetState(() {});
-                                },
-                                child: Icon(
-                                  FFIcons.kxSquare,
-                                  color: _model.clearDropColor,
-                                  size: 24.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              valueOrDefault<double>(
-                                FFAppConstants.Gap,
-                                0.0,
-                              ),
-                              0.0,
-                              valueOrDefault<double>(
-                                FFAppConstants.Gap,
-                                0.0,
-                              ),
-                              0.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  FFButtonWidget(
-                                    onPressed: () async {
-                                      if (_model.typeFilter
-                                          .where((e) => e == 'Fixo')
-                                          .toList()
-                                          .isNotEmpty) {
-                                        _model.removeFromTypeFilter('Fixo');
-                                        safeSetState(() {});
-                                      } else {
-                                        _model.addToTypeFilter('Fixo');
-                                        safeSetState(() {});
-                                      }
-
-                                      safeSetState(() =>
-                                          _model.requestCompleter1 = null);
-                                      await _model.waitForRequestCompleted1(
-                                          maxWait: 2);
-                                    },
-                                    text: 'Fixo',
-                                    icon: Icon(
-                                      FFIcons.kbriefcase,
-                                      color: _model.typeFilter
-                                              .where((e) => e == 'Fixo')
-                                              .toList()
-                                              .isNotEmpty
-                                          ? FlutterFlowTheme.of(context).primary
-                                          : FlutterFlowTheme.of(context)
-                                              .accent2,
-                                      size: 15.0,
-                                    ),
-                                    options: FFButtonOptions(
-                                      height:
-                                          MediaQuery.sizeOf(context).height *
-                                              0.03,
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 0.0),
-                                      iconPadding:
-                                          EdgeInsetsDirectional.fromSTEB(
-                                              0.0, 0.0, 0.0, 0.0),
-                                      color: Color(0x00A369ED),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .labelSmall
-                                          .override(
-                                            font: GoogleFonts.geologica(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelSmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelSmall
-                                                      .fontStyle,
-                                            ),
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelSmall
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelSmall
-                                                    .fontStyle,
-                                          ),
-                                      elevation: 0.0,
-                                      borderRadius: BorderRadius.circular(
-                                          valueOrDefault<double>(
-                                        FFAppConstants.borderS,
-                                        0.0,
-                                      )),
-                                    ),
-                                    showLoadingIndicator: false,
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  FFButtonWidget(
-                                    onPressed: () async {
-                                      if (_model.typeFilter
-                                          .where((e) => e == 'Cobertura')
-                                          .toList()
-                                          .isNotEmpty) {
-                                        _model
-                                            .removeFromTypeFilter('Cobertura');
-                                        safeSetState(() {});
-                                      } else {
-                                        _model.addToTypeFilter('Cobertura');
-                                        safeSetState(() {});
-                                      }
-
-                                      safeSetState(() =>
-                                          _model.requestCompleter1 = null);
-                                      await _model.waitForRequestCompleted1(
-                                          maxWait: 2);
-                                    },
-                                    text: 'Cobertura',
-                                    icon: Icon(
-                                      FFIcons.krefreshCw,
-                                      color: _model.typeFilter
-                                              .where((e) => e == 'Cobertura')
-                                              .toList()
-                                              .isNotEmpty
-                                          ? FlutterFlowTheme.of(context).primary
-                                          : FlutterFlowTheme.of(context)
-                                              .accent2,
-                                      size: 15.0,
-                                    ),
-                                    options: FFButtonOptions(
-                                      height:
-                                          MediaQuery.sizeOf(context).height *
-                                              0.03,
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 0.0),
-                                      iconPadding:
-                                          EdgeInsetsDirectional.fromSTEB(
-                                              0.0, 0.0, 0.0, 0.0),
-                                      color: Color(0x00A369ED),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .labelSmall
-                                          .override(
-                                            font: GoogleFonts.geologica(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelSmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelSmall
-                                                      .fontStyle,
-                                            ),
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelSmall
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelSmall
-                                                    .fontStyle,
-                                          ),
-                                      elevation: 0.0,
-                                      borderRadius: BorderRadius.circular(
-                                          valueOrDefault<double>(
-                                        FFAppConstants.borderS,
-                                        0.0,
-                                      )),
-                                    ),
-                                    showLoadingIndicator: false,
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  FFButtonWidget(
-                                    onPressed: () async {
-                                      if (_model.typeFilter
-                                          .where((e) => e == 'Ambulatorial')
-                                          .toList()
-                                          .isNotEmpty) {
-                                        _model.removeFromTypeFilter(
-                                            'Ambulatorial');
-                                        safeSetState(() {});
-                                      } else {
-                                        _model.addToTypeFilter('Ambulatorial');
-                                        safeSetState(() {});
-                                      }
-
-                                      safeSetState(() =>
-                                          _model.requestCompleter1 = null);
-                                      await _model.waitForRequestCompleted1(
-                                          maxWait: 2);
-                                    },
-                                    text: 'Ambulatorial',
-                                    icon: Icon(
-                                      Icons.local_hospital_outlined,
-                                      color: _model.typeFilter
-                                              .where((e) => e == 'Ambulatorial')
-                                              .toList()
-                                              .isNotEmpty
-                                          ? FlutterFlowTheme.of(context).primary
-                                          : FlutterFlowTheme.of(context)
-                                              .accent2,
-                                      size: 17.0,
-                                    ),
-                                    options: FFButtonOptions(
-                                      height:
-                                          MediaQuery.sizeOf(context).height *
-                                              0.03,
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 0.0),
-                                      iconPadding:
-                                          EdgeInsetsDirectional.fromSTEB(
-                                              0.0, 0.0, 0.0, 0.0),
-                                      color: Color(0x00A369ED),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .labelSmall
-                                          .override(
-                                            font: GoogleFonts.geologica(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelSmall
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelSmall
-                                                      .fontStyle,
-                                            ),
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelSmall
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelSmall
-                                                    .fontStyle,
-                                          ),
-                                      elevation: 0.0,
-                                      borderRadius: BorderRadius.circular(
-                                          valueOrDefault<double>(
-                                        FFAppConstants.borderS,
-                                        0.0,
-                                      )),
-                                    ),
-                                    showLoadingIndicator: false,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ]
-                          .divide(SizedBox(height: FFAppConstants.doubleGap))
-                          .addToEnd(SizedBox(height: FFAppConstants.doubleGap)),
-                    ),
-                  ),
-                  Expanded(
-                    child: FutureBuilder<List<VagasCompletoRow>>(
-                      future: (_model.requestCompleter1 ??=
-                              Completer<List<VagasCompletoRow>>()
-                                ..complete(VagasCompletoTable().queryRows(
-                                  queryFn: (q) => q
-                                      .inFilterOrNull(
-                                        'periodo_nome',
-                                        _model.shiftFilter,
-                                      )
-                                      .eqOrNull(
-                                        'vagas_status',
-                                        'aberta',
-                                      )
-                                      .inFilterOrNull(
-                                        'tipo_nome',
-                                        _model.typeFilter,
-                                      )
-                                      .order('vagas_createdate'),
-                                )))
-                          .future,
-                      builder: (context, snapshot) {
-                        // Customize what your widget looks like when it's loading.
-                        if (!snapshot.hasData) {
-                          return Center(
-                            child: SizedBox(
-                              width: 50.0,
-                              height: 50.0,
-                              child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  FlutterFlowTheme.of(context).primary,
-                                ),
-                              ),
+                              ],
                             ),
-                          );
-                        }
-                        List<VagasCompletoRow> containerVagasCompletoRowList =
-                            snapshot.data!;
-
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
                           ),
-                          child: Visibility(
-                            visible: true,
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                valueOrDefault<double>(
+                                  FFAppConstants.Gap,
+                                  0.0,
+                                ),
+                                0.0,
+                                valueOrDefault<double>(
+                                  FFAppConstants.Gap,
+                                  0.0,
+                                ),
+                                0.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  width:
+                                      MediaQuery.sizeOf(context).width * 0.16,
+                                  decoration: BoxDecoration(),
+                                  child: Stack(
+                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    children: [
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                FFIcons.kclock,
+                                                color: _model.sortBy ==
+                                                        'vagas_createdate'
+                                                    ? FlutterFlowTheme.of(
+                                                            context)
+                                                        .tertiary
+                                                    : FlutterFlowTheme.of(
+                                                            context)
+                                                        .accent3,
+                                                size: 25.0,
+                                              ),
+                                              if (_model.sortBy ==
+                                                  'vagas_createdate')
+                                                Builder(
+                                                  builder: (context) {
+                                                    if (_model.ascendingOrder) {
+                                                      return Icon(
+                                                        Icons.north,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .accent3,
+                                                        size: 16.0,
+                                                      );
+                                                    } else {
+                                                      return Icon(
+                                                        Icons.south,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .accent3,
+                                                        size: 16.0,
+                                                      );
+                                                    }
+                                                  },
+                                                ),
+                                            ],
+                                          ),
+                                          Text(
+                                            'Publicação',
+                                            textAlign: TextAlign.center,
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .override(
+                                                  font: GoogleFonts.geologica(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  letterSpacing: 0.0,
+                                                  fontWeight:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelMedium
+                                                          .fontWeight,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelMedium
+                                                          .fontStyle,
+                                                ),
+                                          ),
+                                        ].divide(SizedBox(
+                                            height: FFAppConstants.halfGap)),
+                                      ),
+                                      if (true)
+                                        FFButtonWidget(
+                                          onPressed: () async {
+                                            logFirebaseEvent(
+                                                'EXPLORAR_PAGE__BTN_ON_TAP');
+                                            if (_model.sortBy ==
+                                                'vagas_createdate') {
+                                              logFirebaseEvent(
+                                                  'Button_update_page_state');
+                                              _model.ascendingOrder =
+                                                  !_model.ascendingOrder;
+                                              safeSetState(() {});
+                                            } else {
+                                              logFirebaseEvent(
+                                                  'Button_update_page_state');
+                                              _model.ascendingOrder = false;
+                                              safeSetState(() {});
+                                            }
+
+                                            if (_model.ascendingOrder) {
+                                              logFirebaseEvent(
+                                                  'Button_update_page_state');
+                                              _model.variableQuery =
+                                                  containerVwVagasCandidaturasRowList
+                                                      .sortedList(
+                                                          keyOf: (e) => e
+                                                              .vagasCreatedate!,
+                                                          desc: false)
+                                                      .toList()
+                                                      .cast<
+                                                          VwVagasCandidaturasRow>();
+                                              _model.sortBy =
+                                                  'vagas_createdate';
+                                              safeSetState(() {});
+                                            } else {
+                                              logFirebaseEvent(
+                                                  'Button_update_page_state');
+                                              _model.variableQuery =
+                                                  containerVwVagasCandidaturasRowList
+                                                      .sortedList(
+                                                          keyOf: (e) => e
+                                                              .vagasCreatedate!,
+                                                          desc: true)
+                                                      .toList()
+                                                      .cast<
+                                                          VwVagasCandidaturasRow>();
+                                              _model.sortBy =
+                                                  'vagas_createdate';
+                                              safeSetState(() {});
+                                            }
+                                          },
+                                          text: '',
+                                          options: FFButtonOptions(
+                                            width: MediaQuery.sizeOf(context)
+                                                    .width *
+                                                1.0,
+                                            height: MediaQuery.sizeOf(context)
+                                                    .height *
+                                                0.06,
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            iconPadding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            color: Color(0x00A369ED),
+                                            textStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmall
+                                                    .override(
+                                                      font:
+                                                          GoogleFonts.geologica(
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .fontStyle,
+                                                      ),
+                                                      color: Colors.white,
+                                                      letterSpacing: 0.0,
+                                                      fontWeight:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .fontWeight,
+                                                      fontStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .fontStyle,
+                                                    ),
+                                            elevation: 0.0,
+                                            borderRadius: BorderRadius.circular(
+                                                valueOrDefault<double>(
+                                              FFAppConstants.borderM,
+                                              0.0,
+                                            )),
+                                          ),
+                                          showLoadingIndicator: false,
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  width:
+                                      MediaQuery.sizeOf(context).width * 0.16,
+                                  decoration: BoxDecoration(),
+                                  child: Stack(
+                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    children: [
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                FFIcons.kcalendar,
+                                                color: _model.sortBy ==
+                                                        'vagas_data'
+                                                    ? FlutterFlowTheme.of(
+                                                            context)
+                                                        .tertiary
+                                                    : FlutterFlowTheme.of(
+                                                            context)
+                                                        .accent3,
+                                                size: 25.0,
+                                              ),
+                                              if (_model.sortBy == 'vagas_data')
+                                                Builder(
+                                                  builder: (context) {
+                                                    if (_model.ascendingOrder) {
+                                                      return Icon(
+                                                        Icons.north,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .accent3,
+                                                        size: 16.0,
+                                                      );
+                                                    } else {
+                                                      return Icon(
+                                                        Icons.south,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .accent3,
+                                                        size: 16.0,
+                                                      );
+                                                    }
+                                                  },
+                                                ),
+                                            ],
+                                          ),
+                                          Text(
+                                            'Data',
+                                            textAlign: TextAlign.center,
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .override(
+                                                  font: GoogleFonts.geologica(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  letterSpacing: 0.0,
+                                                  fontWeight:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelMedium
+                                                          .fontWeight,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelMedium
+                                                          .fontStyle,
+                                                ),
+                                          ),
+                                        ].divide(SizedBox(
+                                            height: FFAppConstants.halfGap)),
+                                      ),
+                                      if (true)
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(0.0, 0.0),
+                                          child: FFButtonWidget(
+                                            onPressed: () async {
+                                              logFirebaseEvent(
+                                                  'EXPLORAR_PAGE__BTN_ON_TAP');
+                                              if (_model.sortBy ==
+                                                  'vagas_data') {
+                                                logFirebaseEvent(
+                                                    'Button_update_page_state');
+                                                _model.ascendingOrder =
+                                                    !_model.ascendingOrder;
+                                                safeSetState(() {});
+                                              } else {
+                                                logFirebaseEvent(
+                                                    'Button_update_page_state');
+                                                _model.ascendingOrder = false;
+                                                safeSetState(() {});
+                                              }
+
+                                              if (_model.ascendingOrder) {
+                                                logFirebaseEvent(
+                                                    'Button_update_page_state');
+                                                _model.variableQuery =
+                                                    containerVwVagasCandidaturasRowList
+                                                        .sortedList(
+                                                            keyOf: (e) =>
+                                                                e.vagasData!,
+                                                            desc: false)
+                                                        .toList()
+                                                        .cast<
+                                                            VwVagasCandidaturasRow>();
+                                                _model.sortBy = 'vagas_data';
+                                                safeSetState(() {});
+                                              } else {
+                                                logFirebaseEvent(
+                                                    'Button_update_page_state');
+                                                _model.variableQuery =
+                                                    containerVwVagasCandidaturasRowList
+                                                        .sortedList(
+                                                            keyOf: (e) =>
+                                                                e.vagasData!,
+                                                            desc: true)
+                                                        .toList()
+                                                        .cast<
+                                                            VwVagasCandidaturasRow>();
+                                                _model.sortBy = 'vagas_data';
+                                                safeSetState(() {});
+                                              }
+                                            },
+                                            text: '',
+                                            options: FFButtonOptions(
+                                              width: MediaQuery.sizeOf(context)
+                                                      .width *
+                                                  1.0,
+                                              height: MediaQuery.sizeOf(context)
+                                                      .height *
+                                                  0.06,
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                              iconPadding: EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                              color: Color(0x00A369ED),
+                                              textStyle: FlutterFlowTheme.of(
+                                                      context)
+                                                  .titleSmall
+                                                  .override(
+                                                    font: GoogleFonts.geologica(
+                                                      fontWeight:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .fontWeight,
+                                                      fontStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .fontStyle,
+                                                    ),
+                                                    color: Colors.white,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .titleSmall
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .titleSmall
+                                                            .fontStyle,
+                                                  ),
+                                              elevation: 0.0,
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      valueOrDefault<double>(
+                                                FFAppConstants.borderM,
+                                                0.0,
+                                              )),
+                                            ),
+                                            showLoadingIndicator: false,
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  width:
+                                      MediaQuery.sizeOf(context).width * 0.16,
+                                  decoration: BoxDecoration(),
+                                  child: Stack(
+                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    children: [
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                FFIcons.kdollarSign,
+                                                color: _model.sortBy ==
+                                                        'vagas_valor'
+                                                    ? FlutterFlowTheme.of(
+                                                            context)
+                                                        .tertiary
+                                                    : FlutterFlowTheme.of(
+                                                            context)
+                                                        .accent3,
+                                                size: 25.0,
+                                              ),
+                                              if (_model.sortBy ==
+                                                  'vagas_valor')
+                                                Builder(
+                                                  builder: (context) {
+                                                    if (_model.ascendingOrder) {
+                                                      return Icon(
+                                                        Icons.north,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .accent3,
+                                                        size: 16.0,
+                                                      );
+                                                    } else {
+                                                      return Icon(
+                                                        Icons.south,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .accent3,
+                                                        size: 16.0,
+                                                      );
+                                                    }
+                                                  },
+                                                ),
+                                            ],
+                                          ),
+                                          Text(
+                                            'Valor',
+                                            textAlign: TextAlign.center,
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .override(
+                                                  font: GoogleFonts.geologica(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  letterSpacing: 0.0,
+                                                  fontWeight:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelMedium
+                                                          .fontWeight,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelMedium
+                                                          .fontStyle,
+                                                ),
+                                          ),
+                                        ].divide(SizedBox(
+                                            height: FFAppConstants.halfGap)),
+                                      ),
+                                      if (true)
+                                        FFButtonWidget(
+                                          onPressed: () async {
+                                            logFirebaseEvent(
+                                                'EXPLORAR_PAGE__BTN_ON_TAP');
+                                            if (_model.sortBy ==
+                                                'vagas_valor') {
+                                              logFirebaseEvent(
+                                                  'Button_update_page_state');
+                                              _model.ascendingOrder =
+                                                  !_model.ascendingOrder;
+                                              safeSetState(() {});
+                                            } else {
+                                              logFirebaseEvent(
+                                                  'Button_update_page_state');
+                                              _model.ascendingOrder = false;
+                                              safeSetState(() {});
+                                            }
+
+                                            if (_model.ascendingOrder) {
+                                              logFirebaseEvent(
+                                                  'Button_update_page_state');
+                                              _model.variableQuery =
+                                                  containerVwVagasCandidaturasRowList
+                                                      .sortedList(
+                                                          keyOf: (e) =>
+                                                              e.vagasValor!,
+                                                          desc: false)
+                                                      .toList()
+                                                      .cast<
+                                                          VwVagasCandidaturasRow>();
+                                              _model.sortBy = 'vagas_valor';
+                                              safeSetState(() {});
+                                            } else {
+                                              logFirebaseEvent(
+                                                  'Button_update_page_state');
+                                              _model.variableQuery =
+                                                  containerVwVagasCandidaturasRowList
+                                                      .sortedList(
+                                                          keyOf: (e) =>
+                                                              e.vagasValor!,
+                                                          desc: true)
+                                                      .toList()
+                                                      .cast<
+                                                          VwVagasCandidaturasRow>();
+                                              _model.sortBy = 'vagas_valor';
+                                              safeSetState(() {});
+                                            }
+                                          },
+                                          text: '',
+                                          options: FFButtonOptions(
+                                            width: MediaQuery.sizeOf(context)
+                                                    .width *
+                                                1.0,
+                                            height: MediaQuery.sizeOf(context)
+                                                    .height *
+                                                0.06,
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            iconPadding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            color: Color(0x00A369ED),
+                                            textStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmall
+                                                    .override(
+                                                      font:
+                                                          GoogleFonts.geologica(
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .fontStyle,
+                                                      ),
+                                                      color: Colors.white,
+                                                      letterSpacing: 0.0,
+                                                      fontWeight:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .fontWeight,
+                                                      fontStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .fontStyle,
+                                                    ),
+                                            elevation: 0.0,
+                                            borderRadius: BorderRadius.circular(
+                                                valueOrDefault<double>(
+                                              FFAppConstants.borderM,
+                                              0.0,
+                                            )),
+                                          ),
+                                          showLoadingIndicator: false,
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  width:
+                                      MediaQuery.sizeOf(context).width * 0.16,
+                                  decoration: BoxDecoration(),
+                                  child: Stack(
+                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    children: [
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            FFIcons.kmapPin,
+                                            color: _model.sortBy == 'location'
+                                                ? FlutterFlowTheme.of(context)
+                                                    .tertiary
+                                                : FlutterFlowTheme.of(context)
+                                                    .accent3,
+                                            size: 25.0,
+                                          ),
+                                          Text(
+                                            'Localidade',
+                                            textAlign: TextAlign.center,
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .override(
+                                                  font: GoogleFonts.geologica(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  letterSpacing: 0.0,
+                                                  fontWeight:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelMedium
+                                                          .fontWeight,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelMedium
+                                                          .fontStyle,
+                                                ),
+                                          ),
+                                        ].divide(SizedBox(
+                                            height: FFAppConstants.halfGap)),
+                                      ),
+                                      if (true)
+                                        FFButtonWidget(
+                                          onPressed: () async {
+                                            logFirebaseEvent(
+                                                'EXPLORAR_PAGE__BTN_ON_TAP');
+                                            currentUserLocationValue =
+                                                await getCurrentUserLocation(
+                                                    defaultLocation:
+                                                        LatLng(0.0, 0.0));
+                                            logFirebaseEvent(
+                                                'Button_update_page_state');
+                                            _model.variableQuery = functions
+                                                .sortByLocation(
+                                                    currentUserLocationValue!,
+                                                    containerVwVagasCandidaturasRowList
+                                                        .toList(),
+                                                    true)
+                                                .toList()
+                                                .cast<VwVagasCandidaturasRow>();
+                                            _model.sortBy = 'location';
+                                            safeSetState(() {});
+                                          },
+                                          text: '',
+                                          options: FFButtonOptions(
+                                            width: MediaQuery.sizeOf(context)
+                                                    .width *
+                                                1.0,
+                                            height: MediaQuery.sizeOf(context)
+                                                    .height *
+                                                0.06,
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            iconPadding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            color: Color(0x00A369ED),
+                                            textStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmall
+                                                    .override(
+                                                      font:
+                                                          GoogleFonts.geologica(
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .fontStyle,
+                                                      ),
+                                                      color: Colors.white,
+                                                      letterSpacing: 0.0,
+                                                      fontWeight:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .fontWeight,
+                                                      fontStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .fontStyle,
+                                                    ),
+                                            elevation: 0.0,
+                                            borderRadius: BorderRadius.circular(
+                                                valueOrDefault<double>(
+                                              FFAppConstants.borderM,
+                                              0.0,
+                                            )),
+                                          ),
+                                          showLoadingIndicator: false,
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  width:
+                                      MediaQuery.sizeOf(context).width * 0.16,
+                                  decoration: BoxDecoration(),
+                                  child: Stack(
+                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    children: [
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            FFIcons.kalertCircle,
+                                            color: _model.sortBy == 'avista'
+                                                ? FlutterFlowTheme.of(context)
+                                                    .tertiary
+                                                : FlutterFlowTheme.of(context)
+                                                    .accent3,
+                                            size: 25.0,
+                                          ),
+                                          Text(
+                                            'À vista',
+                                            textAlign: TextAlign.center,
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .override(
+                                                  font: GoogleFonts.geologica(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  letterSpacing: 0.0,
+                                                  fontWeight:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelMedium
+                                                          .fontWeight,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelMedium
+                                                          .fontStyle,
+                                                ),
+                                          ),
+                                        ].divide(SizedBox(
+                                            height: FFAppConstants.halfGap)),
+                                      ),
+                                      if (true)
+                                        FFButtonWidget(
+                                          onPressed: () async {
+                                            logFirebaseEvent(
+                                                'EXPLORAR_PAGE__BTN_ON_TAP');
+                                            if (_model.sortBy != 'avista') {
+                                              logFirebaseEvent(
+                                                  'Button_update_page_state');
+                                              _model.ascendingOrder = true;
+                                              safeSetState(() {});
+                                            }
+                                            logFirebaseEvent(
+                                                'Button_update_page_state');
+                                            _model.variableQuery = functions
+                                                .sortByPayment(
+                                                    containerVwVagasCandidaturasRowList
+                                                        .sortedList(
+                                                            keyOf: (e) =>
+                                                                e.vagasData!,
+                                                            desc: false)
+                                                        .toList(),
+                                                    _model.ascendingOrder)
+                                                .where((e) =>
+                                                    (int job, int payment) {
+                                                      return (payment - job) <=
+                                                          86400;
+                                                    }(
+                                                        e.vagasData!
+                                                            .secondsSinceEpoch,
+                                                        e.vagasDatapagamento!
+                                                            .secondsSinceEpoch))
+                                                .toList()
+                                                .cast<VwVagasCandidaturasRow>();
+                                            _model.sortBy = 'avista';
+                                            safeSetState(() {});
+                                          },
+                                          text: '',
+                                          options: FFButtonOptions(
+                                            width: MediaQuery.sizeOf(context)
+                                                    .width *
+                                                1.0,
+                                            height: MediaQuery.sizeOf(context)
+                                                    .height *
+                                                0.06,
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            iconPadding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            color: Color(0x00A369ED),
+                                            textStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmall
+                                                    .override(
+                                                      font:
+                                                          GoogleFonts.geologica(
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .fontStyle,
+                                                      ),
+                                                      color: Colors.white,
+                                                      letterSpacing: 0.0,
+                                                      fontWeight:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .fontWeight,
+                                                      fontStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .fontStyle,
+                                                    ),
+                                            elevation: 0.0,
+                                            borderRadius: BorderRadius.circular(
+                                                valueOrDefault<double>(
+                                              FFAppConstants.borderM,
+                                              0.0,
+                                            )),
+                                          ),
+                                          showLoadingIndicator: false,
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                valueOrDefault<double>(
+                                  FFAppConstants.doubleGap,
+                                  0.0,
+                                ),
+                                0.0,
+                                valueOrDefault<double>(
+                                  FFAppConstants.doubleGap,
+                                  0.0,
+                                ),
+                                0.0),
+                            child: Stack(
+                              alignment: AlignmentDirectional(1.0, 0.0),
+                              children: [
+                                Align(
+                                  alignment: AlignmentDirectional(-1.0, 0.0),
+                                  child: Container(
+                                    height: MediaQuery.sizeOf(context).height *
+                                        0.045,
+                                    decoration: BoxDecoration(),
+                                    child: FlutterFlowDropDown<String>(
+                                      multiSelectController: _model
+                                              .dropDownValueController ??=
+                                          FormListFieldController<String>(null),
+                                      options: _model.variableQuery.isNotEmpty
+                                          ? _model.variableQuery
+                                              .where((e) =>
+                                                  e.vagasStatus == 'aberta')
+                                              .toList()
+                                              .map((e) => e.especialidadeNome)
+                                              .withoutNulls
+                                              .toList()
+                                              .unique((e) => e)
+                                              .sortedList(
+                                                  keyOf: (e) => e, desc: false)
+                                          : containerVwVagasCandidaturasRowList
+                                              .where((e) =>
+                                                  e.vagasStatus == 'aberta')
+                                              .toList()
+                                              .map((e) => e.especialidadeNome)
+                                              .withoutNulls
+                                              .toList()
+                                              .unique((e) => e)
+                                              .sortedList(
+                                                  keyOf: (e) => e, desc: false),
+                                      width: MediaQuery.sizeOf(context).width *
+                                          0.8,
+                                      maxHeight:
+                                          MediaQuery.sizeOf(context).height *
+                                              0.45,
+                                      searchHintTextStyle: FlutterFlowTheme.of(
+                                              context)
+                                          .labelMedium
+                                          .override(
+                                            font: GoogleFonts.geologica(
+                                              fontWeight:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelMedium
+                                                      .fontWeight,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelMedium
+                                                      .fontStyle,
+                                            ),
+                                            fontSize: 14.0,
+                                            letterSpacing: 0.0,
+                                            fontWeight:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .fontWeight,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .fontStyle,
+                                            lineHeight: 1.0,
+                                          ),
+                                      searchTextStyle: FlutterFlowTheme.of(
+                                              context)
+                                          .bodyMedium
+                                          .override(
+                                            font: GoogleFonts.geologica(
+                                              fontWeight:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .fontWeight,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .fontStyle,
+                                            ),
+                                            letterSpacing: 0.0,
+                                            fontWeight:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMedium
+                                                    .fontWeight,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMedium
+                                                    .fontStyle,
+                                          ),
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            font: GoogleFonts.geologica(
+                                              fontWeight:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .fontWeight,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .fontStyle,
+                                            ),
+                                            letterSpacing: 0.0,
+                                            fontWeight:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMedium
+                                                    .fontWeight,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMedium
+                                                    .fontStyle,
+                                            lineHeight: 1.0,
+                                          ),
+                                      hintText: 'Todas especialidades',
+                                      searchHintText: 'Pesquisar...',
+                                      searchCursorColor:
+                                          FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                      icon: Icon(
+                                        Icons.keyboard_arrow_down_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primary,
+                                        size: 35.0,
+                                      ),
+                                      fillColor: FlutterFlowTheme.of(context)
+                                          .primaryBackground,
+                                      elevation: 2.0,
+                                      borderColor: FlutterFlowTheme.of(context)
+                                          .secondary,
+                                      borderWidth: 0.0,
+                                      borderRadius: FFAppConstants.borderS,
+                                      margin: EdgeInsetsDirectional.fromSTEB(
+                                          valueOrDefault<double>(
+                                            FFAppConstants.Gap,
+                                            0.0,
+                                          ),
+                                          0.0,
+                                          valueOrDefault<double>(
+                                            FFAppConstants.Gap,
+                                            0.0,
+                                          ),
+                                          0.0),
+                                      hidesUnderline: true,
+                                      isOverButton: false,
+                                      isSearchable: true,
+                                      isMultiSelect: true,
+                                      onMultiSelectChanged: (val) async {
+                                        safeSetState(
+                                            () => _model.dropDownValue = val);
+                                        logFirebaseEvent(
+                                            'EXPLORAR_DropDown_d31ybg95_ON_FORM_WIDGE');
+                                        logFirebaseEvent(
+                                            'DropDown_update_page_state');
+                                        _model.clearDropColor =
+                                            FlutterFlowTheme.of(context)
+                                                .primary;
+                                        safeSetState(() {});
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    logFirebaseEvent(
+                                        'EXPLORAR_PAGE_Icon_u0mfjaoj_ON_TAP');
+                                    logFirebaseEvent('Icon_reset_form_fields');
+                                    safeSetState(() {
+                                      _model.dropDownValueController?.reset();
+                                    });
+                                    logFirebaseEvent('Icon_update_page_state');
+                                    _model.clearDropColor =
+                                        FlutterFlowTheme.of(context).accent2;
+                                    _model.hideTable = false;
+                                  },
+                                  child: Icon(
+                                    FFIcons.kxSquare,
+                                    color: _model.clearDropColor,
+                                    size: 24.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ]
+                            .divide(SizedBox(height: FFAppConstants.doubleGap))
+                            .addToEnd(
+                                SizedBox(height: FFAppConstants.doubleGap)),
+                      ),
+                    ),
+                    Expanded(
+                      child: StreamBuilder<List<CleanHospitalRow>>(
+                        stream: FFAppState().cleanHospitalTerms(
+                          requestFn: () => _model.containerSupabaseStream ??=
+                              SupaFlow.client
+                                  .from("clean_hospital")
+                                  .stream(primaryKey: ['id']).map((list) => list
+                                      .map((item) => CleanHospitalRow(item))
+                                      .toList()),
+                        ),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Container(
+                              height: double.infinity,
+                              child: ListaExplorarLoadingWidget(),
+                            );
+                          }
+                          List<CleanHospitalRow> containerCleanHospitalRowList =
+                              snapshot.data!;
+
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                            ),
                             child: Builder(
                               builder: (context) {
-                                if (_model.hideTable) {
+                                if (_model.variableQuery.isNotEmpty) {
                                   return Builder(
                                     builder: (context) {
-                                      final containerVar =
-                                          containerVagasCompletoRowList
-                                              .toList();
+                                      final variableList = _model.variableQuery
+                                          .where((e) =>
+                                              (_model.dropDownValue != null &&
+                                                      (_model.dropDownValue)!
+                                                          .isNotEmpty
+                                                  ? _model.dropDownValue!
+                                                      .contains(
+                                                          e.especialidadeNome)
+                                                  : true) &&
+                                              (e.vagasStatus == 'aberta') &&
+                                              (e.hospitalEstado ==
+                                                  _model.headerModel
+                                                      .dropDownValue) &&
+                                              (e.vagasData! >=
+                                                  functions.currentDate()!))
+                                          .toList()
+                                          .unique((e) => e.vagasId!)
+                                          .toList();
+                                      if (variableList.isEmpty) {
+                                        return EmptyListWidget(
+                                          text: 'Sem vagas para mostrar',
+                                        );
+                                      }
 
                                       return RefreshIndicator(
-                                        key: Key('RefreshIndicator_zvrn5kqs'),
+                                        key: Key('RefreshIndicator_33py6qco'),
+                                        color: FlutterFlowTheme.of(context)
+                                            .primary,
                                         onRefresh: () async {
-                                          safeSetState(() =>
-                                              _model.requestCompleter2 = null);
-                                          await _model.waitForRequestCompleted2(
-                                              maxWait: 2);
-                                          safeSetState(() =>
-                                              _model.requestCompleter1 = null);
-                                          await _model.waitForRequestCompleted1(
-                                              maxWait: 2);
+                                          logFirebaseEvent(
+                                              'EXPLORAR_ListView_2y2hmp1n_ON_PULL_TO_RE');
+                                          logFirebaseEvent(
+                                              'ListView_action_block');
+                                          await action_blocks
+                                              .clearCache(context);
+                                          safeSetState(() {});
                                         },
                                         child: ListView.separated(
                                           padding: EdgeInsets.zero,
                                           primary: false,
                                           shrinkWrap: true,
                                           scrollDirection: Axis.vertical,
-                                          itemCount: containerVar.length,
+                                          itemCount: variableList.length,
                                           separatorBuilder: (_, __) =>
                                               SizedBox(height: 2.0),
                                           itemBuilder:
-                                              (context, containerVarIndex) {
-                                            final containerVarItem =
-                                                containerVar[containerVarIndex];
+                                              (context, variableListIndex) {
+                                            final variableListItem =
+                                                variableList[variableListIndex];
                                             return Stack(
                                               children: [
                                                 wrapWithModel(
-                                                  model: _model.cardVagasModels1
+                                                  model: _model
+                                                      .cardVagasSlimModels1
                                                       .getModel(
-                                                    containerVarItem.vagasId!,
-                                                    containerVarIndex,
+                                                    variableListItem.vagasId!,
+                                                    variableListIndex,
                                                   ),
                                                   updateCallback: () =>
                                                       safeSetState(() {}),
-                                                  child: CardVagasWidget(
+                                                  child: CardVagasSlimWidget(
                                                     key: Key(
-                                                      'Keyk5u_${containerVarItem.vagasId!}',
+                                                      'Keyvfd_${variableListItem.vagasId!}',
                                                     ),
-                                                    specialty: containerVarItem
+                                                    specialty: variableListItem
                                                         .especialidadeNome,
                                                     value: formatNumber(
-                                                      containerVarItem
+                                                      variableListItem
                                                           .vagasValor,
                                                       formatType:
                                                           FormatType.decimal,
                                                       decimalType: DecimalType
                                                           .commaDecimal,
-                                                      currency: 'R\$',
+                                                      currency: 'R\$ ',
                                                     ),
                                                     date: dateTimeFormat(
                                                       "dd/MM",
-                                                      containerVarItem
+                                                      variableListItem
                                                           .vagasData,
                                                       locale:
                                                           FFLocalizations.of(
                                                                   context)
                                                               .languageCode,
                                                     ),
-                                                    datecount: dateTimeFormat(
+                                                    datecount:
+                                                        'há ${dateTimeFormat(
                                                       "relative",
-                                                      containerVarItem
+                                                      variableListItem
                                                           .vagasCreatedate,
-                                                      locale:
+                                                      locale: FFLocalizations
+                                                                  .of(context)
+                                                              .languageShortCode ??
                                                           FFLocalizations.of(
                                                                   context)
                                                               .languageCode,
-                                                    ),
-                                                    shift: containerVarItem
-                                                        .periodoNome,
-                                                    type: containerVarItem
-                                                        .tipoNome,
-                                                    hospital: containerVarItem
-                                                        .hospitalNome,
-                                                    vaga: containerVarItem
+                                                    )}',
+                                                    shift: variableListItem
+                                                        .vagasPeriodoNome,
+                                                    type: variableListItem
+                                                        .vagasTipoNome,
+                                                    hospital: functions
+                                                        .cleanHospitalName(
+                                                            variableListItem
+                                                                .hospitalNome!,
+                                                            containerCleanHospitalRowList
+                                                                .map((e) =>
+                                                                    e.terms)
+                                                                .withoutNulls
+                                                                .toList()),
+                                                    vaga: variableListItem
                                                         .vagasId,
-                                                    showPay: false,
                                                     avatarHospital:
-                                                        containerVarItem
+                                                        variableListItem
                                                             .hospitalAvatar,
+                                                    showPay: false,
+                                                    sector: variableListItem
+                                                        .setorNome,
+                                                    distance:
+                                                        functions.distanceCalc(
+                                                            variableListItem
+                                                                .hospitalLat!,
+                                                            variableListItem
+                                                                .hospitalLog!,
+                                                            currentUserLocationValue!),
+                                                    showSign: (int job,
+                                                            int payment) {
+                                                      return (payment - job) <=
+                                                          86400;
+                                                    }(
+                                                        variableListItem
+                                                            .vagasData!
+                                                            .secondsSinceEpoch,
+                                                        variableListItem
+                                                            .vagasDatapagamento!
+                                                            .secondsSinceEpoch),
                                                   ),
                                                 ),
-                                                FFButtonWidget(
-                                                  onPressed: () async {
-                                                    if (_model
-                                                        .isBottomSheetLoading) {
-                                                      return;
-                                                    }
+                                                if (true)
+                                                  FFButtonWidget(
+                                                    onPressed: () async {
+                                                      logFirebaseEvent(
+                                                          'EXPLORAR_PAGE__BTN_ON_TAP');
+                                                      if (_model
+                                                          .isBottomSheetLoading) {
+                                                        return;
+                                                      }
 
-                                                    _model.isBottomSheetLoading =
-                                                        true;
-                                                    safeSetState(() {});
-                                                    await showModalBottomSheet(
-                                                      isScrollControlled: true,
-                                                      useSafeArea: true,
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return GestureDetector(
-                                                          onTap: () {
-                                                            FocusScope.of(
-                                                                    context)
-                                                                .unfocus();
-                                                            FocusManager
-                                                                .instance
-                                                                .primaryFocus
-                                                                ?.unfocus();
-                                                          },
-                                                          child: Padding(
-                                                            padding: MediaQuery
-                                                                .viewInsetsOf(
-                                                                    context),
-                                                            child:
-                                                                VagaBottomSheetWidget(
-                                                              speciality:
-                                                                  containerVarItem
-                                                                      .especialidadeNome,
-                                                              value: containerVarItem
-                                                                  .vagasValor
-                                                                  ?.toDouble(),
-                                                              hospital:
-                                                                  containerVarItem
-                                                                      .hospitalNome,
-                                                              date:
-                                                                  containerVarItem
-                                                                      .vagasData,
-                                                              datecreated:
-                                                                  containerVarItem
-                                                                      .vagasCreatedate,
-                                                              startTime:
-                                                                  containerVarItem
-                                                                      .vagasHorainicio
-                                                                      ?.time,
-                                                              endTime:
-                                                                  containerVarItem
-                                                                      .vagasHorafim
-                                                                      ?.time,
-                                                              shift: containerVarItem
-                                                                  .periodoNome,
-                                                              type:
-                                                                  containerVarItem
-                                                                      .tipoNome,
-                                                              lat: containerVarItem
-                                                                  .hospitalLat,
-                                                              lon: containerVarItem
-                                                                  .hospitalLog,
-                                                              address:
-                                                                  containerVarItem
-                                                                      .hospitalEnd,
-                                                              vagaID:
-                                                                  containerVarItem
-                                                                      .vagasId,
-                                                              contractor:
-                                                                  containerVarItem
-                                                                      .grupoNome,
-                                                              contractorName:
-                                                                  containerVarItem
-                                                                      .escalistaNome,
-                                                              contractorPhone:
-                                                                  containerVarItem
-                                                                      .escalistaTelefone,
-                                                              contractorEmail:
-                                                                  containerVarItem
-                                                                      .escalistaEmail,
-                                                              buttonVis: true,
-                                                              payday: containerVarItem
-                                                                  .vagasDatapagamento,
-                                                              payment:
-                                                                  containerVarItem
-                                                                      .vagasFormarecebimento,
-                                                              avatarHospital:
-                                                                  containerVarItem
-                                                                      .hospitalAvatar,
+                                                      logFirebaseEvent(
+                                                          'Button_update_page_state');
+                                                      _model.isBottomSheetLoading =
+                                                          true;
+                                                      safeSetState(() {});
+                                                      logFirebaseEvent(
+                                                          'Button_bottom_sheet');
+                                                      await showModalBottomSheet(
+                                                        isScrollControlled:
+                                                            true,
+                                                        useSafeArea: true,
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return GestureDetector(
+                                                            onTap: () {
+                                                              FocusScope.of(
+                                                                      context)
+                                                                  .unfocus();
+                                                              FocusManager
+                                                                  .instance
+                                                                  .primaryFocus
+                                                                  ?.unfocus();
+                                                            },
+                                                            child: Padding(
+                                                              padding: MediaQuery
+                                                                  .viewInsetsOf(
+                                                                      context),
+                                                              child:
+                                                                  VagaBottomSheetWidget(
+                                                                speciality:
+                                                                    variableListItem
+                                                                        .especialidadeNome,
+                                                                value: variableListItem
+                                                                    .vagasValor
+                                                                    ?.toDouble(),
+                                                                hospital:
+                                                                    variableListItem
+                                                                        .hospitalNome,
+                                                                date: variableListItem
+                                                                    .vagasData,
+                                                                datecreated:
+                                                                    variableListItem
+                                                                        .vagasCreatedate,
+                                                                startTime:
+                                                                    variableListItem
+                                                                        .vagasHorainicio
+                                                                        ?.time,
+                                                                endTime:
+                                                                    variableListItem
+                                                                        .vagasHorafim
+                                                                        ?.time,
+                                                                shift: variableListItem
+                                                                    .vagasPeriodoNome,
+                                                                type: variableListItem
+                                                                    .vagasTipoNome,
+                                                                lat: variableListItem
+                                                                    .hospitalLat,
+                                                                lon: variableListItem
+                                                                    .hospitalLog,
+                                                                address:
+                                                                    variableListItem
+                                                                        .hospitalEnd,
+                                                                jobid:
+                                                                    variableListItem
+                                                                        .vagasId,
+                                                                contractor:
+                                                                    variableListItem
+                                                                        .grupoNome,
+                                                                contractorName:
+                                                                    variableListItem
+                                                                        .escalistaNome,
+                                                                contractorPhone:
+                                                                    variableListItem
+                                                                        .escalistaTelefone,
+                                                                contractorEmail:
+                                                                    variableListItem
+                                                                        .escalistaEmail,
+                                                                payday: variableListItem
+                                                                    .vagasDatapagamento,
+                                                                payment:
+                                                                    variableListItem
+                                                                        .vagasFormarecebimentoNome,
+                                                                avatarHospital:
+                                                                    variableListItem
+                                                                        .hospitalAvatar,
+                                                                sector:
+                                                                    variableListItem
+                                                                        .setorNome,
+                                                                showFavorite:
+                                                                    variableListItem
+                                                                        .medicoFavorito,
+                                                                candidates: containerVwVagasCandidaturasRowList
+                                                                    .where((e) =>
+                                                                        e.vagasId ==
+                                                                        variableListItem
+                                                                            .vagasId)
+                                                                    .toList(),
+                                                                callback:
+                                                                    () async {},
+                                                              ),
                                                             ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ).then((value) =>
-                                                        safeSetState(() {}));
+                                                          );
+                                                        },
+                                                      ).then((value) =>
+                                                          safeSetState(() {}));
 
-                                                    _model.isBottomSheetLoading =
-                                                        false;
-                                                    safeSetState(() {});
-                                                    return;
-                                                  },
-                                                  text: '',
-                                                  options: FFButtonOptions(
-                                                    width: double.infinity,
-                                                    height: 110.0,
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(16.0, 0.0,
-                                                                16.0, 0.0),
-                                                    iconPadding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                0.0, 0.0),
-                                                    color: Color(0x00A369ED),
-                                                    textStyle: FlutterFlowTheme
-                                                            .of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .geologica(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
+                                                      logFirebaseEvent(
+                                                          'Button_update_page_state');
+                                                      _model.isBottomSheetLoading =
+                                                          false;
+                                                      safeSetState(() {});
+                                                      return;
+                                                    },
+                                                    text: '',
+                                                    options: FFButtonOptions(
+                                                      width: double.infinity,
+                                                      height: MediaQuery.sizeOf(
+                                                                  context)
+                                                              .height *
+                                                          0.13,
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  16.0,
+                                                                  0.0,
+                                                                  16.0,
+                                                                  0.0),
+                                                      iconPadding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0.0,
+                                                                  0.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      color: Color(0x00A369ED),
+                                                      textStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .override(
+                                                                font: GoogleFonts
+                                                                    .geologica(
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .fontStyle,
+                                                                ),
+                                                                color: Colors
+                                                                    .white,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                fontWeight: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleSmall
                                                                     .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
+                                                                fontStyle: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleSmall
                                                                     .fontStyle,
-                                                          ),
-                                                          color: Colors.white,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontStyle,
-                                                        ),
-                                                    elevation: 0.0,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0),
+                                                              ),
+                                                      elevation: 0.0,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
                                                   ),
-                                                ),
                                               ],
                                             );
                                           },
@@ -1578,251 +1670,328 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                 } else {
                                   return Builder(
                                     builder: (context) {
-                                      final containerVar =
-                                          containerVagasCompletoRowList
+                                      final initialList =
+                                          containerVwVagasCandidaturasRowList
                                               .where((e) =>
-                                                  e.especialidadeNome ==
-                                                  explorarEspecialidadesRowList
-                                                      .elementAtOrNull(
-                                                          _model.dropDownValue!)
-                                                      ?.especialidadeNome)
+                                                  (_model.dropDownValue !=
+                                                              null &&
+                                                          (_model.dropDownValue)!
+                                                              .isNotEmpty
+                                                      ? _model.dropDownValue!
+                                                          .contains(e
+                                                              .especialidadeNome)
+                                                      : true) &&
+                                                  (e.vagasStatus == 'aberta') &&
+                                                  (e.hospitalEstado ==
+                                                      _model.headerModel
+                                                          .dropDownValue) &&
+                                                  (e.vagasData! >=
+                                                      functions.currentDate()!))
+                                              .toList()
+                                              .unique((e) => e.vagasId!)
+                                              .sortedList(
+                                                  keyOf: (e) =>
+                                                      e.vagasCreatedate!,
+                                                  desc: true)
                                               .toList();
+                                      if (initialList.isEmpty) {
+                                        return EmptyListWidget(
+                                          text: 'Sem vagas para mostrar',
+                                        );
+                                      }
 
-                                      return InkWell(
-                                        splashColor: Colors.transparent,
-                                        focusColor: Colors.transparent,
-                                        hoverColor: Colors.transparent,
-                                        highlightColor: Colors.transparent,
-                                        onTap: () async {
-                                          safeSetState(() =>
-                                              _model.requestCompleter2 = null);
-                                          await _model.waitForRequestCompleted2(
-                                              maxWait: 2);
-                                          safeSetState(() =>
-                                              _model.requestCompleter1 = null);
-                                          await _model.waitForRequestCompleted1(
-                                              maxWait: 2);
+                                      return RefreshIndicator(
+                                        key: Key('RefreshIndicator_y24cg39n'),
+                                        color: FlutterFlowTheme.of(context)
+                                            .primary,
+                                        onRefresh: () async {
+                                          logFirebaseEvent(
+                                              'EXPLORAR_ListView_0kxem4ui_ON_PULL_TO_RE');
+                                          logFirebaseEvent(
+                                              'ListView_action_block');
+                                          await action_blocks
+                                              .clearCache(context);
+                                          safeSetState(() {});
                                         },
                                         child: ListView.separated(
                                           padding: EdgeInsets.zero,
                                           primary: false,
                                           shrinkWrap: true,
                                           scrollDirection: Axis.vertical,
-                                          itemCount: containerVar.length,
+                                          itemCount: initialList.length,
                                           separatorBuilder: (_, __) =>
                                               SizedBox(height: 2.0),
                                           itemBuilder:
-                                              (context, containerVarIndex) {
-                                            final containerVarItem =
-                                                containerVar[containerVarIndex];
+                                              (context, initialListIndex) {
+                                            final initialListItem =
+                                                initialList[initialListIndex];
                                             return Stack(
                                               children: [
                                                 wrapWithModel(
-                                                  model: _model.cardVagasModels2
+                                                  model: _model
+                                                      .cardVagasSlimModels2
                                                       .getModel(
-                                                    containerVarItem.vagasId!,
-                                                    containerVarIndex,
+                                                    initialListItem.vagasId!,
+                                                    initialListIndex,
                                                   ),
                                                   updateCallback: () =>
                                                       safeSetState(() {}),
-                                                  child: CardVagasWidget(
+                                                  child: CardVagasSlimWidget(
                                                     key: Key(
-                                                      'Keyukk_${containerVarItem.vagasId!}',
+                                                      'Keyzze_${initialListItem.vagasId!}',
                                                     ),
-                                                    specialty: containerVarItem
+                                                    specialty: initialListItem
                                                         .especialidadeNome,
                                                     value: formatNumber(
-                                                      containerVarItem
+                                                      initialListItem
                                                           .vagasValor,
                                                       formatType:
                                                           FormatType.decimal,
                                                       decimalType: DecimalType
                                                           .commaDecimal,
-                                                      currency: 'R\$',
+                                                      currency: 'R\$ ',
                                                     ),
                                                     date: dateTimeFormat(
                                                       "dd/MM",
-                                                      containerVarItem
-                                                          .vagasData,
+                                                      initialListItem.vagasData,
                                                       locale:
                                                           FFLocalizations.of(
                                                                   context)
                                                               .languageCode,
                                                     ),
-                                                    datecount: dateTimeFormat(
+                                                    datecount:
+                                                        'há ${dateTimeFormat(
                                                       "relative",
-                                                      containerVarItem
+                                                      initialListItem
                                                           .vagasCreatedate,
-                                                      locale:
+                                                      locale: FFLocalizations
+                                                                  .of(context)
+                                                              .languageShortCode ??
                                                           FFLocalizations.of(
                                                                   context)
                                                               .languageCode,
-                                                    ),
-                                                    shift: containerVarItem
-                                                        .periodoNome,
-                                                    type: containerVarItem
-                                                        .tipoNome,
-                                                    hospital: containerVarItem
-                                                        .hospitalNome,
-                                                    vaga: containerVarItem
-                                                        .vagasId,
-                                                    showPay: false,
+                                                    )}',
+                                                    shift: initialListItem
+                                                        .vagasPeriodoNome,
+                                                    type: initialListItem
+                                                        .vagasTipoNome,
+                                                    hospital: functions
+                                                        .cleanHospitalName(
+                                                            initialListItem
+                                                                .hospitalNome!,
+                                                            containerCleanHospitalRowList
+                                                                .map((e) =>
+                                                                    e.terms)
+                                                                .withoutNulls
+                                                                .toList()),
+                                                    vaga:
+                                                        initialListItem.vagasId,
                                                     avatarHospital:
-                                                        containerVarItem
+                                                        initialListItem
                                                             .hospitalAvatar,
+                                                    showPay: false,
+                                                    sector: initialListItem
+                                                        .setorNome,
+                                                    distance:
+                                                        functions.distanceCalc(
+                                                            initialListItem
+                                                                .hospitalLat!,
+                                                            initialListItem
+                                                                .hospitalLog!,
+                                                            currentUserLocationValue!),
+                                                    showSign: (int job,
+                                                            int payment) {
+                                                      return (payment - job) <=
+                                                          86400;
+                                                    }(
+                                                        initialListItem
+                                                            .vagasData!
+                                                            .secondsSinceEpoch,
+                                                        initialListItem
+                                                            .vagasDatapagamento!
+                                                            .secondsSinceEpoch),
                                                   ),
                                                 ),
-                                                FFButtonWidget(
-                                                  onPressed: () async {
-                                                    if (_model
-                                                        .isBottomSheetLoading) {
-                                                      return;
-                                                    }
+                                                if (true)
+                                                  FFButtonWidget(
+                                                    onPressed: () async {
+                                                      logFirebaseEvent(
+                                                          'EXPLORAR_PAGE__BTN_ON_TAP');
+                                                      if (_model
+                                                          .isBottomSheetLoading) {
+                                                        return;
+                                                      }
 
-                                                    _model.isBottomSheetLoading =
-                                                        true;
-                                                    safeSetState(() {});
-                                                    await showModalBottomSheet(
-                                                      isScrollControlled: true,
-                                                      useSafeArea: true,
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return GestureDetector(
-                                                          onTap: () {
-                                                            FocusScope.of(
-                                                                    context)
-                                                                .unfocus();
-                                                            FocusManager
-                                                                .instance
-                                                                .primaryFocus
-                                                                ?.unfocus();
-                                                          },
-                                                          child: Padding(
-                                                            padding: MediaQuery
-                                                                .viewInsetsOf(
-                                                                    context),
-                                                            child:
-                                                                VagaBottomSheetWidget(
-                                                              speciality:
-                                                                  containerVarItem
-                                                                      .especialidadeNome,
-                                                              value: containerVarItem
-                                                                  .vagasValor
-                                                                  ?.toDouble(),
-                                                              hospital:
-                                                                  containerVarItem
-                                                                      .hospitalNome,
-                                                              date:
-                                                                  containerVarItem
-                                                                      .vagasData,
-                                                              datecreated:
-                                                                  containerVarItem
-                                                                      .vagasCreatedate,
-                                                              startTime:
-                                                                  containerVarItem
-                                                                      .vagasHorainicio
-                                                                      ?.time,
-                                                              endTime:
-                                                                  containerVarItem
-                                                                      .vagasHorafim
-                                                                      ?.time,
-                                                              shift: containerVarItem
-                                                                  .periodoNome,
-                                                              type:
-                                                                  containerVarItem
-                                                                      .tipoNome,
-                                                              lat: containerVarItem
-                                                                  .hospitalLat,
-                                                              lon: containerVarItem
-                                                                  .hospitalLog,
-                                                              address:
-                                                                  containerVarItem
-                                                                      .hospitalEnd,
-                                                              vagaID:
-                                                                  containerVarItem
-                                                                      .vagasId,
-                                                              contractor:
-                                                                  containerVarItem
-                                                                      .grupoNome,
-                                                              contractorName:
-                                                                  containerVarItem
-                                                                      .escalistaNome,
-                                                              contractorPhone:
-                                                                  containerVarItem
-                                                                      .escalistaTelefone,
-                                                              contractorEmail:
-                                                                  containerVarItem
-                                                                      .escalistaEmail,
-                                                              buttonVis: true,
-                                                              payday: containerVarItem
-                                                                  .vagasDatapagamento,
-                                                              payment:
-                                                                  containerVarItem
-                                                                      .vagasFormarecebimento,
-                                                              avatarHospital:
-                                                                  containerVarItem
-                                                                      .hospitalAvatar,
+                                                      logFirebaseEvent(
+                                                          'Button_update_page_state');
+                                                      _model.isBottomSheetLoading =
+                                                          true;
+                                                      safeSetState(() {});
+                                                      logFirebaseEvent(
+                                                          'Button_bottom_sheet');
+                                                      await showModalBottomSheet(
+                                                        isScrollControlled:
+                                                            true,
+                                                        useSafeArea: true,
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return GestureDetector(
+                                                            onTap: () {
+                                                              FocusScope.of(
+                                                                      context)
+                                                                  .unfocus();
+                                                              FocusManager
+                                                                  .instance
+                                                                  .primaryFocus
+                                                                  ?.unfocus();
+                                                            },
+                                                            child: Padding(
+                                                              padding: MediaQuery
+                                                                  .viewInsetsOf(
+                                                                      context),
+                                                              child:
+                                                                  VagaBottomSheetWidget(
+                                                                speciality:
+                                                                    initialListItem
+                                                                        .especialidadeNome,
+                                                                value: initialListItem
+                                                                    .vagasValor
+                                                                    ?.toDouble(),
+                                                                hospital:
+                                                                    initialListItem
+                                                                        .hospitalNome,
+                                                                date: initialListItem
+                                                                    .vagasData,
+                                                                datecreated:
+                                                                    initialListItem
+                                                                        .vagasCreatedate,
+                                                                startTime:
+                                                                    initialListItem
+                                                                        .vagasHorainicio
+                                                                        ?.time,
+                                                                endTime:
+                                                                    initialListItem
+                                                                        .vagasHorafim
+                                                                        ?.time,
+                                                                shift: initialListItem
+                                                                    .vagasPeriodoNome,
+                                                                type: initialListItem
+                                                                    .vagasTipoNome,
+                                                                lat: initialListItem
+                                                                    .hospitalLat,
+                                                                lon: initialListItem
+                                                                    .hospitalLog,
+                                                                address:
+                                                                    initialListItem
+                                                                        .hospitalEnd,
+                                                                jobid:
+                                                                    initialListItem
+                                                                        .vagasId,
+                                                                contractor:
+                                                                    initialListItem
+                                                                        .grupoNome,
+                                                                contractorName:
+                                                                    initialListItem
+                                                                        .escalistaNome,
+                                                                contractorPhone:
+                                                                    initialListItem
+                                                                        .escalistaTelefone,
+                                                                contractorEmail:
+                                                                    initialListItem
+                                                                        .escalistaEmail,
+                                                                payday: initialListItem
+                                                                    .vagasDatapagamento,
+                                                                payment:
+                                                                    initialListItem
+                                                                        .vagasFormarecebimentoNome,
+                                                                avatarHospital:
+                                                                    initialListItem
+                                                                        .hospitalAvatar,
+                                                                sector:
+                                                                    initialListItem
+                                                                        .setorNome,
+                                                                showFavorite:
+                                                                    initialListItem
+                                                                        .medicoFavorito,
+                                                                candidates: containerVwVagasCandidaturasRowList
+                                                                    .where((e) =>
+                                                                        e.vagasId ==
+                                                                        initialListItem
+                                                                            .vagasId)
+                                                                    .toList(),
+                                                                callback:
+                                                                    () async {},
+                                                              ),
                                                             ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ).then((value) =>
-                                                        safeSetState(() {}));
+                                                          );
+                                                        },
+                                                      ).then((value) =>
+                                                          safeSetState(() {}));
 
-                                                    _model.isBottomSheetLoading =
-                                                        false;
-                                                    safeSetState(() {});
-                                                    return;
-                                                  },
-                                                  text: '',
-                                                  options: FFButtonOptions(
-                                                    width: double.infinity,
-                                                    height: 110.0,
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(16.0, 0.0,
-                                                                16.0, 0.0),
-                                                    iconPadding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                0.0, 0.0),
-                                                    color: Color(0x00A369ED),
-                                                    textStyle: FlutterFlowTheme
-                                                            .of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .geologica(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
+                                                      logFirebaseEvent(
+                                                          'Button_update_page_state');
+                                                      _model.isBottomSheetLoading =
+                                                          false;
+                                                      safeSetState(() {});
+                                                      return;
+                                                    },
+                                                    text: '',
+                                                    options: FFButtonOptions(
+                                                      width: double.infinity,
+                                                      height: MediaQuery.sizeOf(
+                                                                  context)
+                                                              .height *
+                                                          0.13,
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  16.0,
+                                                                  0.0,
+                                                                  16.0,
+                                                                  0.0),
+                                                      iconPadding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0.0,
+                                                                  0.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      color: Color(0x00A369ED),
+                                                      textStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleSmall
+                                                              .override(
+                                                                font: GoogleFonts
+                                                                    .geologica(
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .fontStyle,
+                                                                ),
+                                                                color: Colors
+                                                                    .white,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                fontWeight: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleSmall
                                                                     .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
+                                                                fontStyle: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleSmall
                                                                     .fontStyle,
-                                                          ),
-                                                          color: Colors.white,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontStyle,
-                                                        ),
-                                                    elevation: 0.0,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0),
+                                                              ),
+                                                      elevation: 0.0,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
                                                   ),
-                                                ),
                                               ],
                                             );
                                           },
@@ -1833,17 +2002,17 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                 }
                               },
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                ].divide(SizedBox(height: FFAppConstants.Gap)),
-              ),
-            ),
+                  ].divide(SizedBox(height: FFAppConstants.Gap)),
+                ),
+              );
+            },
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

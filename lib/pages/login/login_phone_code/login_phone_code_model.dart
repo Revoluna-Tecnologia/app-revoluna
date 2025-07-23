@@ -1,6 +1,4 @@
-import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
-import '/backend/supabase/supabase.dart';
 import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
@@ -62,49 +60,5 @@ class LoginPhoneCodeModel extends FlutterFlowModel<LoginPhoneCodeWidget> {
     pinCodeController?.dispose();
 
     timerController.dispose();
-  }
-
-  /// Action blocks.
-  Future submit(BuildContext context) async {
-    List<UserProfileRow>? userRole;
-
-    if (!otpPhoneConfirm!) {
-      pincodeborder = FlutterFlowTheme.of(context).error;
-      return;
-    }
-    userRole = await UserProfileTable().queryRows(
-      queryFn: (q) => q.eqOrNull(
-        'id',
-        currentUserUid,
-      ),
-    );
-    FFAppState().userID = (String var1) {
-      return var1.replaceAll(' ', '');
-    }(currentUserUid);
-    FFAppState().userRole = userRole!.firstOrNull!.role!;
-    FFAppState().update(() {});
-    if (FFAppState().userRole == 'signup') {
-      if (Navigator.of(context).canPop()) {
-        context.pop();
-      }
-      context.pushNamed(
-        Cadastro1Widget.routeName,
-        queryParameters: {
-          'camefrom': serializeParam(
-            'phone',
-            ParamType.String,
-          ),
-        }.withoutNulls,
-      );
-
-      return;
-    } else {
-      if (Navigator.of(context).canPop()) {
-        context.pop();
-      }
-      context.pushNamed(HomePageWidget.routeName);
-
-      return;
-    }
   }
 }

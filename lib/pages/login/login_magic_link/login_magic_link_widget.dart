@@ -1,12 +1,9 @@
-import '/auth/base_auth_user_provider.dart';
 import '/auth/supabase_auth/auth_util.dart';
-import '/backend/api_requests/api_calls.dart';
 import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/instant_timer.dart';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/index.dart';
@@ -39,39 +36,19 @@ class _LoginMagicLinkWidgetState extends State<LoginMagicLinkWidget> {
     super.initState();
     _model = createModel(context, () => LoginMagicLinkModel());
 
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'LoginMagicLink'});
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('LOGIN_MAGIC_LINK_LoginMagicLink_ON_INIT_');
+      logFirebaseEvent('LoginMagicLink_wait__delay');
+      await Future.delayed(
+        Duration(
+          milliseconds: 1000,
+        ),
+      );
+      logFirebaseEvent('LoginMagicLink_timer');
       _model.timerController.onStartTimer();
-      if (FFAppState().wasUser) {
-        _model.timerCurrent = InstantTimer.periodic(
-          duration: Duration(milliseconds: 300),
-          callback: (timer) async {
-            if (loggedIn) {
-              _model.emailVerified = true;
-              safeSetState(() {});
-              _model.timerCurrent?.cancel();
-            }
-          },
-          startImmediately: true,
-        );
-      } else {
-        _model.timerNew = InstantTimer.periodic(
-          duration: Duration(milliseconds: 500),
-          callback: (timer) async {
-            _model.listenVerifyEmail = await ListenVerifyEmailCall.call(
-              email: FFAppState().inputEmail,
-            );
-
-            if ((_model.listenVerifyEmail?.bodyText ?? '') ==
-                '{\"verified\":true}') {
-              _model.emailVerified = true;
-              safeSetState(() {});
-              _model.timerNew?.cancel();
-            }
-          },
-          startImmediately: true,
-        );
-      }
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
@@ -106,7 +83,12 @@ class _LoginMagicLinkWidgetState extends State<LoginMagicLinkWidget> {
                 updateCallback: () => safeSetState(() {}),
                 child: BackTopBarWidget(
                   logo: false,
-                  backButton: () async {},
+                  backButton: () async {
+                    logFirebaseEvent(
+                        'LOGIN_MAGIC_LINK_Container_cauc43l1_CALL');
+                    logFirebaseEvent('BackTopBar_navigate_back');
+                    context.safePop();
+                  },
                 ),
               ),
               Padding(
@@ -506,6 +488,9 @@ class _LoginMagicLinkWidgetState extends State<LoginMagicLinkWidget> {
                             onPressed: currentUserEmailVerified
                                 ? null
                                 : () async {
+                                    logFirebaseEvent(
+                                        'LOGIN_MAGIC_LINK_ABRIR_E_MAIL_BTN_ON_TAP');
+                                    logFirebaseEvent('Button_custom_action');
                                     await actions.openMail(
                                       context,
                                     );
@@ -552,16 +537,17 @@ class _LoginMagicLinkWidgetState extends State<LoginMagicLinkWidget> {
                             ),
                           ),
                           FFButtonWidget(
-                            onPressed: !_model.emailVerified
+                            onPressed: !currentUserEmailVerified
                                 ? null
                                 : () async {
+                                    logFirebaseEvent(
+                                        'LOGIN_MAGIC_LINK_CONTINUAR_BTN_ON_TAP');
                                     if (FFAppState().wasUser) {
-                                      if (Navigator.of(context).canPop()) {
-                                        context.pop();
-                                      }
-                                      context
-                                          .pushNamed(HomePageWidget.routeName);
+                                      logFirebaseEvent('Button_navigate_to');
+
+                                      context.goNamed(HomePageWidget.routeName);
                                     } else {
+                                      logFirebaseEvent('Button_navigate_to');
                                       if (Navigator.of(context).canPop()) {
                                         context.pop();
                                       }
@@ -678,12 +664,6 @@ class _LoginMagicLinkWidgetState extends State<LoginMagicLinkWidget> {
                                           _model.timerValue = displayTime;
                                           if (shouldUpdate) safeSetState(() {});
                                         },
-                                        onEnded: () async {
-                                          FFAppState().userID = (String var1) {
-                                            return var1.replaceAll(' ', '');
-                                          }(currentUserUid);
-                                          FFAppState().update(() {});
-                                        },
                                         textAlign: TextAlign.start,
                                         style: FlutterFlowTheme.of(context)
                                             .titleSmall
@@ -715,99 +695,8 @@ class _LoginMagicLinkWidgetState extends State<LoginMagicLinkWidget> {
                                 );
                               } else {
                                 return FFButtonWidget(
-                                  onPressed: () async {
-                                    var confirmDialogResponse =
-                                        await showDialog<bool>(
-                                              context: context,
-                                              builder: (alertDialogContext) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      'Reenviar link de acesso'),
-                                                  content: Text(
-                                                      'Deseja enviar um novo link de acesso?'),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              alertDialogContext,
-                                                              false),
-                                                      child: Text('Sim'),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              alertDialogContext,
-                                                              true),
-                                                      child: Text('Não'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            ) ??
-                                            false;
-                                    if (!confirmDialogResponse) {
-                                      if (FFAppState().wasUser) {
-                                        _model.sendMagic =
-                                            await actions.otpEmailMagic(
-                                          FFAppState().inputEmail,
-                                        );
-                                      } else {
-                                        _model.sendVerifyEmail =
-                                            await SendVerifyEmailCall.call(
-                                          email: FFAppState().inputEmail,
-                                        );
-                                      }
-
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'Novo link enviado por e-mail! Acesse por esse mesmo dispositivo.',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  font: GoogleFonts.geologica(
-                                                    fontWeight:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodyMedium
-                                                            .fontWeight,
-                                                    fontStyle:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodyMedium
-                                                            .fontStyle,
-                                                  ),
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryText,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontStyle,
-                                                  lineHeight: 1.0,
-                                                ),
-                                          ),
-                                          duration:
-                                              Duration(milliseconds: 6000),
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondary,
-                                        ),
-                                      );
-                                      _model.timerController.onResetTimer();
-
-                                      _model.timerController.onStartTimer();
-                                    }
-
-                                    safeSetState(() {});
+                                  onPressed: () {
+                                    print('Button pressed ...');
                                   },
                                   text: 'Reenviar link',
                                   options: FFButtonOptions(

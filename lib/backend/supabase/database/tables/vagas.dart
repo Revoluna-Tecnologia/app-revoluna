@@ -24,8 +24,8 @@ class VagasRow extends SupabaseDataRow {
   String get vagasHospital => getField<String>('vagas_hospital')!;
   set vagasHospital(String value) => setField<String>('vagas_hospital', value);
 
-  DateTime get vagasData => getField<DateTime>('vagas_data')!;
-  set vagasData(DateTime value) => setField<DateTime>('vagas_data', value);
+  DateTime? get vagasData => getField<DateTime>('vagas_data');
+  set vagasData(DateTime? value) => setField<DateTime>('vagas_data', value);
 
   String get vagasPeriodo => getField<String>('vagas_periodo')!;
   set vagasPeriodo(String value) => setField<String>('vagas_periodo', value);
@@ -46,11 +46,6 @@ class VagasRow extends SupabaseDataRow {
   set vagasDatapagamento(DateTime value) =>
       setField<DateTime>('vagas_datapagamento', value);
 
-  String? get vagasFormarecebimento =>
-      getField<String>('vagas_formarecebimento');
-  set vagasFormarecebimento(String? value) =>
-      setField<String>('vagas_formarecebimento', value);
-
   String get vagasTipo => getField<String>('vagas_tipo')!;
   set vagasTipo(String value) => setField<String>('vagas_tipo', value);
 
@@ -61,16 +56,16 @@ class VagasRow extends SupabaseDataRow {
   String get vagasSetor => getField<String>('vagas_setor')!;
   set vagasSetor(String value) => setField<String>('vagas_setor', value);
 
-  String? get vagasEscalista => getField<String>('vagas_escalista');
-  set vagasEscalista(String? value) =>
+  String get vagasEscalista => getField<String>('vagas_escalista')!;
+  set vagasEscalista(String value) =>
       setField<String>('vagas_escalista', value);
 
   DateTime? get vagasUpdateat => getField<DateTime>('vagas_updateat');
   set vagasUpdateat(DateTime? value) =>
       setField<DateTime>('vagas_updateat', value);
 
-  String? get vagasUpdateby => getField<String>('vagas_updateby');
-  set vagasUpdateby(String? value) => setField<String>('vagas_updateby', value);
+  String get vagasUpdateby => getField<String>('vagas_updateby')!;
+  set vagasUpdateby(String value) => setField<String>('vagas_updateby', value);
 
   DateTime? get vagasDeleteat => getField<DateTime>('vagas_deleteat');
   set vagasDeleteat(DateTime? value) =>
@@ -87,12 +82,17 @@ class VagasRow extends SupabaseDataRow {
   set vagaEspecialidade(String value) =>
       setField<String>('vaga_especialidade', value);
 
-  String? get hospitalId => getField<String>('hospital_id');
-  set hospitalId(String? value) => setField<String>('hospital_id', value);
-
   String? get grupoId => getField<String>('grupo_id');
   set grupoId(String? value) => setField<String>('grupo_id', value);
 
   int get index => getField<int>('Index')!;
   set index(int value) => setField<int>('Index', value);
+
+  String? get vagasFormarecebimento =>
+      getField<String>('vagas_formarecebimento');
+  set vagasFormarecebimento(String? value) =>
+      setField<String>('vagas_formarecebimento', value);
+
+  String? get recorrenciaId => getField<String>('recorrencia_id');
+  set recorrenciaId(String? value) => setField<String>('recorrencia_id', value);
 }

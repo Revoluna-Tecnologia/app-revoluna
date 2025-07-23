@@ -1,4 +1,5 @@
 import '/auth/supabase_auth/auth_util.dart';
+import '/backend/supabase/supabase.dart';
 import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -43,6 +44,8 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       decoration: BoxDecoration(
         color: FlutterFlowTheme.of(context).primaryBackground,
@@ -66,6 +69,8 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
               child: BackTopBarWidget(
                 logo: false,
                 backButton: () async {
+                  logFirebaseEvent('DRAWER_MENU_Container_thiqrtjg_CALLBACK');
+                  logFirebaseEvent('BackTopBar_navigate_back');
                   context.safePop();
                 },
               ),
@@ -128,6 +133,9 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                       ),
                       FFButtonWidget(
                         onPressed: () async {
+                          logFirebaseEvent('DRAWER_MENU_COMP__BTN_ON_TAP');
+                          logFirebaseEvent('Button_navigate_to');
+
                           context.pushNamed(PerfilWidget.routeName);
                         },
                         text: '',
@@ -182,6 +190,155 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Icon(
+                            FFIcons.kbell,
+                            color: FlutterFlowTheme.of(context).tertiary,
+                            size: 16.0,
+                          ),
+                          Text(
+                            'Notificações',
+                            style: FlutterFlowTheme.of(context)
+                                .labelLarge
+                                .override(
+                                  font: GoogleFonts.geologica(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelLarge
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelLarge
+                                        .fontStyle,
+                                  ),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelLarge
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelLarge
+                                      .fontStyle,
+                                ),
+                          ),
+                        ].divide(SizedBox(width: FFAppConstants.Gap)),
+                      ),
+                      FFButtonWidget(
+                        onPressed: () async {
+                          logFirebaseEvent('DRAWER_MENU_COMP__BTN_ON_TAP');
+                          logFirebaseEvent('Button_backend_call');
+                          _model.notificationsQuery =
+                              await NotificationsTable().queryRows(
+                            queryFn: (q) => q,
+                          );
+                          logFirebaseEvent('Button_navigate_to');
+
+                          context.pushNamed(
+                            NotificacoesWidget.routeName,
+                            queryParameters: {
+                              'notificationsQuery': serializeParam(
+                                _model.notificationsQuery,
+                                ParamType.SupabaseRow,
+                                isList: true,
+                              ),
+                            }.withoutNulls,
+                            extra: <String, dynamic>{
+                              kTransitionInfoKey: TransitionInfo(
+                                hasTransition: true,
+                                transitionType: PageTransitionType.rightToLeft,
+                              ),
+                            },
+                          );
+
+                          safeSetState(() {});
+                        },
+                        text: '',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: double.infinity,
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          color: Color(0x00A369ED),
+                          textStyle:
+                              FlutterFlowTheme.of(context).labelLarge.override(
+                                    font: GoogleFonts.geologica(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelLarge
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelLarge
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelLarge
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelLarge
+                                        .fontStyle,
+                                  ),
+                          elevation: 0.0,
+                          borderRadius: BorderRadius.circular(0.0),
+                        ),
+                        showLoadingIndicator: false,
+                      ),
+                      if (FFAppState().unreadNotifications)
+                        Align(
+                          alignment: AlignmentDirectional(1.0, 0.0),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0,
+                                0.0,
+                                valueOrDefault<double>(
+                                  FFAppConstants.doubleGap,
+                                  0.0,
+                                ),
+                                0.0),
+                            child: Text(
+                              '•',
+                              textAlign: TextAlign.center,
+                              style: FlutterFlowTheme.of(context)
+                                  .labelSmall
+                                  .override(
+                                    font: GoogleFonts.geologica(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelSmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelSmall
+                                          .fontStyle,
+                                    ),
+                                    color:
+                                        FlutterFlowTheme.of(context).tertiary,
+                                    fontSize: 20.0,
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelSmall
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelSmall
+                                        .fontStyle,
+                                  ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 1.0,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: MediaQuery.sizeOf(context).height * 0.05,
+                  child: Stack(
+                    alignment: AlignmentDirectional(0.0, 0.0),
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Icon(
                             FFIcons.kshield,
                             color: FlutterFlowTheme.of(context).tertiary,
                             size: 16.0,
@@ -212,6 +369,9 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                       ),
                       FFButtonWidget(
                         onPressed: () async {
+                          logFirebaseEvent('DRAWER_MENU_COMP__BTN_ON_TAP');
+                          logFirebaseEvent('Button_navigate_to');
+
                           context.pushNamed(
                             TermosWidget.routeName,
                             extra: <String, dynamic>{
@@ -264,23 +424,63 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                     color: FlutterFlowTheme.of(context).secondaryBackground,
                   ),
                 ),
-                Container(
-                  width: double.infinity,
-                  height: MediaQuery.sizeOf(context).height * 0.05,
-                  child: Stack(
-                    alignment: AlignmentDirectional(0.0, 0.0),
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Icon(
-                            FFIcons.ktool,
-                            color: FlutterFlowTheme.of(context).tertiary,
-                            size: 16.0,
-                          ),
-                          Text(
-                            'Suporte',
-                            style: FlutterFlowTheme.of(context)
+                if (false)
+                  Container(
+                    width: double.infinity,
+                    height: MediaQuery.sizeOf(context).height * 0.05,
+                    child: Stack(
+                      alignment: AlignmentDirectional(0.0, 0.0),
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Icon(
+                              FFIcons.ktool,
+                              color: FlutterFlowTheme.of(context).tertiary,
+                              size: 16.0,
+                            ),
+                            Text(
+                              'Suporte',
+                              style: FlutterFlowTheme.of(context)
+                                  .labelLarge
+                                  .override(
+                                    font: GoogleFonts.geologica(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelLarge
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelLarge
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelLarge
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelLarge
+                                        .fontStyle,
+                                  ),
+                            ),
+                          ].divide(SizedBox(width: FFAppConstants.Gap)),
+                        ),
+                        FFButtonWidget(
+                          onPressed: () async {
+                            logFirebaseEvent('DRAWER_MENU_COMP__BTN_ON_TAP');
+                            logFirebaseEvent('Button_custom_action');
+                            await actions.launchWhatsAppChat(
+                              'Olá, preciso de suporte técnico com o app Revoluna.',
+                            );
+                          },
+                          text: '',
+                          options: FFButtonOptions(
+                            width: double.infinity,
+                            height: double.infinity,
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            color: Color(0x00A369ED),
+                            textStyle: FlutterFlowTheme.of(context)
                                 .labelLarge
                                 .override(
                                   font: GoogleFonts.geologica(
@@ -299,57 +499,22 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                                       .labelLarge
                                       .fontStyle,
                                 ),
+                            elevation: 0.0,
+                            borderRadius: BorderRadius.circular(0.0),
                           ),
-                        ].divide(SizedBox(width: FFAppConstants.Gap)),
-                      ),
-                      FFButtonWidget(
-                        onPressed: () async {
-                          await actions.launchWhatsAppChat(
-                            'Olá, preciso de suporte técnico com o app Revoluna.',
-                          );
-                        },
-                        text: '',
-                        options: FFButtonOptions(
-                          width: double.infinity,
-                          height: double.infinity,
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
-                          iconPadding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
-                          color: Color(0x00A369ED),
-                          textStyle:
-                              FlutterFlowTheme.of(context).labelLarge.override(
-                                    font: GoogleFonts.geologica(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .labelLarge
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelLarge
-                                          .fontStyle,
-                                    ),
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelLarge
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelLarge
-                                        .fontStyle,
-                                  ),
-                          elevation: 0.0,
-                          borderRadius: BorderRadius.circular(0.0),
+                          showLoadingIndicator: false,
                         ),
-                        showLoadingIndicator: false,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 1.0,
-                  decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                if (false)
+                  Container(
+                    width: double.infinity,
+                    height: 1.0,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                    ),
                   ),
-                ),
                 Container(
                   width: double.infinity,
                   height: MediaQuery.sizeOf(context).height * 0.05,
@@ -390,19 +555,20 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                       ),
                       FFButtonWidget(
                         onPressed: () async {
+                          logFirebaseEvent('DRAWER_MENU_COMP__BTN_ON_TAP');
+                          logFirebaseEvent('Button_auth');
                           GoRouter.of(context).prepareAuthEvent();
                           await authManager.signOut();
                           GoRouter.of(context).clearRedirectLocation();
 
+                          logFirebaseEvent('Button_update_app_state');
                           FFAppState().inputAreacode = '';
                           FFAppState().inputPhone = '';
                           FFAppState().inputEmail = '';
                           FFAppState().inputAreacodeIndex = 0;
                           FFAppState().wasUser = false;
-                          FFAppState().userID = '';
                           FFAppState().userRole = '';
-                          FFAppState().profilepicture =
-                              'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png';
+                          FFAppState().profilepicture = '';
                           FFAppState().displayName = '';
                           FFAppState().gender = '';
                           FFAppState().valuesPrivacy = false;
