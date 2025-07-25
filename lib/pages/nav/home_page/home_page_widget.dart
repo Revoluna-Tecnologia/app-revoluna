@@ -13,12 +13,10 @@ import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/pages/other/vaga_bottom_sheet/vaga_bottom_sheet_widget.dart';
-import 'dart:async';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
-import '/flutter_flow/permissions_util.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -62,12 +60,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       await actions.conciergenumber();
       logFirebaseEvent('HomePage_custom_action');
       await actions.unreadNotifications();
-      logFirebaseEvent('HomePage_request_permissions');
-      unawaited(
-        () async {
-          await requestPermission(notificationsPermission);
-        }(),
-      );
     });
 
     getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0), cached: true)

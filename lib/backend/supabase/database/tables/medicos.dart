@@ -124,4 +124,8 @@ class MedicosRow extends SupabaseDataRow {
   String? get especialidadeNome => getField<String>('especialidade_nome');
   set especialidadeNome(String? value) =>
       setField<String>('especialidade_nome', value);
+
+  bool? get backgroundLocation => getField<bool>('background_location');
+  set backgroundLocation(bool? value) =>
+      setField<bool>('background_location', value);
 }

@@ -6,5 +6,11 @@
     <key>aps-environment</key>
     <string>production</string>
     <!-- End of APSEnvironment -->
+    <!-- Start of Sign in with Apple -->
+    <key>com.apple.developer.applesignin</key>
+    <array>
+      <string>Default</string>
+    </array>
+    <!-- End of Sign in with Apple -->
   </dict>
 </plist>

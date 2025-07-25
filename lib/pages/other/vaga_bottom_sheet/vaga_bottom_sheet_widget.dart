@@ -1824,7 +1824,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                       .primary,
                                                   size: 16.0,
                                                 ),
-                                                onPressed: _model.isApproved
+                                                onPressed: !_model.isApproved
                                                     ? null
                                                     : () async {
                                                         logFirebaseEvent(
@@ -1832,14 +1832,8 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                         if (widget!.date! >=
                                                             functions
                                                                 .currentDate()!) {
-                                                          if (widget!.candidates
-                                                                  ?.where((e) =>
-                                                                      e.medicoId ==
-                                                                      currentUserUid)
-                                                                  .toList()
-                                                                  ?.firstOrNull
-                                                                  ?.vagasStatus ==
-                                                              'anunciada') {
+                                                          if (_model
+                                                              .isAnnounced!) {
                                                             logFirebaseEvent(
                                                                 'IconButton_backend_call');
                                                             _model.cancelAnounce =
@@ -2028,7 +2022,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                 logFirebaseEvent(
                                                                     'IconButton_update_component_state');
                                                                 _model.isAnnounced =
-                                                                    false;
+                                                                    true;
                                                                 safeSetState(
                                                                     () {});
                                                               } else {
@@ -2119,7 +2113,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                   0.13,
                                               decoration: BoxDecoration(),
                                               child: Text(
-                                                _model.isSaved
+                                                _model.isAnnounced!
                                                     ? 'Cancelar anúncio'
                                                     : 'Passar plantão',
                                                 textAlign: TextAlign.center,

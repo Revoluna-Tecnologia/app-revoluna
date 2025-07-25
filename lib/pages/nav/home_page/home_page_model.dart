@@ -13,12 +13,10 @@ import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/pages/other/vaga_bottom_sheet/vaga_bottom_sheet_widget.dart';
-import 'dart:async';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
-import '/flutter_flow/permissions_util.dart';
 import '/flutter_flow/request_manager.dart';
 
 import 'home_page_widget.dart' show HomePageWidget;

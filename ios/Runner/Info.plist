@@ -98,7 +98,6 @@
     <!-- Start of Background Modes -->
     <key>UIBackgroundModes</key>
     <array>
-      <string>location</string>
       <string>processing</string>
       <string>fetch</string>
       <string>remote-notification</string>
@@ -110,12 +109,6 @@
       <string>$(PRODUCT_BUNDLE_IDENTIFIER).background-task</string>
     </array>
     <!-- End of Background Scheduler -->
-    <!-- Start of Device Capabilities -->
-    <key>UIRequiredDeviceCapabilities</key>
-    <array>
-      <string>location-services</string>
-    </array>
-    <!-- End of Device Capabilities -->
     <!-- Start of Notification Settings -->
     <key>UIUserNotificationAlerts</key>
     <true/>

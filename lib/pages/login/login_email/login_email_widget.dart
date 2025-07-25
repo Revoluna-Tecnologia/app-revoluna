@@ -910,7 +910,11 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                     await UserProfileTable().queryRows(
                                   queryFn: (q) => q.eqOrNull(
                                     'id',
-                                    _model.appleData?.elementAtOrNull(2),
+                                    currentUserUid != null &&
+                                            currentUserUid != ''
+                                        ? currentUserUid
+                                        : (_model.appleData
+                                            ?.elementAtOrNull(2)),
                                   ),
                                 );
                                 _shouldSetState = true;

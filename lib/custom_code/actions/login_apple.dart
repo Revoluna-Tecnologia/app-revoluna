@@ -24,9 +24,6 @@ Future<List<String>> loginApple(BuildContext context) async {
   final rawNonce = SupaFlow.client.auth.generateRawNonce();
   final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
 
-  debugPrint('rawNonce: $rawNonce');
-  debugPrint('hashedNonce: $hashedNonce');
-
   final credential = await SignInWithApple.getAppleIDCredential(
     scopes: [
       AppleIDAuthorizationScopes.email,
@@ -35,14 +32,10 @@ Future<List<String>> loginApple(BuildContext context) async {
     nonce: hashedNonce,
   );
 
-  //debugPrint('credential: $credential.toString()');
-
   // Capture the name data from Apple credential
   final String firstName = credential.givenName ?? "";
   final String lastName = credential.familyName ?? "";
   final String email = credential.email ?? "";
-
-  debugPrint('Apple Data: $firstName $lastName $email');
 
   // Now prepare auth event and complete authentication
   GoRouter.of(context).prepareAuthEvent();
@@ -52,8 +45,6 @@ Future<List<String>> loginApple(BuildContext context) async {
     throw const AuthException(
         'Could not find ID Token from generated credential.');
   }
-
-  //debugPrint('idToken: $idToken');
 
   // Complete the authentication
   await SupaFlow.client.auth.signInWithIdToken(
@@ -69,8 +60,6 @@ Future<List<String>> loginApple(BuildContext context) async {
   appleData[1] = lastName;
   appleData[2] = user!.id;
   appleData[3] = email;
-
-  //debugPrint('$appleData');
 
   return appleData;
 }
