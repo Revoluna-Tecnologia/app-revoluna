@@ -189,6 +189,6 @@ firebase functions:deploy # Deploy para produção
 
 ## 📈 Versão Atual
 
-**v2.0.0** - Lançamento principal com recursos completos de gestão de escalas médicas
+**v2.0.3** - Lançamento principal com recursos completos de gestão de escalas médicas
 
 Para detalhes completos das mudanças, consulte o [CHANGELOG.md](CHANGELOG.md).
