@@ -129,7 +129,7 @@ firebase/
   - `hospitais` - Base de dados hospitalares
   - `notifications` - Sistema de notificações
 
-## 🚀 Recursos Avançados v2.0.0
+## 🚀 Recursos Avançados v2.0
 
 ### **Sistema de Deep Linking**
 - Links universais para navegação direta no app
