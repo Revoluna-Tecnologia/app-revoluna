@@ -53,6 +53,8 @@ class VagaBottomSheetModel extends FlutterFlowModel<VagaBottomSheetWidget> {
   List<VagasSalvasRow>? saved;
   // Stores action output result for [Backend Call - Query Rows] action in VagaBottomSheet widget.
   List<CheckinCheckoutRow>? checkin;
+  // Stores action output result for [Backend Call - Query Rows] action in VagaBottomSheet widget.
+  List<VagasRequisitoRow>? requirements;
   // Stores action output result for [Backend Call - Update Row(s)] action in IconButton widget.
   List<VagasRow>? cancelAnounce;
   // Stores action output result for [Alert Dialog - Custom Dialog] action in IconButton widget.
