@@ -17,7 +17,7 @@ import 'dart:convert';
 import 'initialize_deeplinks.dart';
 
 void _handleNotificationTap(RemoteMessage message) {
-  debugPrint('📱 Processing notification tap: ${message.data}');
+  //debugPrint('📱 Processing notification tap: ${message.data}');
 
   String? route = message.data['route'];
   String? extraDataJson = message.data['extra_data'];

@@ -261,8 +261,14 @@ dynamic deserializeParam<T>(
             return TipovagaRow(data);
           case SetoresRow:
             return SetoresRow(data);
+          case GradesRow:
+            return GradesRow(data);
           case EmailVerificationTokensRow:
             return EmailVerificationTokensRow(data);
+          case EquipesMedicosRow:
+            return EquipesMedicosRow(data);
+          case EquipesRow:
+            return EquipesRow(data);
           case TiposDocumentosRow:
             return TiposDocumentosRow(data);
           case CleanHospitalRow:
@@ -337,6 +343,8 @@ dynamic deserializeParam<T>(
             return VwVagasCandidaturasRow(data);
           case VagasRow:
             return VagasRow(data);
+          case MedicosPrecadastroRow:
+            return MedicosPrecadastroRow(data);
           case UserProfileRow:
             return UserProfileRow(data);
           case CodigosdeareaRow:

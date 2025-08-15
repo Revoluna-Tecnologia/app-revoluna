@@ -44,6 +44,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   List<MedicosRow>? medicoTrackingUpdateTrueCopy;
   // Stores action output result for [Backend Call - Update Row(s)] action in HomePage widget.
   List<MedicosRow>? medicoTrackingUpdateFalseCopy;
+  // Model for drawerMenu component.
+  late DrawerMenuModel drawerMenuModel;
   // Model for Header component.
   late HeaderModel headerModel;
   // State field(s) for Carousel widget.
@@ -53,8 +55,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   Stream<List<CleanHospitalRow>>? containerSupabaseStream;
   // Models for cardVagasSlim dynamic component.
   late FlutterFlowDynamicModels<CardVagasSlimModel> cardVagasSlimModels;
-  // Model for drawerMenu component.
-  late DrawerMenuModel drawerMenuModel;
 
   /// Query cache managers for this widget.
 
@@ -75,16 +75,16 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
 
   @override
   void initState(BuildContext context) {
+    drawerMenuModel = createModel(context, () => DrawerMenuModel());
     headerModel = createModel(context, () => HeaderModel());
     cardVagasSlimModels = FlutterFlowDynamicModels(() => CardVagasSlimModel());
-    drawerMenuModel = createModel(context, () => DrawerMenuModel());
   }
 
   @override
   void dispose() {
+    drawerMenuModel.dispose();
     headerModel.dispose();
     cardVagasSlimModels.dispose();
-    drawerMenuModel.dispose();
 
     /// Dispose query cache managers for this widget.
 
