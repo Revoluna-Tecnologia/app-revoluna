@@ -60,6 +60,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       await actions.conciergenumber();
       logFirebaseEvent('HomePage_custom_action');
       await actions.unreadNotifications();
+      logFirebaseEvent('HomePage_custom_action');
+      await actions.markAppAsLoaded();
     });
 
     getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0), cached: true)
@@ -131,8 +133,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         FocusScope.of(context).unfocus();
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: WillPopScope(
-        onWillPop: () async => false,
+      child: PopScope(
+        canPop: false,
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -1331,12 +1333,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                     showPay: false,
                                                     sector: listItem.setorNome,
                                                     distance:
-                                                        functions.distanceCalc(
-                                                            listItem
-                                                                .hospitalLat!,
-                                                            listItem
-                                                                .hospitalLog!,
-                                                            currentUserLocationValue!),
+                                                        valueOrDefault<String>(
+                                                      functions.distanceCalc(
+                                                          listItem.hospitalLat!,
+                                                          listItem.hospitalLog!,
+                                                          currentUserLocationValue!),
+                                                      'Não encontrado',
+                                                    ),
                                                     showSign: (int job,
                                                             int payment) {
                                                       return (payment - job) <=

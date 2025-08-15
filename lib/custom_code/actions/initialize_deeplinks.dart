@@ -16,17 +16,25 @@ import 'dart:async';
 import '/pages/other/vaga_bottom_sheet/vaga_bottom_sheet_widget.dart';
 
 Future<void> _showVagaBottomSheet(String vagaId) async {
+  //print("🔗 _showVagaBottomSheet INICIADO para vagaId: $vagaId");
+
   try {
-    // Buscar dados da vaga e todas as candidaturas para esta vaga
+    //print("🔗 Buscando dados da vaga no Supabase...");
+
+    // Buscar dados da vaga
     final vagaData = await SupaFlow.client
         .from('vw_vagas_candidaturas')
         .select()
         .eq('vagas_id', vagaId);
 
+    //print("🔗 Dados encontrados: ${vagaData.length} registros");
+
     if (vagaData.isEmpty) {
+      //print("🔗 ERRO: Nenhum dado encontrado para vagaId: $vagaId");
       return;
     }
 
+    //print("🔗 Preparando bottom sheet...");
     // Pegar a primeira linha para os dados principais da vaga
     final vagaRow = VwVagasCandidaturasRow(vagaData.first);
 
@@ -88,38 +96,135 @@ Future<void> _showVagaBottomSheet(String vagaId) async {
 }
 
 Future<void> initializeDeeplinks() async {
-  // Handle app start from deeplink
-  final appLinks = AppLinks();
+  try {
+    //print("🔗 INICIANDO initializeDeeplinks");
 
-  final initialLink = await appLinks.getInitialLink();
-  if (initialLink != null) {
-    await handleDeeplink(initialLink.toString());
+    final appLinks = AppLinks();
+    //print("🔗 AppLinks criado");
+
+    await Future.delayed(Duration(milliseconds: 500));
+
+    final initialLink = await appLinks.getInitialLink();
+    //print("🔗 initialLink: $initialLink");
+
+    if (initialLink != null) {
+      //print("🔗 Deeplink inicial detectado");
+
+      // Verificar se app já carregou via AppState
+      if (FFAppState().appFullyLoaded) {
+        //print("🔗 App já carregado (AppState) - processando imediatamente");
+        await handleDeeplink(initialLink.toString());
+      } else {
+        //print("🔗 App ainda carregando - salvando no AppState");
+        FFAppState().update(() {
+          FFAppState().pendingDeeplinkUrl = initialLink.toString();
+        });
+
+        // Timer de backup
+        Timer(Duration(seconds: 4), () async {
+          if (FFAppState().pendingDeeplinkUrl.isNotEmpty) {
+            //print("🔗 Timer backup - processando deeplink do AppState");
+            await processPendingDeeplinkFromAppState();
+          }
+        });
+      }
+    }
+
+    // Stream para deeplinks quando app já está rodando
+    appLinks.uriLinkStream.listen((Uri uri) {
+      //print("🔗 Stream link - processando imediatamente: ${uri.toString()}");
+      handleDeeplink(uri.toString());
+    }, onError: (err) {
+      //print("🔗 ERRO no stream: $err");
+    });
+
+    //print("🔗 initializeDeeplinks CONCLUÍDO");
+  } catch (e) {
+    //print("🔗 ERRO em initializeDeeplinks: $e");
   }
+}
 
-  // Handle link when app is already running
-  appLinks.uriLinkStream.listen((Uri uri) {
-    handleDeeplink(uri.toString());
-  }, onError: (err) {
-    //debugPrint('Erro no stream de links: $err');
-  });
+Future<void> processPendingDeeplinkFromAppState() async {
+  if (FFAppState().pendingDeeplinkUrl.isNotEmpty) {
+    //print("🔗 Processando deeplink do AppState: ${FFAppState().pendingDeeplinkUrl}");
+    final link = FFAppState().pendingDeeplinkUrl;
+
+    // Limpar AppState
+    FFAppState().update(() {
+      FFAppState().pendingDeeplinkUrl = '';
+    });
+
+    await handleDeeplink(link);
+  } else {
+    //print("🔗 Nenhum deeplink pendente no AppState");
+  }
 }
 
 Future<void> handleDeeplink(String link) async {
-  //debugPrint('Deeplink recebido: $link');
+  try {
+    //print('🔗 handleDeeplink: $link');
 
-  final Uri uri = Uri.parse(link);
-  //debugPrint('URI parseada - host: ${uri.host}, path: ${uri.path}, segments: ${uri.pathSegments}, query: ${uri.queryParameters}');
+    final Uri uri = Uri.parse(link);
+    //print('🔗 URI parseada - host: ${uri.host}, path: ${uri.path}');
 
-  final String? route = uri.pathSegments[0];
-  final String? vagaId = uri.queryParameters['id'];
+    // Aguardar context estar disponível (até 5 tentativas)
+    BuildContext? context;
+    for (int i = 0; i < 5; i++) {
+      context = appNavigatorKey.currentContext;
+      if (context != null) break;
+      //print('🔗 Aguardando context - tentativa ${i + 1}');
+      await Future.delayed(Duration(milliseconds: 200));
+    }
 
-  if (vagaId != null &&
-      vagaId.isNotEmpty &&
-      route != null &&
-      route.isNotEmpty) {
-    // Navigate to route page first
-    GoRouter.of(appNavigatorKey.currentContext!).go('/$route');
+    if (context == null) {
+      //print('🔗 Context ainda não disponível - salvando no AppState para retry');
+      FFAppState().update(() {
+        FFAppState().pendingDeeplinkUrl = link;
+      });
+      return;
+    }
 
-    await _showVagaBottomSheet(vagaId);
+    //print('🔗 Context disponível - processando deeplink');
+
+    // Processar custom scheme (revoluna://)
+    if (uri.scheme == 'revoluna') {
+      final String? route =
+          uri.pathSegments.isNotEmpty ? uri.pathSegments[0] : null;
+      final String? vagaId = uri.queryParameters['id'];
+
+      //print('🔗 Custom scheme - route: $route, vagaId: $vagaId');
+
+      if (vagaId != null &&
+          vagaId.isNotEmpty &&
+          route != null &&
+          route.isNotEmpty) {
+        //print('🔗 Navegando para /$route com vaga: $vagaId');
+        GoRouter.of(context).go('/$route');
+
+        // Aguardar navegação completar antes de mostrar bottom sheet
+        await Future.delayed(Duration(milliseconds: 1000));
+        await _showVagaBottomSheet(vagaId);
+      }
+    }
+    // Processar Universal Links (HTTPS) - para futuro uso
+    else if (uri.scheme == 'https' && uri.host == 'link.revoluna.com.br') {
+      final String? path =
+          uri.pathSegments.isNotEmpty ? uri.pathSegments[0] : null;
+      final String? vagaId = uri.queryParameters['id'];
+
+      //print('🔗 Universal Link - path: $path, vagaId: $vagaId');
+
+      if (path == 'perfil') {
+        //print('🔗 Navegando para perfil');
+        GoRouter.of(context).go('/perfil');
+      } else if (path == 'vaga' && vagaId != null && vagaId.isNotEmpty) {
+        //print('🔗 Navegando para vaga: $vagaId');
+        GoRouter.of(context).go('/explorar');
+        await Future.delayed(Duration(milliseconds: 1000));
+        await _showVagaBottomSheet(vagaId);
+      }
+    }
+  } catch (e) {
+    //print('🔗 ERRO em handleDeeplink: $e');
   }
 }
