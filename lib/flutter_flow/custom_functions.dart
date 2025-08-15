@@ -88,6 +88,14 @@ String? distanceCalc(
   double lon,
   LatLng location,
 ) {
+  // Validação para valores nulos
+  if (lat == null || lon == null) {
+    return 'ERRO: Localização do hospital não disponível';
+  }
+  if (location == null) {
+    return 'ERRO: Localização do usuário não disponível';
+  }
+
   double latUser = location.latitude;
   double lonUser = location.longitude;
 

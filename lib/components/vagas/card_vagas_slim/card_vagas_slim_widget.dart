@@ -482,31 +482,46 @@ class _CardVagasSlimWidgetState extends State<CardVagasSlimWidget> {
                                       .fontStyle,
                                 ),
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Align(
-                                alignment: AlignmentDirectional(0.0, 0.0),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      1.0, 1.0, 1.0, 1.0),
-                                  child: Icon(
-                                    FFIcons.kmapPin,
-                                    color:
-                                        FlutterFlowTheme.of(context).tertiary,
-                                    size: 12.0,
+                          if ('${(String distance) {
+                                return distance.split(':')[0];
+                              }(widget!.distance!)}' !=
+                              'ERRO')
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Align(
+                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        1.0, 1.0, 1.0, 1.0),
+                                    child: Icon(
+                                      FFIcons.kmapPin,
+                                      color:
+                                          FlutterFlowTheme.of(context).tertiary,
+                                      size: 12.0,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Text(
-                                valueOrDefault<String>(
-                                  widget!.distance,
-                                  '[distance]',
-                                ),
-                                style: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .override(
-                                      font: GoogleFonts.geologica(
+                                Text(
+                                  valueOrDefault<String>(
+                                    widget!.distance,
+                                    '[distance]',
+                                  ),
+                                  style: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .override(
+                                        font: GoogleFonts.geologica(
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontStyle,
+                                        ),
+                                        fontSize: 10.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FlutterFlowTheme.of(context)
                                             .labelMedium
                                             .fontWeight,
@@ -514,18 +529,9 @@ class _CardVagasSlimWidgetState extends State<CardVagasSlimWidget> {
                                             .labelMedium
                                             .fontStyle,
                                       ),
-                                      fontSize: 10.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontStyle,
-                                    ),
-                              ),
-                            ].divide(SizedBox(width: 1.0)),
-                          ),
+                                ),
+                              ].divide(SizedBox(width: 1.0)),
+                            ),
                           Text(
                             '•',
                             textAlign: TextAlign.center,
