@@ -668,19 +668,6 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                 'LOGIN_PHONE_PAGE_CONTINUAR_BTN_ON_TAP');
                                             var _shouldSetState = false;
                                             logFirebaseEvent(
-                                                'Button_update_app_state');
-                                            FFAppState().inputPhone = _model
-                                                .campoTelefoneTextController
-                                                .text;
-                                            FFAppState().inputAreacode =
-                                                loginPhoneFormValCodigosdeareaRowList
-                                                    .elementAtOrNull(_model
-                                                        .dropCodigoPaisValue!)!
-                                                    .codigo!;
-                                            FFAppState().inputAreacodeIndex =
-                                                _model.dropCodigoPaisValue!;
-                                            safeSetState(() {});
-                                            logFirebaseEvent(
                                                 'Button_update_page_state');
                                             _model.phoneOnlynumbers =
                                                 '${(String var1) {
@@ -699,17 +686,21 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                             );
 
                                             _shouldSetState = true;
-                                            if ((_model
-                                                    .getphonenumber?.jsonBody ??
-                                                '')) {
-                                              logFirebaseEvent(
-                                                  'Button_update_app_state');
-                                              FFAppState().wasUser = (_model
-                                                      .getphonenumber
-                                                      ?.jsonBody ??
-                                                  '');
-                                              safeSetState(() {});
-                                            }
+                                            logFirebaseEvent(
+                                                'Button_update_app_state');
+                                            FFAppState().inputPhone = _model
+                                                .campoTelefoneTextController
+                                                .text;
+                                            FFAppState().inputAreacode =
+                                                loginPhoneFormValCodigosdeareaRowList
+                                                    .elementAtOrNull(_model
+                                                        .dropCodigoPaisValue!)!
+                                                    .codigo!;
+                                            FFAppState().inputAreacodeIndex =
+                                                _model.dropCodigoPaisValue!;
+                                            FFAppState().wasUser =
+                                                _model.getphonenumber != null;
+                                            safeSetState(() {});
                                             if (FFAppState().wasUser) {
                                               logFirebaseEvent(
                                                   'Button_custom_action');
@@ -743,40 +734,55 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                   ),
                                                 );
                                                 _shouldSetState = true;
-                                                logFirebaseEvent(
-                                                    'Button_update_app_state');
-                                                FFAppState().displayName =
-                                                    _model
-                                                        .queryUser!
-                                                        .firstOrNull!
-                                                        .displayname!;
-                                                FFAppState().gender = _model
-                                                    .queryUser!
-                                                    .firstOrNull!
-                                                    .gender!;
-                                                FFAppState().profilepicture =
-                                                    _model
-                                                        .queryUser!
-                                                        .firstOrNull!
-                                                        .profilepicture!;
-                                                FFAppState().estadoUF = _model
-                                                    .queryUser!
-                                                    .firstOrNull!
-                                                    .uFindex;
-                                                logFirebaseEvent(
-                                                    'Button_navigate_to');
+                                                if (_model.queryUser
+                                                        ?.firstOrNull?.role ==
+                                                    'free') {
+                                                  logFirebaseEvent(
+                                                      'Button_update_app_state');
+                                                  FFAppState().displayName =
+                                                      _model
+                                                          .queryUser!
+                                                          .firstOrNull!
+                                                          .displayname!;
+                                                  FFAppState().gender = _model
+                                                      .queryUser!
+                                                      .firstOrNull!
+                                                      .gender!;
+                                                  FFAppState().profilepicture =
+                                                      _model
+                                                          .queryUser!
+                                                          .firstOrNull!
+                                                          .profilepicture!;
+                                                  FFAppState().estadoUF = _model
+                                                      .queryUser!
+                                                      .firstOrNull!
+                                                      .uFindex;
+                                                  logFirebaseEvent(
+                                                      'Button_navigate_to');
 
-                                                context.pushNamed(
-                                                  LoginPhoneCodeWidget
-                                                      .routeName,
-                                                  queryParameters: {
-                                                    'phoneOnlynumbers':
-                                                        serializeParam(
-                                                      _model.phoneOnlynumbers,
-                                                      ParamType.String,
-                                                    ),
-                                                  }.withoutNulls,
-                                                );
+                                                  context.pushNamed(
+                                                    LoginPhoneCodeWidget
+                                                        .routeName,
+                                                    queryParameters: {
+                                                      'phoneOnlynumbers':
+                                                          serializeParam(
+                                                        _model.phoneOnlynumbers,
+                                                        ParamType.String,
+                                                      ),
+                                                    }.withoutNulls,
+                                                  );
+                                                } else {
+                                                  logFirebaseEvent(
+                                                      'Button_update_page_state');
+                                                  _model.phoneborder =
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .error;
+                                                  safeSetState(() {});
+                                                  if (_shouldSetState)
+                                                    safeSetState(() {});
+                                                  return;
+                                                }
                                               } else {
                                                 logFirebaseEvent(
                                                     'Button_update_page_state');

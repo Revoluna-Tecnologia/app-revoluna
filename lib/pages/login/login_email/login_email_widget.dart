@@ -493,40 +493,56 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                         FFAppState().estadoUF = _model
                                             .queryUser!.firstOrNull!.uFindex;
                                         FFAppState().update(() {});
-                                        logFirebaseEvent('Button_backend_call');
-                                        _model.isTester =
-                                            await AretheytesterCall.call(
-                                          userId:
-                                              (_model.getemail?.jsonBody ?? '')
-                                                  .toString(),
-                                        );
-
-                                        _shouldSetState = true;
-                                        if ((_model.isTester?.jsonBody ?? '')) {
+                                        if (_model
+                                                .queryUser?.firstOrNull?.role ==
+                                            'free') {
                                           logFirebaseEvent(
-                                              'Button_navigate_to');
+                                              'Button_backend_call');
+                                          _model.isTester =
+                                              await AretheytesterCall.call(
+                                            userId:
+                                                (_model.getemail?.jsonBody ??
+                                                        '')
+                                                    .toString(),
+                                          );
 
-                                          context.pushNamed(
-                                              LoginPasswordWidget.routeName);
+                                          _shouldSetState = true;
+                                          if ((_model.isTester?.jsonBody ??
+                                              '')) {
+                                            logFirebaseEvent(
+                                                'Button_navigate_to');
+
+                                            context.pushNamed(
+                                                LoginPasswordWidget.routeName);
+                                          } else {
+                                            logFirebaseEvent(
+                                                'Button_custom_action');
+                                            _model.magiclinksent =
+                                                await actions.otpEmailMagic(
+                                              _model.eMailTextController.text
+                                                  .toLowerCase(),
+                                            );
+                                            _shouldSetState = true;
+                                            if (!_model.magiclinksent!) {
+                                              logFirebaseEvent(
+                                                  'Button_update_page_state');
+                                              _model.emailborder =
+                                                  FlutterFlowTheme.of(context)
+                                                      .error;
+                                              if (_shouldSetState)
+                                                safeSetState(() {});
+                                              return;
+                                            }
+                                          }
                                         } else {
                                           logFirebaseEvent(
-                                              'Button_custom_action');
-                                          _model.magiclinksent =
-                                              await actions.otpEmailMagic(
-                                            _model.eMailTextController.text
-                                                .toLowerCase(),
-                                          );
-                                          _shouldSetState = true;
-                                          if (!_model.magiclinksent!) {
-                                            logFirebaseEvent(
-                                                'Button_update_page_state');
-                                            _model.emailborder =
-                                                FlutterFlowTheme.of(context)
-                                                    .error;
-                                            if (_shouldSetState)
-                                              safeSetState(() {});
-                                            return;
-                                          }
+                                              'Button_update_page_state');
+                                          _model.emailborder =
+                                              FlutterFlowTheme.of(context)
+                                                  .error;
+                                          if (_shouldSetState)
+                                            safeSetState(() {});
+                                          return;
                                         }
                                       } else {
                                         logFirebaseEvent('Button_backend_call');
