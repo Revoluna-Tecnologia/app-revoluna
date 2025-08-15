@@ -1,5 +1,63 @@
 # Histórico de Versões - Revoluna
 
+## [2.1.0] - 15/08/2025
+
+### 🔧 **Correções e Otimizações**
+
+#### 🚀 **Melhorias na Lista de Requisitos**
+- **Bottom Sheet de Vagas**: Seção de requisitos agora só é exibida quando há requisitos para a vaga
+- **Queries Otimizadas**: Revisão das consultas de requisitos para melhor performance
+- **UI Aprimorada**: Interface mais limpa e focada no conteúdo relevante
+
+#### 🔘 **Correções nos Botões de Ação**
+- **Check-in/Check-out**: Corrigida lógica que causava desabilitação incorreta dos botões
+- **Candidaturas**: Botões de candidatura revisados com novas lógicas de estado
+- **Separação de Lógicas**: Check-in e candidaturas agora têm controles independentes
+
+#### 🔐 **Autenticação Médica**
+- **Login Restritivo**: Implementada lógica para permitir login apenas de usuários médicos (role == free)
+- **Validação de Perfil**: Melhorias na validação de tipos de usuário durante o login
+
+#### 🔗 **Deep Links Aprimorados**
+- **App States**: Removidos estados obsoletos e adicionados novos para abertura via link
+- **Funcionamento em Background**: Links de vagas agora funcionam quando o app está fechado
+- **Navegação Direta**: Melhor redirecionamento para vagas específicas via deep links
+
+#### 📍 **Correções de Localização**
+- **Cálculos de Distância**: Adicionada validação de null para evitar erros em cálculos de distância
+- **Estabilidade**: Melhor tratamento de dados de localização ausentes ou inválidos
+
+#### 🧹 **Limpeza e Organização**
+- **Código FlutterFlow**: Limpezas e reorganizações gerais do código gerado
+- **Arquivos Desnecessários**: Remoção de arquivos obsoletos
+- **Estrutura de Pastas**: Melhor organização dos diretórios do projeto
+- **GitIgnore**: Atualizado para iOS e outras melhorias
+
+---
+
+## [2.0.3] - 25/07/2025
+
+### 🔧 **Correções e Otimizações de Segurança**
+
+#### 🔐 **Melhorias na Autenticação**
+- **Apple Sign-In**: Atualizados entitlements e melhorada lógica de login para autenticação Apple
+- **Correção de Login**: Aprimorada lógica de autenticação para melhor estabilidade
+
+#### 📍 **Otimizações de Permissões**
+- **Remoção de Permissões de Background**: Removidas permissões de localização em segundo plano do AndroidManifest.xml e Info.plist
+- **iOS Device Capabilities**: Removidas capacidades relacionadas à localização em background do iOS
+- **Segurança**: Reduzida superfície de ataque removendo permissões desnecessárias
+
+#### 💼 **Melhorias de UI para Plantões**
+- **Lógica de UI**: Refatorada lógica para passar e cancelar plantões
+- **Experiência do Usuário**: Melhorada interface para gerenciamento de escalas
+
+### 🔒 **Foco em Privacidade**
+- Alinhamento com melhores práticas de privacidade removendo permissões em background
+- Mantida funcionalidade essencial de check-in/check-out sem comprometer privacidade do usuário
+
+---
+
 ## [2.0.0] - 21/07/2025
 
 ### 🎉 Lançamento Principal: Evolução Completa da Plataforma
