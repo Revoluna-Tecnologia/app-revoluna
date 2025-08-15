@@ -21,9 +21,6 @@ class VagasBeneficioRow extends SupabaseDataRow {
   String get beneficioId => getField<String>('beneficio_id')!;
   set beneficioId(String value) => setField<String>('beneficio_id', value);
 
-  String? get vagaId => getField<String>('vaga_id');
-  set vagaId(String? value) => setField<String>('vaga_id', value);
-
   int get index => getField<int>('Index')!;
   set index(int value) => setField<int>('Index', value);
 }

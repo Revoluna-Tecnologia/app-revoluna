@@ -52,4 +52,8 @@ class CandidaturasRow extends SupabaseDataRow {
 
   String? get medicosId => getField<String>('medicos_id');
   set medicosId(String? value) => setField<String>('medicos_id', value);
+
+  String? get medicoPrecadastroId => getField<String>('medico_precadastro_id');
+  set medicoPrecadastroId(String? value) =>
+      setField<String>('medico_precadastro_id', value);
 }

@@ -163,12 +163,19 @@ class VwVagasCandidaturasRow extends SupabaseDataRow {
   String? get medicoCrm => getField<String>('medico_crm');
   set medicoCrm(String? value) => setField<String>('medico_crm', value);
 
+  String? get medicoEstado => getField<String>('medico_estado');
+  set medicoEstado(String? value) => setField<String>('medico_estado', value);
+
   String? get medicoEmail => getField<String>('medico_email');
   set medicoEmail(String? value) => setField<String>('medico_email', value);
 
   String? get medicoTelefone => getField<String>('medico_telefone');
   set medicoTelefone(String? value) =>
       setField<String>('medico_telefone', value);
+
+  String? get medicoPrecadastroId => getField<String>('medico_precadastro_id');
+  set medicoPrecadastroId(String? value) =>
+      setField<String>('medico_precadastro_id', value);
 
   String? get recorrenciaId => getField<String>('recorrencia_id');
   set recorrenciaId(String? value) => setField<String>('recorrencia_id', value);
