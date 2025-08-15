@@ -164,18 +164,6 @@ class FFAppState extends ChangeNotifier {
     prefs.setString('ff_apnToken', value);
   }
 
-  String _pendingDeeplinkVagaId = '';
-  String get pendingDeeplinkVagaId => _pendingDeeplinkVagaId;
-  set pendingDeeplinkVagaId(String value) {
-    _pendingDeeplinkVagaId = value;
-  }
-
-  bool _shouldShowDeeplinkBottomSheet = false;
-  bool get shouldShowDeeplinkBottomSheet => _shouldShowDeeplinkBottomSheet;
-  set shouldShowDeeplinkBottomSheet(bool value) {
-    _shouldShowDeeplinkBottomSheet = value;
-  }
-
   bool _unreadNotifications = false;
   bool get unreadNotifications => _unreadNotifications;
   set unreadNotifications(bool value) {
@@ -187,6 +175,18 @@ class FFAppState extends ChangeNotifier {
   DateTime? get selectedDay => _selectedDay;
   set selectedDay(DateTime? value) {
     _selectedDay = value;
+  }
+
+  String _pendingDeeplinkUrl = '';
+  String get pendingDeeplinkUrl => _pendingDeeplinkUrl;
+  set pendingDeeplinkUrl(String value) {
+    _pendingDeeplinkUrl = value;
+  }
+
+  bool _appFullyLoaded = false;
+  bool get appFullyLoaded => _appFullyLoaded;
+  set appFullyLoaded(bool value) {
+    _appFullyLoaded = value;
   }
 
   final _cleanHospitalTermsManager =
@@ -235,21 +235,6 @@ class FFAppState extends ChangeNotifier {
   void clearEstadosCache() => _estadosManager.clear();
   void clearEstadosCacheKey(String? uniqueKey) =>
       _estadosManager.clearRequest(uniqueKey);
-
-  final _requisitosManager = FutureRequestManager<List<VagasRequisitoRow>>();
-  Future<List<VagasRequisitoRow>> requisitos({
-    String? uniqueQueryKey,
-    bool? overrideCache,
-    required Future<List<VagasRequisitoRow>> Function() requestFn,
-  }) =>
-      _requisitosManager.performRequest(
-        uniqueQueryKey: uniqueQueryKey,
-        overrideCache: overrideCache,
-        requestFn: requestFn,
-      );
-  void clearRequisitosCache() => _requisitosManager.clear();
-  void clearRequisitosCacheKey(String? uniqueKey) =>
-      _requisitosManager.clearRequest(uniqueKey);
 }
 
 void _safeInit(Function() initializeField) {
