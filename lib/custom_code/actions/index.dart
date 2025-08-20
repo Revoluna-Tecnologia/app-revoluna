@@ -2,7 +2,6 @@ export 'otp_phone_confirm.dart' show otpPhoneConfirm;
 export 'otp_phone.dart' show otpPhone;
 export 'otp_email_magic.dart' show otpEmailMagic;
 export 'is_valid_c_p_f.dart' show isValidCPF;
-export 'update_user_phone.dart' show updateUserPhone;
 export 'get_google_names.dart' show getGoogleNames;
 export 'get_google_picture.dart' show getGooglePicture;
 export 'app_tracking.dart' show appTracking;

@@ -247,22 +247,18 @@ class DeleteUserCall {
   }
 }
 
-class UpdateUserCall {
+class SendSMSverifyCall {
   static Future<ApiCallResponse> call({
-    String? userId = '',
-    String? email = '',
     String? phone = '',
   }) async {
     final ffApiRequestBody = '''
 {
-  "user_id": "${escapeStringForJson(userId)}",
-  "e_mail": "${escapeStringForJson(email)}",
-  "p_phone": "${escapeStringForJson(phone)}"
+  "phoneNumber": "${escapeStringForJson(phone)}"
 }''';
     return ApiManager.instance.makeApiCall(
-      callName: 'updateUser',
+      callName: 'sendSMSverify',
       apiUrl:
-          'https://hxgbaruenomkfeeafmff.supabase.co/rest/v1/rpc/updatethisuser',
+          'https://hxgbaruenomkfeeafmff.supabase.co/functions/v1/send-verification-code',
       callType: ApiCallType.POST,
       headers: {
         'apikey':
@@ -281,22 +277,27 @@ class UpdateUserCall {
   }
 }
 
-class SendSMSverifyCall {
+class UpdateVerifiedPhoneCall {
   static Future<ApiCallResponse> call({
+    String? userId = '',
+    String? areaCodeIndex = '',
     String? phone = '',
   }) async {
     final ffApiRequestBody = '''
 {
-  "phoneNumber": "${escapeStringForJson(phone)}"
+  "user_id": "${escapeStringForJson(userId)}",
+  "areacodeindex": "${escapeStringForJson(areaCodeIndex)}",
+  "telefone": "${escapeStringForJson(phone)}"
 }''';
     return ApiManager.instance.makeApiCall(
-      callName: 'sendSMSverify',
+      callName: 'updateVerifiedPhone',
       apiUrl:
-          'https://hxgbaruenomkfeeafmff.supabase.co/functions/v1/send-verification-code',
+          'https://hxgbaruenomkfeeafmff.supabase.co/rest/v1/rpc/update_phone_forotp',
       callType: ApiCallType.POST,
       headers: {
         'apikey':
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'Content-Type': 'application/json',
       },
       params: {},
       body: ffApiRequestBody,

@@ -1,4 +1,5 @@
 import '/auth/supabase_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
 import '/components/dialogs/positive_dialog_box/positive_dialog_box_widget.dart';
@@ -976,11 +977,14 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                             .uploadedFileUrl_uploadDataTxi;
                                         FFAppState().update(() {});
                                       }
-                                      logFirebaseEvent('Button_custom_action');
-                                      await actions.updateUserPhone(
-                                        widget!.phone!,
-                                        currentUserUid,
+                                      logFirebaseEvent('Button_backend_call');
+                                      await UpdateVerifiedPhoneCall.call(
+                                        userId: currentUserUid,
+                                        areaCodeIndex:
+                                            widget!.arecodeindex?.toString(),
+                                        phone: widget!.phone,
                                       );
+
                                       logFirebaseEvent('Button_backend_call');
                                       _model.updaterole =
                                           await UserProfileTable().update(
