@@ -1,5 +1,17 @@
 # Histórico de Versões - Revoluna
 
+## [2.1.1] - 20/08/2025
+
+### 🔧 **Hotfix**
+
+#### 🔐 **Autenticação por Telefone**
+- **Cadastro**:  Exclusão da função antiga que não habilitava OTP no cadastro e adição de função RPC para atualização do telefone no sistema de autenticação.
+
+#### 👤 **Verificação de Usuário**
+- **Login**: Corrigida verificação de novo usuário no processo de login
+
+---
+
 ## [2.1.0] - 15/08/2025
 
 ### 🔧 **Correções e Otimizações**
