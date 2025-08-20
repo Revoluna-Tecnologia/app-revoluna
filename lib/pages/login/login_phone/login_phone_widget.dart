@@ -698,8 +698,9 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                     .codigo!;
                                             FFAppState().inputAreacodeIndex =
                                                 _model.dropCodigoPaisValue!;
-                                            FFAppState().wasUser =
-                                                _model.getphonenumber != null;
+                                            FFAppState().wasUser = (_model
+                                                    .getphonenumber?.jsonBody ??
+                                                '');
                                             safeSetState(() {});
                                             if (FFAppState().wasUser) {
                                               logFirebaseEvent(
