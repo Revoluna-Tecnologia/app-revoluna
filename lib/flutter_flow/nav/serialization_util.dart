@@ -295,6 +295,8 @@ dynamic deserializeParam<T>(
             return CheckinCheckoutNofiticationsRow(data);
           case VagasSalvasRow:
             return VagasSalvasRow(data);
+          case VwVagasGradeInfoRow:
+            return VwVagasGradeInfoRow(data);
           case MedicosRow:
             return MedicosRow(data);
           case EstadosBrasilRow:

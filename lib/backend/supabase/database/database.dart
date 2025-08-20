@@ -28,6 +28,7 @@ export 'tables/vw_vagas_dias_contagem.dart';
 export 'tables/vw_candidaturas_pendentes.dart';
 export 'tables/checkin_checkout_nofitications.dart';
 export 'tables/vagas_salvas.dart';
+export 'tables/vw_vagas_grade_info.dart';
 export 'tables/medicos.dart';
 export 'tables/estados_brasil.dart';
 export 'tables/hospital.dart';

@@ -24,8 +24,8 @@ class EquipesMedicosRow extends SupabaseDataRow {
   String get grupoId => getField<String>('grupo_id')!;
   set grupoId(String value) => setField<String>('grupo_id', value);
 
-  String get updatedBy => getField<String>('updated_by')!;
-  set updatedBy(String value) => setField<String>('updated_by', value);
+  String? get updatedBy => getField<String>('updated_by');
+  set updatedBy(String? value) => setField<String>('updated_by', value);
 
   DateTime? get updatedAt => getField<DateTime>('updated_at');
   set updatedAt(DateTime? value) => setField<DateTime>('updated_at', value);

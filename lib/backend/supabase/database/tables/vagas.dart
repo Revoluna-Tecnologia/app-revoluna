@@ -95,4 +95,7 @@ class VagasRow extends SupabaseDataRow {
 
   String? get recorrenciaId => getField<String>('recorrencia_id');
   set recorrenciaId(String? value) => setField<String>('recorrencia_id', value);
+
+  String? get gradeId => getField<String>('grade_id');
+  set gradeId(String? value) => setField<String>('grade_id', value);
 }

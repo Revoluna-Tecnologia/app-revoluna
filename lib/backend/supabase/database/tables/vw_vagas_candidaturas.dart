@@ -149,6 +149,15 @@ class VwVagasCandidaturasRow extends SupabaseDataRow {
   set candidatosCreatedate(DateTime? value) =>
       setField<DateTime>('candidatos_createdate', value);
 
+  String? get candidaturasUpdateby => getField<String>('candidaturas_updateby');
+  set candidaturasUpdateby(String? value) =>
+      setField<String>('candidaturas_updateby', value);
+
+  DateTime? get candidaturasUpdateat =>
+      getField<DateTime>('candidaturas_updateat');
+  set candidaturasUpdateat(DateTime? value) =>
+      setField<DateTime>('candidaturas_updateat', value);
+
   String? get medicoId => getField<String>('medico_id');
   set medicoId(String? value) => setField<String>('medico_id', value);
 
@@ -194,4 +203,13 @@ class VwVagasCandidaturasRow extends SupabaseDataRow {
 
   int? get pagamentoValor => getField<int>('pagamento_valor');
   set pagamentoValor(int? value) => setField<int>('pagamento_valor', value);
+
+  String? get gradeId => getField<String>('grade_id');
+  set gradeId(String? value) => setField<String>('grade_id', value);
+
+  String? get gradeNome => getField<String>('grade_nome');
+  set gradeNome(String? value) => setField<String>('grade_nome', value);
+
+  String? get gradeCor => getField<String>('grade_cor');
+  set gradeCor(String? value) => setField<String>('grade_cor', value);
 }
