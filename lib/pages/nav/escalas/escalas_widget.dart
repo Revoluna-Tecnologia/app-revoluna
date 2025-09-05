@@ -361,12 +361,15 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                       builder: (context) {
                                         final setores = _model.query
                                             .where((e) =>
-                                                e.hospitalNome == hospitaisItem)
+                                                (e.hospitalNome ==
+                                                    hospitaisItem) &&
+                                                (e.vagasData ==
+                                                    FFAppState().selectedDay))
                                             .toList()
+                                            .unique((e) => e.setorId!)
                                             .map((e) => e.setorNome)
                                             .withoutNulls
                                             .toList()
-                                            .unique((e) => e)
                                             .sortedList(
                                                 keyOf: (e) => e, desc: false)
                                             .toList();
@@ -474,6 +477,8 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                                                   (e.hospitalNome == hospitaisItem) &&
                                                                   (e.setorNome ==
                                                                       setoresItem) &&
+                                                                  (e.candidaturaStatus ==
+                                                                      'APROVADO') &&
                                                                   (e.vagasData
                                                                           ?.secondsSinceEpoch ==
                                                                       FFAppState()
