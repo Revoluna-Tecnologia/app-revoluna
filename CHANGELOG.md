@@ -1,5 +1,16 @@
 # Histórico de Versões - Revoluna
 
+## [2.1.2] - 05/09/2025
+
+### 🔧 **Hotfix**
+
+#### 📅 **Página de Escalas**
+- **Filtros**: Corrigida formação da lista de setores para considerar o dia selecionado pelo usuário
+- **Otimização**: Melhorada lógica de filtragem unique baseada em `setorId` ao invés de `setorNome` 
+- **Status**: Adicionado filtro para exibir apenas candidaturas com status 'APROVADO'
+
+---
+
 ## [2.1.1] - 20/08/2025
 
 ### 🔧 **Hotfix**
