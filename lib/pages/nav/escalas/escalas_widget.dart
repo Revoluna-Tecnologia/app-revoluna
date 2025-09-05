@@ -484,6 +484,17 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                                                       FFAppState()
                                                                           .selectedDay
                                                                           ?.secondsSinceEpoch))
+                                                              .toList()
+                                                              .sortedList(
+                                                                  keyOf: (e) =>
+                                                                      dateTimeFormat(
+                                                                        "Hm",
+                                                                        e.vagasHorainicio!
+                                                                            .time,
+                                                                        locale:
+                                                                            FFLocalizations.of(context).languageCode,
+                                                                      ),
+                                                                  desc: false)
                                                               .toList();
                                                           if (plantoes
                                                               .isEmpty) {
