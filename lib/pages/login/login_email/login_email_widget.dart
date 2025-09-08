@@ -533,6 +533,11 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                                 safeSetState(() {});
                                               return;
                                             }
+                                            logFirebaseEvent(
+                                                'Button_navigate_to');
+
+                                            context.pushNamed(
+                                                LoginMagicLinkWidget.routeName);
                                           }
                                         } else {
                                           logFirebaseEvent(
@@ -566,11 +571,6 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                           return;
                                         }
                                       }
-
-                                      logFirebaseEvent('Button_navigate_to');
-
-                                      context.pushNamed(
-                                          LoginMagicLinkWidget.routeName);
 
                                       if (_shouldSetState) safeSetState(() {});
                                     },
