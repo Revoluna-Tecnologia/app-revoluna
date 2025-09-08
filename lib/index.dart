@@ -17,6 +17,6 @@ export '/pages/other/privacidade/privacidade_widget.dart'
     show PrivacidadeWidget;
 export '/pages/other/notificacoes/notificacoes_widget.dart'
     show NotificacoesWidget;
-export '/pages/nav/home_page/home_page_widget.dart' show HomePageWidget;
 export '/pages/nav/explorar/explorar_widget.dart' show ExplorarWidget;
 export '/pages/nav/escalas/escalas_widget.dart' show EscalasWidget;
+export '/pages/nav/home_page/home_page_widget.dart' show HomePageWidget;
