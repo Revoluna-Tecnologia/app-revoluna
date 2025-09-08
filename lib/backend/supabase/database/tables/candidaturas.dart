@@ -50,9 +50,6 @@ class CandidaturasRow extends SupabaseDataRow {
   int get vagasValor => getField<int>('vagas_valor')!;
   set vagasValor(int value) => setField<int>('vagas_valor', value);
 
-  String? get medicosId => getField<String>('medicos_id');
-  set medicosId(String? value) => setField<String>('medicos_id', value);
-
   String? get medicoPrecadastroId => getField<String>('medico_precadastro_id');
   set medicoPrecadastroId(String? value) =>
       setField<String>('medico_precadastro_id', value);
