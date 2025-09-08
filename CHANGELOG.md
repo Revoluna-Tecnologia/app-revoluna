@@ -1,5 +1,24 @@
 # Histórico de Versões - Revoluna
 
+## [2.1.3] - 08/09/2025
+
+### 🔧 **Melhorias e Refatorações**
+
+#### 🏗️ **Ambientes de Desenvolvimento**
+- **Separação de Ambientes**: Implementada estrutura para separação entre ambientes de desenvolvimento, homologação e produção
+- **Configurações**: Melhor organização das configurações específicas por ambiente
+
+#### 🧹 **Limpeza e Organização de Código**
+- **Padronização de Nomenclatura**: Unificação da variável `medicos_id` para `medico_id` em todo o projeto, alinhando com o padrão do Supabase
+- **Remoção de Arquivos**: Limpeza de arquivos obsoletos e desnecessários do projeto
+- **Build iOS**: Atualização dos arquivos de build para iOS
+- **Reorganização FlutterFlow**: Aplicadas reorganizações automáticas de código do FlutterFlow
+
+#### 🐛 **Correções**
+- **Contador de Plantões**: Corrigido filtro de contagem de plantões na página inicial
+
+---
+
 ## [2.1.2] - 05/09/2025
 
 ### 🔧 **Hotfix**

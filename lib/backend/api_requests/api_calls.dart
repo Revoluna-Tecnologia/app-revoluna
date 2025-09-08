@@ -12,19 +12,22 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 class GetIdfromEmailCall {
   static Future<ApiCallResponse> call({
     String? inputEmail = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "e_mail": "${escapeStringForJson(inputEmail)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'getIdfromEmail',
-      apiUrl:
-          'https://hxgbaruenomkfeeafmff.supabase.co/rest/v1/rpc/getidfromemail',
+      apiUrl: '${apiurl}/rest/v1/rpc/getidfromemail',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'apikey': '${apikey}',
       },
       params: {},
       body: ffApiRequestBody,
@@ -42,19 +45,22 @@ class GetIdfromEmailCall {
 class GetuserprofileCall {
   static Future<ApiCallResponse> call({
     String? userId = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "user_id": "${escapeStringForJson(userId)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'getuserprofile',
-      apiUrl:
-          'https://hxgbaruenomkfeeafmff.supabase.co/rest/v1/rpc/getuserprofile',
+      apiUrl: '${apiurl}/rest/v1/rpc/getuserprofile',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'apikey': '${apikey}',
       },
       params: {},
       body: ffApiRequestBody,
@@ -72,19 +78,22 @@ class GetuserprofileCall {
 class GetIdfromphoneCall {
   static Future<ApiCallResponse> call({
     String? inputPhone = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "p_phone": "${escapeStringForJson(inputPhone)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'getIdfromphone',
-      apiUrl:
-          'https://hxgbaruenomkfeeafmff.supabase.co/rest/v1/rpc/getidfromphone',
+      apiUrl: '${apiurl}/rest/v1/rpc/getidfromphone',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'apikey': '${apikey}',
       },
       params: {},
       body: ffApiRequestBody,
@@ -102,19 +111,22 @@ class GetIdfromphoneCall {
 class GetphonenumberCall {
   static Future<ApiCallResponse> call({
     String? numeroDigitado = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "p_phone": "${escapeStringForJson(numeroDigitado)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'getphonenumber',
-      apiUrl:
-          'https://hxgbaruenomkfeeafmff.supabase.co/rest/v1/rpc/get_phonenumber',
+      apiUrl: '${apiurl}/rest/v1/rpc/get_phonenumber',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'apikey': '${apikey}',
       },
       params: {},
       body: ffApiRequestBody,
@@ -132,18 +144,22 @@ class GetphonenumberCall {
 class GetcpfCall {
   static Future<ApiCallResponse> call({
     String? cpf = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "cpf_input": "${escapeStringForJson(cpf)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'getcpf',
-      apiUrl: 'https://hxgbaruenomkfeeafmff.supabase.co/rest/v1/rpc/get_cpf',
+      apiUrl: '${apiurl}/rest/v1/rpc/get_cpf',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'apikey': '${apikey}',
       },
       params: {},
       body: ffApiRequestBody,
@@ -161,18 +177,22 @@ class GetcpfCall {
 class GetcrmCall {
   static Future<ApiCallResponse> call({
     String? crm = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "crm_input": "${escapeStringForJson(crm)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'getcrm',
-      apiUrl: 'https://hxgbaruenomkfeeafmff.supabase.co/rest/v1/rpc/get_crm',
+      apiUrl: '${apiurl}/rest/v1/rpc/get_crm',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'apikey': '${apikey}',
       },
       params: {},
       body: ffApiRequestBody,
@@ -190,18 +210,22 @@ class GetcrmCall {
 class GetemailaddressCall {
   static Future<ApiCallResponse> call({
     String? emaildigitado = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "e_mail": "${escapeStringForJson(emaildigitado)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'getemailaddress',
-      apiUrl: 'https://hxgbaruenomkfeeafmff.supabase.co/rest/v1/rpc/get_email',
+      apiUrl: '${apiurl}/rest/v1/rpc/get_email',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'apikey': '${apikey}',
       },
       params: {},
       body: ffApiRequestBody,
@@ -219,19 +243,22 @@ class GetemailaddressCall {
 class DeleteUserCall {
   static Future<ApiCallResponse> call({
     String? userId = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "user_id": "${escapeStringForJson(userId)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'deleteUser',
-      apiUrl:
-          'https://hxgbaruenomkfeeafmff.supabase.co/rest/v1/rpc/deletethisuser',
+      apiUrl: '${apiurl}/rest/v1/rpc/deletethisuser',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'apikey': '${apikey}',
         'Content-Type': 'application/json',
       },
       params: {},
@@ -250,19 +277,22 @@ class DeleteUserCall {
 class SendSMSverifyCall {
   static Future<ApiCallResponse> call({
     String? phone = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "phoneNumber": "${escapeStringForJson(phone)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'sendSMSverify',
-      apiUrl:
-          'https://hxgbaruenomkfeeafmff.supabase.co/functions/v1/send-verification-code',
+      apiUrl: '${apiurl}/functions/v1/send-verification-code',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'apikey': '${apikey}',
       },
       params: {},
       body: ffApiRequestBody,
@@ -282,7 +312,12 @@ class UpdateVerifiedPhoneCall {
     String? userId = '',
     String? areaCodeIndex = '',
     String? phone = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "user_id": "${escapeStringForJson(userId)}",
@@ -291,12 +326,10 @@ class UpdateVerifiedPhoneCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'updateVerifiedPhone',
-      apiUrl:
-          'https://hxgbaruenomkfeeafmff.supabase.co/rest/v1/rpc/update_phone_forotp',
+      apiUrl: '${apiurl}/rest/v1/rpc/update_phone_forotp',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'apikey': '${apikey}',
         'Content-Type': 'application/json',
       },
       params: {},
@@ -316,7 +349,12 @@ class ConfirmSMSverifyCall {
   static Future<ApiCallResponse> call({
     String? phone = '',
     String? code = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "phoneNumber": "${escapeStringForJson(phone)}",
@@ -324,12 +362,10 @@ class ConfirmSMSverifyCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'confirmSMSverify',
-      apiUrl:
-          'https://hxgbaruenomkfeeafmff.supabase.co/functions/v1/verify-code',
+      apiUrl: '${apiurl}/functions/v1/verify-code',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'apikey': '${apikey}',
       },
       params: {},
       body: ffApiRequestBody,
@@ -347,19 +383,22 @@ class ConfirmSMSverifyCall {
 class SendVerifyEmailCall {
   static Future<ApiCallResponse> call({
     String? email = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "email": "${escapeStringForJson(email)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'sendVerifyEmail',
-      apiUrl:
-          'https://hxgbaruenomkfeeafmff.supabase.co/functions/v1/send-verification-link',
+      apiUrl: '${apiurl}/functions/v1/send-verification-link',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'apikey': '${apikey}',
       },
       params: {},
       body: ffApiRequestBody,
@@ -377,19 +416,22 @@ class SendVerifyEmailCall {
 class ListenVerifyEmailCall {
   static Future<ApiCallResponse> call({
     String? email = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "email": "${escapeStringForJson(email)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'listenVerifyEmail',
-      apiUrl:
-          'https://hxgbaruenomkfeeafmff.supabase.co/functions/v1/listen-verification-link',
+      apiUrl: '${apiurl}/functions/v1/listen-verification-link',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'apikey': '${apikey}',
       },
       params: {},
       body: ffApiRequestBody,
@@ -407,19 +449,22 @@ class ListenVerifyEmailCall {
 class AretheytesterCall {
   static Future<ApiCallResponse> call({
     String? userId = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "user_id": "${escapeStringForJson(userId)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'aretheytester',
-      apiUrl:
-          'https://hxgbaruenomkfeeafmff.supabase.co/rest/v1/rpc/aretheytester',
+      apiUrl: '${apiurl}/rest/v1/rpc/aretheytester',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MTUzMjgsImV4cCI6MjA1OTM5MTMyOH0.V5jZLBEDXWfg2UsasoHQ6SDGIcDJLFIWBKlK8FBDows',
+        'apikey': '${apikey}',
       },
       params: {},
       body: ffApiRequestBody,
@@ -434,54 +479,25 @@ class AretheytesterCall {
   }
 }
 
-class RegisterTwilioBindingCall {
-  static Future<ApiCallResponse> call({
-    String? userId = '',
-    String? bindingType = '',
-    String? token = '',
-  }) async {
-    return ApiManager.instance.makeApiCall(
-      callName: 'registerTwilioBinding',
-      apiUrl:
-          'https://notify.twilio.com/v1/Services/IS2607c14dea8c3081dc4a75639e52979c/Bindings',
-      callType: ApiCallType.POST,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization':
-            'Basic QUM1MjgwOWNjNGUyMjBhMjg2N2MwYjFiMmJjMTNmYzU4MjpkMDNjMjYzNGNmOWY5MWI5NDVhNmVlM2FmYTQ0YzJkOA==',
-      },
-      params: {
-        'Address': token,
-        'Identity': userId,
-        'BindingType': bindingType,
-      },
-      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: true,
-      encodeBodyUtf8: false,
-      decodeUtf8: false,
-      cache: false,
-      isStreamingApi: false,
-      alwaysAllowBody: false,
-    );
-  }
-}
-
 class NotificationreadCall {
   static Future<ApiCallResponse> call({
     String? userId = '',
+    String? apikey,
+    String? apiurl,
   }) async {
+    apikey ??= FFDevEnvironmentValues().supabaseAnonKey;
+    apiurl ??= FFDevEnvironmentValues().supabaseUrl;
+
     final ffApiRequestBody = '''
 {
   "user_id": "${escapeStringForJson(userId)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'notificationread',
-      apiUrl:
-          'https://hxgbaruenomkfeeafmff.supabase.co/functions/v1/notification-read',
+      apiUrl: '${apiurl}/functions/v1/notification-read',
       callType: ApiCallType.POST,
       headers: {
-        'apikey':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JhcnVlbm9ta2ZlZWFmbWZmIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MzgxNTMyOCwiZXhwIjoyMDU5MzkxMzI4fQ.WyALA-swQaR4wdLSOtwLSW32rxY_eAVtEWTpL3T1Wms',
+        'apikey': '${apikey}',
         'Content-Type': 'application/json',
       },
       params: {},

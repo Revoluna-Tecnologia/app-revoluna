@@ -324,16 +324,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-            name: HomePageWidget.routeName,
-            path: HomePageWidget.routePath,
-            requireAuth: true,
-            builder: (context, params) => params.isEmpty
-                ? NavBarPage(initialPage: 'HomePage')
-                : NavBarPage(
-                    initialPage: 'HomePage',
-                    page: HomePageWidget(),
-                  )),
-        FFRoute(
             name: ExplorarWidget.routeName,
             path: ExplorarWidget.routePath,
             requireAuth: true,
@@ -355,7 +345,17 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     ParamType.bool,
                   ),
                 ),
-        )
+        ),
+        FFRoute(
+            name: HomePageWidget.routeName,
+            path: HomePageWidget.routePath,
+            requireAuth: true,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'HomePage')
+                : NavBarPage(
+                    initialPage: 'HomePage',
+                    page: HomePageWidget(),
+                  ))
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
 
