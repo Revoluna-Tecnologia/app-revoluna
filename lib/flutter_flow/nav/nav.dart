@@ -97,16 +97,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-            name: ExplorarWidget.routeName,
-            path: ExplorarWidget.routePath,
-            requireAuth: true,
-            builder: (context, params) => params.isEmpty
-                ? NavBarPage(initialPage: 'Explorar')
-                : NavBarPage(
-                    initialPage: 'Explorar',
-                    page: ExplorarWidget(),
-                  )),
-        FFRoute(
           name: LoginPhoneWidget.routeName,
           path: LoginPhoneWidget.routePath,
           builder: (context, params) => LoginPhoneWidget(),
@@ -334,6 +324,26 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
+            name: HomePageWidget.routeName,
+            path: HomePageWidget.routePath,
+            requireAuth: true,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'HomePage')
+                : NavBarPage(
+                    initialPage: 'HomePage',
+                    page: HomePageWidget(),
+                  )),
+        FFRoute(
+            name: ExplorarWidget.routeName,
+            path: ExplorarWidget.routePath,
+            requireAuth: true,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'Explorar')
+                : NavBarPage(
+                    initialPage: 'Explorar',
+                    page: ExplorarWidget(),
+                  )),
+        FFRoute(
           name: EscalasWidget.routeName,
           path: EscalasWidget.routePath,
           requireAuth: true,
@@ -345,17 +355,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     ParamType.bool,
                   ),
                 ),
-        ),
-        FFRoute(
-            name: HomePageWidget.routeName,
-            path: HomePageWidget.routePath,
-            requireAuth: true,
-            builder: (context, params) => params.isEmpty
-                ? NavBarPage(initialPage: 'HomePage')
-                : NavBarPage(
-                    initialPage: 'HomePage',
-                    page: HomePageWidget(),
-                  ))
+        )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
 

@@ -38,6 +38,8 @@ class EscalasModel extends FlutterFlowModel<EscalasWidget> {
 
   ///  State fields for stateful widgets in this page.
 
+  // Model for drawerMenu component.
+  late DrawerMenuModel drawerMenuModel;
   // Model for Header component.
   late HeaderModel headerModel;
   // Models for cardEscala dynamic component.
@@ -46,21 +48,19 @@ class EscalasModel extends FlutterFlowModel<EscalasWidget> {
   List<VwVagasCandidaturasRow>? reloadQuery;
   // Stores action output result for [Backend Call - Query Rows] action in Button widget.
   List<VwVagasCandidaturasRow>? workHopistalsList;
-  // Model for drawerMenu component.
-  late DrawerMenuModel drawerMenuModel;
 
   @override
   void initState(BuildContext context) {
+    drawerMenuModel = createModel(context, () => DrawerMenuModel());
     headerModel = createModel(context, () => HeaderModel());
     cardEscalaModels = FlutterFlowDynamicModels(() => CardEscalaModel());
-    drawerMenuModel = createModel(context, () => DrawerMenuModel());
   }
 
   @override
   void dispose() {
+    drawerMenuModel.dispose();
     headerModel.dispose();
     cardEscalaModels.dispose();
-    drawerMenuModel.dispose();
   }
 
   /// Action blocks.

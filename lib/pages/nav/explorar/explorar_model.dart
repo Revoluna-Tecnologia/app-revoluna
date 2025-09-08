@@ -59,6 +59,8 @@ class ExplorarModel extends FlutterFlowModel<ExplorarWidget> {
 
   ///  State fields for stateful widgets in this page.
 
+  // Model for drawerMenu component.
+  late DrawerMenuModel drawerMenuModel;
   // Model for Header component.
   late HeaderModel headerModel;
   // State field(s) for DropDown widget.
@@ -69,22 +71,20 @@ class ExplorarModel extends FlutterFlowModel<ExplorarWidget> {
   late FlutterFlowDynamicModels<CardVagasSlimModel> cardVagasSlimModels1;
   // Models for cardVagasSlim dynamic component.
   late FlutterFlowDynamicModels<CardVagasSlimModel> cardVagasSlimModels2;
-  // Model for drawerMenu component.
-  late DrawerMenuModel drawerMenuModel;
 
   @override
   void initState(BuildContext context) {
+    drawerMenuModel = createModel(context, () => DrawerMenuModel());
     headerModel = createModel(context, () => HeaderModel());
     cardVagasSlimModels1 = FlutterFlowDynamicModels(() => CardVagasSlimModel());
     cardVagasSlimModels2 = FlutterFlowDynamicModels(() => CardVagasSlimModel());
-    drawerMenuModel = createModel(context, () => DrawerMenuModel());
   }
 
   @override
   void dispose() {
+    drawerMenuModel.dispose();
     headerModel.dispose();
     cardVagasSlimModels1.dispose();
     cardVagasSlimModels2.dispose();
-    drawerMenuModel.dispose();
   }
 }
