@@ -989,6 +989,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                     text: formatNumber(
                                                       containerVwVagasCandidaturasRowList
                                                           .where((e) =>
+                                                              (e.medicoId ==
+                                                                  currentUserUid) &&
                                                               (e.candidaturaStatus ==
                                                                   'APROVADO') &&
                                                               functions.inThisWeek(
