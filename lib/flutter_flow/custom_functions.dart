@@ -66,7 +66,7 @@ DateTime eighteenYearsAgo() {
 }
 
 bool inThisWeek(DateTime inputDate) {
-  // Pegando a data de hoje sem o horário
+// Pegando a data de hoje sem o horário
   final today =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 

@@ -993,8 +993,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                   currentUserUid) &&
                                                               (e.candidaturaStatus ==
                                                                   'APROVADO') &&
-                                                              functions.inThisWeek(
-                                                                  e.vagasData!))
+                                                              functions.inThisWeek(e
+                                                                  .vagasData!) &&
+                                                              (e.vagasStatus !=
+                                                                  'cancelada'))
                                                           .toList()
                                                           .length,
                                                       formatType:

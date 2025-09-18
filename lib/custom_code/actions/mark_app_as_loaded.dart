@@ -14,7 +14,7 @@ import '/custom_code/actions/initialize_deeplinks.dart' as deeplinks;
 
 Future<void> markAppAsLoaded() async {
   try {
-    print("🔗 markAppAsLoaded: Marcando app como carregado");
+    //print("🔗 markAppAsLoaded: Marcando app como carregado");
 
     // Marcar no AppState que app carregou
     FFAppState().update(() {
@@ -26,14 +26,14 @@ Future<void> markAppAsLoaded() async {
 
     // Processar deeplink pendente se houver
     if (FFAppState().pendingDeeplinkUrl.isNotEmpty) {
-      print("🔗 Encontrado deeplink pendente, processando...");
+      // print("🔗 Encontrado deeplink pendente, processando...");
       await deeplinks.processPendingDeeplinkFromAppState();
     } else {
-      print("🔗 Nenhum deeplink pendente");
+      // print("🔗 Nenhum deeplink pendente");
     }
 
-    print("🔗 markAppAsLoaded concluída");
+    // print("🔗 markAppAsLoaded concluída");
   } catch (e) {
-    print("🔗 ERRO em markAppAsLoaded: $e");
+    // print("🔗 ERRO em markAppAsLoaded: $e");
   }
 }

@@ -155,21 +155,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-          name: PerfilWidget.routeName,
-          path: PerfilWidget.routePath,
-          requireAuth: true,
-          builder: (context, params) => PerfilWidget(
-            inputemail: params.getParam(
-              'inputemail',
-              ParamType.String,
-            ),
-            inputphone: params.getParam(
-              'inputphone',
-              ParamType.String,
-            ),
-          ),
-        ),
-        FFRoute(
             name: PlantoesWidget.routeName,
             path: PlantoesWidget.routePath,
             requireAuth: true,
@@ -355,7 +340,22 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 : NavBarPage(
                     initialPage: 'HomePage',
                     page: HomePageWidget(),
-                  ))
+                  )),
+        FFRoute(
+          name: PerfilWidget.routeName,
+          path: PerfilWidget.routePath,
+          requireAuth: true,
+          builder: (context, params) => PerfilWidget(
+            inputemail: params.getParam(
+              'inputemail',
+              ParamType.String,
+            ),
+            inputphone: params.getParam(
+              'inputphone',
+              ParamType.String,
+            ),
+          ),
+        )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
 
