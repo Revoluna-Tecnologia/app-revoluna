@@ -189,6 +189,6 @@ firebase functions:deploy # Deploy para produção
 
 ## 📈 Versão Atual
 
-**v2.1.3**
+**v2.1.4**
 
 Para detalhes completos das mudanças, consulte o [CHANGELOG.md](CHANGELOG.md).

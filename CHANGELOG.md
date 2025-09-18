@@ -1,5 +1,27 @@
 # Histórico de Versões - Revoluna
 
+## [2.1.4] - 18/09/2025
+
+### ✨ **Novas Funcionalidades**
+
+#### 👩‍🎓 **Acesso para Estudantes**
+- **Cadastro de Estudantes**: Implementado cadastro para usuários estudantes sem CRM
+- **Perfil Adaptativo**: Interface de perfil adaptada para usuários sem dados de CRM
+- **Restrições Inteligentes**: Sistema de restrições para candidaturas baseado na presença de CRM
+
+### 🔧 **Correções e Melhorias**
+
+#### ⚡ **Performance e Cache**
+- **Cache de Queries**: Implementado sistema de cache para consultas que envolvem cadastro e candidaturas
+- **Contagem de Plantões**: Filtro aprimorado que exclui vagas canceladas da contagem na página inicial
+- **Safe Area**: Correção na página de vagas para melhor compatibilidade com diferentes dispositivos
+
+#### 🧹 **Limpeza e Manutenção**
+- **Debug**: Remoção de prints de debug obsoletos
+- **Código**: Refatorações e melhorias na organização do código
+
+---
+
 ## [2.1.3] - 08/09/2025
 
 ### 🔧 **Melhorias e Refatorações**
