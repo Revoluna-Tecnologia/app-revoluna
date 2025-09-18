@@ -117,16 +117,39 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => LoginMagicLinkWidget(),
         ),
         FFRoute(
-          name: PerfilWidget.routeName,
-          path: PerfilWidget.routePath,
-          requireAuth: true,
-          builder: (context, params) => PerfilWidget(
-            inputemail: params.getParam(
-              'inputemail',
+          name: Cadastro2Widget.routeName,
+          path: Cadastro2Widget.routePath,
+          builder: (context, params) => Cadastro2Widget(
+            firstname: params.getParam(
+              'firstname',
               ParamType.String,
             ),
-            inputphone: params.getParam(
-              'inputphone',
+            lastname: params.getParam(
+              'lastname',
+              ParamType.String,
+            ),
+            email: params.getParam(
+              'email',
+              ParamType.String,
+            ),
+            phone: params.getParam(
+              'phone',
+              ParamType.String,
+            ),
+            areacodeIndex: params.getParam(
+              'areacodeIndex',
+              ParamType.int,
+            ),
+            termsAccept: params.getParam(
+              'termsAccept',
+              ParamType.bool,
+            ),
+            gender: params.getParam(
+              'gender',
+              ParamType.String,
+            ),
+            camefrom: params.getParam(
+              'camefrom',
               ParamType.String,
             ),
           ),
@@ -319,39 +342,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     page: HomePageWidget(),
                   )),
         FFRoute(
-          name: Cadastro2Widget.routeName,
-          path: Cadastro2Widget.routePath,
-          builder: (context, params) => Cadastro2Widget(
-            firstname: params.getParam(
-              'firstname',
+          name: PerfilWidget.routeName,
+          path: PerfilWidget.routePath,
+          requireAuth: true,
+          builder: (context, params) => PerfilWidget(
+            inputemail: params.getParam(
+              'inputemail',
               ParamType.String,
             ),
-            lastname: params.getParam(
-              'lastname',
-              ParamType.String,
-            ),
-            email: params.getParam(
-              'email',
-              ParamType.String,
-            ),
-            phone: params.getParam(
-              'phone',
-              ParamType.String,
-            ),
-            areacodeIndex: params.getParam(
-              'areacodeIndex',
-              ParamType.int,
-            ),
-            termsAccept: params.getParam(
-              'termsAccept',
-              ParamType.bool,
-            ),
-            gender: params.getParam(
-              'gender',
-              ParamType.String,
-            ),
-            camefrom: params.getParam(
-              'camefrom',
+            inputphone: params.getParam(
+              'inputphone',
               ParamType.String,
             ),
           ),

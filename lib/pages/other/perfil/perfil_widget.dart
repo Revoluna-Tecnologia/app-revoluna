@@ -3656,8 +3656,14 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                             FormFieldController<
                                                                 int>(
                                                           _model.dropdownEstadosValue ??=
-                                                              containerUserProfileRow
-                                                                  ?.uFindex,
+                                                              '${(String crm) {
+                                                                        return crm
+                                                                            .split('-')[0];
+                                                                      }(perfilMedicosRow!.medicoCrm!)}' ==
+                                                                      'estudante'
+                                                                  ? null
+                                                                  : containerUserProfileRow
+                                                                      ?.uFindex,
                                                         ),
                                                         options: List<int>.from(
                                                             dropdownEstadosEstadosBrasilRowList
@@ -3788,8 +3794,6 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                             )
                                                           ],
                                                         ),
-                                                        hintText:
-                                                            'Selecione seu estado',
                                                         searchHintText:
                                                             'Pesquisar...',
                                                         searchCursorColor:
@@ -3853,8 +3857,15 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                       controller: _model
                                                               .crmTextController ??=
                                                           TextEditingController(
-                                                        text: perfilMedicosRow
-                                                            ?.medicoCrm,
+                                                        text: '${(String crm) {
+                                                                  return crm
+                                                                      .split(
+                                                                          '-')[0];
+                                                                }(perfilMedicosRow!.medicoCrm!)}' ==
+                                                                'estudante'
+                                                            ? ''
+                                                            : perfilMedicosRow
+                                                                ?.medicoCrm,
                                                       ),
                                                       focusNode:
                                                           _model.crmFocusNode,
@@ -3876,8 +3887,6 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                         isDense: true,
                                                         alignLabelWithHint:
                                                             false,
-                                                        hintText:
-                                                            'Somente números',
                                                         enabledBorder:
                                                             OutlineInputBorder(
                                                           borderSide:
