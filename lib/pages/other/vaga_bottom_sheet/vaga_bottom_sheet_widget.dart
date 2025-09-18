@@ -7,6 +7,7 @@ import '/components/dialogs/negative_informative_box/negative_informative_box_wi
 import '/components/dialogs/passar_plantao_dialog_box/passar_plantao_dialog_box_widget.dart';
 import '/components/dialogs/positive_dialog_box/positive_dialog_box_widget.dart';
 import '/components/dialogs/small_dialog/small_dialog_widget.dart';
+import '/components/loading/placeholder_loading/placeholder_loading_widget.dart';
 import '/components/vagas/address_icon_button/address_icon_button_widget.dart';
 import '/flutter_flow/flutter_flow_google_map.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -5303,350 +5304,123 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                     ),
                   ),
                 if (!_model.isApproved)
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).primaryBackground,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          height: 1.0,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                          ),
+                  FutureBuilder<List<MedicosRow>>(
+                    future: FFAppState().medicoInfo(
+                      requestFn: () => MedicosTable().querySingleRow(
+                        queryFn: (q) => q.eqOrNull(
+                          'id',
+                          currentUserUid,
                         ),
-                        Builder(
-                          builder: (context) {
-                            if (_model.isCandidate && !_model.isApproved) {
-                              return Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    30.0,
-                                    valueOrDefault<double>(
-                                      FFAppConstants.Gap,
-                                      0.0,
-                                    ),
-                                    30.0,
-                                    valueOrDefault<double>(
-                                      FFAppConstants.doubleGap,
-                                      0.0,
-                                    )),
-                                child: FFButtonWidget(
-                                  onPressed: () async {
-                                    logFirebaseEvent(
-                                        'VAGA_BOTTOM_SHEET_DESISTIR_BTN_ON_TAP');
-                                    logFirebaseEvent('Button_backend_call');
-                                    _model.deleteCandidatura =
-                                        await CandidaturasTable().delete(
-                                      matchingRows: (rows) => rows
-                                          .eqOrNull(
-                                            'vagas_id',
-                                            widget!.jobid,
-                                          )
-                                          .eqOrNull(
-                                            'medico_id',
-                                            currentUserUid,
-                                          ),
-                                      returnRows: true,
-                                    );
-                                    if (_model.deleteCandidatura != null &&
-                                        (_model.deleteCandidatura)!
-                                            .isNotEmpty) {
-                                      logFirebaseEvent('Button_action_block');
-                                      await action_blocks.clearCache(context);
-                                      safeSetState(() {});
-                                      logFirebaseEvent(
-                                          'Button_update_component_state');
-                                      _model.isCandidate = false;
-                                      safeSetState(() {});
-                                      logFirebaseEvent(
-                                          'Button_execute_callback');
-                                      await widget.callback?.call();
-                                    }
+                      ),
+                    ),
+                    builder: (context, snapshot) {
+                      // Customize what your widget looks like when it's loading.
+                      if (!snapshot.hasData) {
+                        return PlaceholderLoadingWidget();
+                      }
+                      List<MedicosRow> containerMedicosRowList = snapshot.data!;
 
-                                    safeSetState(() {});
-                                  },
-                                  text: 'Desistir',
-                                  options: FFButtonOptions(
-                                    width: 330.0,
-                                    height: 50.0,
+                      final containerMedicosRow =
+                          containerMedicosRowList.isNotEmpty
+                              ? containerMedicosRowList.first
+                              : null;
+
+                      return Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).primaryBackground,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 1.0,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                              ),
+                            ),
+                            Builder(
+                              builder: (context) {
+                                if (_model.isCandidate && !_model.isApproved) {
+                                  return Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 0.0),
-                                    iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 0.0),
-                                    color:
-                                        FlutterFlowTheme.of(context).alternate,
-                                    textStyle: FlutterFlowTheme.of(context)
-                                        .titleSmall
-                                        .override(
-                                          font: GoogleFonts.geologica(
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleSmall
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleSmall
-                                                    .fontStyle,
-                                          ),
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondary,
-                                          letterSpacing: 0.0,
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleSmall
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleSmall
-                                                  .fontStyle,
-                                        ),
-                                    elevation: 0.0,
-                                    borderRadius: BorderRadius.circular(
+                                        30.0,
                                         valueOrDefault<double>(
-                                      FFAppConstants.borderS,
-                                      0.0,
-                                    )),
-                                    hoverColor:
-                                        FlutterFlowTheme.of(context).alternate,
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return Builder(
-                                builder: (context) => Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      30.0,
-                                      valueOrDefault<double>(
-                                        FFAppConstants.Gap,
-                                        0.0,
-                                      ),
-                                      30.0,
-                                      valueOrDefault<double>(
-                                        FFAppConstants.doubleGap,
-                                        0.0,
-                                      )),
-                                  child: FFButtonWidget(
-                                    onPressed: (((_model.checkboxCheckedItems
-                                                        .length ==
-                                                    0) &&
-                                                (_model.requirements != null &&
-                                                    (_model.requirements)!
-                                                        .isNotEmpty)) ||
-                                            ((_model.checkboxCheckedItems
-                                                        .length !=
-                                                    _model.requirements
-                                                        ?.length) &&
-                                                (_model.requirements != null &&
-                                                    (_model.requirements)!
-                                                        .isNotEmpty)))
-                                        ? null
-                                        : () async {
-                                            logFirebaseEvent(
-                                                'VAGA_BOTTOM_SHEET_CANDIDATAR_SE_BTN_ON_T');
-                                            var _shouldSetState = false;
-                                            if (widget!.showFavorite) {
-                                              logFirebaseEvent(
-                                                  'Button_alert_dialog');
-                                              await showDialog(
-                                                context: context,
-                                                builder: (dialogContext) {
-                                                  return Dialog(
-                                                    elevation: 0,
-                                                    insetPadding:
-                                                        EdgeInsets.zero,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    alignment:
-                                                        AlignmentDirectional(
-                                                                0.0, 0.0)
-                                                            .resolve(
-                                                                Directionality.of(
-                                                                    context)),
-                                                    child:
-                                                        FavoriteDialogBoxWidget(),
-                                                  );
-                                                },
-                                              ).then((value) => safeSetState(
-                                                  () => _model.favoriteAccept =
-                                                      value));
-
-                                              _shouldSetState = true;
-                                              if (_model.favoriteAccept!) {
-                                                logFirebaseEvent(
-                                                    'Button_custom_action');
-                                                _model.insertFavorite =
-                                                    await actions
-                                                        .insertCandidaturas(
-                                                  currentUserUid,
-                                                  widget!.jobid!,
-                                                  widget!.value!,
-                                                );
-                                                _shouldSetState = true;
-                                                if (_model.insertFavorite ==
-                                                    'success') {
-                                                  logFirebaseEvent(
-                                                      'Button_alert_dialog');
-                                                  await showDialog(
-                                                    context: context,
-                                                    builder: (dialogContext) {
-                                                      return Dialog(
-                                                        elevation: 0,
-                                                        insetPadding:
-                                                            EdgeInsets.zero,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                    0.0, 0.0)
-                                                                .resolve(
-                                                                    Directionality.of(
-                                                                        context)),
-                                                        child:
-                                                            PositiveDialogBoxWidget(
-                                                          dialog:
-                                                              'Plantão confirmado!',
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
-
-                                                  logFirebaseEvent(
-                                                      'Button_update_component_state');
-                                                  _model.isApproved = true;
-                                                  safeSetState(() {});
-                                                } else {
-                                                  logFirebaseEvent(
-                                                      'Button_alert_dialog');
-                                                  await showDialog(
-                                                    context: context,
-                                                    builder: (dialogContext) {
-                                                      return Dialog(
-                                                        elevation: 0,
-                                                        insetPadding:
-                                                            EdgeInsets.zero,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                    0.0, 0.0)
-                                                                .resolve(
-                                                                    Directionality.of(
-                                                                        context)),
-                                                        child:
-                                                            NegativeInformativeBoxWidget(
-                                                          title:
-                                                              'Não foi possível se candidatar',
-                                                          body:
-                                                              'Verifique se já não tem plantão confirmado no mesmo horário!',
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
-                                                }
-                                              } else {
-                                                if (_shouldSetState)
-                                                  safeSetState(() {});
-                                                return;
-                                              }
-                                            } else {
-                                              logFirebaseEvent(
-                                                  'Button_custom_action');
-                                              _model.insertCandidatura =
-                                                  await actions
-                                                      .insertCandidaturas(
+                                          FFAppConstants.Gap,
+                                          0.0,
+                                        ),
+                                        30.0,
+                                        valueOrDefault<double>(
+                                          FFAppConstants.doubleGap,
+                                          0.0,
+                                        )),
+                                    child: FFButtonWidget(
+                                      onPressed: () async {
+                                        logFirebaseEvent(
+                                            'VAGA_BOTTOM_SHEET_DESISTIR_BTN_ON_TAP');
+                                        logFirebaseEvent('Button_backend_call');
+                                        _model.deleteCandidatura =
+                                            await CandidaturasTable().delete(
+                                          matchingRows: (rows) => rows
+                                              .eqOrNull(
+                                                'vagas_id',
+                                                widget!.jobid,
+                                              )
+                                              .eqOrNull(
+                                                'medico_id',
                                                 currentUserUid,
-                                                widget!.jobid!,
-                                                widget!.value!,
-                                              );
-                                              _shouldSetState = true;
-                                              if (_model.insertCandidatura ==
-                                                  'success') {
-                                                logFirebaseEvent(
-                                                    'Button_alert_dialog');
-                                                await showDialog(
-                                                  context: context,
-                                                  builder: (dialogContext) {
-                                                    return Dialog(
-                                                      elevation: 0,
-                                                      insetPadding:
-                                                          EdgeInsets.zero,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      alignment:
-                                                          AlignmentDirectional(
-                                                                  0.0, 0.0)
-                                                              .resolve(
-                                                                  Directionality.of(
-                                                                      context)),
-                                                      child:
-                                                          PositiveDialogBoxWidget(
-                                                        dialog:
-                                                            'Candidatura cadastrada!',
-                                                      ),
-                                                    );
-                                                  },
-                                                );
+                                              ),
+                                          returnRows: true,
+                                        );
+                                        if (_model.deleteCandidatura != null &&
+                                            (_model.deleteCandidatura)!
+                                                .isNotEmpty) {
+                                          logFirebaseEvent(
+                                              'Button_action_block');
+                                          await action_blocks
+                                              .clearCache(context);
+                                          safeSetState(() {});
+                                          logFirebaseEvent(
+                                              'Button_update_component_state');
+                                          _model.isCandidate = false;
+                                          safeSetState(() {});
+                                          logFirebaseEvent(
+                                              'Button_execute_callback');
+                                          await widget.callback?.call();
+                                        }
 
-                                                logFirebaseEvent(
-                                                    'Button_update_component_state');
-                                                _model.isCandidate = true;
-                                                safeSetState(() {});
-                                              } else {
-                                                logFirebaseEvent(
-                                                    'Button_alert_dialog');
-                                                await showDialog(
-                                                  context: context,
-                                                  builder: (dialogContext) {
-                                                    return Dialog(
-                                                      elevation: 0,
-                                                      insetPadding:
-                                                          EdgeInsets.zero,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      alignment:
-                                                          AlignmentDirectional(
-                                                                  0.0, 0.0)
-                                                              .resolve(
-                                                                  Directionality.of(
-                                                                      context)),
-                                                      child:
-                                                          NegativeInformativeBoxWidget(
-                                                        title:
-                                                            'Não foi possível se candidatar',
-                                                        body:
-                                                            'Verifique se já não tem plantão confirmado no mesmo horário!',
-                                                      ),
-                                                    );
-                                                  },
-                                                );
-                                              }
-                                            }
-
-                                            logFirebaseEvent(
-                                                'Button_execute_callback');
-                                            await widget.callback?.call();
-                                            if (_shouldSetState)
-                                              safeSetState(() {});
-                                          },
-                                    text: 'Candidatar-se',
-                                    options: FFButtonOptions(
-                                      width: 330.0,
-                                      height: 50.0,
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 0.0),
-                                      iconPadding:
-                                          EdgeInsetsDirectional.fromSTEB(
-                                              0.0, 0.0, 0.0, 0.0),
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .titleSmall
-                                          .override(
-                                            font: GoogleFonts.geologica(
+                                        safeSetState(() {});
+                                      },
+                                      text: 'Desistir',
+                                      options: FFButtonOptions(
+                                        width: 330.0,
+                                        height: 50.0,
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 0.0),
+                                        iconPadding:
+                                            EdgeInsetsDirectional.fromSTEB(
+                                                0.0, 0.0, 0.0, 0.0),
+                                        color: FlutterFlowTheme.of(context)
+                                            .alternate,
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .titleSmall
+                                            .override(
+                                              font: GoogleFonts.geologica(
+                                                fontWeight:
+                                                    FlutterFlowTheme.of(context)
+                                                        .titleSmall
+                                                        .fontWeight,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .titleSmall
+                                                        .fontStyle,
+                                              ),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              letterSpacing: 0.0,
                                               fontWeight:
                                                   FlutterFlowTheme.of(context)
                                                       .titleSmall
@@ -5656,38 +5430,309 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                       .titleSmall
                                                       .fontStyle,
                                             ),
-                                            color: Colors.white,
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleSmall
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleSmall
-                                                    .fontStyle,
-                                          ),
-                                      elevation: 0.0,
-                                      borderRadius: BorderRadius.circular(
-                                          valueOrDefault<double>(
-                                        FFAppConstants.borderS,
-                                        0.0,
-                                      )),
-                                      disabledColor:
-                                          FlutterFlowTheme.of(context).accent2,
-                                      disabledTextColor:
-                                          FlutterFlowTheme.of(context).accent3,
-                                      hoverColor: FlutterFlowTheme.of(context)
-                                          .alternate,
+                                        elevation: 0.0,
+                                        borderRadius: BorderRadius.circular(
+                                            valueOrDefault<double>(
+                                          FFAppConstants.borderS,
+                                          0.0,
+                                        )),
+                                        hoverColor: FlutterFlowTheme.of(context)
+                                            .alternate,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            }
-                          },
+                                  );
+                                } else {
+                                  return Builder(
+                                    builder: (context) => Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          30.0,
+                                          valueOrDefault<double>(
+                                            FFAppConstants.Gap,
+                                            0.0,
+                                          ),
+                                          30.0,
+                                          valueOrDefault<double>(
+                                            FFAppConstants.doubleGap,
+                                            0.0,
+                                          )),
+                                      child: FFButtonWidget(
+                                        onPressed: (((_model.checkboxCheckedItems
+                                                            .length ==
+                                                        0) &&
+                                                    (_model.requirements !=
+                                                            null &&
+                                                        (_model.requirements)!
+                                                            .isNotEmpty)) ||
+                                                ((_model.checkboxCheckedItems
+                                                            .length !=
+                                                        _model.requirements
+                                                            ?.length) &&
+                                                    (_model.requirements !=
+                                                            null &&
+                                                        (_model.requirements)!
+                                                            .isNotEmpty)) ||
+                                                ('${(String crm) {
+                                                      return crm.split('-')[0];
+                                                    }(containerMedicosRow!.medicoCrm!)}' ==
+                                                    'estudante'))
+                                            ? null
+                                            : () async {
+                                                logFirebaseEvent(
+                                                    'VAGA_BOTTOM_SHEET_CANDIDATAR_SE_BTN_ON_T');
+                                                var _shouldSetState = false;
+                                                if (widget!.showFavorite) {
+                                                  logFirebaseEvent(
+                                                      'Button_alert_dialog');
+                                                  await showDialog(
+                                                    context: context,
+                                                    builder: (dialogContext) {
+                                                      return Dialog(
+                                                        elevation: 0,
+                                                        insetPadding:
+                                                            EdgeInsets.zero,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        alignment:
+                                                            AlignmentDirectional(
+                                                                    0.0, 0.0)
+                                                                .resolve(
+                                                                    Directionality.of(
+                                                                        context)),
+                                                        child:
+                                                            FavoriteDialogBoxWidget(),
+                                                      );
+                                                    },
+                                                  ).then((value) =>
+                                                      safeSetState(() => _model
+                                                              .favoriteAccept =
+                                                          value));
+
+                                                  _shouldSetState = true;
+                                                  if (_model.favoriteAccept!) {
+                                                    logFirebaseEvent(
+                                                        'Button_custom_action');
+                                                    _model.insertFavorite =
+                                                        await actions
+                                                            .insertCandidaturas(
+                                                      currentUserUid,
+                                                      widget!.jobid!,
+                                                      widget!.value!,
+                                                    );
+                                                    _shouldSetState = true;
+                                                    if (_model.insertFavorite ==
+                                                        'success') {
+                                                      logFirebaseEvent(
+                                                          'Button_alert_dialog');
+                                                      await showDialog(
+                                                        context: context,
+                                                        builder:
+                                                            (dialogContext) {
+                                                          return Dialog(
+                                                            elevation: 0,
+                                                            insetPadding:
+                                                                EdgeInsets.zero,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            alignment: AlignmentDirectional(
+                                                                    0.0, 0.0)
+                                                                .resolve(
+                                                                    Directionality.of(
+                                                                        context)),
+                                                            child:
+                                                                PositiveDialogBoxWidget(
+                                                              dialog:
+                                                                  'Plantão confirmado!',
+                                                            ),
+                                                          );
+                                                        },
+                                                      );
+
+                                                      logFirebaseEvent(
+                                                          'Button_update_component_state');
+                                                      _model.isApproved = true;
+                                                      safeSetState(() {});
+                                                    } else {
+                                                      logFirebaseEvent(
+                                                          'Button_alert_dialog');
+                                                      await showDialog(
+                                                        context: context,
+                                                        builder:
+                                                            (dialogContext) {
+                                                          return Dialog(
+                                                            elevation: 0,
+                                                            insetPadding:
+                                                                EdgeInsets.zero,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            alignment: AlignmentDirectional(
+                                                                    0.0, 0.0)
+                                                                .resolve(
+                                                                    Directionality.of(
+                                                                        context)),
+                                                            child:
+                                                                NegativeInformativeBoxWidget(
+                                                              title:
+                                                                  'Não foi possível se candidatar',
+                                                              body:
+                                                                  'Verifique se já não tem plantão confirmado no mesmo horário!',
+                                                            ),
+                                                          );
+                                                        },
+                                                      );
+                                                    }
+                                                  } else {
+                                                    if (_shouldSetState)
+                                                      safeSetState(() {});
+                                                    return;
+                                                  }
+                                                } else {
+                                                  logFirebaseEvent(
+                                                      'Button_custom_action');
+                                                  _model.insertCandidatura =
+                                                      await actions
+                                                          .insertCandidaturas(
+                                                    currentUserUid,
+                                                    widget!.jobid!,
+                                                    widget!.value!,
+                                                  );
+                                                  _shouldSetState = true;
+                                                  if (_model
+                                                          .insertCandidatura ==
+                                                      'success') {
+                                                    logFirebaseEvent(
+                                                        'Button_alert_dialog');
+                                                    await showDialog(
+                                                      context: context,
+                                                      builder: (dialogContext) {
+                                                        return Dialog(
+                                                          elevation: 0,
+                                                          insetPadding:
+                                                              EdgeInsets.zero,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          alignment: AlignmentDirectional(
+                                                                  0.0, 0.0)
+                                                              .resolve(
+                                                                  Directionality.of(
+                                                                      context)),
+                                                          child:
+                                                              PositiveDialogBoxWidget(
+                                                            dialog:
+                                                                'Candidatura cadastrada!',
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+
+                                                    logFirebaseEvent(
+                                                        'Button_update_component_state');
+                                                    _model.isCandidate = true;
+                                                    safeSetState(() {});
+                                                  } else {
+                                                    logFirebaseEvent(
+                                                        'Button_alert_dialog');
+                                                    await showDialog(
+                                                      context: context,
+                                                      builder: (dialogContext) {
+                                                        return Dialog(
+                                                          elevation: 0,
+                                                          insetPadding:
+                                                              EdgeInsets.zero,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          alignment: AlignmentDirectional(
+                                                                  0.0, 0.0)
+                                                              .resolve(
+                                                                  Directionality.of(
+                                                                      context)),
+                                                          child:
+                                                              NegativeInformativeBoxWidget(
+                                                            title:
+                                                                'Não foi possível se candidatar',
+                                                            body:
+                                                                'Verifique se já não tem plantão confirmado no mesmo horário!',
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                  }
+                                                }
+
+                                                logFirebaseEvent(
+                                                    'Button_execute_callback');
+                                                await widget.callback?.call();
+                                                if (_shouldSetState)
+                                                  safeSetState(() {});
+                                              },
+                                        text: 'Candidatar-se',
+                                        options: FFButtonOptions(
+                                          width: 330.0,
+                                          height: 50.0,
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 0.0, 0.0, 0.0),
+                                          iconPadding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 0.0, 0.0, 0.0),
+                                          color: FlutterFlowTheme.of(context)
+                                              .primary,
+                                          textStyle: FlutterFlowTheme.of(
+                                                  context)
+                                              .titleSmall
+                                              .override(
+                                                font: GoogleFonts.geologica(
+                                                  fontWeight:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .titleSmall
+                                                          .fontWeight,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .titleSmall
+                                                          .fontStyle,
+                                                ),
+                                                color: Colors.white,
+                                                letterSpacing: 0.0,
+                                                fontWeight:
+                                                    FlutterFlowTheme.of(context)
+                                                        .titleSmall
+                                                        .fontWeight,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .titleSmall
+                                                        .fontStyle,
+                                              ),
+                                          elevation: 0.0,
+                                          borderRadius: BorderRadius.circular(
+                                              valueOrDefault<double>(
+                                            FFAppConstants.borderS,
+                                            0.0,
+                                          )),
+                                          disabledColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .accent2,
+                                          disabledTextColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .accent3,
+                                          hoverColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .alternate,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
               ],
             ),

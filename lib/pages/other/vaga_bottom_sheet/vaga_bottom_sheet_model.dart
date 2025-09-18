@@ -7,6 +7,7 @@ import '/components/dialogs/negative_informative_box/negative_informative_box_wi
 import '/components/dialogs/passar_plantao_dialog_box/passar_plantao_dialog_box_widget.dart';
 import '/components/dialogs/positive_dialog_box/positive_dialog_box_widget.dart';
 import '/components/dialogs/small_dialog/small_dialog_widget.dart';
+import '/components/loading/placeholder_loading/placeholder_loading_widget.dart';
 import '/components/vagas/address_icon_button/address_icon_button_widget.dart';
 import '/flutter_flow/flutter_flow_google_map.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
