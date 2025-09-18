@@ -235,6 +235,53 @@ class FFAppState extends ChangeNotifier {
   void clearEstadosCache() => _estadosManager.clear();
   void clearEstadosCacheKey(String? uniqueKey) =>
       _estadosManager.clearRequest(uniqueKey);
+
+  final _medicoInfoManager = FutureRequestManager<List<MedicosRow>>();
+  Future<List<MedicosRow>> medicoInfo({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Future<List<MedicosRow>> Function() requestFn,
+  }) =>
+      _medicoInfoManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearMedicoInfoCache() => _medicoInfoManager.clear();
+  void clearMedicoInfoCacheKey(String? uniqueKey) =>
+      _medicoInfoManager.clearRequest(uniqueKey);
+
+  final _especialidadesManager =
+      StreamRequestManager<List<EspecialidadesRow>>();
+  Stream<List<EspecialidadesRow>> especialidades({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Stream<List<EspecialidadesRow>> Function() requestFn,
+  }) =>
+      _especialidadesManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearEspecialidadesCache() => _especialidadesManager.clear();
+  void clearEspecialidadesCacheKey(String? uniqueKey) =>
+      _especialidadesManager.clearRequest(uniqueKey);
+
+  final _estadosCadastroManager =
+      StreamRequestManager<List<EstadosBrasilRow>>();
+  Stream<List<EstadosBrasilRow>> estadosCadastro({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Stream<List<EstadosBrasilRow>> Function() requestFn,
+  }) =>
+      _estadosCadastroManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearEstadosCadastroCache() => _estadosCadastroManager.clear();
+  void clearEstadosCadastroCacheKey(String? uniqueKey) =>
+      _estadosCadastroManager.clearRequest(uniqueKey);
 }
 
 void _safeInit(Function() initializeField) {
