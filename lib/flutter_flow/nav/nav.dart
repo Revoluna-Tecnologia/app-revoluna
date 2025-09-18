@@ -117,44 +117,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => LoginMagicLinkWidget(),
         ),
         FFRoute(
-          name: Cadastro2Widget.routeName,
-          path: Cadastro2Widget.routePath,
-          builder: (context, params) => Cadastro2Widget(
-            firstname: params.getParam(
-              'firstname',
-              ParamType.String,
-            ),
-            lastname: params.getParam(
-              'lastname',
-              ParamType.String,
-            ),
-            email: params.getParam(
-              'email',
-              ParamType.String,
-            ),
-            phone: params.getParam(
-              'phone',
-              ParamType.String,
-            ),
-            areacodeIndex: params.getParam(
-              'areacodeIndex',
-              ParamType.int,
-            ),
-            termsAccept: params.getParam(
-              'termsAccept',
-              ParamType.bool,
-            ),
-            gender: params.getParam(
-              'gender',
-              ParamType.String,
-            ),
-            camefrom: params.getParam(
-              'camefrom',
-              ParamType.String,
-            ),
-          ),
-        ),
-        FFRoute(
           name: PerfilWidget.routeName,
           path: PerfilWidget.routePath,
           requireAuth: true,
@@ -355,7 +317,45 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 : NavBarPage(
                     initialPage: 'HomePage',
                     page: HomePageWidget(),
-                  ))
+                  )),
+        FFRoute(
+          name: Cadastro2Widget.routeName,
+          path: Cadastro2Widget.routePath,
+          builder: (context, params) => Cadastro2Widget(
+            firstname: params.getParam(
+              'firstname',
+              ParamType.String,
+            ),
+            lastname: params.getParam(
+              'lastname',
+              ParamType.String,
+            ),
+            email: params.getParam(
+              'email',
+              ParamType.String,
+            ),
+            phone: params.getParam(
+              'phone',
+              ParamType.String,
+            ),
+            areacodeIndex: params.getParam(
+              'areacodeIndex',
+              ParamType.int,
+            ),
+            termsAccept: params.getParam(
+              'termsAccept',
+              ParamType.bool,
+            ),
+            gender: params.getParam(
+              'gender',
+              ParamType.String,
+            ),
+            camefrom: params.getParam(
+              'camefrom',
+              ParamType.String,
+            ),
+          ),
+        )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
 

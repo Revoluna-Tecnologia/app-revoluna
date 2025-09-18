@@ -90,21 +90,11 @@ class Cadastro2Model extends FlutterFlowModel<Cadastro2Widget> {
   FocusNode? crmFocusNode;
   TextEditingController? crmTextController;
   String? Function(BuildContext, String?)? crmTextControllerValidator;
-  String? _crmTextControllerValidator(BuildContext context, String? val) {
-    if (val == null || val.isEmpty) {
-      return 'Campo obrigatório';
-    }
-
-    if (val.length < 6) {
-      return 'CRM deve ter pelo menos 6 dígitos';
-    }
-
-    return null;
-  }
-
   // State field(s) for dropdownEspecialidades widget.
   int? dropdownEspecialidadesValue;
   FormFieldController<int>? dropdownEspecialidadesValueController;
+  // State field(s) for Checkbox widget.
+  bool? checkboxValue;
   // Stores action output result for [Custom Action - isValidCPF] action in Button widget.
   bool? isCpfValid;
   // Stores action output result for [Backend Call - API (getcpf)] action in Button widget.
@@ -117,7 +107,6 @@ class Cadastro2Model extends FlutterFlowModel<Cadastro2Widget> {
     backTopBarModel = createModel(context, () => BackTopBarModel());
     birthDateTextControllerValidator = _birthDateTextControllerValidator;
     cpfTextControllerValidator = _cpfTextControllerValidator;
-    crmTextControllerValidator = _crmTextControllerValidator;
   }
 
   @override
