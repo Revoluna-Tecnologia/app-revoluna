@@ -108,14 +108,6 @@ class _LoginMagicLinkWidgetState extends State<LoginMagicLinkWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Align(
-                      alignment: AlignmentDirectional(0.0, 0.0),
-                      child: Icon(
-                        FFIcons.klogoIcon,
-                        color: FlutterFlowTheme.of(context).primary,
-                        size: 50.0,
-                      ),
-                    ),
                     Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [

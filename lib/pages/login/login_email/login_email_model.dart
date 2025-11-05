@@ -1,6 +1,7 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -12,6 +13,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +26,8 @@ class LoginEmailModel extends FlutterFlowModel<LoginEmailWidget> {
   ///  State fields for stateful widgets in this page.
 
   final formKey = GlobalKey<FormState>();
+  // Model for BackTopBar component.
+  late BackTopBarModel backTopBarModel;
   // State field(s) for E-mail widget.
   FocusNode? eMailFocusNode;
   TextEditingController? eMailTextController;
@@ -64,11 +68,13 @@ class LoginEmailModel extends FlutterFlowModel<LoginEmailWidget> {
 
   @override
   void initState(BuildContext context) {
+    backTopBarModel = createModel(context, () => BackTopBarModel());
     eMailTextControllerValidator = _eMailTextControllerValidator;
   }
 
   @override
   void dispose() {
+    backTopBarModel.dispose();
     eMailFocusNode?.dispose();
     eMailTextController?.dispose();
   }

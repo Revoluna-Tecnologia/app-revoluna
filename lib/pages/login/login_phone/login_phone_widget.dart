@@ -1,6 +1,7 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -13,6 +14,7 @@ import '/index.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -71,13 +73,24 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
-                  child: Icon(
-                    FFIcons.klogoIcon,
-                    color: FlutterFlowTheme.of(context).primary,
-                    size: 50.0,
+                wrapWithModel(
+                  model: _model.backTopBarModel,
+                  updateCallback: () => safeSetState(() {}),
+                  child: BackTopBarWidget(
+                    logo: false,
+                    backButton: () async {
+                      logFirebaseEvent(
+                          'LOGIN_PHONE_Container_jx862q1l_CALLBACK');
+                      logFirebaseEvent('BackTopBar_navigate_back');
+                      context.safePop();
+                    },
                   ),
+                ),
+                SvgPicture.asset(
+                  'assets/images/logo.svg',
+                  width: MediaQuery.sizeOf(context).width * 0.33,
+                  height: MediaQuery.sizeOf(context).height * 0.04,
+                  fit: BoxFit.fitWidth,
                 ),
                 Column(
                   mainAxisSize: MainAxisSize.min,
@@ -111,24 +124,23 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                       alignment: AlignmentDirectional(0.0, 0.0),
                       child: Text(
                         'Sua jornada começa agora',
-                        style:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              font: GoogleFonts.geologica(
+                                fontWeight: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontWeight,
+                                fontStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontStyle,
+                              ),
+                              letterSpacing: 0.0,
+                              fontWeight: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .fontWeight,
+                              fontStyle: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .fontStyle,
+                            ),
                       ),
                     ),
                   ].divide(SizedBox(height: FFAppConstants.halfGap)),

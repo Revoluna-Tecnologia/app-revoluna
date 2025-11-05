@@ -93,21 +93,13 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
                   model: _model.backTopBarModel,
                   updateCallback: () => safeSetState(() {}),
                   child: BackTopBarWidget(
-                    logo: false,
+                    logo: true,
                     backButton: () async {
                       logFirebaseEvent(
                           'LOGIN_PHONE_CODE_Container_idz4yefd_CALL');
                       logFirebaseEvent('BackTopBar_navigate_back');
                       context.safePop();
                     },
-                  ),
-                ),
-                Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
-                  child: Icon(
-                    FFIcons.klogoIcon,
-                    color: FlutterFlowTheme.of(context).primary,
-                    size: 50.0,
                   ),
                 ),
                 Column(
