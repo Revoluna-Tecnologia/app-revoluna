@@ -7,19 +7,19 @@ import '/components/dialogs/negative_informative_box/negative_informative_box_wi
 import '/components/dialogs/passar_plantao_dialog_box/passar_plantao_dialog_box_widget.dart';
 import '/components/dialogs/positive_dialog_box/positive_dialog_box_widget.dart';
 import '/components/dialogs/small_dialog/small_dialog_widget.dart';
-import '/components/loading/placeholder_loading/placeholder_loading_widget.dart';
 import '/components/vagas/address_icon_button/address_icon_button_widget.dart';
 import '/flutter_flow/flutter_flow_google_map.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/pages/other/paywall/paywall_widget.dart';
 import 'dart:ui';
-import '/actions/actions.dart' as action_blocks;
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import '/flutter_flow/permissions_util.dart';
+import '/index.dart';
 import 'vaga_bottom_sheet_widget.dart' show VagaBottomSheetWidget;
 import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -51,44 +51,46 @@ class VagaBottomSheetModel extends FlutterFlowModel<VagaBottomSheetWidget> {
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Backend Call - Query Rows] action in VagaBottomSheet widget.
+  List<VagasRequisitoRow>? requirements;
+  // Stores action output result for [Backend Call - Query Rows] action in VagaBottomSheet widget.
   List<VagasSalvasRow>? saved;
   // Stores action output result for [Backend Call - Query Rows] action in VagaBottomSheet widget.
   List<CheckinCheckoutRow>? checkin;
   // Stores action output result for [Backend Call - Query Rows] action in VagaBottomSheet widget.
-  List<VagasRequisitoRow>? requirements;
+  List<MedicosRow>? medicoinfo;
   // Stores action output result for [Backend Call - Update Row(s)] action in IconButton widget.
   List<VagasRow>? cancelAnounce;
   // Stores action output result for [Alert Dialog - Custom Dialog] action in IconButton widget.
   bool? acceptedSubmit;
   // Stores action output result for [Backend Call - Update Row(s)] action in IconButton widget.
   List<VagasRow>? anounceJob;
-  // State field(s) for Expandable widget.
-  late ExpandableController expandableExpandableController1;
+  // State field(s) for expandable_requisitos widget.
+  late ExpandableController expandableRequisitosExpandableController;
 
   // State field(s) for Checkbox widget.
   Map<RequisitoTipoRow, bool> checkboxValueMap = {};
   List<RequisitoTipoRow> get checkboxCheckedItems =>
       checkboxValueMap.entries.where((e) => e.value).map((e) => e.key).toList();
 
-  // State field(s) for Expandable widget.
-  late ExpandableController expandableExpandableController2;
+  // State field(s) for expandable_contratante widget.
+  late ExpandableController expandableContratanteExpandableController;
+
+  // State field(s) for expandable_comochegar widget.
+  late ExpandableController expandableComochegarExpandableController;
 
   // State field(s) for GoogleMap widget.
   LatLng? googleMapsCenter;
   final googleMapsController = Completer<GoogleMapController>();
-  // State field(s) for Expandable widget.
-  late ExpandableController expandableExpandableController3;
+  // State field(s) for epandable_pagamento widget.
+  late ExpandableController epandablePagamentoExpandableController;
 
   // State field(s) for Switch widget.
   bool? switchValue;
   Stream<List<PagamentosRow>>? switchSupabaseStream;
   // Stores action output result for [Backend Call - Insert Row] action in Switch widget.
   PagamentosRow? insertPay;
-  // State field(s) for Expandable widget.
-  late ExpandableController expandableExpandableController4;
-
-  // State field(s) for Expandable widget.
-  late ExpandableController expandableExpandableController5;
+  // State field(s) for expandable_beneficios widget.
+  late ExpandableController expandableBeneficiosExpandableController;
 
   // Stores action output result for [Custom Action - checkInCheckOut] action in Button widget.
   String? checkOut01;
@@ -102,8 +104,6 @@ class VagaBottomSheetModel extends FlutterFlowModel<VagaBottomSheetWidget> {
   String? checkInJustification;
   // Stores action output result for [Custom Action - checkInCheckOut] action in Button widget.
   String? checkIn02;
-  // Stores action output result for [Backend Call - Delete Row(s)] action in Button widget.
-  List<CandidaturasRow>? deleteCandidatura;
   // Stores action output result for [Alert Dialog - Custom Dialog] action in Button widget.
   bool? favoriteAccept;
   // Stores action output result for [Custom Action - insertCandidaturas] action in Button widget.
@@ -116,10 +116,10 @@ class VagaBottomSheetModel extends FlutterFlowModel<VagaBottomSheetWidget> {
 
   @override
   void dispose() {
-    expandableExpandableController1.dispose();
-    expandableExpandableController2.dispose();
-    expandableExpandableController3.dispose();
-    expandableExpandableController4.dispose();
-    expandableExpandableController5.dispose();
+    expandableRequisitosExpandableController.dispose();
+    expandableContratanteExpandableController.dispose();
+    expandableComochegarExpandableController.dispose();
+    epandablePagamentoExpandableController.dispose();
+    expandableBeneficiosExpandableController.dispose();
   }
 }
