@@ -85,7 +85,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       refreshListenable: appStateNotifier,
       navigatorKey: appNavigatorKey,
       errorBuilder: (context, state) => RootPageContext.wrap(
-        appStateNotifier.loggedIn ? NavBarPage() : LoginPhoneWidget(),
+        appStateNotifier.loggedIn ? NavBarPage() : InitialPageWidget(),
         errorRoute: state.uri.toString(),
       ),
       routes: [
@@ -93,28 +93,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: '_initialize',
           path: '/',
           builder: (context, _) => RootPageContext.wrap(
-            appStateNotifier.loggedIn ? NavBarPage() : LoginPhoneWidget(),
+            appStateNotifier.loggedIn ? NavBarPage() : InitialPageWidget(),
           ),
-        ),
-        FFRoute(
-          name: LoginPhoneWidget.routeName,
-          path: LoginPhoneWidget.routePath,
-          builder: (context, params) => LoginPhoneWidget(),
-        ),
-        FFRoute(
-          name: LoginPhoneCodeWidget.routeName,
-          path: LoginPhoneCodeWidget.routePath,
-          builder: (context, params) => LoginPhoneCodeWidget(
-            phoneOnlynumbers: params.getParam(
-              'phoneOnlynumbers',
-              ParamType.String,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: LoginMagicLinkWidget.routeName,
-          path: LoginMagicLinkWidget.routePath,
-          builder: (context, params) => LoginMagicLinkWidget(),
         ),
         FFRoute(
           name: Cadastro2Widget.routeName,
@@ -155,26 +135,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-            name: PlantoesWidget.routeName,
-            path: PlantoesWidget.routePath,
-            requireAuth: true,
-            builder: (context, params) => params.isEmpty
-                ? NavBarPage(initialPage: 'Plantoes')
-                : NavBarPage(
-                    initialPage: 'Plantoes',
-                    page: PlantoesWidget(
-                      fromhome: params.getParam(
-                        'fromhome',
-                        ParamType.bool,
-                      ),
-                    ),
-                  )),
-        FFRoute(
-          name: LoginEmailWidget.routeName,
-          path: LoginEmailWidget.routePath,
-          builder: (context, params) => LoginEmailWidget(),
-        ),
-        FFRoute(
           name: TermosWidget.routeName,
           path: TermosWidget.routePath,
           builder: (context, params) => TermosWidget(
@@ -207,6 +167,86 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               isList: true,
             ),
           ),
+        ),
+        FFRoute(
+          name: PrivacidadeWidget.routeName,
+          path: PrivacidadeWidget.routePath,
+          builder: (context, params) => PrivacidadeWidget(
+            inputemail: params.getParam(
+              'inputemail',
+              ParamType.String,
+            ),
+            inputphone: params.getParam(
+              'inputphone',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: NotificacoesWidget.routeName,
+          path: NotificacoesWidget.routePath,
+          builder: (context, params) => NotificacoesWidget(
+            notificationsQuery: params.getParam<NotificationsRow>(
+              'notificationsQuery',
+              ParamType.SupabaseRow,
+              isList: true,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: PerfilWidget.routeName,
+          path: PerfilWidget.routePath,
+          requireAuth: true,
+          builder: (context, params) => PerfilWidget(
+            inputemail: params.getParam(
+              'inputemail',
+              ParamType.String,
+            ),
+            inputphone: params.getParam(
+              'inputphone',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: LoginPhoneWidget.routeName,
+          path: LoginPhoneWidget.routePath,
+          builder: (context, params) => LoginPhoneWidget(),
+        ),
+        FFRoute(
+          name: LoginPhoneCodeWidget.routeName,
+          path: LoginPhoneCodeWidget.routePath,
+          builder: (context, params) => LoginPhoneCodeWidget(
+            phoneOnlynumbers: params.getParam(
+              'phoneOnlynumbers',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: LoginMagicLinkWidget.routeName,
+          path: LoginMagicLinkWidget.routePath,
+          builder: (context, params) => LoginMagicLinkWidget(),
+        ),
+        FFRoute(
+            name: PlantoesWidget.routeName,
+            path: PlantoesWidget.routePath,
+            requireAuth: true,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'Plantoes')
+                : NavBarPage(
+                    initialPage: 'Plantoes',
+                    page: PlantoesWidget(
+                      fromhome: params.getParam(
+                        'fromhome',
+                        ParamType.bool,
+                      ),
+                    ),
+                  )),
+        FFRoute(
+          name: LoginEmailWidget.routeName,
+          path: LoginEmailWidget.routePath,
+          builder: (context, params) => LoginEmailWidget(),
         ),
         FFRoute(
           name: LoginPasswordWidget.routeName,
@@ -284,31 +324,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-          name: PrivacidadeWidget.routeName,
-          path: PrivacidadeWidget.routePath,
-          builder: (context, params) => PrivacidadeWidget(
-            inputemail: params.getParam(
-              'inputemail',
-              ParamType.String,
-            ),
-            inputphone: params.getParam(
-              'inputphone',
-              ParamType.String,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: NotificacoesWidget.routeName,
-          path: NotificacoesWidget.routePath,
-          builder: (context, params) => NotificacoesWidget(
-            notificationsQuery: params.getParam<NotificationsRow>(
-              'notificationsQuery',
-              ParamType.SupabaseRow,
-              isList: true,
-            ),
-          ),
-        ),
-        FFRoute(
             name: ExplorarWidget.routeName,
             path: ExplorarWidget.routePath,
             requireAuth: true,
@@ -342,19 +357,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     page: HomePageWidget(),
                   )),
         FFRoute(
-          name: PerfilWidget.routeName,
-          path: PerfilWidget.routePath,
-          requireAuth: true,
-          builder: (context, params) => PerfilWidget(
-            inputemail: params.getParam(
-              'inputemail',
-              ParamType.String,
-            ),
-            inputphone: params.getParam(
-              'inputphone',
-              ParamType.String,
-            ),
-          ),
+          name: InitialPageWidget.routeName,
+          path: InitialPageWidget.routePath,
+          builder: (context, params) => InitialPageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -525,7 +530,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
-            return '/loginPhone';
+            return '/initialPage';
           }
           return null;
         },
@@ -540,13 +545,10 @@ class FFRoute {
               : builder(context, ffParams);
           final child = appStateNotifier.loading
               ? Container(
-                  color: FlutterFlowTheme.of(context).primary,
-                  child: Center(
-                    child: Image.asset(
-                      'assets/images/Logo.png',
-                      width: MediaQuery.sizeOf(context).width * 0.6,
-                      fit: BoxFit.fitWidth,
-                    ),
+                  color: Colors.transparent,
+                  child: Image.asset(
+                    'assets/images/splash.png',
+                    fit: BoxFit.cover,
                   ),
                 )
               : page;
