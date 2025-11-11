@@ -398,7 +398,7 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                               shape: BoxShape.circle,
                                             ),
                                             child: Icon(
-                                              FFIcons.kuserPlus,
+                                              FFIcons.kupload,
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .primary,
@@ -472,6 +472,8 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                                           width: m.dimensions
                                                               ?.width,
                                                           blurHash: m.blurHash,
+                                                          originalFilename: m
+                                                              .originalFilename,
                                                         ))
                                                     .toList();
                                           } finally {
@@ -654,8 +656,8 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                               false;
                                           _model.uploadedLocalFile_localupload =
                                               FFUploadedFile(
-                                                  bytes:
-                                                      Uint8List.fromList([]));
+                                                  bytes: Uint8List.fromList([]),
+                                                  originalFilename: '');
                                         });
                                       }
                                       logFirebaseEvent(

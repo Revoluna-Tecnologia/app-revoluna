@@ -234,10 +234,18 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                       FFAppState().inputAreacodeIndex = 0;
                       FFAppState().wasUser = false;
                       FFAppState().userRole = '';
+                      FFAppState().deleteProfilepicture();
                       FFAppState().profilepicture = '';
+
+                      FFAppState().deleteDisplayName();
                       FFAppState().displayName = '';
+
+                      FFAppState().deleteGender();
                       FFAppState().gender = '';
+
+                      FFAppState().deleteValuesPrivacy();
                       FFAppState().valuesPrivacy = false;
+
                       safeSetState(() {});
                     },
                   ),
