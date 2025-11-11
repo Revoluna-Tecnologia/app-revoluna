@@ -80,7 +80,7 @@ class _CardEscalaWidgetState extends State<CardEscalaWidget> {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
             width: 40.0,
@@ -102,7 +102,7 @@ class _CardEscalaWidgetState extends State<CardEscalaWidget> {
               child: Image.network(
                 valueOrDefault<String>(
                   widget!.avatarMedico,
-                  'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/avatarhospitais//placeholder..png',
+                  'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
                 ),
                 fit: BoxFit.cover,
               ),
@@ -161,41 +161,37 @@ class _CardEscalaWidgetState extends State<CardEscalaWidget> {
           Expanded(
             child: Column(
               mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    AutoSizeText(
-                      valueOrDefault<String>(
-                        widget!.drName,
-                        '[drName]',
+                AutoSizeText(
+                  valueOrDefault<String>(
+                    widget!.drName,
+                    '[drName]',
+                  ),
+                  style: FlutterFlowTheme.of(context).titleMedium.override(
+                        font: GoogleFonts.geologica(
+                          fontWeight: FlutterFlowTheme.of(context)
+                              .titleMedium
+                              .fontWeight,
+                          fontStyle: FlutterFlowTheme.of(context)
+                              .titleMedium
+                              .fontStyle,
+                        ),
+                        color: widget!.isDisabled!
+                            ? FlutterFlowTheme.of(context).accent3
+                            : FlutterFlowTheme.of(context).primaryText,
+                        letterSpacing: 0.0,
+                        fontWeight:
+                            FlutterFlowTheme.of(context).titleMedium.fontWeight,
+                        fontStyle:
+                            FlutterFlowTheme.of(context).titleMedium.fontStyle,
                       ),
-                      style: FlutterFlowTheme.of(context).titleMedium.override(
-                            font: GoogleFonts.geologica(
-                              fontWeight: FlutterFlowTheme.of(context)
-                                  .titleMedium
-                                  .fontWeight,
-                              fontStyle: FlutterFlowTheme.of(context)
-                                  .titleMedium
-                                  .fontStyle,
-                            ),
-                            color: widget!.isDisabled!
-                                ? FlutterFlowTheme.of(context).accent3
-                                : FlutterFlowTheme.of(context).primaryText,
-                            letterSpacing: 0.0,
-                            fontWeight: FlutterFlowTheme.of(context)
-                                .titleMedium
-                                .fontWeight,
-                            fontStyle: FlutterFlowTheme.of(context)
-                                .titleMedium
-                                .fontStyle,
-                          ),
-                    ),
-                  ].divide(SizedBox(width: FFAppConstants.halfGap)),
                 ),
-              ],
+              ]
+                  .divide(SizedBox(height: FFAppConstants.halfGap))
+                  .addToStart(SizedBox(height: FFAppConstants.Gap))
+                  .addToEnd(SizedBox(height: FFAppConstants.Gap)),
             ),
           ),
           if (widget!.openJob)

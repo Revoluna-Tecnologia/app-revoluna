@@ -41,16 +41,7 @@ class _ListaHomeLoadingWidgetState extends State<ListaHomeLoadingWidget> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 5.0,
-            color: Color(0x246814E5),
-            offset: Offset(
-              0.0,
-              -5.0,
-            ),
-          )
-        ],
+        color: FlutterFlowTheme.of(context).secondaryBackground,
       ),
       child: SingleChildScrollView(
         child: Column(
@@ -89,7 +80,29 @@ class _ListaHomeLoadingWidgetState extends State<ListaHomeLoadingWidget> {
                 )),
               ),
             ),
-          ].divide(SizedBox(height: 2.0)),
+            Container(
+              width: double.infinity,
+              height: MediaQuery.sizeOf(context).height * 0.15,
+              decoration: BoxDecoration(
+                color: FlutterFlowTheme.of(context).primaryBackground,
+                borderRadius: BorderRadius.circular(valueOrDefault<double>(
+                  FFAppConstants.borderM,
+                  0.0,
+                )),
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              height: MediaQuery.sizeOf(context).height * 0.15,
+              decoration: BoxDecoration(
+                color: FlutterFlowTheme.of(context).primaryBackground,
+                borderRadius: BorderRadius.circular(valueOrDefault<double>(
+                  FFAppConstants.borderM,
+                  0.0,
+                )),
+              ),
+            ),
+          ].divide(SizedBox(height: 2.0)).addToStart(SizedBox(height: 2.0)),
         ),
       ),
     );

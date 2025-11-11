@@ -1,7 +1,7 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/supabase/supabase.dart';
-import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
+import '/components/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_radio_button.dart';
@@ -220,7 +220,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                   model: _model.backTopBarModel,
                                   updateCallback: () => safeSetState(() {}),
                                   child: BackTopBarWidget(
-                                    logo: true,
+                                    logo: false,
                                     backButton: () async {
                                       logFirebaseEvent(
                                           'PERFIL_PAGE_Container_ogjqkhak_CALLBACK');
@@ -511,6 +511,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                           ?.width,
                                                                       blurHash:
                                                                           m.blurHash,
+                                                                      originalFilename:
+                                                                          m.originalFilename,
                                                                     ))
                                                                 .toList();
                                                       } finally {
@@ -4972,7 +4974,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
 
                                                         _navigate = () =>
                                                             context.goNamedAuth(
-                                                                LoginPhoneWidget
+                                                                InitialPageWidget
                                                                     .routeName,
                                                                 context
                                                                     .mounted);
@@ -4991,14 +4993,26 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                         FFAppState().userRole =
                                                             '';
                                                         FFAppState()
+                                                            .deleteProfilepicture();
+                                                        FFAppState()
                                                             .profilepicture = '';
+
+                                                        FFAppState()
+                                                            .deleteDisplayName();
                                                         FFAppState()
                                                             .displayName = '';
+
+                                                        FFAppState()
+                                                            .deleteGender();
                                                         FFAppState().gender =
                                                             '';
+
+                                                        FFAppState()
+                                                            .deleteValuesPrivacy();
                                                         FFAppState()
                                                                 .valuesPrivacy =
                                                             false;
+
                                                         safeSetState(() {});
                                                       }
 
@@ -5156,14 +5170,26 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                         FFAppState().userRole =
                                                             '';
                                                         FFAppState()
+                                                            .deleteProfilepicture();
+                                                        FFAppState()
                                                             .profilepicture = '';
+
+                                                        FFAppState()
+                                                            .deleteDisplayName();
                                                         FFAppState()
                                                             .displayName = '';
+
+                                                        FFAppState()
+                                                            .deleteGender();
                                                         FFAppState().gender =
                                                             '';
+
+                                                        FFAppState()
+                                                            .deleteValuesPrivacy();
                                                         FFAppState()
                                                                 .valuesPrivacy =
                                                             false;
+
                                                         safeSetState(() {});
                                                       }
 

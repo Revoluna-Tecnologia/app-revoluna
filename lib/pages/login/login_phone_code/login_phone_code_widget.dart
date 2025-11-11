@@ -1,5 +1,5 @@
 import '/backend/api_requests/api_calls.dart';
-import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
+import '/components/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -93,21 +93,13 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
                   model: _model.backTopBarModel,
                   updateCallback: () => safeSetState(() {}),
                   child: BackTopBarWidget(
-                    logo: false,
+                    logo: true,
                     backButton: () async {
                       logFirebaseEvent(
                           'LOGIN_PHONE_CODE_Container_idz4yefd_CALL');
                       logFirebaseEvent('BackTopBar_navigate_back');
                       context.safePop();
                     },
-                  ),
-                ),
-                Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
-                  child: Icon(
-                    FFIcons.klogoIcon,
-                    color: FlutterFlowTheme.of(context).primary,
-                    size: 50.0,
                   ),
                 ),
                 Column(

@@ -1,7 +1,7 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/supabase/supabase.dart';
-import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
+import '/components/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_radio_button.dart';
@@ -63,7 +63,7 @@ class PerfilModel extends FlutterFlowModel<PerfilWidget> {
   late BackTopBarModel backTopBarModel;
   bool isDataUploading_uploadedPic = false;
   FFUploadedFile uploadedLocalFile_uploadedPic =
-      FFUploadedFile(bytes: Uint8List.fromList([]));
+      FFUploadedFile(bytes: Uint8List.fromList([]), originalFilename: '');
 
   // State field(s) for RadioButton widget.
   FormFieldController<String>? radioButtonValueController;
@@ -177,7 +177,7 @@ class PerfilModel extends FlutterFlowModel<PerfilWidget> {
   ApiCallResponse? deletedUser;
   bool isDataUploading_uploadedPicSupa = false;
   FFUploadedFile uploadedLocalFile_uploadedPicSupa =
-      FFUploadedFile(bytes: Uint8List.fromList([]));
+      FFUploadedFile(bytes: Uint8List.fromList([]), originalFilename: '');
   String uploadedFileUrl_uploadedPicSupa = '';
 
   // Stores action output result for [Backend Call - Update Row(s)] action in Button widget.

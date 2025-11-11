@@ -1,6 +1,8 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/back_top_bar/back_top_bar_widget.dart';
+import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -14,6 +16,7 @@ import 'login_phone_widget.dart' show LoginPhoneWidget;
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +31,8 @@ class LoginPhoneModel extends FlutterFlowModel<LoginPhoneWidget> {
   ///  State fields for stateful widgets in this page.
 
   final formKey = GlobalKey<FormState>();
+  // Model for BackTopBar component.
+  late BackTopBarModel backTopBarModel;
   // State field(s) for dropCodigoPais widget.
   int? dropCodigoPaisValue;
   FormFieldController<int>? dropCodigoPaisValueController;
@@ -56,6 +61,8 @@ class LoginPhoneModel extends FlutterFlowModel<LoginPhoneWidget> {
   ApiCallResponse? idFromPhone;
   // Stores action output result for [Backend Call - Query Rows] action in Button widget.
   List<UserProfileRow>? queryUser;
+  // Stores action output result for [Backend Call - Query Rows] action in Button widget.
+  List<EstadosBrasilRow>? queryEstado;
   // Stores action output result for [Backend Call - API (sendSMSverify)] action in Button widget.
   ApiCallResponse? sendSMS;
   // Stores action output result for [Backend Call - Query Rows] action in Button widget.
@@ -66,15 +73,19 @@ class LoginPhoneModel extends FlutterFlowModel<LoginPhoneWidget> {
   List<String>? appleData;
   // Stores action output result for [Backend Call - Query Rows] action in Button widget.
   List<UserProfileRow>? queryAppleUser;
+  // Stores action output result for [Custom Action - launchWhatsAppChat] action in Button widget.
+  bool? whatsappLoginPhone;
 
   @override
   void initState(BuildContext context) {
+    backTopBarModel = createModel(context, () => BackTopBarModel());
     campoTelefoneTextControllerValidator =
         _campoTelefoneTextControllerValidator;
   }
 
   @override
   void dispose() {
+    backTopBarModel.dispose();
     campoTelefoneFocusNode?.dispose();
     campoTelefoneTextController?.dispose();
   }

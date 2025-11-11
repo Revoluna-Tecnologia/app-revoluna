@@ -1,4 +1,4 @@
-import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
+import '/components/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';

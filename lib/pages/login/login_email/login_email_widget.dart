@@ -1,6 +1,8 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/back_top_bar/back_top_bar_widget.dart';
+import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -11,6 +13,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -78,13 +81,24 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
-                  child: Icon(
-                    FFIcons.klogoIcon,
-                    color: FlutterFlowTheme.of(context).primary,
-                    size: 50.0,
+                wrapWithModel(
+                  model: _model.backTopBarModel,
+                  updateCallback: () => safeSetState(() {}),
+                  child: BackTopBarWidget(
+                    logo: false,
+                    backButton: () async {
+                      logFirebaseEvent(
+                          'LOGIN_EMAIL_Container_ewxxm4ln_CALLBACK');
+                      logFirebaseEvent('BackTopBar_navigate_back');
+                      context.safePop();
+                    },
                   ),
+                ),
+                SvgPicture.asset(
+                  'assets/images/logo.svg',
+                  width: MediaQuery.sizeOf(context).width * 0.33,
+                  height: MediaQuery.sizeOf(context).height * 0.04,
+                  fit: BoxFit.fitWidth,
                 ),
                 Column(
                   mainAxisSize: MainAxisSize.max,
@@ -118,24 +132,23 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                       alignment: AlignmentDirectional(0.0, 0.0),
                       child: Text(
                         'Sua jornada começa agora',
-                        style:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              font: GoogleFonts.geologica(
+                                fontWeight: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontWeight,
+                                fontStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontStyle,
+                              ),
+                              letterSpacing: 0.0,
+                              fontWeight: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .fontWeight,
+                              fontStyle: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .fontStyle,
+                            ),
                       ),
                     ),
                   ].divide(SizedBox(height: FFAppConstants.halfGap)),
@@ -478,6 +491,17 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                           ),
                                         );
                                         _shouldSetState = true;
+                                        logFirebaseEvent('Button_backend_call');
+                                        _model.queryEstado =
+                                            await EstadosBrasilTable()
+                                                .queryRows(
+                                          queryFn: (q) => q.eqOrNull(
+                                            'id',
+                                            _model.queryUser?.firstOrNull
+                                                ?.uFindex,
+                                          ),
+                                        );
+                                        _shouldSetState = true;
                                         logFirebaseEvent(
                                             'Button_update_app_state');
                                         FFAppState().displayName = _model
@@ -490,8 +514,21 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                             .queryUser!
                                             .firstOrNull!
                                             .profilepicture!;
-                                        FFAppState().estadoUF = _model
+                                        FFAppState().estadoUFIndex = _model
                                             .queryUser!.firstOrNull!.uFindex;
+                                        FFAppState().specialialityIndex = _model
+                                            .queryUser!
+                                            .firstOrNull!
+                                            .specialtyIndex;
+                                        FFAppState().estadoUF = _model
+                                            .queryEstado!
+                                            .where((e) =>
+                                                e.id ==
+                                                _model.queryUser?.firstOrNull
+                                                    ?.uFindex)
+                                            .toList()
+                                            .firstOrNull!
+                                            .sigla!;
                                         FFAppState().update(() {});
                                         if (_model
                                                 .queryUser?.firstOrNull?.role ==
@@ -1066,28 +1103,70 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    FFButtonWidget(
-                      onPressed: () async {
-                        logFirebaseEvent(
-                            'LOGIN_EMAIL_PRECISA_DE_AJUDA_BTN_ON_TAP');
-                        logFirebaseEvent('Button_custom_action');
-                        await actions.launchWhatsAppChat(
-                          'Olá, estou tendo dificuldades para entrar no app',
-                        );
-                      },
-                      text: 'Precisa de ajuda?',
-                      options: FFButtonOptions(
-                        width: 130.0,
-                        height: 22.0,
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        iconPadding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        color: Color(0x00A369ED),
-                        textStyle: FlutterFlowTheme.of(context)
-                            .titleSmall
-                            .override(
-                              font: GoogleFonts.geologica(
+                    Builder(
+                      builder: (context) => FFButtonWidget(
+                        onPressed: () async {
+                          logFirebaseEvent(
+                              'LOGIN_EMAIL_PRECISA_DE_AJUDA_BTN_ON_TAP');
+                          logFirebaseEvent('Button_custom_action');
+                          _model.whatsappLoginEmail =
+                              await actions.launchWhatsAppChat(
+                            'Olá, estou tendo dificuldades para entrar no app',
+                            FFAppState().concierge,
+                          );
+                          if (!_model.whatsappLoginEmail!) {
+                            logFirebaseEvent('Button_alert_dialog');
+                            await showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return Dialog(
+                                  elevation: 0,
+                                  insetPadding: EdgeInsets.zero,
+                                  backgroundColor: Colors.transparent,
+                                  alignment: AlignmentDirectional(0.0, 0.0)
+                                      .resolve(Directionality.of(context)),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      FocusScope.of(dialogContext).unfocus();
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
+                                    },
+                                    child: NegativeInformativeBoxWidget(
+                                      title: 'Necessário WhatsApp',
+                                      body:
+                                          'Para prosseguir é preciso ter o aplicativo WhatsaApp instalado no seu  aparelho',
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+
+                          safeSetState(() {});
+                        },
+                        text: 'Precisa de ajuda?',
+                        options: FFButtonOptions(
+                          width: 130.0,
+                          height: 22.0,
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          color: Color(0x00A369ED),
+                          textStyle: FlutterFlowTheme.of(context)
+                              .titleSmall
+                              .override(
+                                font: GoogleFonts.geologica(
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .titleSmall
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .titleSmall
+                                      .fontStyle,
+                                ),
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
                                 fontWeight: FlutterFlowTheme.of(context)
                                     .titleSmall
                                     .fontWeight,
@@ -1095,17 +1174,9 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                     .titleSmall
                                     .fontStyle,
                               ),
-                              color: FlutterFlowTheme.of(context).secondaryText,
-                              letterSpacing: 0.0,
-                              fontWeight: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .fontWeight,
-                              fontStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .fontStyle,
-                            ),
-                        elevation: 0.0,
-                        borderRadius: BorderRadius.circular(110.0),
+                          elevation: 0.0,
+                          borderRadius: BorderRadius.circular(110.0),
+                        ),
                       ),
                     ),
                     FFButtonWidget(

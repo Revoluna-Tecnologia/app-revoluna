@@ -1,6 +1,5 @@
-import '/components/loading/banner_loading/banner_loading_widget.dart';
+import '/components/loading/calendar_loading/calendar_loading_widget.dart';
 import '/components/loading/lista_home_loading/lista_home_loading_widget.dart';
-import '/components/loading/saldos_loading/saldos_loading_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -45,174 +44,122 @@ class _HomeLoadingWidgetState extends State<HomeLoadingWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
-    return Container(
-      decoration: BoxDecoration(
-        color: FlutterFlowTheme.of(context).primaryBackground,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(
-                valueOrDefault<double>(
-                  FFAppConstants.doubleGap,
-                  0.0,
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          color: FlutterFlowTheme.of(context).primaryBackground,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(
+                  valueOrDefault<double>(
+                    FFAppConstants.doubleGap,
+                    0.0,
+                  ),
+                  valueOrDefault<double>(
+                    FFAppConstants.doubleGap,
+                    0.0,
+                  ),
+                  valueOrDefault<double>(
+                    FFAppConstants.doubleGap,
+                    0.0,
+                  ),
+                  0.0),
+              child: Container(
+                width: double.infinity,
+                height: MediaQuery.sizeOf(context).height * 0.07,
+                decoration: BoxDecoration(
+                  color: FlutterFlowTheme.of(context).primaryBackground,
                 ),
-                valueOrDefault<double>(
-                  FFAppConstants.doubleGap,
-                  0.0,
-                ),
-                valueOrDefault<double>(
-                  FFAppConstants.doubleGap,
-                  0.0,
-                ),
-                0.0),
-            child: Container(
-              width: double.infinity,
-              height: MediaQuery.sizeOf(context).height * 0.07,
-              decoration: BoxDecoration(
-                color: FlutterFlowTheme.of(context).primaryBackground,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Hero(
-                    tag: valueOrDefault<String>(
-                      FFAppState().profilepicture,
-                      'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                    ),
-                    transitionOnUserGestures: true,
-                    child: Container(
-                      width: MediaQuery.sizeOf(context).width * 0.145,
-                      height: MediaQuery.sizeOf(context).width * 0.145,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Hero(
+                      tag: valueOrDefault<String>(
+                        FFAppState().profilepicture,
+                        'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
                       ),
-                      child: Image.network(
-                        valueOrDefault<String>(
-                          FFAppState().profilepicture,
-                          'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
+                      transitionOnUserGestures: true,
+                      child: Container(
+                        width: MediaQuery.sizeOf(context).width * 0.145,
+                        height: MediaQuery.sizeOf(context).width * 0.145,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
                         ),
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            Image.asset(
-                          'assets/images/error_image.png',
+                        child: Image.network(
+                          valueOrDefault<String>(
+                            FFAppState().profilepicture,
+                            'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
+                          ),
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Image.asset(
+                            'assets/images/error_image.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: MediaQuery.sizeOf(context).width * 0.19,
-                          height: MediaQuery.sizeOf(context).height * 0.02,
-                          decoration: BoxDecoration(),
-                        ),
-                        Container(
-                          width: MediaQuery.sizeOf(context).width * 0.3,
-                          height: MediaQuery.sizeOf(context).height * 0.025,
-                          decoration: BoxDecoration(),
-                        ),
-                      ].divide(SizedBox(height: 2.0)),
-                    ),
-                  ),
-                  FlutterFlowIconButton(
-                    borderRadius: 60.0,
-                    buttonSize: 52.0,
-                    icon: Icon(
-                      Icons.menu_rounded,
-                      color: FlutterFlowTheme.of(context).primary,
-                      size: 40.0,
-                    ),
-                    onPressed: () {
-                      print('IconButton pressed ...');
-                    },
-                  ),
-                ].divide(SizedBox(width: FFAppConstants.doubleGap)),
-              ),
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(
-                        valueOrDefault<double>(
-                          FFAppConstants.Gap,
-                          0.0,
-                        ),
-                        0.0,
-                        valueOrDefault<double>(
-                          FFAppConstants.Gap,
-                          0.0,
-                        ),
-                        0.0),
-                    child: wrapWithModel(
-                      model: _model.bannerLoadingModel,
-                      updateCallback: () => safeSetState(() {}),
-                      child: BannerLoadingWidget(),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(
-                        valueOrDefault<double>(
-                          FFAppConstants.Gap,
-                          0.0,
-                        ),
-                        0.0,
-                        valueOrDefault<double>(
-                          FFAppConstants.Gap,
-                          0.0,
-                        ),
-                        0.0),
-                    child: wrapWithModel(
-                      model: _model.saldosLoadingModel,
-                      updateCallback: () => safeSetState(() {}),
-                      child: SaldosLoadingWidget(),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(
-                        valueOrDefault<double>(
-                          FFAppConstants.doubleGap,
-                          0.0,
-                        ),
-                        0.0,
-                        valueOrDefault<double>(
-                          FFAppConstants.doubleGap,
-                          0.0,
-                        ),
-                        valueOrDefault<double>(
-                          FFAppConstants.Gap,
-                          0.0,
-                        )),
-                    child: Container(
-                      width: MediaQuery.sizeOf(context).width * 0.7,
-                      height: MediaQuery.sizeOf(context).height * 0.025,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: MediaQuery.sizeOf(context).width * 0.19,
+                            height: MediaQuery.sizeOf(context).height * 0.02,
+                            decoration: BoxDecoration(),
+                          ),
+                          Container(
+                            width: MediaQuery.sizeOf(context).width * 0.3,
+                            height: MediaQuery.sizeOf(context).height * 0.025,
+                            decoration: BoxDecoration(),
+                          ),
+                        ].divide(SizedBox(height: 2.0)),
                       ),
                     ),
-                  ),
-                  wrapWithModel(
-                    model: _model.listaHomeLoadingModel,
-                    updateCallback: () => safeSetState(() {}),
-                    child: ListaHomeLoadingWidget(),
-                  ),
-                ].divide(SizedBox(height: FFAppConstants.doubleGap)),
+                    FlutterFlowIconButton(
+                      borderRadius: 60.0,
+                      buttonSize: 52.0,
+                      icon: Icon(
+                        Icons.menu_rounded,
+                        color: FlutterFlowTheme.of(context).primary,
+                        size: 40.0,
+                      ),
+                      onPressed: () {
+                        print('IconButton pressed ...');
+                      },
+                    ),
+                  ].divide(SizedBox(width: FFAppConstants.doubleGap)),
+                ),
               ),
             ),
-          ),
-        ].divide(SizedBox(height: FFAppConstants.doubleGap)),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    wrapWithModel(
+                      model: _model.calendarLoadingModel,
+                      updateCallback: () => safeSetState(() {}),
+                      child: CalendarLoadingWidget(),
+                    ),
+                    wrapWithModel(
+                      model: _model.listaHomeLoadingModel,
+                      updateCallback: () => safeSetState(() {}),
+                      child: ListaHomeLoadingWidget(),
+                    ),
+                  ].divide(SizedBox(height: FFAppConstants.doubleGap)),
+                ),
+              ),
+            ),
+          ].divide(SizedBox(height: FFAppConstants.doubleGap)),
+        ),
       ),
     );
   }

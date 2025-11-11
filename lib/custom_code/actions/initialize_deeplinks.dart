@@ -1,7 +1,6 @@
 // Automatic FlutterFlow imports
 import '/backend/backend.dart';
 import '/backend/supabase/supabase.dart';
-import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'index.dart'; // Imports other custom actions
@@ -14,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:app_links/app_links.dart';
 import 'dart:async';
 import '/pages/other/vaga_bottom_sheet/vaga_bottom_sheet_widget.dart';
+import '/auth/supabase_auth/auth_util.dart';
 
 Future<void> _showVagaBottomSheet(String vagaId) async {
   //print("🔗 _showVagaBottomSheet INICIADO para vagaId: $vagaId");
@@ -23,27 +23,52 @@ Future<void> _showVagaBottomSheet(String vagaId) async {
 
     // Buscar dados da vaga
     final vagaData = await SupaFlow.client
-        .from('vw_vagas_candidaturas')
+        .from('vw_vagas_abertas')
         .select()
         .eq('vagas_id', vagaId);
 
-    //print("🔗 Dados encontrados: ${vagaData.length} registros");
+    // Verificar se o usuário está autenticado
+    final isAuthenticated = currentUserUid.isNotEmpty;
 
-    if (vagaData.isEmpty) {
-      //print("🔗 ERRO: Nenhum dado encontrado para vagaId: $vagaId");
-      return;
+// Buscar dados de candidaturas apenas se o usuário estiver autenticado
+    VwVagasCandidaturasRow? candidatesData;
+    if (isAuthenticated) {
+      try {
+        // Tentar buscar a linha específica do médico logado
+        final medicoData = await SupaFlow.client
+            .from('vw_vagas_candidaturas')
+            .select()
+            .eq('vagas_id', vagaId)
+            .eq('medico_id', currentUserUid)
+            .maybeSingle();
+
+        if (medicoData != null) {
+          candidatesData = VwVagasCandidaturasRow(medicoData);
+        } else {
+          // Se não houver linha do médico, buscar qualquer linha da vaga
+          final anyData = await SupaFlow.client
+              .from('vw_vagas_candidaturas')
+              .select()
+              .eq('vagas_id', vagaId)
+              .limit(1)
+              .maybeSingle();
+
+          if (anyData != null) {
+            candidatesData = VwVagasCandidaturasRow(anyData);
+          }
+        }
+      } catch (e) {
+        // Em caso de erro, candidatesData fica null
+      }
     }
 
-    //print("🔗 Preparando bottom sheet...");
     // Pegar a primeira linha para os dados principais da vaga
-    final vagaRow = VwVagasCandidaturasRow(vagaData.first);
+    final vagaRow = VwVagasAbertasRow(vagaData.first);
 
-    // Converter todas as linhas para lista de candidaturas
-    final candidatesList =
-        vagaData.map((item) => VwVagasCandidaturasRow(item)).toList();
-
-    // Determinar se é favorito (baseado no campo medico_favorito da primeira linha)
-    final isFavorite = vagaRow.medicoFavorito ?? false;
+    // Determinar se é favorito (false se não autenticado ou se não houver dados)
+    final isFavorite = candidatesData != null
+        ? (candidatesData.medicoFavorito ?? false)
+        : false;
 
     final BuildContext? context = appNavigatorKey.currentContext;
 
@@ -82,7 +107,7 @@ Future<void> _showVagaBottomSheet(String vagaId) async {
                 payment: vagaRow.vagasFormarecebimentoNome,
                 avatarHospital: vagaRow.hospitalAvatar,
                 sector: vagaRow.setorNome,
-                candidates: candidatesList,
+                candidates: candidatesData,
                 showFavorite: isFavorite,
               ),
             ),

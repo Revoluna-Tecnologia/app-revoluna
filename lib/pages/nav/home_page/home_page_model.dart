@@ -1,31 +1,28 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/components/header/header_widget.dart';
-import '/components/loading/banner_loading/banner_loading_widget.dart';
-import '/components/loading/header_loading/header_loading_widget.dart';
-import '/components/loading/lista_home_loading/lista_home_loading_widget.dart';
-import '/components/loading/pages/home_loading/home_loading_widget.dart';
-import '/components/vagas/card_vagas_slim/card_vagas_slim_widget.dart';
+import '/components/vagas/card_vagas/card_vagas_widget.dart';
+import '/components/vagas/dropdown_loading/dropdown_loading_widget.dart';
 import '/components/vagas/empty_list/empty_list_widget.dart';
+import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/form_field_controller.dart';
 import '/pages/other/vaga_bottom_sheet/vaga_bottom_sheet_widget.dart';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
-import '/flutter_flow/request_manager.dart';
-
+import 'dart:async';
 import 'home_page_widget.dart' show HomePageWidget;
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/gestures.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +33,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
 
   bool isBottomSheetLoading = false;
 
+  bool calendarView = true;
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Custom Action - appTracking] action in HomePage widget.
@@ -44,50 +43,96 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   List<MedicosRow>? medicoTrackingUpdateTrueCopy;
   // Stores action output result for [Backend Call - Update Row(s)] action in HomePage widget.
   List<MedicosRow>? medicoTrackingUpdateFalseCopy;
+  bool requestCompleted3 = false;
+  String? requestLastUniqueKey3;
+  // Stores action output result for [Custom Action - launchWhatsAppChat] action in FloatingActionButton widget.
+  bool? whatsappHome;
   // Model for drawerMenu component.
   late DrawerMenuModel drawerMenuModel;
   // Model for Header component.
   late HeaderModel headerModel;
-  // State field(s) for Carousel widget.
-  CarouselSliderController? carouselController;
-  int carouselCurrentIndex = 1;
-
-  Stream<List<CleanHospitalRow>>? containerSupabaseStream;
-  // Models for cardVagasSlim dynamic component.
-  late FlutterFlowDynamicModels<CardVagasSlimModel> cardVagasSlimModels;
-
-  /// Query cache managers for this widget.
-
-  final _bannerManager = FutureRequestManager<List<BannerMKTRow>>();
-  Future<List<BannerMKTRow>> banner({
-    String? uniqueQueryKey,
-    bool? overrideCache,
-    required Future<List<BannerMKTRow>> Function() requestFn,
-  }) =>
-      _bannerManager.performRequest(
-        uniqueQueryKey: uniqueQueryKey,
-        overrideCache: overrideCache,
-        requestFn: requestFn,
-      );
-  void clearBannerCache() => _bannerManager.clear();
-  void clearBannerCacheKey(String? uniqueKey) =>
-      _bannerManager.clearRequest(uniqueKey);
+  bool requestCompleted2 = false;
+  String? requestLastUniqueKey2;
+  bool requestCompleted1 = false;
+  String? requestLastUniqueKey1;
+  // Model for emptyList component.
+  late EmptyListModel emptyListModel;
+  // Models for cardVagas dynamic component.
+  late FlutterFlowDynamicModels<CardVagasModel> cardVagasModels1;
+  // State field(s) for DropDown widget.
+  String? dropDownValue1;
+  FormFieldController<String>? dropDownValueController1;
+  // State field(s) for DropDown widget.
+  String? dropDownValue2;
+  FormFieldController<String>? dropDownValueController2;
+  // Models for cardVagas dynamic component.
+  late FlutterFlowDynamicModels<CardVagasModel> cardVagasModels2;
+  // Models for cardVagas dynamic component.
+  late FlutterFlowDynamicModels<CardVagasModel> cardVagasModels3;
 
   @override
   void initState(BuildContext context) {
     drawerMenuModel = createModel(context, () => DrawerMenuModel());
     headerModel = createModel(context, () => HeaderModel());
-    cardVagasSlimModels = FlutterFlowDynamicModels(() => CardVagasSlimModel());
+    emptyListModel = createModel(context, () => EmptyListModel());
+    cardVagasModels1 = FlutterFlowDynamicModels(() => CardVagasModel());
+    cardVagasModels2 = FlutterFlowDynamicModels(() => CardVagasModel());
+    cardVagasModels3 = FlutterFlowDynamicModels(() => CardVagasModel());
   }
 
   @override
   void dispose() {
     drawerMenuModel.dispose();
     headerModel.dispose();
-    cardVagasSlimModels.dispose();
+    emptyListModel.dispose();
+    cardVagasModels1.dispose();
+    cardVagasModels2.dispose();
+    cardVagasModels3.dispose();
+  }
 
-    /// Dispose query cache managers for this widget.
+  /// Additional helper methods.
+  Future waitForRequestCompleted3({
+    double minWait = 0,
+    double maxWait = double.infinity,
+  }) async {
+    final stopwatch = Stopwatch()..start();
+    while (true) {
+      await Future.delayed(Duration(milliseconds: 50));
+      final timeElapsed = stopwatch.elapsedMilliseconds;
+      final requestComplete = requestCompleted3;
+      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
+        break;
+      }
+    }
+  }
 
-    clearBannerCache();
+  Future waitForRequestCompleted2({
+    double minWait = 0,
+    double maxWait = double.infinity,
+  }) async {
+    final stopwatch = Stopwatch()..start();
+    while (true) {
+      await Future.delayed(Duration(milliseconds: 50));
+      final timeElapsed = stopwatch.elapsedMilliseconds;
+      final requestComplete = requestCompleted2;
+      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
+        break;
+      }
+    }
+  }
+
+  Future waitForRequestCompleted1({
+    double minWait = 0,
+    double maxWait = double.infinity,
+  }) async {
+    final stopwatch = Stopwatch()..start();
+    while (true) {
+      await Future.delayed(Duration(milliseconds: 50));
+      final timeElapsed = stopwatch.elapsedMilliseconds;
+      final requestComplete = requestCompleted1;
+      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
+        break;
+      }
+    }
   }
 }

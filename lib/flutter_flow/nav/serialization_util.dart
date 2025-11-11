@@ -291,6 +291,8 @@ dynamic deserializeParam<T>(
             return VwVagasDiasContagemRow(data);
           case VwCandidaturasPendentesRow:
             return VwCandidaturasPendentesRow(data);
+          case VwVagasAbertasRow:
+            return VwVagasAbertasRow(data);
           case CheckinCheckoutNofiticationsRow:
             return CheckinCheckoutNofiticationsRow(data);
           case VagasSalvasRow:
@@ -317,6 +319,8 @@ dynamic deserializeParam<T>(
             return CheckinCheckoutRow(data);
           case GrupoRow:
             return GrupoRow(data);
+          case VwFolhaPagamentoRow:
+            return VwFolhaPagamentoRow(data);
           case FormasRecebimentoRow:
             return FormasRecebimentoRow(data);
           case RequisitoTipoRow:

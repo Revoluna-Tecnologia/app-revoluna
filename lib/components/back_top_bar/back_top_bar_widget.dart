@@ -87,8 +87,9 @@ class _BackTopBarWidgetState extends State<BackTopBarWidget> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: SvgPicture.asset(
-                  'assets/images/Logo_+_Tipo.svg',
-                  fit: BoxFit.fitWidth,
+                  'assets/images/logo.svg',
+                  width: MediaQuery.sizeOf(context).width * 0.2,
+                  fit: BoxFit.scaleDown,
                 ),
               ),
           ],

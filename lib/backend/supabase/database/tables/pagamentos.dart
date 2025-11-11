@@ -30,8 +30,8 @@ class PagamentosRow extends SupabaseDataRow {
   int get valor => getField<int>('valor')!;
   set valor(int value) => setField<int>('valor', value);
 
-  String get vagasId => getField<String>('vagas_id')!;
-  set vagasId(String value) => setField<String>('vagas_id', value);
+  String? get vagasId => getField<String>('vagas_id');
+  set vagasId(String? value) => setField<String>('vagas_id', value);
 
   String? get medicosId => getField<String>('medicos_id');
   set medicosId(String? value) => setField<String>('medicos_id', value);

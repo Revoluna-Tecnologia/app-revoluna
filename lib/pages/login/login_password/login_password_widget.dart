@@ -1,6 +1,6 @@
 import '/auth/base_auth_user_provider.dart';
 import '/auth/supabase_auth/auth_util.dart';
-import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
+import '/components/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -96,14 +96,6 @@ class _LoginPasswordWidgetState extends State<LoginPasswordWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Align(
-                      alignment: AlignmentDirectional(0.0, 0.0),
-                      child: Icon(
-                        FFIcons.klogoIcon,
-                        color: FlutterFlowTheme.of(context).primary,
-                        size: 50.0,
-                      ),
-                    ),
                     Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [

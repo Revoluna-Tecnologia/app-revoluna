@@ -7,18 +7,18 @@ import '/flutter_flow/form_field_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'estados_loading_model.dart';
-export 'estados_loading_model.dart';
+import 'dropdown_loading_model.dart';
+export 'dropdown_loading_model.dart';
 
-class EstadosLoadingWidget extends StatefulWidget {
-  const EstadosLoadingWidget({super.key});
+class DropdownLoadingWidget extends StatefulWidget {
+  const DropdownLoadingWidget({super.key});
 
   @override
-  State<EstadosLoadingWidget> createState() => _EstadosLoadingWidgetState();
+  State<DropdownLoadingWidget> createState() => _DropdownLoadingWidgetState();
 }
 
-class _EstadosLoadingWidgetState extends State<EstadosLoadingWidget> {
-  late EstadosLoadingModel _model;
+class _DropdownLoadingWidgetState extends State<DropdownLoadingWidget> {
+  late DropdownLoadingModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -29,7 +29,7 @@ class _EstadosLoadingWidgetState extends State<EstadosLoadingWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => EstadosLoadingModel());
+    _model = createModel(context, () => DropdownLoadingModel());
   }
 
   @override
@@ -46,42 +46,32 @@ class _EstadosLoadingWidgetState extends State<EstadosLoadingWidget> {
     return FlutterFlowDropDown<String>(
       controller: _model.dropDownValueController ??=
           FormFieldController<String>(null),
-      options: ['Option 1', 'Option 2', 'Option 3'],
+      options: <String>[],
       onChanged: (val) => safeSetState(() => _model.dropDownValue = val),
-      width: MediaQuery.sizeOf(context).width * 0.45,
-      height: MediaQuery.sizeOf(context).height * 0.02,
-      maxHeight: MediaQuery.sizeOf(context).height * 0.4,
-      textStyle: FlutterFlowTheme.of(context).bodySmall.override(
+      width: 200.0,
+      height: 40.0,
+      textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
             font: GoogleFonts.geologica(
-              fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-              fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+              fontWeight: FontWeight.normal,
+              fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
             ),
+            color: FlutterFlowTheme.of(context).primary,
             letterSpacing: 0.0,
-            fontWeight: FlutterFlowTheme.of(context).bodySmall.fontWeight,
-            fontStyle: FlutterFlowTheme.of(context).bodySmall.fontStyle,
+            fontWeight: FontWeight.normal,
+            fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
           ),
       hintText: 'Carregando...',
       icon: Icon(
         Icons.keyboard_arrow_down_rounded,
-        color: FlutterFlowTheme.of(context).secondaryText,
-        size: 18.0,
+        color: FlutterFlowTheme.of(context).primary,
+        size: 24.0,
       ),
       fillColor: FlutterFlowTheme.of(context).primaryBackground,
       elevation: 2.0,
-      borderColor: Colors.transparent,
+      borderColor: FlutterFlowTheme.of(context).primary,
       borderWidth: 0.0,
-      borderRadius: 0.0,
-      margin: EdgeInsetsDirectional.fromSTEB(
-          valueOrDefault<double>(
-            FFAppConstants.Gap,
-            0.0,
-          ),
-          0.0,
-          valueOrDefault<double>(
-            FFAppConstants.Gap,
-            0.0,
-          ),
-          0.0),
+      borderRadius: 8.0,
+      margin: EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 12.0, 0.0),
       hidesUnderline: true,
       isOverButton: false,
       isSearchable: false,

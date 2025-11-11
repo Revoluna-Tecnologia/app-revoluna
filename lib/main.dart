@@ -36,6 +36,8 @@ void main() async {
   // Start final custom actions code
   await actions.initializeDeeplinks();
   await actions.initializeFirebaseMessaging();
+  await actions.loadCleanHospitalTerms();
+  await actions.initializeSelectedDay();
   // End final custom actions code
 
   runApp(ChangeNotifierProvider(
@@ -172,7 +174,7 @@ class _NavBarPageState extends State<NavBarPage> {
     final tabs = {
       'HomePage': HomePageWidget(),
       'Explorar': ExplorarWidget(),
-      'Plantoes': PlantoesWidget(),
+      'Historico': HistoricoWidget(),
       'Escalas': EscalasWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
@@ -215,7 +217,7 @@ class _NavBarPageState extends State<NavBarPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              FFIcons.kcalendar,
+              FFIcons.kclock,
               size: 25.0,
             ),
             label: 'Explorar',
@@ -223,7 +225,7 @@ class _NavBarPageState extends State<NavBarPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              FFIcons.kusers,
+              FFIcons.kcalendar,
               size: 25.0,
             ),
             label: 'Explorar',

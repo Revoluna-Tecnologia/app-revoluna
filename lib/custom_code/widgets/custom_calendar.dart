@@ -1,7 +1,6 @@
 // Automatic FlutterFlow imports
 import '/backend/backend.dart';
 import '/backend/supabase/supabase.dart';
-import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'index.dart'; // Imports other custom widgets
@@ -11,6 +10,8 @@ import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
+import 'index.dart'; // Imports other custom widgets
+
 import 'package:table_calendar/table_calendar.dart';
 
 class CustomCalendar extends StatefulWidget {
@@ -18,18 +19,20 @@ class CustomCalendar extends StatefulWidget {
     super.key,
     this.width,
     this.height,
-    required this.events,
+    this.events,
     this.weekViewEnabled = false,
     this.openVagas,
     this.announcedVagas,
+    this.callback,
   });
 
   final double? width;
   final double? height;
-  final List<DateTime> events;
+  final List<DateTime>? events;
   final bool weekViewEnabled;
   final List<DateTime>? openVagas;
   final List<DateTime>? announcedVagas;
+  final Future Function()? callback;
 
   @override
   State<CustomCalendar> createState() => _CustomCalendarState();
@@ -73,10 +76,12 @@ class _CustomCalendarState extends State<CustomCalendar> {
   Set<DateTime> _getEventsForDay() {
     Set<DateTime> eventDates = {};
 
-    for (var date in widget.events) {
-      // Normalize to midnight for consistent comparison
-      final normalizedDate = DateTime(date.year, date.month, date.day);
-      eventDates.add(normalizedDate);
+    if (widget.events != null) {
+      for (var date in widget.events!) {
+        // Normalize to midnight for consistent comparison
+        final normalizedDate = DateTime(date.year, date.month, date.day);
+        eventDates.add(normalizedDate);
+      }
     }
 
     return eventDates;
@@ -162,6 +167,11 @@ class _CustomCalendarState extends State<CustomCalendar> {
 
           // Try to update page state if it exists
           _updatePageState(selectedDay);
+
+          // Call the callback if provided
+          if (widget.callback != null) {
+            widget.callback!();
+          }
         },
         onPageChanged: (focusedDay) {
           setState(() {
@@ -191,14 +201,14 @@ class _CustomCalendarState extends State<CustomCalendar> {
               );
             }
 
-            // Check for open vagas (EB0F67 - pink marker)
+            // Check for open vagas (9feb0f - green marker)
             if (openVagasDates.contains(normalizedDay)) {
               markers.add(
                 Container(
                   width: 6,
                   height: 6,
                   decoration: const BoxDecoration(
-                    color: Color(0xFFEB0F67),
+                    color: Color(0xFF9feb0f),
                     shape: BoxShape.circle,
                   ),
                 ),

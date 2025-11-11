@@ -1,28 +1,27 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/components/header/header_widget.dart';
-import '/components/loading/banner_loading/banner_loading_widget.dart';
-import '/components/loading/header_loading/header_loading_widget.dart';
-import '/components/loading/lista_home_loading/lista_home_loading_widget.dart';
-import '/components/loading/pages/home_loading/home_loading_widget.dart';
-import '/components/vagas/card_vagas_slim/card_vagas_slim_widget.dart';
+import '/components/vagas/card_vagas/card_vagas_widget.dart';
+import '/components/vagas/dropdown_loading/dropdown_loading_widget.dart';
 import '/components/vagas/empty_list/empty_list_widget.dart';
+import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/form_field_controller.dart';
 import '/pages/other/vaga_bottom_sheet/vaga_bottom_sheet_widget.dart';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/gestures.dart';
+import 'dart:async';
+import 'package:sticky_headers/sticky_headers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'home_page_model.dart';
@@ -62,6 +61,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       await actions.unreadNotifications();
       logFirebaseEvent('HomePage_custom_action');
       await actions.markAppAsLoaded();
+      logFirebaseEvent('HomePage_update_app_state');
+      FFAppState().selectedDay = functions.currentDate();
+      safeSetState(() {});
+      logFirebaseEvent('HomePage_refresh_database_request');
+      safeSetState(() {
+        FFAppState().clearVagasAbertasCache();
+        _model.requestCompleted3 = false;
+      });
+      await _model.waitForRequestCompleted3();
     });
 
     getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0), cached: true)
@@ -111,6 +119,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
     if (currentUserLocationValue == null) {
       return Container(
         color: FlutterFlowTheme.of(context).primaryBackground,
@@ -128,1429 +137,1820 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       );
     }
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
-      child: PopScope(
-        canPop: false,
-        child: Scaffold(
-          key: scaffoldKey,
-          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          endDrawer: Container(
-            width: MediaQuery.sizeOf(context).width * 0.8,
-            child: Drawer(
-              child: wrapWithModel(
-                model: _model.drawerMenuModel,
-                updateCallback: () => safeSetState(() {}),
-                child: DrawerMenuWidget(),
-              ),
-            ),
-          ),
-          body: SafeArea(
-            top: true,
-            child: FutureBuilder<List<VwVagasCandidaturasRow>>(
-              future: FFAppState().vagasCandidaturas(
-                requestFn: () => VwVagasCandidaturasTable().queryRows(
-                  queryFn: (q) => q,
+    return FutureBuilder<List<VwVagasCandidaturasRow>>(
+      future: FFAppState()
+          .vagasAbertas(
+        requestFn: () => VwVagasCandidaturasTable().queryRows(
+          queryFn: (q) => q
+              .eqOrNull(
+                'vagas_status',
+                'aberta',
+              )
+              .not(
+                'hospital_lat',
+                'is',
+                null,
+              )
+              .not(
+                'hospital_log',
+                'is',
+                null,
+              )
+              .order('vagas_horainicio', ascending: true),
+        ),
+      )
+          .then((result) {
+        _model.requestCompleted3 = true;
+        return result;
+      }),
+      builder: (context, snapshot) {
+        // Customize what your widget looks like when it's loading.
+        if (!snapshot.hasData) {
+          return Scaffold(
+            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+            body: Center(
+              child: SizedBox(
+                width: 50.0,
+                height: 50.0,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    FlutterFlowTheme.of(context).primary,
+                  ),
                 ),
               ),
-              builder: (context, snapshot) {
-                // Customize what your widget looks like when it's loading.
-                if (!snapshot.hasData) {
-                  return HomeLoadingWidget();
-                }
-                List<VwVagasCandidaturasRow>
-                    containerVwVagasCandidaturasRowList = snapshot.data!;
+            ),
+          );
+        }
+        List<VwVagasCandidaturasRow> homePageVwVagasCandidaturasRowList =
+            snapshot.data!;
 
-                return Container(
-                  decoration: BoxDecoration(),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            valueOrDefault<double>(
-                              FFAppConstants.doubleGap,
-                              0.0,
-                            ),
-                            valueOrDefault<double>(
-                              FFAppConstants.doubleGap,
-                              0.0,
-                            ),
-                            valueOrDefault<double>(
-                              FFAppConstants.doubleGap,
-                              0.0,
-                            ),
-                            0.0),
-                        child: FutureBuilder<List<EstadosBrasilRow>>(
-                          future: FFAppState().estados(
-                            requestFn: () => EstadosBrasilTable().queryRows(
-                              queryFn: (q) => q,
-                            ),
-                          ),
-                          builder: (context, snapshot) {
-                            // Customize what your widget looks like when it's loading.
-                            if (!snapshot.hasData) {
-                              return HeaderLoadingWidget();
-                            }
-                            List<EstadosBrasilRow> headerEstadosBrasilRowList =
-                                snapshot.data!;
-
-                            return wrapWithModel(
-                              model: _model.headerModel,
-                              updateCallback: () => safeSetState(() {}),
-                              child: HeaderWidget(
-                                estados: headerEstadosBrasilRowList,
+        return GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          child: PopScope(
+            canPop: false,
+            child: Scaffold(
+              key: scaffoldKey,
+              backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+              floatingActionButton: Builder(
+                builder: (context) => Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 40.0),
+                  child: FloatingActionButton(
+                    onPressed: () async {
+                      logFirebaseEvent(
+                          'HOME_FloatingActionButton_8q8qcsly_ON_TA');
+                      logFirebaseEvent('FloatingActionButton_custom_action');
+                      _model.whatsappHome = await actions.launchWhatsAppChat(
+                        'Olá, visitei a Revoluna e fiquei com uma dúvida',
+                        FFAppState().concierge,
+                      );
+                      if (!_model.whatsappHome!) {
+                        logFirebaseEvent('FloatingActionButton_alert_dialog');
+                        await showDialog(
+                          context: context,
+                          builder: (dialogContext) {
+                            return Dialog(
+                              elevation: 0,
+                              insetPadding: EdgeInsets.zero,
+                              backgroundColor: Colors.transparent,
+                              alignment: AlignmentDirectional(0.0, 0.0)
+                                  .resolve(Directionality.of(context)),
+                              child: GestureDetector(
+                                onTap: () {
+                                  FocusScope.of(dialogContext).unfocus();
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                },
+                                child: NegativeInformativeBoxWidget(
+                                  title: 'Necessário WhatsApp',
+                                  body:
+                                      'Para prosseguir é preciso ter o aplicativo WhatsaApp instalado no seu  aparelho',
+                                ),
                               ),
                             );
                           },
+                        );
+                      }
+
+                      safeSetState(() {});
+                    },
+                    backgroundColor: Colors.transparent,
+                    elevation: 0.0,
+                    child: Stack(
+                      alignment: AlignmentDirectional(0.0, 0.0),
+                      children: [
+                        Container(
+                          width: 100.0,
+                          height: 100.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context).primary,
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(30.0),
+                              bottomRight: Radius.circular(30.0),
+                              topLeft: Radius.circular(30.0),
+                              topRight: Radius.circular(30.0),
+                            ),
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    valueOrDefault<double>(
-                                      FFAppConstants.Gap,
-                                      0.0,
-                                    ),
-                                    0.0,
-                                    valueOrDefault<double>(
-                                      FFAppConstants.Gap,
-                                      0.0,
-                                    ),
-                                    0.0),
-                                child: FutureBuilder<List<BannerMKTRow>>(
-                                  future: _model.banner(
-                                    requestFn: () => BannerMKTTable().queryRows(
-                                      queryFn: (q) => q,
-                                    ),
-                                  ),
-                                  builder: (context, snapshot) {
-                                    // Customize what your widget looks like when it's loading.
-                                    if (!snapshot.hasData) {
-                                      return BannerLoadingWidget();
-                                    }
-                                    List<BannerMKTRow> bannerBannerMKTRowList =
-                                        snapshot.data!;
+                        FaIcon(
+                          FontAwesomeIcons.whatsapp,
+                          color: FlutterFlowTheme.of(context).info,
+                          size: 24.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              endDrawer: Container(
+                width: MediaQuery.sizeOf(context).width * 0.8,
+                child: Drawer(
+                  child: wrapWithModel(
+                    model: _model.drawerMenuModel,
+                    updateCallback: () => safeSetState(() {}),
+                    child: DrawerMenuWidget(),
+                  ),
+                ),
+              ),
+              body: SafeArea(
+                top: true,
+                child: FutureBuilder<List<VwVagasCandidaturasRow>>(
+                  future: FFAppState()
+                      .vagasMedico(
+                    requestFn: () => VwVagasCandidaturasTable().queryRows(
+                      queryFn: (q) => q
+                          .eqOrNull(
+                            'medico_id',
+                            currentUserUid,
+                          )
+                          .not(
+                            'hospital_lat',
+                            'is',
+                            null,
+                          )
+                          .not(
+                            'hospital_log',
+                            'is',
+                            null,
+                          )
+                          .order('vagas_horainicio', ascending: true),
+                    ),
+                  )
+                      .then((result) {
+                    _model.requestCompleted1 = true;
+                    return result;
+                  }),
+                  builder: (context, snapshot) {
+                    // Customize what your widget looks like when it's loading.
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: SizedBox(
+                          width: 50.0,
+                          height: 50.0,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              FlutterFlowTheme.of(context).primary,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    List<VwVagasCandidaturasRow>
+                        containerVwVagasCandidaturasRowList = snapshot.data!;
 
-                                    return ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                          valueOrDefault<double>(
-                                        FFAppConstants.borderM,
+                    return Container(
+                      decoration: BoxDecoration(),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                valueOrDefault<double>(
+                                  FFAppConstants.doubleGap,
+                                  0.0,
+                                ),
+                                0.0,
+                                valueOrDefault<double>(
+                                  FFAppConstants.doubleGap,
+                                  0.0,
+                                ),
+                                0.0),
+                            child: wrapWithModel(
+                              model: _model.headerModel,
+                              updateCallback: () => safeSetState(() {}),
+                              child: HeaderWidget(),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      valueOrDefault<double>(
+                                        FFAppConstants.Gap,
                                         0.0,
-                                      )),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                              valueOrDefault<double>(
-                                            FFAppConstants.borderM,
-                                            0.0,
-                                          )),
-                                        ),
-                                        child: Builder(
-                                          builder: (context) {
-                                            final bannerVar =
-                                                bannerBannerMKTRowList.toList();
-
-                                            return Container(
-                                              width: double.infinity,
-                                              height: MediaQuery.sizeOf(context)
-                                                      .height *
-                                                  0.2,
-                                              child: CarouselSlider.builder(
-                                                itemCount: bannerVar.length,
-                                                itemBuilder: (context,
-                                                    bannerVarIndex, _) {
-                                                  final bannerVarItem =
-                                                      bannerVar[bannerVarIndex];
-                                                  return Stack(
-                                                    children: [
-                                                      CachedNetworkImage(
-                                                        fadeInDuration:
-                                                            Duration(
-                                                                milliseconds:
-                                                                    500),
-                                                        fadeOutDuration:
-                                                            Duration(
-                                                                milliseconds:
-                                                                    500),
-                                                        imageUrl: bannerVarItem
-                                                            .imgpath!,
-                                                        width: double.infinity,
-                                                        height: double.infinity,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                      FFButtonWidget(
-                                                        onPressed: () async {
-                                                          logFirebaseEvent(
-                                                              'HOME_PAGE_PAGE__BTN_ON_TAP');
-                                                          logFirebaseEvent(
-                                                              'Button_launch_u_r_l');
-                                                          await launchURL(
-                                                              bannerVarItem
-                                                                  .url!);
-                                                        },
-                                                        text: '',
-                                                        options:
-                                                            FFButtonOptions(
-                                                          width:
-                                                              double.infinity,
-                                                          height:
-                                                              double.infinity,
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      16.0,
-                                                                      0.0,
-                                                                      16.0,
-                                                                      0.0),
-                                                          iconPadding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          color:
-                                                              Color(0x00A369ED),
-                                                          textStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .override(
-                                                                    font: GoogleFonts
-                                                                        .geologica(
-                                                                      fontWeight: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .titleSmall
-                                                                          .fontWeight,
-                                                                      fontStyle: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .titleSmall
-                                                                          .fontStyle,
-                                                                    ),
-                                                                    color: Colors
-                                                                        .white,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                    fontWeight: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .titleSmall
-                                                                        .fontWeight,
-                                                                    fontStyle: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .titleSmall
-                                                                        .fontStyle,
-                                                                  ),
-                                                          elevation: 0.0,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      0.0),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                                carouselController: _model
-                                                        .carouselController ??=
-                                                    CarouselSliderController(),
-                                                options: CarouselOptions(
-                                                  initialPage: max(
-                                                      0,
-                                                      min(
-                                                          1,
-                                                          bannerVar.length -
-                                                              1)),
-                                                  viewportFraction: 1.0,
-                                                  disableCenter: true,
-                                                  enlargeCenterPage: false,
-                                                  enlargeFactor: 0.0,
-                                                  enableInfiniteScroll: true,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  autoPlay: true,
-                                                  autoPlayAnimationDuration:
-                                                      Duration(
-                                                          milliseconds: 500),
-                                                  autoPlayInterval: Duration(
-                                                      milliseconds:
-                                                          (500 + 10000)),
-                                                  autoPlayCurve: Curves.linear,
-                                                  pauseAutoPlayInFiniteScroll:
-                                                      true,
-                                                  onPageChanged: (index, _) =>
-                                                      _model.carouselCurrentIndex =
-                                                          index,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ),
                                       ),
-                                    );
+                                      0.0,
+                                      valueOrDefault<double>(
+                                        FFAppConstants.Gap,
+                                        0.0,
+                                      ),
+                                      0.0),
+                                  child: custom_widgets.CustomCalendar(
+                                    width:
+                                        MediaQuery.sizeOf(context).width * 1.0,
+                                    height:
+                                        MediaQuery.sizeOf(context).height * 0.1,
+                                    events: containerVwVagasCandidaturasRowList
+                                        .where((e) =>
+                                            e.candidaturaStatus == 'APROVADO')
+                                        .toList()
+                                        .map((e) => e.vagasData)
+                                        .withoutNulls
+                                        .toList()
+                                        .unique((e) => e)
+                                        .sortedList(
+                                            keyOf: (e) => e, desc: false),
+                                    weekViewEnabled: _model.calendarView,
+                                    openVagas:
+                                        homePageVwVagasCandidaturasRowList
+                                            .where((e) =>
+                                                (e.vagasStatus == 'aberta') &&
+                                                (e.hospitalEstado ==
+                                                    FFAppState().estadoUF))
+                                            .toList()
+                                            .map((e) => e.vagasData)
+                                            .withoutNulls
+                                            .toList()
+                                            .unique((e) => e)
+                                            .sortedList(
+                                                keyOf: (e) => e, desc: false),
+                                    callback: () async {
+                                      logFirebaseEvent(
+                                          'HOME_Container_byk7bs38_CALLBACK');
+                                      logFirebaseEvent(
+                                          'CustomCalendar_refresh_database_request');
+                                      safeSetState(() {
+                                        FFAppState().clearEstadosCache();
+                                        _model.requestCompleted2 = false;
+                                      });
+                                      await _model.waitForRequestCompleted2();
+                                    },
+                                  ),
+                                ),
+                                ToggleIcon(
+                                  onPressed: () async {
+                                    safeSetState(() => _model.calendarView =
+                                        !_model.calendarView);
                                   },
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    valueOrDefault<double>(
-                                      FFAppConstants.Gap,
-                                      0.0,
-                                    ),
-                                    0.0,
-                                    valueOrDefault<double>(
-                                      FFAppConstants.Gap,
-                                      0.0,
-                                    ),
-                                    0.0),
-                                child: Container(
-                                  width: MediaQuery.sizeOf(context).width * 1.0,
-                                  height:
-                                      MediaQuery.sizeOf(context).height * 0.155,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryBackground,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        blurRadius: 5.0,
-                                        color: Color(0x246814E5),
-                                        offset: Offset(
-                                          0.0,
-                                          2.0,
-                                        ),
-                                      )
-                                    ],
-                                    borderRadius: BorderRadius.circular(
-                                        valueOrDefault<double>(
-                                      FFAppConstants.borderM,
-                                      0.0,
-                                    )),
+                                  value: _model.calendarView,
+                                  onIcon: Icon(
+                                    FFIcons.kchevronDown,
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    size: 24.0,
                                   ),
-                                  child: Stack(
-                                    children: [
-                                      Align(
-                                        alignment:
-                                            AlignmentDirectional(0.0, -0.3),
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  valueOrDefault<double>(
-                                                    FFAppConstants.doubleGap,
-                                                    0.0,
-                                                  ),
-                                                  valueOrDefault<double>(
-                                                    FFAppConstants.doubleGap,
-                                                    0.0,
-                                                  ),
-                                                  valueOrDefault<double>(
-                                                    FFAppConstants.doubleGap,
-                                                    0.0,
-                                                  ),
-                                                  valueOrDefault<double>(
-                                                    FFAppConstants.Gap,
-                                                    0.0,
-                                                  )),
+                                  offIcon: Icon(
+                                    FFIcons.kchevronUp,
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    size: 24.0,
+                                  ),
+                                ),
+                              ].addToEnd(SizedBox(height: FFAppConstants.Gap)),
+                            ),
+                          ),
+                          Expanded(
+                            child: RefreshIndicator(
+                              color: FlutterFlowTheme.of(context).primary,
+                              onRefresh: () async {
+                                logFirebaseEvent(
+                                    'HOME_Column_ejocz0i4_ON_PULL_TO_REFRESH');
+                                logFirebaseEvent(
+                                    'Column_refresh_database_request');
+                                safeSetState(() {
+                                  FFAppState().clearVagasAbertasCache();
+                                  _model.requestCompleted3 = false;
+                                });
+                                await _model.waitForRequestCompleted3();
+                                logFirebaseEvent(
+                                    'Column_refresh_database_request');
+                                safeSetState(() {
+                                  FFAppState().clearVagasMedicoCache();
+                                  _model.requestCompleted1 = false;
+                                });
+                                await _model.waitForRequestCompleted1();
+                                logFirebaseEvent(
+                                    'Column_refresh_database_request');
+                                safeSetState(() {
+                                  FFAppState().clearEstadosCache();
+                                  _model.requestCompleted2 = false;
+                                });
+                                await _model.waitForRequestCompleted2();
+                              },
+                              child: SingleChildScrollView(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (!(containerVwVagasCandidaturasRowList
+                                            .where((e) =>
+                                                (e.vagasData ==
+                                                    FFAppState().selectedDay) &&
+                                                (e.candidaturaStatus ==
+                                                    'APROVADO'))
+                                            .toList()
+                                            .isNotEmpty) &&
+                                        !(homePageVwVagasCandidaturasRowList
+                                            .where((e) =>
+                                                e.vagasData ==
+                                                FFAppState().selectedDay)
+                                            .toList()
+                                            .isNotEmpty))
+                                      wrapWithModel(
+                                        model: _model.emptyListModel,
+                                        updateCallback: () =>
+                                            safeSetState(() {}),
+                                        child: EmptyListWidget(),
+                                      ),
+                                    if (containerVwVagasCandidaturasRowList
+                                        .where((e) =>
+                                            (e.vagasData ==
+                                                FFAppState().selectedDay) &&
+                                            (e.candidaturaStatus == 'APROVADO'))
+                                        .toList()
+                                        .isNotEmpty)
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0,
+                                            0.0,
+                                            0.0,
+                                            valueOrDefault<double>(
+                                              FFAppConstants.Gap,
+                                              0.0,
+                                            )),
+                                        child: Container(
+                                          decoration: BoxDecoration(),
                                           child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.max,
                                             children: [
-                                              Align(
-                                                alignment: AlignmentDirectional(
-                                                    -1.0, 0.0),
-                                                child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          valueOrDefault<
-                                                              double>(
-                                                            FFAppConstants.Gap,
-                                                            0.0,
-                                                          ),
-                                                          valueOrDefault<
-                                                              double>(
-                                                            FFAppConstants
-                                                                .doubleGap,
-                                                            0.0,
-                                                          ),
-                                                          0.0,
-                                                          0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Container(
-                                                        width: valueOrDefault<
-                                                            double>(
-                                                          MediaQuery.sizeOf(
-                                                                      context)
-                                                                  .height *
-                                                              0.07,
-                                                          60.0,
-                                                        ),
-                                                        height: valueOrDefault<
-                                                            double>(
-                                                          MediaQuery.sizeOf(
-                                                                      context)
-                                                                  .height *
-                                                              0.07,
-                                                          60.0,
-                                                        ),
-                                                        child: custom_widgets
-                                                            .CustomCircularProgress(
-                                                          width: valueOrDefault<
-                                                              double>(
-                                                            MediaQuery.sizeOf(
-                                                                        context)
-                                                                    .height *
-                                                                0.07,
-                                                            60.0,
-                                                          ),
-                                                          height:
-                                                              valueOrDefault<
-                                                                  double>(
-                                                            MediaQuery.sizeOf(
-                                                                        context)
-                                                                    .height *
-                                                                0.07,
-                                                            60.0,
-                                                          ),
-                                                          progressValue:
-                                                              valueOrDefault<
-                                                                  double>(
-                                                            () {
-                                                              if (formatNumber(
-                                                                    functions.sumList(containerVwVagasCandidaturasRowList
-                                                                        .where((e) =>
-                                                                            (e.medicoId != null && e.medicoId != '') &&
-                                                                            (e.candidaturaStatus ==
-                                                                                'APROVADO'))
-                                                                        .toList()
-                                                                        .map((e) =>
-                                                                            e.vagasValor)
-                                                                        .withoutNulls
-                                                                        .toList()),
-                                                                    formatType:
-                                                                        FormatType
-                                                                            .decimal,
-                                                                    decimalType:
-                                                                        DecimalType
-                                                                            .commaDecimal,
-                                                                    currency:
-                                                                        'R\$ ',
-                                                                  ) ==
-                                                                  '0') {
-                                                                return 0.0;
-                                                              } else if (_model
-                                                                  .visibleValues) {
-                                                                return ((functions.sumList(containerVwVagasCandidaturasRowList
-                                                                            .where((e) =>
-                                                                                e.medicoId ==
-                                                                                currentUserUid)
-                                                                            .toList()
-                                                                            .map((e) => e
-                                                                                .pagamentoValor)
-                                                                            .withoutNulls
-                                                                            .toList()) /
-                                                                        functions.sumList(containerVwVagasCandidaturasRowList
-                                                                            .where((e) =>
-                                                                                (e.medicoId == currentUserUid) &&
-                                                                                (e.candidaturaStatus == 'APROVADO'))
-                                                                            .toList()
-                                                                            .map((e) => e.vagasValor)
-                                                                            .withoutNulls
-                                                                            .toList())) *
-                                                                    100);
-                                                              } else {
-                                                                return 0.0;
-                                                              }
-                                                            }(),
-                                                            0.0,
-                                                          ),
-                                                          size: valueOrDefault<
-                                                              double>(
-                                                            MediaQuery.sizeOf(
-                                                                        context)
-                                                                    .height *
-                                                                0.1,
-                                                            85.0,
-                                                          ),
-                                                          progressColor:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .primary,
-                                                          backgroundColor:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .secondary,
-                                                          strokeWidth: 8.0,
-                                                          showPercentage: _model
-                                                              .visibleValues,
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    0.0,
-                                                                    valueOrDefault<
-                                                                        double>(
-                                                                      FFAppConstants
-                                                                          .doubleGap,
-                                                                      0.0,
-                                                                    ),
-                                                                    0.0),
-                                                        child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Container(
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: _model
-                                                                        .visibleValues
-                                                                    ? FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primaryBackground
-                                                                    : FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryBackground,
-                                                              ),
-                                                              child: Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                children: [
-                                                                  Container(
-                                                                    width: 10.0,
-                                                                    height:
-                                                                        10.0,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      color: valueOrDefault<
-                                                                          Color>(
-                                                                        _model.visibleValues
-                                                                            ? FlutterFlowTheme.of(context).primary
-                                                                            : FlutterFlowTheme.of(context).secondaryBackground,
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .primary,
-                                                                      ),
-                                                                      shape: BoxShape
-                                                                          .circle,
-                                                                    ),
-                                                                  ),
-                                                                  AutoSizeText(
-                                                                    formatNumber(
-                                                                      functions.sumList(containerVwVagasCandidaturasRowList
-                                                                          .where((e) =>
-                                                                              e.medicoId ==
-                                                                              currentUserUid)
-                                                                          .toList()
-                                                                          .map((e) =>
-                                                                              e.pagamentoValor)
-                                                                          .withoutNulls
-                                                                          .toList()),
-                                                                      formatType:
-                                                                          FormatType
-                                                                              .decimal,
-                                                                      decimalType:
-                                                                          DecimalType
-                                                                              .commaDecimal,
-                                                                      currency:
-                                                                          'R\$ ',
-                                                                    ),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .displayMedium
-                                                                        .override(
-                                                                          font:
-                                                                              GoogleFonts.geologica(
-                                                                            fontWeight:
-                                                                                FlutterFlowTheme.of(context).displayMedium.fontWeight,
-                                                                            fontStyle:
-                                                                                FlutterFlowTheme.of(context).displayMedium.fontStyle,
-                                                                          ),
-                                                                          color: _model.visibleValues
-                                                                              ? FlutterFlowTheme.of(context).primaryText
-                                                                              : FlutterFlowTheme.of(context).secondaryBackground,
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                          fontWeight: FlutterFlowTheme.of(context)
-                                                                              .displayMedium
-                                                                              .fontWeight,
-                                                                          fontStyle: FlutterFlowTheme.of(context)
-                                                                              .displayMedium
-                                                                              .fontStyle,
-                                                                        ),
-                                                                  ),
-                                                                ].divide(SizedBox(
-                                                                    width: FFAppConstants
-                                                                        .halfGap)),
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: _model
-                                                                        .visibleValues
-                                                                    ? FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primaryBackground
-                                                                    : FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryBackground,
-                                                              ),
-                                                              child: Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Container(
-                                                                    width: 10.0,
-                                                                    height:
-                                                                        10.0,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      color: valueOrDefault<
-                                                                          Color>(
-                                                                        _model.visibleValues
-                                                                            ? FlutterFlowTheme.of(context).secondary
-                                                                            : FlutterFlowTheme.of(context).secondaryBackground,
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .secondary,
-                                                                      ),
-                                                                      shape: BoxShape
-                                                                          .circle,
-                                                                    ),
-                                                                  ),
-                                                                  AutoSizeText(
-                                                                    formatNumber(
-                                                                      functions.sumList(containerVwVagasCandidaturasRowList
-                                                                          .where((e) =>
-                                                                              (e.medicoId == currentUserUid) &&
-                                                                              (e.candidaturaStatus ==
-                                                                                  'APROVADO'))
-                                                                          .toList()
-                                                                          .map((e) =>
-                                                                              e.vagasValor)
-                                                                          .withoutNulls
-                                                                          .toList()),
-                                                                      formatType:
-                                                                          FormatType
-                                                                              .decimal,
-                                                                      decimalType:
-                                                                          DecimalType
-                                                                              .commaDecimal,
-                                                                      currency:
-                                                                          'R\$ ',
-                                                                    ),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .titleMedium
-                                                                        .override(
-                                                                          font:
-                                                                              GoogleFonts.geologica(
-                                                                            fontWeight:
-                                                                                FlutterFlowTheme.of(context).titleMedium.fontWeight,
-                                                                            fontStyle:
-                                                                                FlutterFlowTheme.of(context).titleMedium.fontStyle,
-                                                                          ),
-                                                                          color: _model.visibleValues
-                                                                              ? FlutterFlowTheme.of(context).primaryText
-                                                                              : FlutterFlowTheme.of(context).secondaryBackground,
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                          fontWeight: FlutterFlowTheme.of(context)
-                                                                              .titleMedium
-                                                                              .fontWeight,
-                                                                          fontStyle: FlutterFlowTheme.of(context)
-                                                                              .titleMedium
-                                                                              .fontStyle,
-                                                                        ),
-                                                                  ),
-                                                                  Text(
-                                                                    'a receber',
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .labelMedium
-                                                                        .override(
-                                                                          font:
-                                                                              GoogleFonts.geologica(
-                                                                            fontWeight:
-                                                                                FlutterFlowTheme.of(context).labelMedium.fontWeight,
-                                                                            fontStyle:
-                                                                                FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                                                          ),
-                                                                          color: _model.visibleValues
-                                                                              ? FlutterFlowTheme.of(context).primaryText
-                                                                              : FlutterFlowTheme.of(context).secondaryBackground,
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                          fontWeight: FlutterFlowTheme.of(context)
-                                                                              .labelMedium
-                                                                              .fontWeight,
-                                                                          fontStyle: FlutterFlowTheme.of(context)
-                                                                              .labelMedium
-                                                                              .fontStyle,
-                                                                        ),
-                                                                  ),
-                                                                ].divide(SizedBox(
-                                                                    width: FFAppConstants
-                                                                        .halfGap)),
-                                                              ),
-                                                            ),
-                                                          ].divide(SizedBox(
-                                                              height:
-                                                                  FFAppConstants
-                                                                      .halfGap)),
-                                                        ),
-                                                      ),
-                                                    ].divide(SizedBox(
-                                                        width: FFAppConstants
-                                                            .doubleGap)),
-                                                  ),
-                                                ),
-                                              ),
-                                            ].divide(SizedBox(
-                                                height: FFAppConstants.Gap)),
-                                          ),
-                                        ),
-                                      ),
-                                      Align(
-                                        alignment:
-                                            AlignmentDirectional(1.0, 1.0),
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0.0,
-                                                  0.0,
-                                                  valueOrDefault<double>(
-                                                    FFAppConstants.halfGap,
-                                                    0.0,
-                                                  ),
-                                                  0.0),
-                                          child: ToggleIcon(
-                                            onPressed: () async {
-                                              safeSetState(() =>
-                                                  _model.visibleValues =
-                                                      !_model.visibleValues);
-                                            },
-                                            value: _model.visibleValues,
-                                            onIcon: Icon(
-                                              FFIcons.keye,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .tertiary,
-                                              size: 15.0,
-                                            ),
-                                            offIcon: Icon(
-                                              FFIcons.keyeOff,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .accent3,
-                                              size: 15.0,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Align(
-                                        alignment:
-                                            AlignmentDirectional(-0.9, -0.9),
-                                        child: Text(
-                                          'Meu saldo',
-                                          style: FlutterFlowTheme.of(context)
-                                              .titleMedium
-                                              .override(
-                                                font: GoogleFonts.geologica(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleMedium
-                                                          .fontStyle,
-                                                ),
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    valueOrDefault<double>(
-                                      FFAppConstants.doubleGap,
-                                      0.0,
-                                    ),
-                                    0.0,
-                                    valueOrDefault<double>(
-                                      FFAppConstants.doubleGap,
-                                      0.0,
-                                    ),
-                                    valueOrDefault<double>(
-                                      FFAppConstants.Gap,
-                                      0.0,
-                                    )),
-                                child: Container(
-                                  decoration: BoxDecoration(),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Builder(
-                                        builder: (context) {
-                                          if (containerVwVagasCandidaturasRowList
-                                                  .where((e) =>
-                                                      functions.inThisWeek(
-                                                          e.vagasData!) &&
-                                                      (e.candidaturaStatus ==
-                                                          'APROVADO') &&
-                                                      (e.medicoId ==
-                                                          currentUserUid))
-                                                  .toList()
-                                                  .length >
-                                              0) {
-                                            return RichText(
-                                              textScaler: MediaQuery.of(context)
-                                                  .textScaler,
-                                              text: TextSpan(
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
                                                 children: [
-                                                  TextSpan(
-                                                    text: 'Você tem ',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .geologica(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: formatNumber(
-                                                      containerVwVagasCandidaturasRowList
-                                                          .where((e) =>
-                                                              (e.medicoId ==
-                                                                  currentUserUid) &&
-                                                              (e.candidaturaStatus ==
-                                                                  'APROVADO') &&
-                                                              functions.inThisWeek(e
-                                                                  .vagasData!) &&
-                                                              (e.vagasStatus !=
-                                                                  'cancelada'))
-                                                          .toList()
-                                                          .length,
-                                                      formatType:
-                                                          FormatType.custom,
-                                                      format: '0',
-                                                      locale: '',
-                                                    ),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .titleMedium
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .geologica(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primary,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: ' ',
-                                                    style: TextStyle(),
-                                                  ),
-                                                  TextSpan(
-                                                    text: formatNumber(
-                                                              containerVwVagasCandidaturasRowList
-                                                                  .where((e) =>
-                                                                      (e.candidaturaStatus ==
-                                                                          'APROVADO') &&
-                                                                      functions
-                                                                          .inThisWeek(
-                                                                              e.vagasData!))
-                                                                  .toList()
-                                                                  .length,
-                                                              formatType:
-                                                                  FormatType
-                                                                      .custom,
-                                                              format: '0',
-                                                              locale: '',
-                                                            ) ==
-                                                            '1'
-                                                        ? 'plantão'
-                                                        : 'plantões',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .titleMedium
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .geologica(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primary,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: ' essa semana',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .geologica(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                  )
-                                                ],
-                                                style: FlutterFlowTheme.of(
-                                                        context)
-                                                    .bodyMedium
-                                                    .override(
-                                                      font:
-                                                          GoogleFonts.geologica(
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .fontStyle,
-                                                      ),
-                                                      letterSpacing: 0.0,
-                                                      fontWeight:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .fontWeight,
-                                                      fontStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .fontStyle,
-                                                    ),
-                                              ),
-                                            );
-                                          } else {
-                                            return Text(
-                                              'Você não tem plantões essa semana.\nAproveite para explorar novas oportunidades!',
-                                              textAlign: TextAlign.center,
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .titleSmall
-                                                  .override(
-                                                    font: GoogleFonts.geologica(
-                                                      fontWeight:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .titleSmall
-                                                              .fontWeight,
-                                                      fontStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .titleSmall
-                                                              .fontStyle,
-                                                    ),
+                                                  FaIcon(
+                                                    FontAwesomeIcons
+                                                        .solidCircle,
                                                     color: FlutterFlowTheme.of(
                                                             context)
                                                         .primary,
-                                                    letterSpacing: 0.0,
-                                                    fontWeight:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .titleSmall
-                                                            .fontWeight,
-                                                    fontStyle:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .titleSmall
-                                                            .fontStyle,
+                                                    size: 14.0,
                                                   ),
-                                            );
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              StreamBuilder<List<CleanHospitalRow>>(
-                                stream: FFAppState().cleanHospitalTerms(
-                                  requestFn: () => _model
-                                          .containerSupabaseStream ??=
-                                      SupaFlow.client
-                                          .from("clean_hospital")
-                                          .stream(primaryKey: ['id']).map(
-                                              (list) => list
-                                                  .map((item) =>
-                                                      CleanHospitalRow(item))
-                                                  .toList()),
-                                ),
-                                builder: (context, snapshot) {
-                                  // Customize what your widget looks like when it's loading.
-                                  if (!snapshot.hasData) {
-                                    return ListaHomeLoadingWidget();
-                                  }
-                                  List<CleanHospitalRow>
-                                      containerCleanHospitalRowList =
-                                      snapshot.data!;
-
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          blurRadius: 5.0,
-                                          color: Color(0x246814E5),
-                                          offset: Offset(
-                                            0.0,
-                                            -5.0,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    child: Builder(
-                                      builder: (context) {
-                                        final list = functions
-                                            .sortByPayment(
-                                                containerVwVagasCandidaturasRowList
-                                                    .sortedList(
-                                                        keyOf: (e) =>
-                                                            e.vagasCreatedate!,
-                                                        desc: true)
-                                                    .where((e) =>
-                                                        (e.vagasData! >=
-                                                            functions
-                                                                .currentDate()!) &&
-                                                        (e.vagasStatus ==
-                                                            'aberta') &&
-                                                        (e.hospitalEstado ==
-                                                            _model.headerModel
-                                                                .dropDownValue))
-                                                    .toList(),
-                                                true)
-                                            .toList()
-                                            .take(20)
-                                            .toList();
-                                        if (list.isEmpty) {
-                                          return EmptyListWidget(
-                                            text: 'Sem vagas para mostrar',
-                                          );
-                                        }
-
-                                        return ListView.separated(
-                                          padding: EdgeInsets.zero,
-                                          primary: false,
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.vertical,
-                                          itemCount: list.length,
-                                          separatorBuilder: (_, __) =>
-                                              SizedBox(height: 2.0),
-                                          itemBuilder: (context, listIndex) {
-                                            final listItem = list[listIndex];
-                                            return Stack(
-                                              children: [
-                                                wrapWithModel(
-                                                  model: _model
-                                                      .cardVagasSlimModels
-                                                      .getModel(
-                                                    listItem.vagasId!,
-                                                    listIndex,
-                                                  ),
-                                                  updateCallback: () =>
-                                                      safeSetState(() {}),
-                                                  child: CardVagasSlimWidget(
-                                                    key: Key(
-                                                      'Keytx1_${listItem.vagasId!}',
-                                                    ),
-                                                    specialty: listItem
-                                                        .especialidadeNome,
-                                                    value: formatNumber(
-                                                      listItem.vagasValor,
-                                                      formatType:
-                                                          FormatType.decimal,
-                                                      decimalType: DecimalType
-                                                          .commaDecimal,
-                                                      currency: 'R\$',
-                                                    ),
-                                                    date: dateTimeFormat(
-                                                      "dd/MM",
-                                                      listItem.vagasData,
-                                                      locale:
-                                                          FFLocalizations.of(
-                                                                  context)
-                                                              .languageCode,
-                                                    ),
-                                                    datecount:
-                                                        'há ${dateTimeFormat(
-                                                      "relative",
-                                                      listItem.vagasCreatedate,
-                                                      locale: FFLocalizations
-                                                                  .of(context)
-                                                              .languageShortCode ??
-                                                          FFLocalizations.of(
-                                                                  context)
-                                                              .languageCode,
-                                                    )}',
-                                                    shift: listItem
-                                                        .vagasPeriodoNome,
-                                                    type:
-                                                        listItem.vagasTipoNome,
-                                                    hospital: functions
-                                                        .cleanHospitalName(
-                                                            listItem
-                                                                .hospitalNome!,
-                                                            containerCleanHospitalRowList
-                                                                .map((e) =>
-                                                                    e.terms)
-                                                                .withoutNulls
-                                                                .toList()),
-                                                    vaga: listItem.vagasId,
-                                                    avatarHospital:
-                                                        listItem.hospitalAvatar,
-                                                    showPay: false,
-                                                    sector: listItem.setorNome,
-                                                    distance:
-                                                        valueOrDefault<String>(
-                                                      functions.distanceCalc(
-                                                          listItem.hospitalLat!,
-                                                          listItem.hospitalLog!,
-                                                          currentUserLocationValue!),
-                                                      'Não encontrado',
-                                                    ),
-                                                    showSign: (int job,
-                                                            int payment) {
-                                                      return (payment - job) <=
-                                                          86400;
-                                                    }(
-                                                        listItem.vagasData!
-                                                            .secondsSinceEpoch,
-                                                        listItem
-                                                            .vagasDatapagamento!
-                                                            .secondsSinceEpoch),
-                                                  ),
-                                                ),
-                                                if (true)
-                                                  FFButtonWidget(
-                                                    onPressed: () async {
-                                                      logFirebaseEvent(
-                                                          'HOME_PAGE_PAGE__BTN_ON_TAP');
-                                                      if (_model
-                                                          .isBottomSheetLoading) {
-                                                        return;
-                                                      }
-
-                                                      logFirebaseEvent(
-                                                          'Button_update_page_state');
-                                                      _model.isBottomSheetLoading =
-                                                          true;
-                                                      safeSetState(() {});
-                                                      logFirebaseEvent(
-                                                          'Button_bottom_sheet');
-                                                      await showModalBottomSheet(
-                                                        isScrollControlled:
-                                                            true,
-                                                        useSafeArea: true,
-                                                        context: context,
-                                                        builder: (context) {
-                                                          return GestureDetector(
-                                                            onTap: () {
-                                                              FocusScope.of(
+                                                  Text(
+                                                    'Plantões aprovados',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .titleMedium
+                                                        .override(
+                                                          font: GoogleFonts
+                                                              .geologica(
+                                                            fontWeight:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleMedium
+                                                                    .fontWeight,
+                                                            fontStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleMedium
+                                                                    .fontStyle,
+                                                          ),
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
                                                                       context)
-                                                                  .unfocus();
-                                                              FocusManager
-                                                                  .instance
-                                                                  .primaryFocus
-                                                                  ?.unfocus();
-                                                            },
-                                                            child: Padding(
-                                                              padding: MediaQuery
-                                                                  .viewInsetsOf(
-                                                                      context),
+                                                                  .titleMedium
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleMedium
+                                                                  .fontStyle,
+                                                        ),
+                                                  ),
+                                                ]
+                                                    .divide(SizedBox(
+                                                        width:
+                                                            FFAppConstants.Gap))
+                                                    .addToStart(SizedBox(
+                                                        width: FFAppConstants
+                                                            .doubleGap))
+                                                    .addToEnd(SizedBox(
+                                                        width: FFAppConstants
+                                                            .doubleGap)),
+                                              ),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryBackground,
+                                                ),
+                                                child: Builder(
+                                                  builder: (context) {
+                                                    final homeApprovedList =
+                                                        containerVwVagasCandidaturasRowList
+                                                            .where((e) =>
+                                                                (e.vagasData ==
+                                                                    FFAppState()
+                                                                        .selectedDay) &&
+                                                                (e.candidaturaStatus ==
+                                                                    'APROVADO'))
+                                                            .toList();
+
+                                                    return ListView.separated(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 2.0),
+                                                      primary: false,
+                                                      shrinkWrap: true,
+                                                      scrollDirection:
+                                                          Axis.vertical,
+                                                      itemCount:
+                                                          homeApprovedList
+                                                              .length,
+                                                      separatorBuilder: (_,
+                                                              __) =>
+                                                          SizedBox(height: 2.0),
+                                                      itemBuilder: (context,
+                                                          homeApprovedListIndex) {
+                                                        final homeApprovedListItem =
+                                                            homeApprovedList[
+                                                                homeApprovedListIndex];
+                                                        return Stack(
+                                                          children: [
+                                                            wrapWithModel(
+                                                              model: _model
+                                                                  .cardVagasModels1
+                                                                  .getModel(
+                                                                homeApprovedListItem
+                                                                    .vagasId!,
+                                                                homeApprovedListIndex,
+                                                              ),
+                                                              updateCallback: () =>
+                                                                  safeSetState(
+                                                                      () {}),
                                                               child:
-                                                                  VagaBottomSheetWidget(
-                                                                speciality: listItem
-                                                                    .especialidadeNome,
-                                                                value: listItem
-                                                                    .vagasValor
-                                                                    ?.toDouble(),
-                                                                hospital: listItem
-                                                                    .hospitalNome,
-                                                                date: listItem
-                                                                    .vagasData,
-                                                                datecreated:
-                                                                    listItem
-                                                                        .vagasCreatedate,
-                                                                startTime: listItem
-                                                                    .vagasHorainicio
-                                                                    ?.time,
-                                                                endTime: listItem
-                                                                    .vagasHorafim
-                                                                    ?.time,
-                                                                shift: listItem
-                                                                    .vagasPeriodoNome,
-                                                                type: listItem
+                                                                  CardVagasWidget(
+                                                                key: Key(
+                                                                  'Keygbb_${homeApprovedListItem.vagasId!}',
+                                                                ),
+                                                                specialty:
+                                                                    homeApprovedListItem
+                                                                        .especialidadeNome,
+                                                                value:
+                                                                    formatNumber(
+                                                                  homeApprovedListItem
+                                                                      .vagasValor,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .commaDecimal,
+                                                                  currency:
+                                                                      'R\$',
+                                                                ),
+                                                                date:
+                                                                    '${dateTimeFormat(
+                                                                  "H",
+                                                                  homeApprovedListItem
+                                                                      .vagasHorainicio
+                                                                      ?.time,
+                                                                  locale: FFLocalizations.of(
+                                                                          context)
+                                                                      .languageCode,
+                                                                )}h-${dateTimeFormat(
+                                                                  "H",
+                                                                  homeApprovedListItem
+                                                                      .vagasHorafim
+                                                                      ?.time,
+                                                                  locale: FFLocalizations.of(
+                                                                          context)
+                                                                      .languageCode,
+                                                                )}h',
+                                                                datecount:
+                                                                    'há ${dateTimeFormat(
+                                                                  "relative",
+                                                                  homeApprovedListItem
+                                                                      .vagasCreatedate,
+                                                                  locale: FFLocalizations.of(
+                                                                              context)
+                                                                          .languageShortCode ??
+                                                                      FFLocalizations.of(
+                                                                              context)
+                                                                          .languageCode,
+                                                                )}',
+                                                                shift: '',
+                                                                type: homeApprovedListItem
                                                                     .vagasTipoNome,
-                                                                lat: listItem
-                                                                    .hospitalLat,
-                                                                lon: listItem
-                                                                    .hospitalLog,
-                                                                address: listItem
-                                                                    .hospitalEnd,
-                                                                jobid: listItem
-                                                                    .vagasId,
-                                                                contractor:
-                                                                    listItem
-                                                                        .grupoNome,
-                                                                contractorName:
-                                                                    listItem
-                                                                        .escalistaNome,
-                                                                contractorPhone:
-                                                                    listItem
-                                                                        .escalistaTelefone,
-                                                                contractorEmail:
-                                                                    listItem
-                                                                        .escalistaEmail,
-                                                                payday: listItem
-                                                                    .vagasDatapagamento,
-                                                                payment: listItem
-                                                                    .vagasFormarecebimentoNome,
+                                                                hospital: functions.cleanHospitalName(
+                                                                    homeApprovedListItem
+                                                                        .hospitalNome!,
+                                                                    FFAppState()
+                                                                        .cleanHospital
+                                                                        .toList()),
+                                                                vaga:
+                                                                    homeApprovedListItem
+                                                                        .vagasId,
                                                                 avatarHospital:
-                                                                    listItem
+                                                                    homeApprovedListItem
                                                                         .hospitalAvatar,
-                                                                sector: listItem
-                                                                    .setorNome,
-                                                                showFavorite:
-                                                                    listItem
-                                                                        .medicoFavorito,
-                                                                candidates: containerVwVagasCandidaturasRowList
-                                                                    .where((e) =>
-                                                                        e.vagasId ==
-                                                                        listItem
-                                                                            .vagasId)
-                                                                    .toList(),
-                                                                callback:
-                                                                    () async {},
+                                                                showPay: false,
+                                                                sector:
+                                                                    homeApprovedListItem
+                                                                        .setorNome,
+                                                                distance: functions.distanceCalc(
+                                                                    homeApprovedListItem
+                                                                        .hospitalLat!,
+                                                                    homeApprovedListItem
+                                                                        .hospitalLog!,
+                                                                    currentUserLocationValue!),
+                                                                showSign: false,
                                                               ),
                                                             ),
-                                                          );
-                                                        },
-                                                      ).then((value) =>
-                                                          safeSetState(() {}));
+                                                            if (true)
+                                                              FFButtonWidget(
+                                                                onPressed:
+                                                                    () async {
+                                                                  logFirebaseEvent(
+                                                                      'HOME_PAGE_PAGE__BTN_ON_TAP');
+                                                                  currentUserLocationValue = await getCurrentUserLocation(
+                                                                      defaultLocation:
+                                                                          LatLng(
+                                                                              0.0,
+                                                                              0.0));
+                                                                  if (_model
+                                                                      .isBottomSheetLoading) {
+                                                                    return;
+                                                                  }
 
-                                                      logFirebaseEvent(
-                                                          'Button_update_page_state');
-                                                      _model.isBottomSheetLoading =
-                                                          false;
-                                                      safeSetState(() {});
-                                                      return;
-                                                    },
-                                                    text: '',
-                                                    options: FFButtonOptions(
-                                                      width: double.infinity,
-                                                      height: MediaQuery.sizeOf(
-                                                                  context)
-                                                              .height *
-                                                          0.13,
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      iconPadding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      color: Color(0x00A369ED),
+                                                                  logFirebaseEvent(
+                                                                      'Button_update_page_state');
+                                                                  _model.isBottomSheetLoading =
+                                                                      true;
+                                                                  safeSetState(
+                                                                      () {});
+                                                                  logFirebaseEvent(
+                                                                      'Button_bottom_sheet');
+                                                                  await showModalBottomSheet(
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (context) {
+                                                                      return GestureDetector(
+                                                                        onTap:
+                                                                            () {
+                                                                          FocusScope.of(context)
+                                                                              .unfocus();
+                                                                          FocusManager
+                                                                              .instance
+                                                                              .primaryFocus
+                                                                              ?.unfocus();
+                                                                        },
+                                                                        child:
+                                                                            Padding(
+                                                                          padding:
+                                                                              MediaQuery.viewInsetsOf(context),
+                                                                          child:
+                                                                              VagaBottomSheetWidget(
+                                                                            speciality:
+                                                                                homeApprovedListItem.especialidadeNome,
+                                                                            value:
+                                                                                homeApprovedListItem.vagasValor?.toDouble(),
+                                                                            hospital:
+                                                                                homeApprovedListItem.hospitalNome,
+                                                                            date:
+                                                                                homeApprovedListItem.vagasData,
+                                                                            datecreated:
+                                                                                homeApprovedListItem.vagasCreatedate,
+                                                                            startTime:
+                                                                                homeApprovedListItem.vagasHorainicio?.time,
+                                                                            endTime:
+                                                                                homeApprovedListItem.vagasHorafim?.time,
+                                                                            shift:
+                                                                                homeApprovedListItem.vagasPeriodoNome,
+                                                                            type:
+                                                                                homeApprovedListItem.vagasTipoNome,
+                                                                            lat:
+                                                                                homeApprovedListItem.hospitalLat,
+                                                                            lon:
+                                                                                homeApprovedListItem.hospitalLog,
+                                                                            address:
+                                                                                homeApprovedListItem.hospitalEnd,
+                                                                            jobid:
+                                                                                homeApprovedListItem.vagasId,
+                                                                            contractor:
+                                                                                homeApprovedListItem.grupoNome,
+                                                                            contractorName:
+                                                                                homeApprovedListItem.escalistaNome,
+                                                                            contractorPhone:
+                                                                                homeApprovedListItem.escalistaTelefone,
+                                                                            contractorEmail:
+                                                                                homeApprovedListItem.escalistaEmail,
+                                                                            payday:
+                                                                                homeApprovedListItem.vagasDatapagamento,
+                                                                            payment:
+                                                                                homeApprovedListItem.vagasFormarecebimentoNome,
+                                                                            avatarHospital:
+                                                                                homeApprovedListItem.hospitalAvatar,
+                                                                            sector:
+                                                                                homeApprovedListItem.setorNome,
+                                                                            showFavorite:
+                                                                                homeApprovedListItem.medicoFavorito,
+                                                                            candidates:
+                                                                                homeApprovedListItem,
+                                                                            callback:
+                                                                                () async {},
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  ).then((value) =>
+                                                                      safeSetState(
+                                                                          () {}));
+
+                                                                  logFirebaseEvent(
+                                                                      'Button_update_page_state');
+                                                                  _model.isBottomSheetLoading =
+                                                                      false;
+                                                                  safeSetState(
+                                                                      () {});
+                                                                  logFirebaseEvent(
+                                                                      'Button_google_analytics_event');
+                                                                  logFirebaseEvent(
+                                                                    'vagas_exibicao',
+                                                                    parameters: {
+                                                                      'user_id':
+                                                                          currentUserUid,
+                                                                      'time':
+                                                                          getCurrentTimestamp,
+                                                                      'location':
+                                                                          currentUserLocationValue,
+                                                                      'vaga_id':
+                                                                          homeApprovedListItem
+                                                                              .vagasId,
+                                                                    },
+                                                                  );
+                                                                  return;
+                                                                },
+                                                                text: '',
+                                                                options:
+                                                                    FFButtonOptions(
+                                                                  width: double
+                                                                      .infinity,
+                                                                  height: MediaQuery.sizeOf(
+                                                                              context)
+                                                                          .height *
+                                                                      0.13,
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  iconPadding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  color: Color(
+                                                                      0x00A369ED),
+                                                                  textStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .override(
+                                                                        font: GoogleFonts
+                                                                            .geologica(
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontStyle,
+                                                                        ),
+                                                                        color: Colors
+                                                                            .white,
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontStyle,
+                                                                      ),
+                                                                  elevation:
+                                                                      0.0,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8.0),
+                                                                ),
+                                                                showLoadingIndicator:
+                                                                    false,
+                                                              ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    if (homePageVwVagasCandidaturasRowList
+                                        .where((e) =>
+                                            e.vagasData ==
+                                            FFAppState().selectedDay)
+                                        .toList()
+                                        .isNotEmpty)
+                                      StickyHeader(
+                                        overlapHeaders: false,
+                                        header: Container(
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryBackground,
+                                          ),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  FaIcon(
+                                                    FontAwesomeIcons
+                                                        .solidCircle,
+                                                    color: Color(0xFF9FEB0F),
+                                                    size: 14.0,
+                                                  ),
+                                                  Text(
+                                                    'Plantões disponíveis',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .titleMedium
+                                                        .override(
+                                                          font: GoogleFonts
+                                                              .geologica(
+                                                            fontWeight:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleMedium
+                                                                    .fontWeight,
+                                                            fontStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleMedium
+                                                                    .fontStyle,
+                                                          ),
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleMedium
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleMedium
+                                                                  .fontStyle,
+                                                        ),
+                                                  ),
+                                                ]
+                                                    .divide(SizedBox(
+                                                        width:
+                                                            FFAppConstants.Gap))
+                                                    .addToStart(SizedBox(
+                                                        width: FFAppConstants
+                                                            .doubleGap))
+                                                    .addToEnd(SizedBox(
+                                                        width: FFAppConstants
+                                                            .doubleGap)),
+                                              ),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Expanded(
+                                                    child: FlutterFlowDropDown<
+                                                        String>(
+                                                      controller: _model
+                                                              .dropDownValueController1 ??=
+                                                          FormFieldController<
+                                                              String>(
+                                                        _model.dropDownValue1 ??=
+                                                            '',
+                                                      ),
+                                                      options: List<String>.from(homePageVwVagasCandidaturasRowList
+                                                          .where((e) =>
+                                                              (e.hospitalEstado ==
+                                                                  FFAppState()
+                                                                      .estadoUF) &&
+                                                              (e.vagasStatus ==
+                                                                  'aberta') &&
+                                                              (e.vagasData ==
+                                                                  FFAppState()
+                                                                      .selectedDay))
+                                                          .toList()
+                                                          .unique((e) => e
+                                                              .especialidadeId!)
+                                                          .sortedList(
+                                                              keyOf: (e) => e
+                                                                  .especialidadeNome!,
+                                                              desc: false)
+                                                          .map((e) =>
+                                                              e.especialidadeId)
+                                                          .withoutNulls
+                                                          .toList()),
+                                                      optionLabels: homePageVwVagasCandidaturasRowList
+                                                          .where((e) =>
+                                                              (e.vagasStatus ==
+                                                                  'aberta') &&
+                                                              (e.vagasData ==
+                                                                  FFAppState()
+                                                                      .selectedDay) &&
+                                                              (e.hospitalEstado ==
+                                                                  FFAppState()
+                                                                      .estadoUF))
+                                                          .toList()
+                                                          .unique((e) => e
+                                                              .especialidadeId!)
+                                                          .sortedList(
+                                                              keyOf: (e) => e
+                                                                  .especialidadeNome!,
+                                                              desc: false)
+                                                          .map((e) => e
+                                                              .especialidadeNome)
+                                                          .withoutNulls
+                                                          .toList(),
+                                                      onChanged: (val) =>
+                                                          safeSetState(() =>
+                                                              _model.dropDownValue1 =
+                                                                  val),
+                                                      width: 200.0,
+                                                      height: 40.0,
                                                       textStyle:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .titleSmall
+                                                              .bodyMedium
                                                               .override(
                                                                 font: GoogleFonts
                                                                     .geologica(
-                                                                  fontWeight: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .fontWeight,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
                                                                   fontStyle: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .titleSmall
+                                                                      .bodyMedium
                                                                       .fontStyle,
                                                                 ),
-                                                                color: Colors
-                                                                    .white,
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primary,
                                                                 letterSpacing:
                                                                     0.0,
-                                                                fontWeight: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontWeight,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .normal,
                                                                 fontStyle: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .titleSmall
+                                                                    .bodyMedium
                                                                     .fontStyle,
                                                               ),
-                                                      elevation: 0.0,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
+                                                      hintText:
+                                                          'Especialidades',
+                                                      icon: Icon(
+                                                        Icons
+                                                            .keyboard_arrow_down_rounded,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primary,
+                                                        size: 24.0,
+                                                      ),
+                                                      fillColor:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryBackground,
+                                                      elevation: 2.0,
+                                                      borderColor:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primary,
+                                                      borderWidth: 0.0,
+                                                      borderRadius: 8.0,
+                                                      margin:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  12.0,
+                                                                  0.0,
+                                                                  12.0,
+                                                                  0.0),
+                                                      hidesUnderline: true,
+                                                      isOverButton: false,
+                                                      isSearchable: false,
+                                                      isMultiSelect: false,
                                                     ),
-                                                    showLoadingIndicator: false,
                                                   ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
+                                                  Expanded(
+                                                    child: FutureBuilder<
+                                                        List<EstadosBrasilRow>>(
+                                                      future: FFAppState()
+                                                          .estados(
+                                                        requestFn: () =>
+                                                            EstadosBrasilTable()
+                                                                .queryRows(
+                                                          queryFn: (q) =>
+                                                              q.inFilterOrNull(
+                                                            'Sigla',
+                                                            homePageVwVagasCandidaturasRowList
+                                                                .where((e) =>
+                                                                    (e.vagasData ==
+                                                                        FFAppState()
+                                                                            .selectedDay) &&
+                                                                    (e.vagasStatus ==
+                                                                        'aberta'))
+                                                                .toList()
+                                                                .unique((e) => e
+                                                                    .hospitalEstado!)
+                                                                .map((e) => e
+                                                                    .hospitalEstado)
+                                                                .withoutNulls
+                                                                .toList(),
+                                                          ),
+                                                        ),
+                                                      )
+                                                          .then((result) {
+                                                        _model.requestCompleted2 =
+                                                            true;
+                                                        return result;
+                                                      }),
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        // Customize what your widget looks like when it's loading.
+                                                        if (!snapshot.hasData) {
+                                                          return DropdownLoadingWidget();
+                                                        }
+                                                        List<EstadosBrasilRow>
+                                                            dropDownEstadosBrasilRowList =
+                                                            snapshot.data!;
+
+                                                        return FlutterFlowDropDown<
+                                                            String>(
+                                                          controller: _model
+                                                                  .dropDownValueController2 ??=
+                                                              FormFieldController<
+                                                                  String>(
+                                                            _model.dropDownValue2 ??=
+                                                                FFAppState()
+                                                                    .estadoUF,
+                                                          ),
+                                                          options: List<String>.from(homePageVwVagasCandidaturasRowList
+                                                              .where((e) =>
+                                                                  (e.vagasStatus ==
+                                                                      'aberta') &&
+                                                                  (e.vagasData ==
+                                                                      FFAppState()
+                                                                          .selectedDay))
+                                                              .toList()
+                                                              .unique((e) => e
+                                                                  .hospitalEstado!)
+                                                              .map((e) => e
+                                                                  .hospitalEstado)
+                                                              .withoutNulls
+                                                              .toList()
+                                                              .sortedList(
+                                                                  keyOf: (e) =>
+                                                                      e,
+                                                                  desc: false)),
+                                                          optionLabels:
+                                                              dropDownEstadosBrasilRowList
+                                                                  .sortedList(
+                                                                      keyOf: (e) => e
+                                                                          .sigla!,
+                                                                      desc:
+                                                                          false)
+                                                                  .map((e) =>
+                                                                      e.nome)
+                                                                  .withoutNulls
+                                                                  .toList(),
+                                                          onChanged:
+                                                              (val) async {
+                                                            safeSetState(() =>
+                                                                _model.dropDownValue2 =
+                                                                    val);
+                                                            logFirebaseEvent(
+                                                                'HOME_DropDown_3brc9nkb_ON_FORM_WIDGET_SE');
+                                                            logFirebaseEvent(
+                                                                'DropDown_update_app_state');
+                                                            FFAppState()
+                                                                    .estadoUF =
+                                                                _model
+                                                                    .dropDownValue2!;
+                                                            FFAppState()
+                                                                    .estadoUFIndex =
+                                                                dropDownEstadosBrasilRowList
+                                                                    .where((e) =>
+                                                                        e.sigla ==
+                                                                        _model
+                                                                            .dropDownValue2)
+                                                                    .toList()
+                                                                    .firstOrNull!
+                                                                    .id;
+                                                            safeSetState(() {});
+                                                            logFirebaseEvent(
+                                                                'DropDown_refresh_database_request');
+                                                            safeSetState(() {
+                                                              FFAppState()
+                                                                  .clearVagasAbertasCache();
+                                                              _model.requestCompleted3 =
+                                                                  false;
+                                                            });
+                                                            await _model
+                                                                .waitForRequestCompleted3();
+                                                          },
+                                                          width: 200.0,
+                                                          height: 40.0,
+                                                          textStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    font: GoogleFonts
+                                                                        .geologica(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                      fontStyle: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyMedium
+                                                                          .fontStyle,
+                                                                    ),
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primary,
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                    fontStyle: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .fontStyle,
+                                                                  ),
+                                                          icon: Icon(
+                                                            Icons
+                                                                .keyboard_arrow_down_rounded,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primary,
+                                                            size: 24.0,
+                                                          ),
+                                                          fillColor: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryBackground,
+                                                          elevation: 2.0,
+                                                          borderColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .primary,
+                                                          borderWidth: 0.0,
+                                                          borderRadius: 8.0,
+                                                          margin:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      12.0,
+                                                                      0.0,
+                                                                      12.0,
+                                                                      0.0),
+                                                          hidesUnderline: true,
+                                                          isOverButton: false,
+                                                          isSearchable: false,
+                                                          isMultiSelect: false,
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ]
+                                                    .divide(SizedBox(
+                                                        width:
+                                                            FFAppConstants.Gap))
+                                                    .around(SizedBox(
+                                                        width: FFAppConstants
+                                                            .Gap)),
+                                              ),
+                                            ]
+                                                .divide(SizedBox(
+                                                    height: FFAppConstants.Gap))
+                                                .around(SizedBox(
+                                                    height:
+                                                        FFAppConstants.Gap)),
+                                          ),
+                                        ),
+                                        content: Container(
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                          ),
+                                          child: Builder(
+                                            builder: (context) {
+                                              if (_model.dropDownValue1 !=
+                                                      null &&
+                                                  _model.dropDownValue1 != '') {
+                                                return Builder(
+                                                  builder: (context) {
+                                                    final homeOpenList1 = functions
+                                                        .sortByLocation(
+                                                            currentUserLocationValue!,
+                                                            homePageVwVagasCandidaturasRowList
+                                                                .toList(),
+                                                            true)
+                                                        .where((e) =>
+                                                            (e.vagasData ==
+                                                                FFAppState()
+                                                                    .selectedDay) &&
+                                                            (e.hospitalEstado ==
+                                                                FFAppState()
+                                                                    .estadoUF) &&
+                                                            (e.especialidadeId ==
+                                                                _model
+                                                                    .dropDownValue1))
+                                                        .toList()
+                                                        .unique(
+                                                            (e) => e.vagasId!)
+                                                        .sortedList(
+                                                            keyOf: (e) =>
+                                                                e.vagasValor!,
+                                                            desc: true)
+                                                        .toList();
+
+                                                    return ListView.separated(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 2.0),
+                                                      primary: false,
+                                                      shrinkWrap: true,
+                                                      scrollDirection:
+                                                          Axis.vertical,
+                                                      itemCount:
+                                                          homeOpenList1.length,
+                                                      separatorBuilder: (_,
+                                                              __) =>
+                                                          SizedBox(height: 2.0),
+                                                      itemBuilder: (context,
+                                                          homeOpenList1Index) {
+                                                        final homeOpenList1Item =
+                                                            homeOpenList1[
+                                                                homeOpenList1Index];
+                                                        return Stack(
+                                                          children: [
+                                                            wrapWithModel(
+                                                              model: _model
+                                                                  .cardVagasModels2
+                                                                  .getModel(
+                                                                homeOpenList1Item
+                                                                    .vagasId!,
+                                                                homeOpenList1Index,
+                                                              ),
+                                                              updateCallback: () =>
+                                                                  safeSetState(
+                                                                      () {}),
+                                                              child:
+                                                                  CardVagasWidget(
+                                                                key: Key(
+                                                                  'Keyhcx_${homeOpenList1Item.vagasId!}',
+                                                                ),
+                                                                specialty:
+                                                                    homeOpenList1Item
+                                                                        .especialidadeNome,
+                                                                value:
+                                                                    formatNumber(
+                                                                  homeOpenList1Item
+                                                                      .vagasValor,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .commaDecimal,
+                                                                  currency:
+                                                                      'R\$',
+                                                                ),
+                                                                date:
+                                                                    '${dateTimeFormat(
+                                                                  "H",
+                                                                  homeOpenList1Item
+                                                                      .vagasHorainicio
+                                                                      ?.time,
+                                                                  locale: FFLocalizations.of(
+                                                                          context)
+                                                                      .languageCode,
+                                                                )}h-${dateTimeFormat(
+                                                                  "H",
+                                                                  homeOpenList1Item
+                                                                      .vagasHorafim
+                                                                      ?.time,
+                                                                  locale: FFLocalizations.of(
+                                                                          context)
+                                                                      .languageCode,
+                                                                )}h',
+                                                                datecount:
+                                                                    'há ${dateTimeFormat(
+                                                                  "relative",
+                                                                  homeOpenList1Item
+                                                                      .vagasCreatedate,
+                                                                  locale: FFLocalizations.of(
+                                                                              context)
+                                                                          .languageShortCode ??
+                                                                      FFLocalizations.of(
+                                                                              context)
+                                                                          .languageCode,
+                                                                )}',
+                                                                shift: '',
+                                                                type: homeOpenList1Item
+                                                                    .vagasTipoNome,
+                                                                hospital: functions.cleanHospitalName(
+                                                                    homeOpenList1Item
+                                                                        .hospitalNome!,
+                                                                    FFAppState()
+                                                                        .cleanHospital
+                                                                        .toList()),
+                                                                vaga:
+                                                                    homeOpenList1Item
+                                                                        .vagasId,
+                                                                avatarHospital:
+                                                                    homeOpenList1Item
+                                                                        .hospitalAvatar,
+                                                                showPay: false,
+                                                                sector:
+                                                                    homeOpenList1Item
+                                                                        .setorNome,
+                                                                distance: functions.distanceCalc(
+                                                                    homeOpenList1Item
+                                                                        .hospitalLat!,
+                                                                    homeOpenList1Item
+                                                                        .hospitalLog!,
+                                                                    currentUserLocationValue!),
+                                                                showSign: false,
+                                                              ),
+                                                            ),
+                                                            if (true)
+                                                              FFButtonWidget(
+                                                                onPressed:
+                                                                    () async {
+                                                                  logFirebaseEvent(
+                                                                      'HOME_PAGE_PAGE__BTN_ON_TAP');
+                                                                  currentUserLocationValue = await getCurrentUserLocation(
+                                                                      defaultLocation:
+                                                                          LatLng(
+                                                                              0.0,
+                                                                              0.0));
+                                                                  if (_model
+                                                                      .isBottomSheetLoading) {
+                                                                    return;
+                                                                  }
+
+                                                                  logFirebaseEvent(
+                                                                      'Button_update_page_state');
+                                                                  _model.isBottomSheetLoading =
+                                                                      true;
+                                                                  safeSetState(
+                                                                      () {});
+                                                                  logFirebaseEvent(
+                                                                      'Button_bottom_sheet');
+                                                                  await showModalBottomSheet(
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (context) {
+                                                                      return GestureDetector(
+                                                                        onTap:
+                                                                            () {
+                                                                          FocusScope.of(context)
+                                                                              .unfocus();
+                                                                          FocusManager
+                                                                              .instance
+                                                                              .primaryFocus
+                                                                              ?.unfocus();
+                                                                        },
+                                                                        child:
+                                                                            Padding(
+                                                                          padding:
+                                                                              MediaQuery.viewInsetsOf(context),
+                                                                          child:
+                                                                              VagaBottomSheetWidget(
+                                                                            speciality:
+                                                                                homeOpenList1Item.especialidadeNome,
+                                                                            value:
+                                                                                homeOpenList1Item.vagasValor?.toDouble(),
+                                                                            hospital:
+                                                                                homeOpenList1Item.hospitalNome,
+                                                                            date:
+                                                                                homeOpenList1Item.vagasData,
+                                                                            datecreated:
+                                                                                homeOpenList1Item.vagasCreatedate,
+                                                                            startTime:
+                                                                                homeOpenList1Item.vagasHorainicio?.time,
+                                                                            endTime:
+                                                                                homeOpenList1Item.vagasHorafim?.time,
+                                                                            shift:
+                                                                                homeOpenList1Item.vagasPeriodoNome,
+                                                                            type:
+                                                                                homeOpenList1Item.vagasTipoNome,
+                                                                            lat:
+                                                                                homeOpenList1Item.hospitalLat,
+                                                                            lon:
+                                                                                homeOpenList1Item.hospitalLog,
+                                                                            address:
+                                                                                homeOpenList1Item.hospitalEnd,
+                                                                            jobid:
+                                                                                homeOpenList1Item.vagasId,
+                                                                            contractor:
+                                                                                homeOpenList1Item.grupoNome,
+                                                                            contractorName:
+                                                                                homeOpenList1Item.escalistaNome,
+                                                                            contractorPhone:
+                                                                                homeOpenList1Item.escalistaTelefone,
+                                                                            contractorEmail:
+                                                                                homeOpenList1Item.escalistaEmail,
+                                                                            payday:
+                                                                                homeOpenList1Item.vagasDatapagamento,
+                                                                            payment:
+                                                                                homeOpenList1Item.vagasFormarecebimentoNome,
+                                                                            avatarHospital:
+                                                                                homeOpenList1Item.hospitalAvatar,
+                                                                            sector:
+                                                                                homeOpenList1Item.setorNome,
+                                                                            showFavorite:
+                                                                                homeOpenList1Item.medicoFavorito,
+                                                                            candidates: homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList1Item.vagasId)).toList().isNotEmpty
+                                                                                ? homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList1Item.vagasId)).toList().firstOrNull
+                                                                                : homeOpenList1Item,
+                                                                            callback:
+                                                                                () async {},
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  ).then((value) =>
+                                                                      safeSetState(
+                                                                          () {}));
+
+                                                                  logFirebaseEvent(
+                                                                      'Button_update_page_state');
+                                                                  _model.isBottomSheetLoading =
+                                                                      false;
+                                                                  safeSetState(
+                                                                      () {});
+                                                                  logFirebaseEvent(
+                                                                      'Button_google_analytics_event');
+                                                                  logFirebaseEvent(
+                                                                    'vagas_exibicao',
+                                                                    parameters: {
+                                                                      'user_id':
+                                                                          currentUserUid,
+                                                                      'time':
+                                                                          getCurrentTimestamp,
+                                                                      'location':
+                                                                          currentUserLocationValue,
+                                                                      'vaga_id':
+                                                                          homeOpenList1Item
+                                                                              .vagasId,
+                                                                    },
+                                                                  );
+                                                                  return;
+                                                                },
+                                                                text: '',
+                                                                options:
+                                                                    FFButtonOptions(
+                                                                  width: double
+                                                                      .infinity,
+                                                                  height: MediaQuery.sizeOf(
+                                                                              context)
+                                                                          .height *
+                                                                      0.13,
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  iconPadding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  color: Color(
+                                                                      0x00A369ED),
+                                                                  textStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .override(
+                                                                        font: GoogleFonts
+                                                                            .geologica(
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontStyle,
+                                                                        ),
+                                                                        color: Colors
+                                                                            .white,
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontStyle,
+                                                                      ),
+                                                                  elevation:
+                                                                      0.0,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8.0),
+                                                                ),
+                                                                showLoadingIndicator:
+                                                                    false,
+                                                              ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                );
+                                              } else {
+                                                return Builder(
+                                                  builder: (context) {
+                                                    final homeOpenList2 = functions
+                                                        .sortByLocation(
+                                                            currentUserLocationValue!,
+                                                            homePageVwVagasCandidaturasRowList
+                                                                .toList(),
+                                                            true)
+                                                        .where((e) =>
+                                                            (e.vagasData ==
+                                                                FFAppState()
+                                                                    .selectedDay) &&
+                                                            (e.hospitalEstado ==
+                                                                FFAppState()
+                                                                    .estadoUF))
+                                                        .toList()
+                                                        .unique(
+                                                            (e) => e.vagasId!)
+                                                        .sortedList(
+                                                            keyOf: (e) =>
+                                                                e.vagasValor!,
+                                                            desc: true)
+                                                        .toList();
+
+                                                    return ListView.separated(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 2.0),
+                                                      primary: false,
+                                                      shrinkWrap: true,
+                                                      scrollDirection:
+                                                          Axis.vertical,
+                                                      itemCount:
+                                                          homeOpenList2.length,
+                                                      separatorBuilder: (_,
+                                                              __) =>
+                                                          SizedBox(height: 2.0),
+                                                      itemBuilder: (context,
+                                                          homeOpenList2Index) {
+                                                        final homeOpenList2Item =
+                                                            homeOpenList2[
+                                                                homeOpenList2Index];
+                                                        return Stack(
+                                                          children: [
+                                                            wrapWithModel(
+                                                              model: _model
+                                                                  .cardVagasModels3
+                                                                  .getModel(
+                                                                homeOpenList2Item
+                                                                    .vagasId!,
+                                                                homeOpenList2Index,
+                                                              ),
+                                                              updateCallback: () =>
+                                                                  safeSetState(
+                                                                      () {}),
+                                                              child:
+                                                                  CardVagasWidget(
+                                                                key: Key(
+                                                                  'Key0i9_${homeOpenList2Item.vagasId!}',
+                                                                ),
+                                                                specialty:
+                                                                    homeOpenList2Item
+                                                                        .especialidadeNome,
+                                                                value:
+                                                                    formatNumber(
+                                                                  homeOpenList2Item
+                                                                      .vagasValor,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .decimal,
+                                                                  decimalType:
+                                                                      DecimalType
+                                                                          .commaDecimal,
+                                                                  currency:
+                                                                      'R\$',
+                                                                ),
+                                                                date:
+                                                                    '${dateTimeFormat(
+                                                                  "H",
+                                                                  homeOpenList2Item
+                                                                      .vagasHorainicio
+                                                                      ?.time,
+                                                                  locale: FFLocalizations.of(
+                                                                          context)
+                                                                      .languageCode,
+                                                                )}h-${dateTimeFormat(
+                                                                  "H",
+                                                                  homeOpenList2Item
+                                                                      .vagasHorafim
+                                                                      ?.time,
+                                                                  locale: FFLocalizations.of(
+                                                                          context)
+                                                                      .languageCode,
+                                                                )}h',
+                                                                datecount:
+                                                                    'há ${dateTimeFormat(
+                                                                  "relative",
+                                                                  homeOpenList2Item
+                                                                      .vagasCreatedate,
+                                                                  locale: FFLocalizations.of(
+                                                                              context)
+                                                                          .languageShortCode ??
+                                                                      FFLocalizations.of(
+                                                                              context)
+                                                                          .languageCode,
+                                                                )}',
+                                                                shift: '',
+                                                                type: homeOpenList2Item
+                                                                    .vagasTipoNome,
+                                                                hospital: functions.cleanHospitalName(
+                                                                    homeOpenList2Item
+                                                                        .hospitalNome!,
+                                                                    FFAppState()
+                                                                        .cleanHospital
+                                                                        .toList()),
+                                                                vaga:
+                                                                    homeOpenList2Item
+                                                                        .vagasId,
+                                                                avatarHospital:
+                                                                    homeOpenList2Item
+                                                                        .hospitalAvatar,
+                                                                showPay: false,
+                                                                sector:
+                                                                    homeOpenList2Item
+                                                                        .setorNome,
+                                                                distance: functions.distanceCalc(
+                                                                    homeOpenList2Item
+                                                                        .hospitalLat!,
+                                                                    homeOpenList2Item
+                                                                        .hospitalLog!,
+                                                                    currentUserLocationValue!),
+                                                                showSign: false,
+                                                              ),
+                                                            ),
+                                                            if (true)
+                                                              FFButtonWidget(
+                                                                onPressed:
+                                                                    () async {
+                                                                  logFirebaseEvent(
+                                                                      'HOME_PAGE_PAGE__BTN_ON_TAP');
+                                                                  currentUserLocationValue = await getCurrentUserLocation(
+                                                                      defaultLocation:
+                                                                          LatLng(
+                                                                              0.0,
+                                                                              0.0));
+                                                                  if (_model
+                                                                      .isBottomSheetLoading) {
+                                                                    return;
+                                                                  }
+
+                                                                  logFirebaseEvent(
+                                                                      'Button_update_page_state');
+                                                                  _model.isBottomSheetLoading =
+                                                                      true;
+                                                                  safeSetState(
+                                                                      () {});
+                                                                  logFirebaseEvent(
+                                                                      'Button_bottom_sheet');
+                                                                  await showModalBottomSheet(
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (context) {
+                                                                      return GestureDetector(
+                                                                        onTap:
+                                                                            () {
+                                                                          FocusScope.of(context)
+                                                                              .unfocus();
+                                                                          FocusManager
+                                                                              .instance
+                                                                              .primaryFocus
+                                                                              ?.unfocus();
+                                                                        },
+                                                                        child:
+                                                                            Padding(
+                                                                          padding:
+                                                                              MediaQuery.viewInsetsOf(context),
+                                                                          child:
+                                                                              VagaBottomSheetWidget(
+                                                                            speciality:
+                                                                                homeOpenList2Item.especialidadeNome,
+                                                                            value:
+                                                                                homeOpenList2Item.vagasValor?.toDouble(),
+                                                                            hospital:
+                                                                                homeOpenList2Item.hospitalNome,
+                                                                            date:
+                                                                                homeOpenList2Item.vagasData,
+                                                                            datecreated:
+                                                                                homeOpenList2Item.vagasCreatedate,
+                                                                            startTime:
+                                                                                homeOpenList2Item.vagasHorainicio?.time,
+                                                                            endTime:
+                                                                                homeOpenList2Item.vagasHorafim?.time,
+                                                                            shift:
+                                                                                homeOpenList2Item.vagasPeriodoNome,
+                                                                            type:
+                                                                                homeOpenList2Item.vagasTipoNome,
+                                                                            lat:
+                                                                                homeOpenList2Item.hospitalLat,
+                                                                            lon:
+                                                                                homeOpenList2Item.hospitalLog,
+                                                                            address:
+                                                                                homeOpenList2Item.hospitalEnd,
+                                                                            jobid:
+                                                                                homeOpenList2Item.vagasId,
+                                                                            contractor:
+                                                                                homeOpenList2Item.grupoNome,
+                                                                            contractorName:
+                                                                                homeOpenList2Item.escalistaNome,
+                                                                            contractorPhone:
+                                                                                homeOpenList2Item.escalistaTelefone,
+                                                                            contractorEmail:
+                                                                                homeOpenList2Item.escalistaEmail,
+                                                                            payday:
+                                                                                homeOpenList2Item.vagasDatapagamento,
+                                                                            payment:
+                                                                                homeOpenList2Item.vagasFormarecebimentoNome,
+                                                                            avatarHospital:
+                                                                                homeOpenList2Item.hospitalAvatar,
+                                                                            sector:
+                                                                                homeOpenList2Item.setorNome,
+                                                                            showFavorite:
+                                                                                homeOpenList2Item.medicoFavorito,
+                                                                            candidates: homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList2Item.vagasId)).toList().isNotEmpty
+                                                                                ? homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList2Item.vagasId)).toList().firstOrNull
+                                                                                : homeOpenList2Item,
+                                                                            callback:
+                                                                                () async {},
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  ).then((value) =>
+                                                                      safeSetState(
+                                                                          () {}));
+
+                                                                  logFirebaseEvent(
+                                                                      'Button_update_page_state');
+                                                                  _model.isBottomSheetLoading =
+                                                                      false;
+                                                                  safeSetState(
+                                                                      () {});
+                                                                  logFirebaseEvent(
+                                                                      'Button_google_analytics_event');
+                                                                  logFirebaseEvent(
+                                                                    'vagas_exibicao',
+                                                                    parameters: {
+                                                                      'user_id':
+                                                                          currentUserUid,
+                                                                      'time':
+                                                                          getCurrentTimestamp,
+                                                                      'location':
+                                                                          currentUserLocationValue,
+                                                                      'vaga_id':
+                                                                          homeOpenList2Item
+                                                                              .vagasId,
+                                                                    },
+                                                                  );
+                                                                  return;
+                                                                },
+                                                                text: '',
+                                                                options:
+                                                                    FFButtonOptions(
+                                                                  width: double
+                                                                      .infinity,
+                                                                  height: MediaQuery.sizeOf(
+                                                                              context)
+                                                                          .height *
+                                                                      0.13,
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  iconPadding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                  color: Color(
+                                                                      0x00A369ED),
+                                                                  textStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .override(
+                                                                        font: GoogleFonts
+                                                                            .geologica(
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontStyle,
+                                                                        ),
+                                                                        color: Colors
+                                                                            .white,
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontStyle,
+                                                                      ),
+                                                                  elevation:
+                                                                      0.0,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8.0),
+                                                                ),
+                                                                showLoadingIndicator:
+                                                                    false,
+                                                              ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                );
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
                               ),
-                            ].divide(
-                                SizedBox(height: FFAppConstants.doubleGap)),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                    ].divide(SizedBox(height: FFAppConstants.doubleGap)),
-                  ),
-                );
-              },
+                    );
+                  },
+                ),
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

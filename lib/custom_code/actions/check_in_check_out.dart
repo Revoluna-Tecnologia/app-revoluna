@@ -1,7 +1,6 @@
 // Automatic FlutterFlow imports
 import '/backend/backend.dart';
 import '/backend/supabase/supabase.dart';
-import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'index.dart'; // Imports other custom actions
@@ -86,6 +85,8 @@ Future<String?> checkInCheckOut(String vagasId, double lat, double lon,
     if (error is PostgrestException) {
       // Extrai apenas a mensagem, removendo informações técnicas
       String message = error.message;
+
+      print('$message');
 
       return message;
     }
