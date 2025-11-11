@@ -2,7 +2,7 @@ import '/auth/base_auth_user_provider.dart';
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/supabase/supabase.dart';
-import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
+import '/components/back_top_bar/back_top_bar_widget.dart';
 import '/components/cadastro/checkemailbottom/checkemailbottom_widget.dart';
 import '/components/cadastro/checkphonebottom/checkphonebottom_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';

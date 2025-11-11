@@ -1,4 +1,4 @@
-import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
+import '/components/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -68,7 +68,7 @@ class _TermosWidgetState extends State<TermosWidget> {
                 model: _model.backTopBarModel,
                 updateCallback: () => safeSetState(() {}),
                 child: BackTopBarWidget(
-                  logo: true,
+                  logo: false,
                   backButton: () async {
                     logFirebaseEvent('TERMOS_PAGE_Container_iv7yjxw0_CALLBACK');
                     logFirebaseEvent('BackTopBar_navigate_back');

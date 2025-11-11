@@ -1,4 +1,4 @@
-import '/components/cadastro/back_top_bar/back_top_bar_widget.dart';
+import '/components/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -69,7 +69,7 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                   model: _model.backTopBarModel,
                   updateCallback: () => safeSetState(() {}),
                   child: BackTopBarWidget(
-                    logo: true,
+                    logo: false,
                     backButton: () async {
                       logFirebaseEvent(
                           'PRIVACIDADE_Container_3bv2bmfm_CALLBACK');
