@@ -1,9 +1,6 @@
-import '/flutter_flow/flutter_flow_drop_down.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/form_field_controller.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -88,85 +85,6 @@ class _HeaderLoadingWidgetState extends State<HeaderLoadingWidget> {
               children: [
                 Builder(
                   builder: (context) {
-                    if (valueOrDefault<bool>(
-                      FFAppState().gender == 'Dr.',
-                      true,
-                    )) {
-                      return Text(
-                        'Bem vindo,',
-                        textAlign: TextAlign.start,
-                        maxLines: 1,
-                        style:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
-                      );
-                    } else if (FFAppState().gender == 'Dra.') {
-                      return Text(
-                        'Bem vinda,',
-                        textAlign: TextAlign.start,
-                        maxLines: 1,
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              font: GoogleFonts.geologica(
-                                fontWeight: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .fontWeight,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .fontStyle,
-                              ),
-                              letterSpacing: 0.0,
-                              fontWeight: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .fontWeight,
-                              fontStyle: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .fontStyle,
-                            ),
-                      );
-                    } else {
-                      return Text(
-                        'Olá, ',
-                        textAlign: TextAlign.start,
-                        maxLines: 1,
-                        style:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
-                      );
-                    }
-                  },
-                ),
-                Builder(
-                  builder: (context) {
                     if (FFAppState().gender == 'Prefiro não informar') {
                       return Text(
                         FFAppState().displayName,
@@ -218,85 +136,51 @@ class _HeaderLoadingWidgetState extends State<HeaderLoadingWidget> {
                     }
                   },
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(
-                      0.0,
-                      valueOrDefault<double>(
-                        FFAppConstants.halfGap,
-                        0.0,
-                      ),
-                      0.0,
-                      0.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Icon(
-                        FFIcons.kmapPin,
-                        color: FlutterFlowTheme.of(context).tertiary,
-                        size: 16.0,
-                      ),
-                      FlutterFlowDropDown<String>(
-                        controller: _model.dropDownValueController ??=
-                            FormFieldController<String>(null),
-                        options: ['Option 1', 'Option 2', 'Option 3'],
-                        onChanged: (val) =>
-                            safeSetState(() => _model.dropDownValue = val),
-                        width: MediaQuery.sizeOf(context).width * 0.4,
-                        height: MediaQuery.sizeOf(context).height * 0.02,
-                        textStyle:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
-                        hintText: 'Carregando...',
-                        icon: Icon(
-                          Icons.keyboard_arrow_down_rounded,
-                          color: FlutterFlowTheme.of(context).secondaryText,
-                          size: 16.0,
-                        ),
-                        elevation: 2.0,
-                        borderColor: Colors.transparent,
-                        borderWidth: 0.0,
-                        borderRadius: 8.0,
-                        margin: EdgeInsetsDirectional.fromSTEB(
-                            12.0, 0.0, 12.0, 0.0),
-                        hidesUnderline: true,
-                        isOverButton: false,
-                        isSearchable: false,
-                        isMultiSelect: false,
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),
-          FlutterFlowIconButton(
-            borderRadius: 60.0,
-            buttonSize: 52.0,
-            icon: Icon(
-              Icons.menu_rounded,
-              color: FlutterFlowTheme.of(context).primary,
-              size: 40.0,
+          Container(
+            width: MediaQuery.sizeOf(context).width * 0.12,
+            height: MediaQuery.sizeOf(context).height * 0.06,
+            child: Stack(
+              alignment: AlignmentDirectional(0.0, 0.0),
+              children: [
+                Icon(
+                  Icons.menu_rounded,
+                  color: FlutterFlowTheme.of(context).primary,
+                  size: 37.0,
+                ),
+                if (false)
+                  Align(
+                    alignment: AlignmentDirectional(0.9, -1.9),
+                    child: Text(
+                      '•',
+                      textAlign: TextAlign.center,
+                      style: FlutterFlowTheme.of(context).labelSmall.override(
+                            font: GoogleFonts.geologica(
+                              fontWeight: FlutterFlowTheme.of(context)
+                                  .labelSmall
+                                  .fontWeight,
+                              fontStyle: FlutterFlowTheme.of(context)
+                                  .labelSmall
+                                  .fontStyle,
+                            ),
+                            color: FlutterFlowTheme.of(context).tertiary,
+                            fontSize: 27.0,
+                            letterSpacing: 0.0,
+                            fontWeight: FlutterFlowTheme.of(context)
+                                .labelSmall
+                                .fontWeight,
+                            fontStyle: FlutterFlowTheme.of(context)
+                                .labelSmall
+                                .fontStyle,
+                          ),
+                    ),
+                  ),
+              ],
             ),
-            onPressed: () {
-              print('IconButton pressed ...');
-            },
           ),
-        ].divide(SizedBox(width: FFAppConstants.doubleGap)),
+        ].divide(SizedBox(width: FFAppConstants.Gap)),
       ),
     );
   }

@@ -136,34 +136,6 @@ String? distanceCalc(
   }
 }
 
-String cleanHospitalName(
-  String hospitalName,
-  List<String> termsToRemove,
-) {
-  String cleanName = hospitalName.trim();
-
-  // Remove os termos da lista, preservando case das outras palavras
-  for (String term in termsToRemove) {
-    // Regex para remover o termo no início, no final ou isolado
-    final RegExp regex =
-        RegExp('\\b${RegExp.escape(term)}\\b', caseSensitive: false);
-    cleanName = cleanName.replaceAll(regex, '').trim();
-  }
-
-  // Remove espaços múltiplos e vírgulas/hífen no início ou final
-  cleanName = cleanName
-      .replaceAll(RegExp(r'\s+'), ' ')
-      .replaceAll(RegExp(r'^[,\-\s]+|[,\-\s]+$'), '')
-      .trim();
-
-  // Se o nome ficou vazio após a limpeza, retorna o nome original
-  if (cleanName.isEmpty) {
-    return hospitalName.trim();
-  }
-
-  return cleanName.replaceAll('Hospital', 'H.');
-}
-
 List<VwVagasCandidaturasRow> sortByLocation(
   LatLng location,
   List<VwVagasCandidaturasRow> vagas,
@@ -205,7 +177,7 @@ List<VwVagasCandidaturasRow> sortByLocation(
   // Cria uma cópia da lista para não modificar a original
   List<VwVagasCandidaturasRow> sortedVagas = List.from(vagas);
 
-  // Ordena por distância
+  // Ordena primeiro por distância e depois por horário de início
   sortedVagas.sort((a, b) {
     double distanceA = calculateDistance(
       a.hospitalLat ?? 0.0,
@@ -216,11 +188,105 @@ List<VwVagasCandidaturasRow> sortByLocation(
       b.hospitalLog ?? 0.0,
     );
 
-    // Se ascending for true, ordena crescente (mais próximo primeiro)
-    // Se ascending for false, ordena decrescente (mais distante primeiro)
-    return ascending
+    // Comparação primária: distância
+    int distanceComparison = ascending
         ? distanceA.compareTo(distanceB)
         : distanceB.compareTo(distanceA);
+
+    // Se as distâncias forem diferentes, retorna a comparação de distância
+    if (distanceComparison != 0) {
+      return distanceComparison;
+    }
+
+    // Se as distâncias forem iguais, ordena por horário de início
+    DateTime? timeA = a.vagasHorainicio?.time;
+    DateTime? timeB = b.vagasHorainicio?.time;
+
+    // Coloca vagas sem horário no final
+    if (timeA == null && timeB == null) return 0;
+    if (timeA == null) return 1;
+    if (timeB == null) return -1;
+
+    // Ordena por horário (sempre crescente - mais cedo primeiro)
+    return timeA.compareTo(timeB);
+  });
+
+  return sortedVagas;
+}
+
+List<VwVagasAbertasRow> sortByLocationInitial(
+  LatLng location,
+  List<VwVagasAbertasRow> vagas,
+  bool ascending,
+) {
+  if (vagas.isEmpty) return vagas;
+
+  double latUser = location.latitude;
+  double lonUser = location.longitude;
+
+  // Raio da Terra em quilômetros
+  const double earthRadius = 6371.0;
+
+  // Função auxiliar para calcular distância usando fórmula de Haversine
+  double calculateDistance(double lat, double lon) {
+    if (lat == 0.0 && lon == 0.0) {
+      return double.infinity; // Coloca vagas sem coordenadas no final
+    }
+
+    // Converte graus para radianos
+    double dLat = (lat - latUser) * math.pi / 180;
+    double dLon = (lon - lonUser) * math.pi / 180;
+
+    double lat1Rad = latUser * math.pi / 180;
+    double lat2Rad = lat * math.pi / 180;
+
+    // Fórmula de Haversine
+    double a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+        math.sin(dLon / 2) *
+            math.sin(dLon / 2) *
+            math.cos(lat1Rad) *
+            math.cos(lat2Rad);
+
+    // Distância em quilômetros
+    double distance = 2 * math.asin(math.sqrt(a)) * earthRadius;
+    return distance;
+  }
+
+  // Cria uma cópia da lista para não modificar a original
+  List<VwVagasAbertasRow> sortedVagas = List.from(vagas);
+
+  // Ordena primeiro por distância e depois por horário de início
+  sortedVagas.sort((a, b) {
+    double distanceA = calculateDistance(
+      a.hospitalLat ?? 0.0,
+      a.hospitalLog ?? 0.0,
+    );
+    double distanceB = calculateDistance(
+      b.hospitalLat ?? 0.0,
+      b.hospitalLog ?? 0.0,
+    );
+
+    // Comparação primária: distância
+    int distanceComparison = ascending
+        ? distanceA.compareTo(distanceB)
+        : distanceB.compareTo(distanceA);
+
+    // Se as distâncias forem diferentes, retorna a comparação de distância
+    if (distanceComparison != 0) {
+      return distanceComparison;
+    }
+
+    // Se as distâncias forem iguais, ordena por horário de início
+    DateTime? timeA = a.vagasHorainicio?.time;
+    DateTime? timeB = b.vagasHorainicio?.time;
+
+    // Coloca vagas sem horário no final
+    if (timeA == null && timeB == null) return 0;
+    if (timeA == null) return 1;
+    if (timeB == null) return -1;
+
+    // Ordena por horário (sempre crescente - mais cedo primeiro)
+    return timeA.compareTo(timeB);
   });
 
   return sortedVagas;
@@ -261,4 +327,32 @@ LatLng? map(
 DateTime? currentDate() {
   DateTime now = new DateTime.now();
   return new DateTime(now.year, now.month, now.day);
+}
+
+String cleanHospitalName(
+  String hospitalName,
+  List<String> termsToRemove,
+) {
+  String cleanName = hospitalName.trim();
+
+  // Remove os termos da lista, preservando case das outras palavras
+  for (String term in termsToRemove) {
+    // Regex para remover o termo no início, no final ou isolado
+    final RegExp regex =
+        RegExp('\\b${RegExp.escape(term)}\\b', caseSensitive: false);
+    cleanName = cleanName.replaceAll(regex, '').trim();
+  }
+
+  // Remove espaços múltiplos e vírgulas/hífen no início ou final
+  cleanName = cleanName
+      .replaceAll(RegExp(r'\s+'), ' ')
+      .replaceAll(RegExp(r'^[,\-\s]+|[,\-\s]+$'), '')
+      .trim();
+
+  // Se o nome ficou vazio após a limpeza, retorna o nome original
+  if (cleanName.isEmpty) {
+    return hospitalName.trim();
+  }
+
+  return cleanName.replaceAll('Hospital', 'H.');
 }

@@ -9,20 +9,8 @@ import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import 'package:supabase_flutter/supabase_flutter.dart';
-
-Future<bool?> otpPhone(String phone) async {
-// Add your function code here!
-  try {
-    // Get a reference your Supabase client
-    final supabase = Supabase.instance.client;
-
-    await supabase.auth.signInWithOtp(
-      phone: phone,
-      shouldCreateUser: false,
-    );
-    return true;
-  } catch (error) {
-    return false;
-  }
+Future initializeSelectedDay() async {
+  FFAppState().update(() {
+    FFAppState().selectedDay = currentDate();
+  });
 }

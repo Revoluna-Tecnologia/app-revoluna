@@ -98,6 +98,8 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -2669,7 +2671,7 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                                 (alertDialogContext) {
                                                                               return AlertDialog(
                                                                                 title: Text('Especialidade'),
-                                                                                content: Text('Sua especialidade será automáticamente configurada para Clínica Médica.'),
+                                                                                content: Text('Sua especialidade será automáticamente configurada para Generalista.'),
                                                                                 actions: [
                                                                                   TextButton(
                                                                                     onPressed: () => Navigator.pop(alertDialogContext, false),
@@ -2697,9 +2699,23 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                       () {
                                                                     _model
                                                                         .dropdownEspecialidadesValueController
-                                                                        ?.value = 15;
+                                                                        ?.value = 21;
                                                                   });
                                                                 }
+                                                                logFirebaseEvent(
+                                                                    'Button_update_app_state');
+                                                                FFAppState()
+                                                                        .estadoUFIndex =
+                                                                    _model
+                                                                        .dropdownEstadosValue!;
+                                                                FFAppState()
+                                                                        .estadoUF =
+                                                                    cadastroForm2EstadosBrasilRowList
+                                                                        .elementAtOrNull(
+                                                                            FFAppState().estadoUFIndex)!
+                                                                        .sigla!;
+                                                                safeSetState(
+                                                                    () {});
                                                                 logFirebaseEvent(
                                                                     'Button_navigate_to');
 

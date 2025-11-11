@@ -51,6 +51,8 @@ class LoginEmailModel extends FlutterFlowModel<LoginEmailWidget> {
   ApiCallResponse? getemail;
   // Stores action output result for [Backend Call - Query Rows] action in Button widget.
   List<UserProfileRow>? queryUser;
+  // Stores action output result for [Backend Call - Query Rows] action in Button widget.
+  List<EstadosBrasilRow>? queryEstado;
   // Stores action output result for [Backend Call - API (aretheytester)] action in Button widget.
   ApiCallResponse? isTester;
   // Stores action output result for [Custom Action - otpEmailMagic] action in Button widget.

@@ -51,4 +51,22 @@ class MedicosPrecadastroRow extends SupabaseDataRow {
 
   String? get medicoEstado => getField<String>('medico_estado');
   set medicoEstado(String? value) => setField<String>('medico_estado', value);
+
+  String? get razaoSocial => getField<String>('razao_social');
+  set razaoSocial(String? value) => setField<String>('razao_social', value);
+
+  String? get cnpj => getField<String>('cnpj');
+  set cnpj(String? value) => setField<String>('cnpj', value);
+
+  String? get bancoAgencia => getField<String>('banco_agencia');
+  set bancoAgencia(String? value) => setField<String>('banco_agencia', value);
+
+  String? get bancoDigito => getField<String>('banco_digito');
+  set bancoDigito(String? value) => setField<String>('banco_digito', value);
+
+  String? get bancoConta => getField<String>('banco_conta');
+  set bancoConta(String? value) => setField<String>('banco_conta', value);
+
+  String? get bancoPix => getField<String>('banco_pix');
+  set bancoPix(String? value) => setField<String>('banco_pix', value);
 }

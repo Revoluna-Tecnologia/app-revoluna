@@ -747,6 +747,18 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                   ),
                                                 );
                                                 _shouldSetState = true;
+                                                logFirebaseEvent(
+                                                    'Button_backend_call');
+                                                _model.queryEstado =
+                                                    await EstadosBrasilTable()
+                                                        .queryRows(
+                                                  queryFn: (q) => q.eqOrNull(
+                                                    'id',
+                                                    _model.queryUser
+                                                        ?.firstOrNull?.uFindex,
+                                                  ),
+                                                );
+                                                _shouldSetState = true;
                                                 if (_model.queryUser
                                                         ?.firstOrNull?.role ==
                                                     'free') {
@@ -766,10 +778,19 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                           .queryUser!
                                                           .firstOrNull!
                                                           .profilepicture!;
+                                                  FFAppState().estadoUFIndex =
+                                                      _model.queryUser!
+                                                          .firstOrNull!.uFindex;
+                                                  FFAppState()
+                                                          .specialialityIndex =
+                                                      _model
+                                                          .queryUser!
+                                                          .firstOrNull!
+                                                          .specialtyIndex;
                                                   FFAppState().estadoUF = _model
-                                                      .queryUser!
+                                                      .queryEstado!
                                                       .firstOrNull!
-                                                      .uFindex;
+                                                      .sigla!;
                                                   logFirebaseEvent(
                                                       'Button_navigate_to');
 

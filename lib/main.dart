@@ -36,6 +36,8 @@ void main() async {
   // Start final custom actions code
   await actions.initializeDeeplinks();
   await actions.initializeFirebaseMessaging();
+  await actions.loadCleanHospitalTerms();
+  await actions.initializeSelectedDay();
   // End final custom actions code
 
   runApp(ChangeNotifierProvider(

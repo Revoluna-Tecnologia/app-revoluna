@@ -60,6 +60,8 @@ class LoginPhoneModel extends FlutterFlowModel<LoginPhoneWidget> {
   ApiCallResponse? idFromPhone;
   // Stores action output result for [Backend Call - Query Rows] action in Button widget.
   List<UserProfileRow>? queryUser;
+  // Stores action output result for [Backend Call - Query Rows] action in Button widget.
+  List<EstadosBrasilRow>? queryEstado;
   // Stores action output result for [Backend Call - API (sendSMSverify)] action in Button widget.
   ApiCallResponse? sendSMS;
   // Stores action output result for [Backend Call - Query Rows] action in Button widget.

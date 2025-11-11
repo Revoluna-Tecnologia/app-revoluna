@@ -490,6 +490,17 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                           ),
                                         );
                                         _shouldSetState = true;
+                                        logFirebaseEvent('Button_backend_call');
+                                        _model.queryEstado =
+                                            await EstadosBrasilTable()
+                                                .queryRows(
+                                          queryFn: (q) => q.eqOrNull(
+                                            'id',
+                                            _model.queryUser?.firstOrNull
+                                                ?.uFindex,
+                                          ),
+                                        );
+                                        _shouldSetState = true;
                                         logFirebaseEvent(
                                             'Button_update_app_state');
                                         FFAppState().displayName = _model
@@ -502,8 +513,21 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                             .queryUser!
                                             .firstOrNull!
                                             .profilepicture!;
-                                        FFAppState().estadoUF = _model
+                                        FFAppState().estadoUFIndex = _model
                                             .queryUser!.firstOrNull!.uFindex;
+                                        FFAppState().specialialityIndex = _model
+                                            .queryUser!
+                                            .firstOrNull!
+                                            .specialtyIndex;
+                                        FFAppState().estadoUF = _model
+                                            .queryEstado!
+                                            .where((e) =>
+                                                e.id ==
+                                                _model.queryUser?.firstOrNull
+                                                    ?.uFindex)
+                                            .toList()
+                                            .firstOrNull!
+                                            .sigla!;
                                         FFAppState().update(() {});
                                         if (_model
                                                 .queryUser?.firstOrNull?.role ==

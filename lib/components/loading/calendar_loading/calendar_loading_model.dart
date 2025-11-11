@@ -2,17 +2,13 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
-import 'card_escala_widget.dart' show CardEscalaWidget;
-import 'package:auto_size_text/auto_size_text.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
+import 'calendar_loading_widget.dart' show CalendarLoadingWidget;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class CardEscalaModel extends FlutterFlowModel<CardEscalaWidget> {
-  ///  Local state fields for this component.
-
-  Color? colorPay = Color(4293256677);
-
+class CalendarLoadingModel extends FlutterFlowModel<CalendarLoadingWidget> {
   @override
   void initState(BuildContext context) {}
 

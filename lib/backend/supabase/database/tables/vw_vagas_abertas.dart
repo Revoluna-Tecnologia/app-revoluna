@@ -1,19 +1,19 @@
 import '../database.dart';
 
-class VwVagasCandidaturasTable extends SupabaseTable<VwVagasCandidaturasRow> {
+class VwVagasAbertasTable extends SupabaseTable<VwVagasAbertasRow> {
   @override
-  String get tableName => 'vw_vagas_candidaturas';
+  String get tableName => 'vw_vagas_abertas';
 
   @override
-  VwVagasCandidaturasRow createRow(Map<String, dynamic> data) =>
-      VwVagasCandidaturasRow(data);
+  VwVagasAbertasRow createRow(Map<String, dynamic> data) =>
+      VwVagasAbertasRow(data);
 }
 
-class VwVagasCandidaturasRow extends SupabaseDataRow {
-  VwVagasCandidaturasRow(Map<String, dynamic> data) : super(data);
+class VwVagasAbertasRow extends SupabaseDataRow {
+  VwVagasAbertasRow(Map<String, dynamic> data) : super(data);
 
   @override
-  SupabaseTable get table => VwVagasCandidaturasTable();
+  SupabaseTable get table => VwVagasAbertasTable();
 
   int? get idx => getField<int>('idx');
   set idx(int? value) => setField<int>('idx', value);
@@ -131,88 +131,4 @@ class VwVagasCandidaturasRow extends SupabaseDataRow {
 
   String? get grupoNome => getField<String>('grupo_nome');
   set grupoNome(String? value) => setField<String>('grupo_nome', value);
-
-  String? get candidaturasId => getField<String>('candidaturas_id');
-  set candidaturasId(String? value) =>
-      setField<String>('candidaturas_id', value);
-
-  int? get totalCandidaturas => getField<int>('total_candidaturas');
-  set totalCandidaturas(int? value) =>
-      setField<int>('total_candidaturas', value);
-
-  String? get candidaturaStatus => getField<String>('candidatura_status');
-  set candidaturaStatus(String? value) =>
-      setField<String>('candidatura_status', value);
-
-  DateTime? get candidatosCreatedate =>
-      getField<DateTime>('candidatos_createdate');
-  set candidatosCreatedate(DateTime? value) =>
-      setField<DateTime>('candidatos_createdate', value);
-
-  String? get candidaturasUpdateby => getField<String>('candidaturas_updateby');
-  set candidaturasUpdateby(String? value) =>
-      setField<String>('candidaturas_updateby', value);
-
-  DateTime? get candidaturasUpdateat =>
-      getField<DateTime>('candidaturas_updateat');
-  set candidaturasUpdateat(DateTime? value) =>
-      setField<DateTime>('candidaturas_updateat', value);
-
-  String? get medicoId => getField<String>('medico_id');
-  set medicoId(String? value) => setField<String>('medico_id', value);
-
-  String? get medicoPrimeironome => getField<String>('medico_primeironome');
-  set medicoPrimeironome(String? value) =>
-      setField<String>('medico_primeironome', value);
-
-  String? get medicoSobrenome => getField<String>('medico_sobrenome');
-  set medicoSobrenome(String? value) =>
-      setField<String>('medico_sobrenome', value);
-
-  String? get medicoCrm => getField<String>('medico_crm');
-  set medicoCrm(String? value) => setField<String>('medico_crm', value);
-
-  String? get medicoCpf => getField<String>('medico_cpf');
-  set medicoCpf(String? value) => setField<String>('medico_cpf', value);
-
-  String? get medicoEstado => getField<String>('medico_estado');
-  set medicoEstado(String? value) => setField<String>('medico_estado', value);
-
-  String? get medicoEmail => getField<String>('medico_email');
-  set medicoEmail(String? value) => setField<String>('medico_email', value);
-
-  String? get medicoTelefone => getField<String>('medico_telefone');
-  set medicoTelefone(String? value) =>
-      setField<String>('medico_telefone', value);
-
-  String? get medicoPrecadastroId => getField<String>('medico_precadastro_id');
-  set medicoPrecadastroId(String? value) =>
-      setField<String>('medico_precadastro_id', value);
-
-  String? get recorrenciaId => getField<String>('recorrencia_id');
-  set recorrenciaId(String? value) => setField<String>('recorrencia_id', value);
-
-  bool? get vagaSalva => getField<bool>('vaga_salva');
-  set vagaSalva(bool? value) => setField<bool>('vaga_salva', value);
-
-  bool? get medicoFavorito => getField<bool>('medico_favorito');
-  set medicoFavorito(bool? value) => setField<bool>('medico_favorito', value);
-
-  DateTime? get checkin => getField<DateTime>('checkin');
-  set checkin(DateTime? value) => setField<DateTime>('checkin', value);
-
-  DateTime? get checkout => getField<DateTime>('checkout');
-  set checkout(DateTime? value) => setField<DateTime>('checkout', value);
-
-  int? get pagamentoValor => getField<int>('pagamento_valor');
-  set pagamentoValor(int? value) => setField<int>('pagamento_valor', value);
-
-  String? get gradeId => getField<String>('grade_id');
-  set gradeId(String? value) => setField<String>('grade_id', value);
-
-  String? get gradeNome => getField<String>('grade_nome');
-  set gradeNome(String? value) => setField<String>('grade_nome', value);
-
-  String? get gradeCor => getField<String>('grade_cor');
-  set gradeCor(String? value) => setField<String>('grade_cor', value);
 }
