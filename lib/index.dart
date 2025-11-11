@@ -12,7 +12,7 @@ export '/pages/login/login_phone_code/login_phone_code_widget.dart'
     show LoginPhoneCodeWidget;
 export '/pages/login/login_magic_link/login_magic_link_widget.dart'
     show LoginMagicLinkWidget;
-export '/pages/nav/plantoes/plantoes_widget.dart' show PlantoesWidget;
+export '/pages/nav/historico/historico_widget.dart' show HistoricoWidget;
 export '/pages/login/login_email/login_email_widget.dart' show LoginEmailWidget;
 export '/pages/login/login_password/login_password_widget.dart'
     show LoginPasswordWidget;

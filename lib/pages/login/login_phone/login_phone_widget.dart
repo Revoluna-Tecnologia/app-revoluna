@@ -2,6 +2,7 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/back_top_bar/back_top_bar_widget.dart';
+import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -1368,28 +1369,70 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    FFButtonWidget(
-                      onPressed: () async {
-                        logFirebaseEvent(
-                            'LOGIN_PHONE_PRECISA_DE_AJUDA_BTN_ON_TAP');
-                        logFirebaseEvent('Button_custom_action');
-                        await actions.launchWhatsAppChat(
-                          'Olá, estou tendo dificuldades para entrar no app',
-                        );
-                      },
-                      text: 'Precisa de ajuda?',
-                      options: FFButtonOptions(
-                        width: 130.0,
-                        height: 22.0,
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        iconPadding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        color: Color(0x00A369ED),
-                        textStyle: FlutterFlowTheme.of(context)
-                            .titleSmall
-                            .override(
-                              font: GoogleFonts.geologica(
+                    Builder(
+                      builder: (context) => FFButtonWidget(
+                        onPressed: () async {
+                          logFirebaseEvent(
+                              'LOGIN_PHONE_PRECISA_DE_AJUDA_BTN_ON_TAP');
+                          logFirebaseEvent('Button_custom_action');
+                          _model.whatsappLoginPhone =
+                              await actions.launchWhatsAppChat(
+                            'Olá, estou tendo dificuldades para entrar no app',
+                            FFAppState().concierge,
+                          );
+                          if (!_model.whatsappLoginPhone!) {
+                            logFirebaseEvent('Button_alert_dialog');
+                            await showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return Dialog(
+                                  elevation: 0,
+                                  insetPadding: EdgeInsets.zero,
+                                  backgroundColor: Colors.transparent,
+                                  alignment: AlignmentDirectional(0.0, 0.0)
+                                      .resolve(Directionality.of(context)),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      FocusScope.of(dialogContext).unfocus();
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
+                                    },
+                                    child: NegativeInformativeBoxWidget(
+                                      title: 'Necessário WhatsApp',
+                                      body:
+                                          'Para prosseguir é preciso ter o aplicativo WhatsaApp instalado no seu  aparelho',
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+
+                          safeSetState(() {});
+                        },
+                        text: 'Precisa de ajuda?',
+                        options: FFButtonOptions(
+                          width: 130.0,
+                          height: 22.0,
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          color: Color(0x00A369ED),
+                          textStyle: FlutterFlowTheme.of(context)
+                              .titleSmall
+                              .override(
+                                font: GoogleFonts.geologica(
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .titleSmall
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .titleSmall
+                                      .fontStyle,
+                                ),
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
                                 fontWeight: FlutterFlowTheme.of(context)
                                     .titleSmall
                                     .fontWeight,
@@ -1397,17 +1440,9 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                     .titleSmall
                                     .fontStyle,
                               ),
-                              color: FlutterFlowTheme.of(context).secondaryText,
-                              letterSpacing: 0.0,
-                              fontWeight: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .fontWeight,
-                              fontStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .fontStyle,
-                            ),
-                        elevation: 0.0,
-                        borderRadius: BorderRadius.circular(110.0),
+                          elevation: 0.0,
+                          borderRadius: BorderRadius.circular(110.0),
+                        ),
                       ),
                     ),
                     FFButtonWidget(

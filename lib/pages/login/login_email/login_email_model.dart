@@ -2,6 +2,7 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/back_top_bar/back_top_bar_widget.dart';
+import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -67,6 +68,8 @@ class LoginEmailModel extends FlutterFlowModel<LoginEmailWidget> {
   List<String>? appleData;
   // Stores action output result for [Backend Call - Query Rows] action in Button widget.
   List<UserProfileRow>? queryAppleUser;
+  // Stores action output result for [Custom Action - launchWhatsAppChat] action in Button widget.
+  bool? whatsappLoginEmail;
 
   @override
   void initState(BuildContext context) {

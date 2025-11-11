@@ -1,5 +1,6 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/components/loading/banner_loading/banner_loading_widget.dart';
 import '/components/vagas/card_vagas_initial/card_vagas_initial_widget.dart';
 import '/components/vagas/dropdown_loading/dropdown_loading_widget.dart';
@@ -15,6 +16,7 @@ import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
+import '/flutter_flow/permissions_util.dart';
 import '/flutter_flow/request_manager.dart';
 
 import '/index.dart';
@@ -47,14 +49,20 @@ class InitialPageModel extends FlutterFlowModel<InitialPageWidget> {
   List<MedicosRow>? medicoTrackingUpdateTrueCopy;
   // Stores action output result for [Backend Call - Update Row(s)] action in InitialPage widget.
   List<MedicosRow>? medicoTrackingUpdateFalseCopy;
+  bool requestCompleted3 = false;
+  String? requestLastUniqueKey3;
+  // Stores action output result for [Custom Action - launchWhatsAppChat] action in FloatingActionButton widget.
+  bool? whatsappInitial;
   bool requestCompleted2 = false;
   String? requestLastUniqueKey2;
+  bool requestCompleted1 = false;
+  String? requestLastUniqueKey1;
   // State field(s) for Carousel widget.
   CarouselSliderController? carouselController;
   int carouselCurrentIndex = 1;
 
-  bool requestCompleted1 = false;
-  String? requestLastUniqueKey1;
+  // Stores action output result for [Custom Action - launchWhatsAppChat] action in Button widget.
+  bool? whatsappBanner;
   // State field(s) for DropDown widget.
   String? dropDownValue1;
   FormFieldController<String>? dropDownValueController1;
@@ -102,6 +110,21 @@ class InitialPageModel extends FlutterFlowModel<InitialPageWidget> {
   }
 
   /// Additional helper methods.
+  Future waitForRequestCompleted3({
+    double minWait = 0,
+    double maxWait = double.infinity,
+  }) async {
+    final stopwatch = Stopwatch()..start();
+    while (true) {
+      await Future.delayed(Duration(milliseconds: 50));
+      final timeElapsed = stopwatch.elapsedMilliseconds;
+      final requestComplete = requestCompleted3;
+      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
+        break;
+      }
+    }
+  }
+
   Future waitForRequestCompleted2({
     double minWait = 0,
     double maxWait = double.infinity,

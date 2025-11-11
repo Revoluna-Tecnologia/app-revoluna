@@ -174,7 +174,7 @@ class _NavBarPageState extends State<NavBarPage> {
     final tabs = {
       'HomePage': HomePageWidget(),
       'Explorar': ExplorarWidget(),
-      'Plantoes': PlantoesWidget(),
+      'Historico': HistoricoWidget(),
       'Escalas': EscalasWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
@@ -217,7 +217,7 @@ class _NavBarPageState extends State<NavBarPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              FFIcons.kcalendar,
+              FFIcons.kclock,
               size: 25.0,
             ),
             label: 'Explorar',
@@ -225,7 +225,7 @@ class _NavBarPageState extends State<NavBarPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              FFIcons.kusers,
+              FFIcons.kcalendar,
               size: 25.0,
             ),
             label: 'Explorar',

@@ -1,6 +1,7 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/back_top_bar/back_top_bar_widget.dart';
+import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -8,6 +9,7 @@ import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/index.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'drawer_menu_model.dart';
@@ -424,35 +426,26 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                     color: FlutterFlowTheme.of(context).secondaryBackground,
                   ),
                 ),
-                if (false)
-                  Container(
-                    width: double.infinity,
-                    height: MediaQuery.sizeOf(context).height * 0.05,
-                    child: Stack(
-                      alignment: AlignmentDirectional(0.0, 0.0),
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Icon(
-                              FFIcons.ktool,
-                              color: FlutterFlowTheme.of(context).tertiary,
-                              size: 16.0,
-                            ),
-                            Text(
-                              'Suporte',
-                              style: FlutterFlowTheme.of(context)
-                                  .labelLarge
-                                  .override(
-                                    font: GoogleFonts.geologica(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .labelLarge
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelLarge
-                                          .fontStyle,
-                                    ),
-                                    letterSpacing: 0.0,
+                Container(
+                  width: double.infinity,
+                  height: MediaQuery.sizeOf(context).height * 0.05,
+                  child: Stack(
+                    alignment: AlignmentDirectional(0.0, 0.0),
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          FaIcon(
+                            FontAwesomeIcons.question,
+                            color: FlutterFlowTheme.of(context).tertiary,
+                            size: 16.0,
+                          ),
+                          Text(
+                            'Preciso de ajuda',
+                            style: FlutterFlowTheme.of(context)
+                                .labelLarge
+                                .override(
+                                  font: GoogleFonts.geologica(
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .labelLarge
                                         .fontWeight,
@@ -460,16 +453,49 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                                         .labelLarge
                                         .fontStyle,
                                   ),
-                            ),
-                          ].divide(SizedBox(width: FFAppConstants.Gap)),
-                        ),
-                        FFButtonWidget(
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelLarge
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelLarge
+                                      .fontStyle,
+                                ),
+                          ),
+                        ].divide(SizedBox(width: FFAppConstants.Gap)),
+                      ),
+                      Builder(
+                        builder: (context) => FFButtonWidget(
                           onPressed: () async {
                             logFirebaseEvent('DRAWER_MENU_COMP__BTN_ON_TAP');
                             logFirebaseEvent('Button_custom_action');
-                            await actions.launchWhatsAppChat(
-                              'Olá, preciso de suporte técnico com o app Revoluna.',
+                            _model.whatsappDrawer =
+                                await actions.launchWhatsAppChat(
+                              'Olá, preciso de ajuda com o app Revoluna',
+                              FFAppState().concierge,
                             );
+                            if (!_model.whatsappDrawer!) {
+                              logFirebaseEvent('Button_alert_dialog');
+                              await showDialog(
+                                context: context,
+                                builder: (dialogContext) {
+                                  return Dialog(
+                                    elevation: 0,
+                                    insetPadding: EdgeInsets.zero,
+                                    backgroundColor: Colors.transparent,
+                                    alignment: AlignmentDirectional(0.0, 0.0)
+                                        .resolve(Directionality.of(context)),
+                                    child: NegativeInformativeBoxWidget(
+                                      title: 'Necessário WhatsApp',
+                                      body:
+                                          'Para prosseguir é preciso ter o aplicativo WhatsaApp instalado no seu  aparelho',
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+
+                            safeSetState(() {});
                           },
                           text: '',
                           options: FFButtonOptions(
@@ -504,17 +530,17 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                           ),
                           showLoadingIndicator: false,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                if (false)
-                  Container(
-                    width: double.infinity,
-                    height: 1.0,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                    ),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 1.0,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
                   ),
+                ),
                 Container(
                   width: double.infinity,
                   height: MediaQuery.sizeOf(context).height * 0.05,
@@ -568,14 +594,22 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                           FFAppState().inputAreacodeIndex = 0;
                           FFAppState().wasUser = false;
                           FFAppState().userRole = '';
+                          FFAppState().deleteProfilepicture();
                           FFAppState().profilepicture = '';
+
+                          FFAppState().deleteDisplayName();
                           FFAppState().displayName = '';
+
+                          FFAppState().deleteGender();
                           FFAppState().gender = '';
+
+                          FFAppState().deleteValuesPrivacy();
                           FFAppState().valuesPrivacy = false;
+
                           safeSetState(() {});
 
                           context.goNamedAuth(
-                              LoginPhoneWidget.routeName, context.mounted);
+                              InitialPageWidget.routeName, context.mounted);
                         },
                         text: '',
                         options: FFButtonOptions(

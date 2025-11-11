@@ -77,7 +77,7 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: MediaQuery.sizeOf(context).height * 0.15,
+      height: MediaQuery.sizeOf(context).height * 0.13,
       decoration: BoxDecoration(
         color: FlutterFlowTheme.of(context).primaryBackground,
         borderRadius: BorderRadius.circular(valueOrDefault<double>(
@@ -99,14 +99,17 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
             0.0),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(
-                  0.0,
+                  valueOrDefault<double>(
+                    FFAppConstants.halfGap,
+                    0.0,
+                  ),
                   0.0,
                   valueOrDefault<double>(
-                    FFAppConstants.doubleGap,
+                    FFAppConstants.halfGap,
                     0.0,
                   ),
                   0.0),
@@ -141,164 +144,171 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                 ),
               ),
             ),
-            Container(
-              width: MediaQuery.sizeOf(context).width * 0.6,
-              decoration: BoxDecoration(),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    valueOrDefault<String>(
-                      widget!.specialty,
-                      '[Especialidade]',
-                    ).maybeHandleOverflow(
-                      maxChars: 26,
-                      replacement: '…',
+            Expanded(
+              child: Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(
+                    valueOrDefault<double>(
+                      FFAppConstants.Gap,
+                      0.0,
                     ),
-                    maxLines: 1,
-                    style: FlutterFlowTheme.of(context).titleMedium.override(
-                          font: GoogleFonts.geologica(
-                            fontWeight: FlutterFlowTheme.of(context)
+                    0.0,
+                    valueOrDefault<double>(
+                      FFAppConstants.halfGap,
+                      0.0,
+                    ),
+                    0.0),
+                child: Container(
+                  width: MediaQuery.sizeOf(context).width * 0.6,
+                  decoration: BoxDecoration(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Text(
+                            valueOrDefault<String>(
+                              widget!.specialty,
+                              '[Especialidade]',
+                            ).maybeHandleOverflow(
+                              maxChars: 26,
+                              replacement: '…',
+                            ),
+                            maxLines: 1,
+                            style: FlutterFlowTheme.of(context)
                                 .titleMedium
-                                .fontWeight,
-                            fontStyle: FlutterFlowTheme.of(context)
+                                .override(
+                                  font: GoogleFonts.geologica(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .titleMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .titleMedium
+                                        .fontStyle,
+                                  ),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .titleMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .titleMedium
+                                      .fontStyle,
+                                ),
+                          ),
+                          Text(
+                            '•',
+                            textAlign: TextAlign.center,
+                            style: FlutterFlowTheme.of(context)
+                                .labelSmall
+                                .override(
+                                  font: GoogleFonts.geologica(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelSmall
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelSmall
+                                        .fontStyle,
+                                  ),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelSmall
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelSmall
+                                      .fontStyle,
+                                ),
+                          ),
+                          Text(
+                            valueOrDefault<String>(
+                              widget!.hospital,
+                              '[hospital]',
+                            ).maybeHandleOverflow(
+                              maxChars: 18,
+                              replacement: '…',
+                            ),
+                            style: FlutterFlowTheme.of(context)
+                                .labelMedium
+                                .override(
+                                  font: GoogleFonts.geologica(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontStyle,
+                                ),
+                          ),
+                        ].divide(SizedBox(width: FFAppConstants.halfGap)),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          AutoSizeText(
+                            valueOrDefault<String>(
+                              widget!.date,
+                              '[dd/mm]',
+                            ),
+                            style: FlutterFlowTheme.of(context)
                                 .titleMedium
-                                .fontStyle,
+                                .override(
+                                  font: GoogleFonts.geologica(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .titleMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .titleMedium
+                                        .fontStyle,
+                                  ),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .titleMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .titleMedium
+                                      .fontStyle,
+                                ),
                           ),
-                          letterSpacing: 0.0,
-                          fontWeight: FlutterFlowTheme.of(context)
-                              .titleMedium
-                              .fontWeight,
-                          fontStyle: FlutterFlowTheme.of(context)
-                              .titleMedium
-                              .fontStyle,
-                        ),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                        valueOrDefault<String>(
-                          widget!.hospital,
-                          '[hospital]',
-                        ).maybeHandleOverflow(
-                          maxChars: 25,
-                          replacement: '…',
-                        ),
-                        style:
-                            FlutterFlowTheme.of(context).labelMedium.override(
+                          Text(
+                            '•',
+                            textAlign: TextAlign.center,
+                            style: FlutterFlowTheme.of(context)
+                                .labelSmall
+                                .override(
                                   font: GoogleFonts.geologica(
                                     fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
+                                        .labelSmall
                                         .fontWeight,
                                     fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
+                                        .labelSmall
                                         .fontStyle,
                                   ),
                                   letterSpacing: 0.0,
                                   fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
+                                      .labelSmall
                                       .fontWeight,
                                   fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
+                                      .labelSmall
                                       .fontStyle,
                                 ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(0.0, 0.0),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              1.0, 1.0, 1.0, 1.0),
-                          child: Icon(
-                            FFIcons.kmapPin,
-                            color: FlutterFlowTheme.of(context).tertiary,
-                            size: 14.0,
                           ),
-                        ),
-                      ),
-                      Text(
-                        valueOrDefault<String>(
-                          widget!.distance,
-                          '[distance]',
-                        ),
-                        style:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
-                      ),
-                    ].divide(SizedBox(width: FFAppConstants.halfGap)),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      AutoSizeText(
-                        valueOrDefault<String>(
-                          widget!.date,
-                          '[dd/mm]',
-                        ),
-                        style:
-                            FlutterFlowTheme.of(context).titleMedium.override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontStyle,
-                                  ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .fontStyle,
-                                ),
-                      ),
-                      Text(
-                        '•',
-                        textAlign: TextAlign.center,
-                        style: FlutterFlowTheme.of(context).labelSmall.override(
-                              font: GoogleFonts.geologica(
-                                fontWeight: FlutterFlowTheme.of(context)
-                                    .labelSmall
-                                    .fontWeight,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .labelSmall
-                                    .fontStyle,
-                              ),
-                              letterSpacing: 0.0,
-                              fontWeight: FlutterFlowTheme.of(context)
-                                  .labelSmall
-                                  .fontWeight,
-                              fontStyle: FlutterFlowTheme.of(context)
-                                  .labelSmall
-                                  .fontStyle,
+                          Text(
+                            valueOrDefault<String>(
+                              widget!.value,
+                              '[R\$ 0.000,00]',
                             ),
-                      ),
-                      Text(
-                        valueOrDefault<String>(
-                          widget!.value,
-                          '[R\$ 0.000,00]',
-                        ),
-                        style:
-                            FlutterFlowTheme.of(context).titleMedium.override(
+                            style: FlutterFlowTheme.of(context)
+                                .titleMedium
+                                .override(
                                   font: GoogleFonts.geologica(
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .titleMedium
@@ -315,188 +325,157 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                                       .titleMedium
                                       .fontStyle,
                                 ),
-                      ),
-                    ].divide(SizedBox(width: FFAppConstants.halfGap)),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Builder(
-                        builder: (context) {
-                          if (widget!.shift == 'Diurno') {
-                            return Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    1.0, 1.0, 1.0, 1.0),
-                                child: Icon(
-                                  FFIcons.ksun,
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  size: 14.0,
-                                ),
-                              ),
-                            );
-                          } else if (widget!.shift == 'Noturno') {
-                            return Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    1.0, 1.0, 1.0, 1.0),
-                                child: Icon(
-                                  FFIcons.kmoon,
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  size: 14.0,
-                                ),
-                              ),
-                            );
-                          } else if (widget!.shift == 'Meio período (manhã)') {
-                            return Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    1.0, 1.0, 1.0, 1.0),
-                                child: Icon(
-                                  FFIcons.ksunrise,
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  size: 14.0,
-                                ),
-                              ),
-                            );
-                          } else if (widget!.shift == 'Meio período (tarde)') {
-                            return Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    1.0, 1.0, 1.0, 1.0),
-                                child: Icon(
-                                  FFIcons.ksunset,
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  size: 14.0,
-                                ),
-                              ),
-                            );
-                          } else {
-                            return Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    1.0, 1.0, 1.0, 1.0),
-                                child: Icon(
-                                  FFIcons.kcinderela,
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  size: 14.0,
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                      Text(
-                        '•',
-                        textAlign: TextAlign.center,
-                        style: FlutterFlowTheme.of(context).labelSmall.override(
-                              font: GoogleFonts.geologica(
-                                fontWeight: FlutterFlowTheme.of(context)
-                                    .labelSmall
-                                    .fontWeight,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .labelSmall
-                                    .fontStyle,
-                              ),
-                              letterSpacing: 0.0,
-                              fontWeight: FlutterFlowTheme.of(context)
-                                  .labelSmall
-                                  .fontWeight,
-                              fontStyle: FlutterFlowTheme.of(context)
-                                  .labelSmall
-                                  .fontStyle,
-                            ),
-                      ),
-                      Text(
-                        valueOrDefault<String>(
-                          widget!.sector,
-                          '[sector]',
-                        ),
-                        style:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
-                      ),
-                      Text(
-                        '•',
-                        textAlign: TextAlign.center,
-                        style: FlutterFlowTheme.of(context).labelSmall.override(
-                              font: GoogleFonts.geologica(
-                                fontWeight: FlutterFlowTheme.of(context)
-                                    .labelSmall
-                                    .fontWeight,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .labelSmall
-                                    .fontStyle,
-                              ),
-                              letterSpacing: 0.0,
-                              fontWeight: FlutterFlowTheme.of(context)
-                                  .labelSmall
-                                  .fontWeight,
-                              fontStyle: FlutterFlowTheme.of(context)
-                                  .labelSmall
-                                  .fontStyle,
-                            ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(0.0, 0.0),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              1.0, 1.0, 1.0, 1.0),
-                          child: Icon(
-                            FFIcons.kclock,
-                            color: FlutterFlowTheme.of(context).tertiary,
-                            size: 14.0,
                           ),
-                        ),
+                        ].divide(SizedBox(width: FFAppConstants.halfGap)),
                       ),
-                      Text(
-                        valueOrDefault<String>(
-                          widget!.datecount,
-                          '[datecount]',
-                        ),
-                        style:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Align(
+                                alignment: AlignmentDirectional(0.0, 0.0),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      1.0, 1.0, 1.0, 1.0),
+                                  child: Icon(
+                                    Icons.local_hospital_outlined,
+                                    color:
+                                        FlutterFlowTheme.of(context).tertiary,
+                                    size: 12.0,
                                   ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
                                 ),
+                              ),
+                              Text(
+                                valueOrDefault<String>(
+                                  widget!.sector,
+                                  '[sector]',
+                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      font: GoogleFonts.geologica(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
+                                      ),
+                                      fontSize: 12.0,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontStyle,
+                                    ),
+                              ),
+                            ].divide(SizedBox(width: 1.0)),
+                          ),
+                          if ('${(String distance) {
+                                return distance.split(':')[0];
+                              }(widget!.distance!)}' !=
+                              'ERRO')
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Align(
+                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        1.0, 1.0, 1.0, 1.0),
+                                    child: Icon(
+                                      FFIcons.kmapPin,
+                                      color:
+                                          FlutterFlowTheme.of(context).tertiary,
+                                      size: 12.0,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  valueOrDefault<String>(
+                                    widget!.distance,
+                                    '[distance]',
+                                  ),
+                                  style: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .override(
+                                        font: GoogleFonts.geologica(
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontStyle,
+                                        ),
+                                        fontSize: 10.0,
+                                        letterSpacing: 0.0,
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
+                                      ),
+                                ),
+                              ].divide(SizedBox(width: 1.0)),
+                            ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Align(
+                                alignment: AlignmentDirectional(0.0, 0.0),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      1.0, 1.0, 1.0, 1.0),
+                                  child: Icon(
+                                    FFIcons.kclock,
+                                    color:
+                                        FlutterFlowTheme.of(context).tertiary,
+                                    size: 12.0,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                valueOrDefault<String>(
+                                  widget!.datecount,
+                                  '[datecount]',
+                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      font: GoogleFonts.geologica(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
+                                      ),
+                                      fontSize: 10.0,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontStyle,
+                                    ),
+                              ),
+                            ].divide(SizedBox(width: 1.0)),
+                          ),
+                        ].divide(SizedBox(width: 3.0)),
                       ),
-                    ].divide(SizedBox(width: FFAppConstants.halfGap)),
+                    ].divide(SizedBox(height: FFAppConstants.halfGap)),
                   ),
-                ].divide(SizedBox(height: FFAppConstants.halfGap)),
+                ),
               ),
             ),
             Container(
@@ -509,47 +488,12 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                   if (widget!.showSign)
                     Container(
                       decoration: BoxDecoration(),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            0.0,
-                            valueOrDefault<double>(
-                              FFAppConstants.halfGap,
-                              0.0,
-                            ),
-                            0.0,
-                            0.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            if (true)
-                              Icon(
-                                FFIcons.kalertCircle,
-                                color: FlutterFlowTheme.of(context).primary,
-                                size: 18.0,
-                              ),
-                            Text(
-                              'À vista',
-                              style: FlutterFlowTheme.of(context)
-                                  .labelMedium
-                                  .override(
-                                    font: GoogleFonts.geologica(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontStyle,
-                                    ),
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                            ),
-                          ].divide(SizedBox(height: FFAppConstants.halfGap)),
+                      child: Visibility(
+                        visible: true,
+                        child: Icon(
+                          FFIcons.kalertCircle,
+                          color: FlutterFlowTheme.of(context).primary,
+                          size: 16.0,
                         ),
                       ),
                     ),
@@ -564,7 +508,7 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                             widget!.checkColor,
                             FlutterFlowTheme.of(context).accent2,
                           ),
-                          size: 18.0,
+                          size: 16.0,
                         ),
                       ),
                     ),
@@ -579,7 +523,7 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                             widget!.colorPay,
                             FlutterFlowTheme.of(context).accent2,
                           ),
-                          size: 18.0,
+                          size: 16.0,
                         ),
                       ),
                     ),

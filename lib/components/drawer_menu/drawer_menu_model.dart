@@ -1,6 +1,7 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/back_top_bar/back_top_bar_widget.dart';
+import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -9,6 +10,7 @@ import '/custom_code/actions/index.dart' as actions;
 import '/index.dart';
 import 'drawer_menu_widget.dart' show DrawerMenuWidget;
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +21,8 @@ class DrawerMenuModel extends FlutterFlowModel<DrawerMenuWidget> {
   late BackTopBarModel backTopBarModel;
   // Stores action output result for [Backend Call - Query Rows] action in Button widget.
   List<NotificationsRow>? notificationsQuery;
+  // Stores action output result for [Custom Action - launchWhatsAppChat] action in Button widget.
+  bool? whatsappDrawer;
 
   @override
   void initState(BuildContext context) {

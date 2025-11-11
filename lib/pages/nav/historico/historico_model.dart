@@ -2,8 +2,10 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/components/header/header_widget.dart';
+import '/components/loading/lista_plantoes_loading/lista_plantoes_loading_widget.dart';
 import '/components/vagas/card_vagas/card_vagas_widget.dart';
 import '/components/vagas/empty_list/empty_list_widget.dart';
+import '/flutter_flow/flutter_flow_calendar.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -13,32 +15,19 @@ import '/pages/other/vaga_bottom_sheet/vaga_bottom_sheet_widget.dart';
 import 'dart:ui';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'dart:async';
-import 'explorar_widget.dart' show ExplorarWidget;
+import 'historico_widget.dart' show HistoricoWidget;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class ExplorarModel extends FlutterFlowModel<ExplorarWidget> {
+class HistoricoModel extends FlutterFlowModel<HistoricoWidget> {
   ///  Local state fields for this page.
 
-  Color clearDropColor = Color(4293256677);
+  String? candidacyStatus = 'PENDENTE';
 
   bool isBottomSheetLoading = false;
 
-  bool hideTable = false;
-
-  List<String> typeFilter = ['Fixo', 'Cobertura', 'Ambulatorial'];
-  void addToTypeFilter(String item) => typeFilter.add(item);
-  void removeFromTypeFilter(String item) => typeFilter.remove(item);
-  void removeAtIndexFromTypeFilter(int index) => typeFilter.removeAt(index);
-  void insertAtIndexInTypeFilter(int index, String item) =>
-      typeFilter.insert(index, item);
-  void updateTypeFilterAtIndex(int index, Function(String) updateFn) =>
-      typeFilter[index] = updateFn(typeFilter[index]);
-
-  String sortBy = 'vagas_createdate';
-
-  bool ascendingOrder = false;
+  Color? clearDropColor = Color(4293256677);
 
   List<VwVagasCandidaturasRow> variableQuery = [];
   void addToVariableQuery(VwVagasCandidaturasRow item) =>
@@ -53,7 +42,7 @@ class ExplorarModel extends FlutterFlowModel<ExplorarWidget> {
           int index, Function(VwVagasCandidaturasRow) updateFn) =>
       variableQuery[index] = updateFn(variableQuery[index]);
 
-  String? vagaId;
+  String sortedby = 'data de manifestação do interesse';
 
   ///  State fields for stateful widgets in this page.
 
@@ -64,8 +53,11 @@ class ExplorarModel extends FlutterFlowModel<ExplorarWidget> {
   // State field(s) for DropDown widget.
   List<String>? dropDownValue;
   FormFieldController<List<String>>? dropDownValueController;
+  Stream<List<CleanHospitalRow>>? containerSupabaseStream;
   bool requestCompleted = false;
   String? requestLastUniqueKey;
+  // State field(s) for Calendar widget.
+  DateTimeRange? calendarSelectedDay;
   // Models for cardVagas dynamic component.
   late FlutterFlowDynamicModels<CardVagasModel> cardVagasModels1;
   // Models for cardVagas dynamic component.
@@ -75,6 +67,10 @@ class ExplorarModel extends FlutterFlowModel<ExplorarWidget> {
   void initState(BuildContext context) {
     drawerMenuModel = createModel(context, () => DrawerMenuModel());
     headerModel = createModel(context, () => HeaderModel());
+    calendarSelectedDay = DateTimeRange(
+      start: DateTime.now().startOfDay,
+      end: DateTime.now().endOfDay,
+    );
     cardVagasModels1 = FlutterFlowDynamicModels(() => CardVagasModel());
     cardVagasModels2 = FlutterFlowDynamicModels(() => CardVagasModel());
   }

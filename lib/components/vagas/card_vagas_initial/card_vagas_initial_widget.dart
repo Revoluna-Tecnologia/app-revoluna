@@ -22,7 +22,6 @@ class CardVagasInitialWidget extends StatefulWidget {
     this.vaga,
     this.avatarHospital,
     this.sector,
-    this.distance,
   });
 
   final String? specialty;
@@ -35,7 +34,6 @@ class CardVagasInitialWidget extends StatefulWidget {
   final String? vaga;
   final String? avatarHospital;
   final String? sector;
-  final String? distance;
 
   @override
   State<CardVagasInitialWidget> createState() => _CardVagasInitialWidgetState();
@@ -323,149 +321,40 @@ class _CardVagasInitialWidgetState extends State<CardVagasInitialWidget> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Builder(
-                            builder: (context) {
-                              if (widget!.shift == 'Diurno') {
-                                return Align(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        1.0, 1.0, 1.0, 1.0),
-                                    child: Icon(
-                                      FFIcons.ksun,
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
-                                      size: 14.0,
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                'Setor: ',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                      font: GoogleFonts.geologica(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .bodySmall
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodySmall
+                                            .fontStyle,
+                                      ),
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodySmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodySmall
+                                          .fontStyle,
                                     ),
-                                  ),
-                                );
-                              } else if (widget!.shift == 'Noturno') {
-                                return Align(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        1.0, 1.0, 1.0, 1.0),
-                                    child: Icon(
-                                      FFIcons.kmoon,
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
-                                      size: 14.0,
-                                    ),
-                                  ),
-                                );
-                              } else if (widget!.shift ==
-                                  'Meio período (manhã)') {
-                                return Align(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        1.0, 1.0, 1.0, 1.0),
-                                    child: Icon(
-                                      FFIcons.ksunrise,
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
-                                      size: 14.0,
-                                    ),
-                                  ),
-                                );
-                              } else if (widget!.shift ==
-                                  'Meio período (tarde)') {
-                                return Align(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        1.0, 1.0, 1.0, 1.0),
-                                    child: Icon(
-                                      FFIcons.ksunset,
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
-                                      size: 14.0,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                return Align(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        1.0, 1.0, 1.0, 1.0),
-                                    child: Icon(
-                                      FFIcons.kcinderela,
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
-                                      size: 14.0,
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
-                          Text(
-                            valueOrDefault<String>(
-                              widget!.sector,
-                              '[sector]',
-                            ),
-                            style: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  fontSize: 10.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
+                              ),
+                              Text(
+                                valueOrDefault<String>(
+                                  widget!.sector,
+                                  '[sector]',
                                 ),
-                          ),
-                          if ('${(String distance) {
-                                return distance.split(':')[0];
-                              }(widget!.distance!)}' !=
-                              'ERRO')
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Align(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        1.0, 1.0, 1.0, 1.0),
-                                    child: Icon(
-                                      FFIcons.kmapPin,
-                                      color:
-                                          FlutterFlowTheme.of(context).tertiary,
-                                      size: 12.0,
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  valueOrDefault<String>(
-                                    widget!.distance,
-                                    '[distance]',
-                                  ),
-                                  style: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .override(
-                                        font: GoogleFonts.geologica(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontStyle,
-                                        ),
-                                        fontSize: 10.0,
-                                        letterSpacing: 0.0,
+                                style: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      font: GoogleFonts.geologica(
                                         fontWeight: FlutterFlowTheme.of(context)
                                             .labelMedium
                                             .fontWeight,
@@ -473,9 +362,18 @@ class _CardVagasInitialWidgetState extends State<CardVagasInitialWidget> {
                                             .labelMedium
                                             .fontStyle,
                                       ),
-                                ),
-                              ].divide(SizedBox(width: 1.0)),
-                            ),
+                                      fontSize: 10.0,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontStyle,
+                                    ),
+                              ),
+                            ],
+                          ),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [

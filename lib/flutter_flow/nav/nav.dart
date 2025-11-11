@@ -229,14 +229,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => LoginMagicLinkWidget(),
         ),
         FFRoute(
-            name: PlantoesWidget.routeName,
-            path: PlantoesWidget.routePath,
+            name: HistoricoWidget.routeName,
+            path: HistoricoWidget.routePath,
             requireAuth: true,
             builder: (context, params) => params.isEmpty
-                ? NavBarPage(initialPage: 'Plantoes')
+                ? NavBarPage(initialPage: 'Historico')
                 : NavBarPage(
-                    initialPage: 'Plantoes',
-                    page: PlantoesWidget(
+                    initialPage: 'Historico',
+                    page: HistoricoWidget(
                       fromhome: params.getParam(
                         'fromhome',
                         ParamType.bool,
