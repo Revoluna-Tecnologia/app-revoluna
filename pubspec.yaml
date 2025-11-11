@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.1.4+28
+version: 2.2.0+31
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -44,6 +44,7 @@ dependencies:
   convert: ^3.1.2
   crypto: ^3.0.5
   csslib: 1.0.2
+  csv: 6.0.0
   device_calendar: ^4.3.2
   device_info_plus: 11.5.0
   device_info_plus_platform_interface: 7.0.3
@@ -59,15 +60,18 @@ dependencies:
   firebase_core_platform_interface: 5.4.0
   firebase_core_web: 2.23.0
   firebase_messaging:
-  firebase_performance: 0.10.1+7
-  firebase_performance_platform_interface: 0.1.5+7
-  firebase_performance_web: 0.1.7+13
   flutter_animate: 4.5.0
   flutter_app_badger: ^1.5.0
   flutter_background_service: ^5.1.0
   flutter_cache_manager: 3.4.1
   flutter_native_splash: 2.4.1
   flutter_plugin_android_lifecycle: 2.0.28
+  flutter_secure_storage: 10.0.0-beta.4
+  flutter_secure_storage_linux: 2.0.1
+  flutter_secure_storage_macos: 4.0.0
+  flutter_secure_storage_platform_interface: 2.0.1
+  flutter_secure_storage_web: 2.0.0
+  flutter_secure_storage_windows: 4.0.0
   flutter_svg: 2.1.0
   font_awesome_flutter: 10.7.0
   from_css_color: 2.0.0
@@ -142,11 +146,13 @@ dependencies:
   simple_circular_progress_bar: ^1.0.2
   sqflite: 2.3.3+1
   sqflite_common: 2.5.4+3
+  sticky_headers: 0.3.0+2
   stop_watch_timer: 3.0.2
   storage_client: 2.4.0
   stream_transform: 2.1.0
   supabase: 2.7.0
   supabase_flutter: 2.9.0
+  synchronized: 3.4.0
   table_calendar: 3.2.0
   timeago: 3.7.1
   timezone: ^0.9.0
@@ -193,7 +199,7 @@ flutter_launcher_icons:
   web:
     generate: true
   image_path: 'assets/images/app_launcher_icon.png'
-  adaptive_icon_background: '#a369ed'
+  adaptive_icon_background: 'assets/images/adaptive_background_icon.png'
   adaptive_icon_foreground: 'assets/images/adaptive_foreground_icon.png'
 
 

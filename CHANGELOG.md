@@ -1,5 +1,28 @@
 # Histórico de Versões - Revoluna
 
+## [2.2.0] - 11/11/2025
+
+### 🎨 **Redesign de Interface**
+
+#### 🔄 **Refatoração Completa da UI**
+- **Nova Página Inicial**: Redesign completo da área deslogada com interface modernizada
+- **Header Aprimorado**: Novo header com contagem de plantões integrada
+- **Página de Vagas Renovada**: Refatoração completa da página de vagas com melhor organização e usabilidade
+- **Navegação Redesenhada**: Refatoração do sistema de navegação para melhor experiência do usuário
+
+#### 🎯 **Acesso Ampliado**
+- **Acesso para Usuários Não Cadastrados**: Usuários não logados agora podem visualizar vagas
+- **Nova Lógica de Candidatura**: Sistema de candidatura repensado para suportar diferentes tipos de acesso
+
+
+#### **Logo atualizado**
+-  Novo logo e suas aplicações em toda a plataforma
+
+### 🔧 **Melhorias Técnicas**
+- **Atualizações de Dependências**: Atualização de bibliotecas e pacotes do projeto
+
+---
+
 ## [2.1.4] - 18/09/2025
 
 ### ✨ **Novas Funcionalidades**
