@@ -6,7 +6,6 @@ import '/components/dialogs/negative_dialog_box/negative_dialog_box_widget.dart'
 import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/components/dialogs/passar_plantao_dialog_box/passar_plantao_dialog_box_widget.dart';
 import '/components/dialogs/positive_dialog_box/positive_dialog_box_widget.dart';
-import '/components/dialogs/small_dialog/small_dialog_widget.dart';
 import '/components/vagas/address_icon_button/address_icon_button_widget.dart';
 import '/flutter_flow/flutter_flow_google_map.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -20,17 +19,14 @@ import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import '/flutter_flow/permissions_util.dart';
 import '/index.dart';
-import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'vaga_bottom_sheet_model.dart';
 export 'vaga_bottom_sheet_model.dart';
 
@@ -87,7 +83,7 @@ class VagaBottomSheetWidget extends StatefulWidget {
   final String avatarHospital;
   final String? sector;
   final bool showFavorite;
-  final List<VwVagasCandidaturasRow>? candidates;
+  final VwVagasCandidaturasRow? candidates;
   final Future Function()? callback;
 
   @override
@@ -154,30 +150,11 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
         );
         logFirebaseEvent('VagaBottomSheet_update_component_state');
         _model.isSaved = _model.saved != null && (_model.saved)!.isNotEmpty;
-        _model.isCandidate = widget!.candidates!
-            .where((e) =>
-                (e.medicoId == currentUserUid) &&
-                (e.candidaturasId != null && e.candidaturasId != ''))
-            .toList()
-            .isNotEmpty;
-        _model.isAnnounced = widget!.candidates
-                    ?.where((e) =>
-                        (e.medicoId == currentUserUid) &&
-                        (e.vagasStatus == 'anunciada'))
-                    .toList() !=
-                null &&
-            (widget!.candidates
-                    ?.where((e) =>
-                        (e.medicoId == currentUserUid) &&
-                        (e.vagasStatus == 'anunciada'))
-                    .toList())!
-                .isNotEmpty;
-        _model.isApproved = widget!.candidates!
-            .where((e) =>
-                (e.medicoId == currentUserUid) &&
-                (e.candidaturaStatus == 'APROVADO'))
-            .toList()
-            .isNotEmpty;
+        _model.isCandidate = widget!.candidates?.medicoId == currentUserUid;
+        _model.isAnnounced = widget!.candidates?.vagasStatus == 'anunciada';
+        _model.isApproved =
+            (widget!.candidates?.candidaturaStatus == 'APROVADO') &&
+                (widget!.candidates?.medicoId == currentUserUid);
         _model.isCheckedIn =
             _model.checkin != null && (_model.checkin)!.isNotEmpty;
         _model.isCheckedOut = _model.checkin?.firstOrNull?.checkout != null;
@@ -1031,6 +1008,13 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                               size: 14.0,
                                             ),
                                           );
+                                        } else if (widget!.type == 'Mensal') {
+                                          return Icon(
+                                            FFIcons.kcalendar,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            size: 17.0,
+                                          );
                                         } else {
                                           return Padding(
                                             padding:
@@ -1294,14 +1278,10 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                               currentJwtToken != '') {
                                             return Builder(
                                               builder: (context) {
-                                                if ((widget!
-                                                            .candidates!
-                                                            .firstOrNull!
+                                                if ((widget!.candidates!
                                                             .totalCandidaturas! >
                                                         1) &&
-                                                    (widget!
-                                                            .candidates
-                                                            ?.firstOrNull
+                                                    (widget!.candidates
                                                             ?.medicoId ==
                                                         currentUserUid) &&
                                                     _model.isApproved) {
@@ -1319,11 +1299,9 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                         TextSpan(
                                                           text: valueOrDefault<
                                                               String>(
-                                                            widget!
-                                                                .candidates
-                                                                ?.firstOrNull
+                                                            widget!.candidates
                                                                 ?.totalCandidaturas
-                                                                .toString(),
+                                                                ?.toString(),
                                                             '[total candidaturas]',
                                                           ),
                                                           style: TextStyle(),
@@ -1362,14 +1340,58 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                               ),
                                                     ),
                                                   );
-                                                } else if ((widget!
-                                                            .candidates
-                                                            ?.firstOrNull
+                                                } else if ((widget!.candidates
                                                             ?.totalCandidaturas ==
                                                         1) &&
-                                                    (widget!
-                                                            .candidates
-                                                            ?.firstOrNull
+                                                    (widget!.candidates
+                                                            ?.medicoId ==
+                                                        currentUserUid) &&
+                                                    _model.isApproved) {
+                                                  return RichText(
+                                                    textScaler:
+                                                        MediaQuery.of(context)
+                                                            .textScaler,
+                                                    text: TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text:
+                                                              'Você foi aprovado. Tenha um bom plantão!',
+                                                          style: TextStyle(),
+                                                        )
+                                                      ],
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                font: GoogleFonts
+                                                                    .geologica(
+                                                                  fontWeight: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .fontWeight,
+                                                                  fontStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .fontStyle,
+                                                                ),
+                                                                letterSpacing:
+                                                                    0.0,
+                                                                fontWeight: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontWeight,
+                                                                fontStyle: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontStyle,
+                                                              ),
+                                                    ),
+                                                  );
+                                                } else if ((widget!.candidates
+                                                            ?.totalCandidaturas ==
+                                                        1) &&
+                                                    (widget!.candidates
                                                             ?.medicoId ==
                                                         currentUserUid)) {
                                                   return Text(
@@ -1404,9 +1426,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                   .fontStyle,
                                                         ),
                                                   );
-                                                } else if (widget!
-                                                        .candidates!
-                                                        .firstOrNull!
+                                                } else if (widget!.candidates!
                                                         .totalCandidaturas! >
                                                     0) {
                                                   return RichText(
@@ -1418,11 +1438,9 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                         TextSpan(
                                                           text: valueOrDefault<
                                                               String>(
-                                                            widget!
-                                                                .candidates
-                                                                ?.firstOrNull
+                                                            widget!.candidates
                                                                 ?.totalCandidaturas
-                                                                .toString(),
+                                                                ?.toString(),
                                                             '[total candidaturas]',
                                                           ),
                                                           style: TextStyle(),
@@ -1434,10 +1452,8 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                         TextSpan(
                                                           text: widget!
                                                                       .candidates
-                                                                      ?.firstOrNull
-                                                                      ?.totalCandidaturas
-                                                                      .toString() ==
-                                                                  '1'
+                                                                      ?.totalCandidaturas ==
+                                                                  1
                                                               ? ''
                                                               : 's',
                                                           style: TextStyle(),
@@ -3093,41 +3109,30 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                             ),
                                                           ],
                                                         ),
-                                                        Expanded(
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                valueOrDefault<
-                                                                    String>(
-                                                                  widget!
-                                                                      .contractorName,
-                                                                  '[contractorName]',
-                                                                ).maybeHandleOverflow(
-                                                                  maxChars: 28,
-                                                                  replacement:
-                                                                      '…',
-                                                                ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .override(
-                                                                      font: GoogleFonts
-                                                                          .geologica(
-                                                                        fontWeight: FlutterFlowTheme.of(context)
-                                                                            .bodyMedium
-                                                                            .fontWeight,
-                                                                        fontStyle: FlutterFlowTheme.of(context)
-                                                                            .bodyMedium
-                                                                            .fontStyle,
-                                                                      ),
-                                                                      letterSpacing:
-                                                                          0.0,
+                                                        Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              valueOrDefault<
+                                                                  String>(
+                                                                widget!
+                                                                    .contractorName,
+                                                                '[contractorName]',
+                                                              ).maybeHandleOverflow(
+                                                                maxChars: 28,
+                                                                replacement:
+                                                                    '…',
+                                                              ),
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    font: GoogleFonts
+                                                                        .geologica(
                                                                       fontWeight: FlutterFlowTheme.of(
                                                                               context)
                                                                           .bodyMedium
@@ -3137,188 +3142,44 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                           .bodyMedium
                                                                           .fontStyle,
                                                                     ),
-                                                              ),
-                                                              Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                children: [
-                                                                  FFButtonWidget(
-                                                                    onPressed:
-                                                                        () async {
-                                                                      logFirebaseEvent(
-                                                                          'VAGA_BOTTOM_SHEET_Button_k18n2ihy_ON_TAP');
-                                                                      if (!isWeb) {
-                                                                        logFirebaseEvent(
-                                                                            'Button_call_number');
-                                                                        await launchUrl(
-                                                                            Uri(
-                                                                          scheme:
-                                                                              'tel',
-                                                                          path:
-                                                                              widget!.contractorPhone!,
-                                                                        ));
-                                                                      }
-                                                                    },
-                                                                    text: valueOrDefault<
-                                                                        String>(
-                                                                      functions.aplicarmascara(
-                                                                          valueOrDefault<String>(
-                                                                            widget!.contractorPhone,
-                                                                            'Não informado',
-                                                                          ),
-                                                                          '(##) #####-####'),
-                                                                      'Não informado',
-                                                                    ),
-                                                                    options:
-                                                                        FFButtonOptions(
-                                                                      height: MediaQuery.sizeOf(context)
-                                                                              .height *
-                                                                          0.03,
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                      iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                      color: Color(
-                                                                          0x00A369ED),
-                                                                      textStyle: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            font:
-                                                                                GoogleFonts.geologica(
-                                                                              fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                            ),
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).tertiary,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                            fontStyle:
-                                                                                FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                          ),
-                                                                      elevation:
-                                                                          0.0,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              valueOrDefault<double>(
-                                                                        FFAppConstants
-                                                                            .borderS,
+                                                                    letterSpacing:
                                                                         0.0,
-                                                                      )),
-                                                                    ),
-                                                                    showLoadingIndicator:
-                                                                        false,
+                                                                    fontWeight: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .fontWeight,
+                                                                    fontStyle: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .fontStyle,
                                                                   ),
-                                                                  Builder(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            FlutterFlowIconButton(
-                                                                      borderRadius:
-                                                                          8.0,
-                                                                      buttonSize:
-                                                                          30.0,
-                                                                      icon:
-                                                                          Icon(
-                                                                        FFIcons
-                                                                            .kcopy,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .tertiary,
-                                                                        size:
-                                                                            16.0,
-                                                                      ),
-                                                                      onPressed:
-                                                                          () async {
-                                                                        logFirebaseEvent(
-                                                                            'VAGA_BOTTOM_SHEET_COMP_copy_ICN_ON_TAP');
-                                                                        logFirebaseEvent(
-                                                                            'IconButton_copy_to_clipboard');
-                                                                        await Clipboard.setData(ClipboardData(
-                                                                            text:
-                                                                                widget!.contractorPhone!));
-                                                                        if (isiOS) {
-                                                                          logFirebaseEvent(
-                                                                              'IconButton_alert_dialog');
-                                                                          await showAlignedDialog(
-                                                                            barrierColor:
-                                                                                Colors.transparent,
-                                                                            context:
-                                                                                context,
-                                                                            isGlobal:
-                                                                                false,
-                                                                            avoidOverflow:
-                                                                                false,
-                                                                            targetAnchor:
-                                                                                AlignmentDirectional(0.0, 0.0).resolve(Directionality.of(context)),
-                                                                            followerAnchor:
-                                                                                AlignmentDirectional(0.0, -0.1).resolve(Directionality.of(context)),
-                                                                            builder:
-                                                                                (dialogContext) {
-                                                                              return Material(
-                                                                                color: Colors.transparent,
-                                                                                child: SmallDialogWidget(
-                                                                                  dialog: 'Telefone copiado!',
-                                                                                ),
-                                                                              );
-                                                                            },
-                                                                          );
-                                                                        }
-                                                                      },
+                                                            ),
+                                                            Stack(
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  children: [
+                                                                    Icon(
+                                                                      FFIcons
+                                                                          .kphone,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .tertiary,
+                                                                      size:
+                                                                          14.0,
                                                                     ),
-                                                                  ),
-                                                                ].divide(SizedBox(
-                                                                    width: FFAppConstants
-                                                                        .Gap)),
-                                                              ),
-                                                              Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                children: [
-                                                                  InkWell(
-                                                                    splashColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    focusColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    hoverColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    highlightColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    onTap:
-                                                                        () async {
-                                                                      logFirebaseEvent(
-                                                                          'VAGA_BOTTOM_SHEET_Text_vtumtegn_ON_TAP');
-                                                                      logFirebaseEvent(
-                                                                          'Text_send_email');
-                                                                      await launchUrl(
-                                                                          Uri(
-                                                                        scheme:
-                                                                            'mailto',
-                                                                        path: widget!
-                                                                            .contractorEmail!,
-                                                                      ));
-                                                                    },
-                                                                    child: Text(
+                                                                    Text(
                                                                       valueOrDefault<
                                                                           String>(
-                                                                        widget!
-                                                                            .contractorEmail,
+                                                                        functions.aplicarmascara(
+                                                                            widget!.contractorPhone,
+                                                                            '(##) #####-####'),
                                                                         'Não informado',
                                                                       ).maybeHandleOverflow(
                                                                         maxChars:
-                                                                            28,
+                                                                            13,
                                                                         replacement:
                                                                             '…',
                                                                       ),
@@ -3341,72 +3202,207 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                                 FlutterFlowTheme.of(context).bodyMedium.fontStyle,
                                                                           ),
                                                                     ),
-                                                                  ),
-                                                                  Builder(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            FlutterFlowIconButton(
-                                                                      borderRadius:
-                                                                          8.0,
-                                                                      buttonSize:
-                                                                          30.0,
-                                                                      icon:
-                                                                          Icon(
-                                                                        FFIcons
-                                                                            .kcopy,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .tertiary,
-                                                                        size:
-                                                                            16.0,
-                                                                      ),
-                                                                      onPressed:
-                                                                          () async {
+                                                                  ].divide(SizedBox(
+                                                                      width: FFAppConstants
+                                                                          .halfGap)),
+                                                                ),
+                                                                Builder(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          FFButtonWidget(
+                                                                    onPressed:
+                                                                        () async {
+                                                                      logFirebaseEvent(
+                                                                          'VAGA_BOTTOM_SHEET_PHONE_BUTTON_BTN_ON_TA');
+                                                                      currentUserLocationValue = await getCurrentUserLocation(
+                                                                          defaultLocation: LatLng(
+                                                                              0.0,
+                                                                              0.0));
+                                                                      if (currentJwtToken !=
+                                                                              null &&
+                                                                          currentJwtToken !=
+                                                                              '') {
                                                                         logFirebaseEvent(
-                                                                            'VAGA_BOTTOM_SHEET_COMP_copy_ICN_ON_TAP');
-                                                                        logFirebaseEvent(
-                                                                            'IconButton_copy_to_clipboard');
-                                                                        await Clipboard.setData(ClipboardData(
-                                                                            text:
-                                                                                widget!.contractorEmail!));
-                                                                        if (isiOS) {
+                                                                            'Button_custom_action');
+                                                                        _model.launchwhatsapPhone =
+                                                                            await actions.launchWhatsAppChat(
+                                                                          '${"Olá, encontrei essa vaga de plantão na Revoluna.\n\n"}${(String? speciality) {
+                                                                            return "*$speciality*\n";
+                                                                          }(widget!.speciality)}${(String value) {
+                                                                            return "_" +
+                                                                                value +
+                                                                                "_\n";
+                                                                          }(formatNumber(
+                                                                            widget!.value,
+                                                                            formatType:
+                                                                                FormatType.decimal,
+                                                                            decimalType:
+                                                                                DecimalType.commaDecimal,
+                                                                            currency:
+                                                                                'R\$ ',
+                                                                          ))}${(String? hospital) {
+                                                                            return "$hospital\n";
+                                                                          }(widget!.hospital)}${(String? date) {
+                                                                            return "$date\n";
+                                                                          }(dateTimeFormat(
+                                                                            "EEEE, dd/M",
+                                                                            widget!.date,
+                                                                            locale:
+                                                                                FFLocalizations.of(context).languageCode,
+                                                                          ))}${(String? start, String end) {
+                                                                            return "Início: $start Fim: $end\n";
+                                                                          }(dateTimeFormat(
+                                                                                "Hm",
+                                                                                widget!.startTime,
+                                                                                locale: FFLocalizations.of(context).languageCode,
+                                                                              ), dateTimeFormat(
+                                                                                "Hm",
+                                                                                widget!.endTime,
+                                                                                locale: FFLocalizations.of(context).languageCode,
+                                                                              ))}${(String? shift, String type) {
+                                                                            return "$shift / $type\n";
+                                                                          }(widget!.shift, widget!.type!)}${(String? sector) {
+                                                                            return "Setor: $sector\n\n";
+                                                                          }(widget!.sector)}${(String? shift, String type) {
+                                                                            return "Gostaria de me candidatar para essa vaga. Poderia me enviar mais informações?";
+                                                                          }(widget!.shift, widget!.type!)}',
+                                                                          (widget!.contractorPhone == null || widget!.contractorPhone == '') && (widget!.contractorPhone == 'Não informado')
+                                                                              ? FFAppState().concierge
+                                                                              : widget!.contractorPhone!,
+                                                                        );
+                                                                        if (_model
+                                                                            .launchwhatsapPhone!) {
+                                                                          if (!_model
+                                                                              .isCandidate) {
+                                                                            logFirebaseEvent('Button_custom_action');
+                                                                            _model.insertCandidaturaPhone =
+                                                                                await actions.insertCandidaturas(
+                                                                              currentUserUid,
+                                                                              widget!.jobid!,
+                                                                              widget!.value!,
+                                                                            );
+                                                                          }
+                                                                        } else {
                                                                           logFirebaseEvent(
-                                                                              'IconButton_alert_dialog');
-                                                                          await showAlignedDialog(
-                                                                            barrierColor:
-                                                                                Colors.transparent,
+                                                                              'Button_alert_dialog');
+                                                                          await showDialog(
                                                                             context:
                                                                                 context,
-                                                                            isGlobal:
-                                                                                false,
-                                                                            avoidOverflow:
-                                                                                false,
-                                                                            targetAnchor:
-                                                                                AlignmentDirectional(0.0, 0.0).resolve(Directionality.of(context)),
-                                                                            followerAnchor:
-                                                                                AlignmentDirectional(0.0, -0.1).resolve(Directionality.of(context)),
                                                                             builder:
                                                                                 (dialogContext) {
-                                                                              return Material(
-                                                                                color: Colors.transparent,
-                                                                                child: SmallDialogWidget(
-                                                                                  dialog: 'E-mail copiado!',
+                                                                              return Dialog(
+                                                                                elevation: 0,
+                                                                                insetPadding: EdgeInsets.zero,
+                                                                                backgroundColor: Colors.transparent,
+                                                                                alignment: AlignmentDirectional(0.0, 0.0).resolve(Directionality.of(context)),
+                                                                                child: NegativeInformativeBoxWidget(
+                                                                                  title: 'Necessário WhatsApp',
+                                                                                  body: 'Para prosseguir é preciso ter o aplicativo WhatsaApp instalado no seu  aparelho',
                                                                                 ),
                                                                               );
                                                                             },
                                                                           );
                                                                         }
-                                                                      },
+
+                                                                        logFirebaseEvent(
+                                                                            'Button_execute_callback');
+                                                                        await widget
+                                                                            .callback
+                                                                            ?.call();
+                                                                      } else {
+                                                                        logFirebaseEvent(
+                                                                            'Button_bottom_sheet');
+                                                                        await showModalBottomSheet(
+                                                                          isScrollControlled:
+                                                                              true,
+                                                                          backgroundColor:
+                                                                              Colors.transparent,
+                                                                          enableDrag:
+                                                                              false,
+                                                                          context:
+                                                                              context,
+                                                                          builder:
+                                                                              (context) {
+                                                                            return Padding(
+                                                                              padding: MediaQuery.viewInsetsOf(context),
+                                                                              child: Container(
+                                                                                height: MediaQuery.sizeOf(context).height * 0.6,
+                                                                                child: PaywallWidget(),
+                                                                              ),
+                                                                            );
+                                                                          },
+                                                                        ).then((value) =>
+                                                                            safeSetState(() {}));
+                                                                      }
+
+                                                                      logFirebaseEvent(
+                                                                          'Button_google_analytics_event');
+                                                                      logFirebaseEvent(
+                                                                        'vagas_interesse_telefone',
+                                                                        parameters: {
+                                                                          'user_id':
+                                                                              currentUserUid,
+                                                                          'time':
+                                                                              getCurrentTimestamp,
+                                                                          'location':
+                                                                              currentUserLocationValue,
+                                                                          'vaga_id':
+                                                                              widget!.jobid,
+                                                                        },
+                                                                      );
+
+                                                                      safeSetState(
+                                                                          () {});
+                                                                    },
+                                                                    text:
+                                                                        'phone_button',
+                                                                    options:
+                                                                        FFButtonOptions(
+                                                                      width:
+                                                                          121.0,
+                                                                      height:
+                                                                          20.0,
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      color: Color(
+                                                                          0x00A369ED),
+                                                                      textStyle: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            font:
+                                                                                GoogleFonts.geologica(
+                                                                              fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                              fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                            ),
+                                                                            color:
+                                                                                Color(0x000FADEB),
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                            fontWeight:
+                                                                                FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                            fontStyle:
+                                                                                FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                          ),
+                                                                      elevation:
+                                                                          0.0,
                                                                     ),
                                                                   ),
-                                                                ].divide(SizedBox(
-                                                                    width: FFAppConstants
-                                                                        .Gap)),
-                                                              ),
-                                                            ].divide(SizedBox(
-                                                                height:
-                                                                    FFAppConstants
-                                                                        .halfGap)),
-                                                          ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ].divide(SizedBox(
+                                                              height:
+                                                                  FFAppConstants
+                                                                      .halfGap)),
                                                         ),
                                                       ],
                                                     ),
@@ -4739,22 +4735,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                               }
                                                             },
                                                           ),
-                                                        if (widget!.candidates
-                                                                    ?.where((e) =>
-                                                                        (e.medicoId ==
-                                                                            currentUserUid) &&
-                                                                        (e.candidaturaStatus ==
-                                                                            'APROVADO'))
-                                                                    .toList() !=
-                                                                null &&
-                                                            (widget!.candidates
-                                                                    ?.where((e) =>
-                                                                        (e.medicoId ==
-                                                                            currentUserUid) &&
-                                                                        (e.candidaturaStatus ==
-                                                                            'APROVADO'))
-                                                                    .toList())!
-                                                                .isNotEmpty)
+                                                        if (_model.isApproved)
                                                           Row(
                                                             mainAxisSize:
                                                                 MainAxisSize
@@ -4830,7 +4811,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                             'medico_id':
                                                                                 currentUserUid,
                                                                             'candidaturas_id':
-                                                                                widget!.candidates?.where((e) => e.medicoId == currentUserUid).toList()?.firstOrNull?.candidaturasId,
+                                                                                widget!.candidates?.candidaturasId,
                                                                             'valor':
                                                                                 (widget!.value!).toInt(),
                                                                             'vagas_id':
@@ -6221,242 +6202,337 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                           ],
                         ),
                       ),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).primaryBackground,
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            height: 1.0,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
+                    if (_model.isApproved == false)
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).primaryBackground,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 1.0,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                              ),
                             ),
-                          ),
-                          Builder(
-                            builder: (context) => Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  30.0,
-                                  valueOrDefault<double>(
-                                    FFAppConstants.Gap,
-                                    0.0,
-                                  ),
-                                  30.0,
-                                  valueOrDefault<double>(
-                                    FFAppConstants.doubleGap,
-                                    0.0,
-                                  )),
-                              child: FFButtonWidget(
-                                onPressed: ('${(String crm) {
-                                          return crm.split('-')[0];
-                                        }('')}' ==
-                                        'estudante')
-                                    ? null
-                                    : () async {
-                                        logFirebaseEvent(
-                                            'VAGA_BOTTOM_SHEET_CLIQUE_AQUI_E_SAIBA_MA');
-                                        currentUserLocationValue =
-                                            await getCurrentUserLocation(
-                                                defaultLocation:
-                                                    LatLng(0.0, 0.0));
-                                        var _shouldSetState = false;
-                                        if (currentJwtToken != null &&
-                                            currentJwtToken != '') {
-                                          if (widget!.showFavorite) {
-                                            logFirebaseEvent(
-                                                'Button_alert_dialog');
-                                            await showDialog(
-                                              context: context,
-                                              builder: (dialogContext) {
-                                                return Dialog(
-                                                  elevation: 0,
-                                                  insetPadding: EdgeInsets.zero,
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                              0.0, 0.0)
-                                                          .resolve(
-                                                              Directionality.of(
-                                                                  context)),
-                                                  child:
-                                                      FavoriteDialogBoxWidget(),
-                                                );
-                                              },
-                                            ).then((value) => safeSetState(() =>
-                                                _model.favoriteAccept = value));
-
-                                            _shouldSetState = true;
-                                            if (_model.favoriteAccept!) {
-                                              if (!_model.isCandidate) {
-                                                logFirebaseEvent(
-                                                    'Button_custom_action');
-                                                _model.insertFavorite =
-                                                    await actions
-                                                        .insertCandidaturas(
-                                                  currentUserUid,
-                                                  widget!.jobid!,
-                                                  widget!.value!,
-                                                );
-                                                _shouldSetState = true;
-                                                if (_model.insertFavorite ==
-                                                    'success') {
-                                                  logFirebaseEvent(
-                                                      'Button_alert_dialog');
-                                                  await showDialog(
-                                                    context: context,
-                                                    builder: (dialogContext) {
-                                                      return Dialog(
-                                                        elevation: 0,
-                                                        insetPadding:
-                                                            EdgeInsets.zero,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                    0.0, 0.0)
-                                                                .resolve(
-                                                                    Directionality.of(
-                                                                        context)),
-                                                        child:
-                                                            PositiveDialogBoxWidget(
-                                                          dialog:
-                                                              'Plantão confirmado!',
-                                                        ),
-                                                      );
-                                                    },
+                            Builder(
+                              builder: (context) => Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    30.0,
+                                    valueOrDefault<double>(
+                                      FFAppConstants.Gap,
+                                      0.0,
+                                    ),
+                                    30.0,
+                                    valueOrDefault<double>(
+                                      FFAppConstants.doubleGap,
+                                      0.0,
+                                    )),
+                                child: FFButtonWidget(
+                                  onPressed: ('${(String crm) {
+                                            return crm.split('-')[0];
+                                          }('')}' ==
+                                          'estudante')
+                                      ? null
+                                      : () async {
+                                          logFirebaseEvent(
+                                              'VAGA_BOTTOM_SHEET_Button_1hfx73kw_ON_TAP');
+                                          currentUserLocationValue =
+                                              await getCurrentUserLocation(
+                                                  defaultLocation:
+                                                      LatLng(0.0, 0.0));
+                                          var _shouldSetState = false;
+                                          if (currentJwtToken != null &&
+                                              currentJwtToken != '') {
+                                            if (widget!.showFavorite) {
+                                              logFirebaseEvent(
+                                                  'Button_alert_dialog');
+                                              await showDialog(
+                                                context: context,
+                                                builder: (dialogContext) {
+                                                  return Dialog(
+                                                    elevation: 0,
+                                                    insetPadding:
+                                                        EdgeInsets.zero,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    alignment:
+                                                        AlignmentDirectional(
+                                                                0.0, 0.0)
+                                                            .resolve(
+                                                                Directionality.of(
+                                                                    context)),
+                                                    child:
+                                                        FavoriteDialogBoxWidget(),
                                                   );
+                                                },
+                                              ).then((value) => safeSetState(
+                                                  () => _model.favoriteAccept =
+                                                      value));
 
+                                              _shouldSetState = true;
+                                              if (_model.favoriteAccept!) {
+                                                if (!_model.isCandidate) {
                                                   logFirebaseEvent(
-                                                      'Button_update_component_state');
-                                                  _model.isApproved = true;
-                                                  safeSetState(() {});
-                                                } else {
-                                                  logFirebaseEvent(
-                                                      'Button_alert_dialog');
-                                                  await showDialog(
-                                                    context: context,
-                                                    builder: (dialogContext) {
-                                                      return Dialog(
-                                                        elevation: 0,
-                                                        insetPadding:
-                                                            EdgeInsets.zero,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                    0.0, 0.0)
-                                                                .resolve(
-                                                                    Directionality.of(
-                                                                        context)),
-                                                        child:
-                                                            NegativeInformativeBoxWidget(
-                                                          title:
-                                                              'Não foi possível se candidatar',
-                                                          body:
-                                                              'Verifique se já não tem plantão confirmado no mesmo horário!',
-                                                        ),
-                                                      );
-                                                    },
+                                                      'Button_custom_action');
+                                                  _model.insertFavorite =
+                                                      await actions
+                                                          .insertCandidaturas(
+                                                    currentUserUid,
+                                                    widget!.jobid!,
+                                                    widget!.value!,
                                                   );
+                                                  _shouldSetState = true;
+                                                  if (_model.insertFavorite ==
+                                                      'success') {
+                                                    logFirebaseEvent(
+                                                        'Button_alert_dialog');
+                                                    await showDialog(
+                                                      context: context,
+                                                      builder: (dialogContext) {
+                                                        return Dialog(
+                                                          elevation: 0,
+                                                          insetPadding:
+                                                              EdgeInsets.zero,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          alignment: AlignmentDirectional(
+                                                                  0.0, 0.0)
+                                                              .resolve(
+                                                                  Directionality.of(
+                                                                      context)),
+                                                          child:
+                                                              PositiveDialogBoxWidget(
+                                                            dialog:
+                                                                'Plantão confirmado!',
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+
+                                                    logFirebaseEvent(
+                                                        'Button_update_component_state');
+                                                    _model.isApproved = true;
+                                                    safeSetState(() {});
+                                                  } else {
+                                                    logFirebaseEvent(
+                                                        'Button_alert_dialog');
+                                                    await showDialog(
+                                                      context: context,
+                                                      builder: (dialogContext) {
+                                                        return Dialog(
+                                                          elevation: 0,
+                                                          insetPadding:
+                                                              EdgeInsets.zero,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          alignment: AlignmentDirectional(
+                                                                  0.0, 0.0)
+                                                              .resolve(
+                                                                  Directionality.of(
+                                                                      context)),
+                                                          child:
+                                                              NegativeInformativeBoxWidget(
+                                                            title:
+                                                                'Não foi possível se candidatar',
+                                                            body:
+                                                                'Verifique se já não tem plantão confirmado no mesmo horário!',
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                  }
                                                 }
+                                              } else {
+                                                if (_shouldSetState)
+                                                  safeSetState(() {});
+                                                return;
                                               }
                                             } else {
-                                              if (_shouldSetState)
-                                                safeSetState(() {});
-                                              return;
-                                            }
-                                          } else {
-                                            if (!_model.isCandidate) {
                                               logFirebaseEvent(
                                                   'Button_custom_action');
-                                              _model.insertCandidatura =
+                                              _model.launchwhatsapp =
                                                   await actions
-                                                      .insertCandidaturas(
-                                                currentUserUid,
-                                                widget!.jobid!,
-                                                widget!.value!,
+                                                      .launchWhatsAppChat(
+                                                '${"Olá, encontrei essa vaga de plantão na Revoluna.\n\n"}${(String? speciality) {
+                                                  return "*$speciality*\n";
+                                                }(widget!.speciality)}${(String value) {
+                                                  return "_" + value + "_\n";
+                                                }(formatNumber(
+                                                  widget!.value,
+                                                  formatType:
+                                                      FormatType.decimal,
+                                                  decimalType:
+                                                      DecimalType.commaDecimal,
+                                                  currency: 'R\$ ',
+                                                ))}${(String? hospital) {
+                                                  return "$hospital\n";
+                                                }(widget!.hospital)}${(String? date) {
+                                                  return "$date\n";
+                                                }(dateTimeFormat(
+                                                  "EEEE, dd/M",
+                                                  widget!.date,
+                                                  locale: FFLocalizations.of(
+                                                          context)
+                                                      .languageCode,
+                                                ))}${(String? start, String end) {
+                                                  return "Início: $start Fim: $end\n";
+                                                }(dateTimeFormat(
+                                                      "Hm",
+                                                      widget!.startTime,
+                                                      locale:
+                                                          FFLocalizations.of(
+                                                                  context)
+                                                              .languageCode,
+                                                    ), dateTimeFormat(
+                                                      "Hm",
+                                                      widget!.endTime,
+                                                      locale:
+                                                          FFLocalizations.of(
+                                                                  context)
+                                                              .languageCode,
+                                                    ))}${(String? shift, String type) {
+                                                  return "$shift / $type\n";
+                                                }(widget!.shift, widget!.type!)}${(String? sector) {
+                                                  return "Setor: $sector\n\n";
+                                                }(widget!.sector)}${(String? shift, String type) {
+                                                  return "Gostaria de me candidatar para essa vaga. Poderia me enviar mais informações?";
+                                                }(widget!.shift, widget!.type!)}',
+                                                (widget!.contractorPhone ==
+                                                                null ||
+                                                            widget!.contractorPhone ==
+                                                                '') &&
+                                                        (widget!.contractorPhone ==
+                                                            'Não informado')
+                                                    ? FFAppState().concierge
+                                                    : widget!.contractorPhone!,
                                               );
                                               _shouldSetState = true;
+                                              if (_model.launchwhatsapp!) {
+                                                if (!_model.isCandidate) {
+                                                  logFirebaseEvent(
+                                                      'Button_custom_action');
+                                                  _model.insertCandidatura =
+                                                      await actions
+                                                          .insertCandidaturas(
+                                                    currentUserUid,
+                                                    widget!.jobid!,
+                                                    widget!.value!,
+                                                  );
+                                                  _shouldSetState = true;
+                                                }
+                                              } else {
+                                                logFirebaseEvent(
+                                                    'Button_alert_dialog');
+                                                await showDialog(
+                                                  context: context,
+                                                  builder: (dialogContext) {
+                                                    return Dialog(
+                                                      elevation: 0,
+                                                      insetPadding:
+                                                          EdgeInsets.zero,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      alignment:
+                                                          AlignmentDirectional(
+                                                                  0.0, 0.0)
+                                                              .resolve(
+                                                                  Directionality.of(
+                                                                      context)),
+                                                      child:
+                                                          NegativeInformativeBoxWidget(
+                                                        title:
+                                                            'Necessário WhatsApp',
+                                                        body:
+                                                            'Para prosseguir é preciso ter o aplicativo WhatsaApp instalado no seu  aparelho',
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              }
                                             }
+
                                             logFirebaseEvent(
-                                                'Button_custom_action');
-                                            await actions.launchWhatsAppChat(
-                                              '${"Olá, tenho interesse nesse plantão que encontrei na Revoluna!\n"}https://link.revoluna.com.br?id=${widget!.jobid}',
-                                              (currentPhoneNumber == null ||
-                                                          currentPhoneNumber ==
-                                                              '') &&
-                                                      (currentPhoneNumber ==
-                                                          'Não informado')
-                                                  ? FFAppState().concierge
-                                                  : widget!.contractorPhone!,
-                                            );
+                                                'Button_execute_callback');
+                                            await widget.callback?.call();
+                                          } else {
+                                            logFirebaseEvent(
+                                                'Button_bottom_sheet');
+                                            await showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              enableDrag: false,
+                                              context: context,
+                                              builder: (context) {
+                                                return Padding(
+                                                  padding:
+                                                      MediaQuery.viewInsetsOf(
+                                                          context),
+                                                  child: Container(
+                                                    height: MediaQuery.sizeOf(
+                                                                context)
+                                                            .height *
+                                                        0.6,
+                                                    child: PaywallWidget(),
+                                                  ),
+                                                );
+                                              },
+                                            ).then(
+                                                (value) => safeSetState(() {}));
                                           }
 
                                           logFirebaseEvent(
-                                              'Button_execute_callback');
-                                          await widget.callback?.call();
-                                        } else {
+                                              'Button_google_analytics_event');
                                           logFirebaseEvent(
-                                              'Button_bottom_sheet');
-                                          await showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                            enableDrag: false,
-                                            context: context,
-                                            builder: (context) {
-                                              return Padding(
-                                                padding:
-                                                    MediaQuery.viewInsetsOf(
-                                                        context),
-                                                child: Container(
-                                                  height:
-                                                      MediaQuery.sizeOf(context)
-                                                              .height *
-                                                          0.6,
-                                                  child: PaywallWidget(),
-                                                ),
-                                              );
+                                            'vagas_interesse',
+                                            parameters: {
+                                              'user_id': currentUserUid,
+                                              'time': getCurrentTimestamp,
+                                              'location':
+                                                  currentUserLocationValue,
+                                              'vaga_id': widget!.jobid,
                                             },
-                                          ).then(
-                                              (value) => safeSetState(() {}));
-                                        }
-
-                                        logFirebaseEvent(
-                                            'Button_google_analytics_event');
-                                        logFirebaseEvent(
-                                          'vagas_interesse',
-                                          parameters: {
-                                            'user_id': currentUserUid,
-                                            'time': getCurrentTimestamp,
-                                            'location':
-                                                currentUserLocationValue,
-                                            'vaga_id': widget!.jobid,
-                                          },
-                                        );
-                                        if (_shouldSetState)
-                                          safeSetState(() {});
-                                      },
-                                text: widget!.showFavorite &&
-                                        (_model.isCandidate != true)
-                                    ? 'Quero esse plantão'
-                                    : 'Clique e saiba mais',
-                                options: FFButtonOptions(
-                                  width: 330.0,
-                                  height: 50.0,
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 0.0, 0.0),
-                                  iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 0.0, 0.0),
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .override(
-                                        font: GoogleFonts.geologica(
+                                          );
+                                          if (_shouldSetState)
+                                            safeSetState(() {});
+                                        },
+                                  text: valueOrDefault<String>(
+                                    widget!.showFavorite &&
+                                            (_model.isCandidate != true)
+                                        ? 'Quero esse plantão'
+                                        : 'Clique e saiba mais',
+                                    'Clique e saiba mais',
+                                  ),
+                                  options: FFButtonOptions(
+                                    width: 330.0,
+                                    height: 50.0,
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 0.0),
+                                    iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 0.0),
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .override(
+                                          font: GoogleFonts.geologica(
+                                            fontWeight:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmall
+                                                    .fontWeight,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmall
+                                                    .fontStyle,
+                                          ),
+                                          color: Colors.white,
+                                          letterSpacing: 0.0,
                                           fontWeight:
                                               FlutterFlowTheme.of(context)
                                                   .titleSmall
@@ -6466,34 +6542,25 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                   .titleSmall
                                                   .fontStyle,
                                         ),
-                                        color: Colors.white,
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .titleSmall
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .titleSmall
-                                            .fontStyle,
-                                      ),
-                                  elevation: 0.0,
-                                  borderRadius: BorderRadius.circular(
-                                      valueOrDefault<double>(
-                                    FFAppConstants.borderS,
-                                    0.0,
-                                  )),
-                                  disabledColor:
-                                      FlutterFlowTheme.of(context).accent2,
-                                  disabledTextColor:
-                                      FlutterFlowTheme.of(context).accent3,
-                                  hoverColor:
-                                      FlutterFlowTheme.of(context).alternate,
+                                    elevation: 0.0,
+                                    borderRadius: BorderRadius.circular(
+                                        valueOrDefault<double>(
+                                      FFAppConstants.borderS,
+                                      0.0,
+                                    )),
+                                    disabledColor:
+                                        FlutterFlowTheme.of(context).accent2,
+                                    disabledTextColor:
+                                        FlutterFlowTheme.of(context).accent3,
+                                    hoverColor:
+                                        FlutterFlowTheme.of(context).alternate,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ],

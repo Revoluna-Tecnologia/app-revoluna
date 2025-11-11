@@ -6,7 +6,6 @@ import '/components/dialogs/negative_dialog_box/negative_dialog_box_widget.dart'
 import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/components/dialogs/passar_plantao_dialog_box/passar_plantao_dialog_box_widget.dart';
 import '/components/dialogs/positive_dialog_box/positive_dialog_box_widget.dart';
-import '/components/dialogs/small_dialog/small_dialog_widget.dart';
 import '/components/vagas/address_icon_button/address_icon_button_widget.dart';
 import '/flutter_flow/flutter_flow_google_map.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -21,17 +20,14 @@ import '/flutter_flow/custom_functions.dart' as functions;
 import '/flutter_flow/permissions_util.dart';
 import '/index.dart';
 import 'vaga_bottom_sheet_widget.dart' show VagaBottomSheetWidget;
-import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class VagaBottomSheetModel extends FlutterFlowModel<VagaBottomSheetWidget> {
   ///  Local state fields for this component.
@@ -75,6 +71,10 @@ class VagaBottomSheetModel extends FlutterFlowModel<VagaBottomSheetWidget> {
   // State field(s) for expandable_contratante widget.
   late ExpandableController expandableContratanteExpandableController;
 
+  // Stores action output result for [Custom Action - launchWhatsAppChat] action in Button widget.
+  bool? launchwhatsapPhone;
+  // Stores action output result for [Custom Action - insertCandidaturas] action in Button widget.
+  String? insertCandidaturaPhone;
   // State field(s) for expandable_comochegar widget.
   late ExpandableController expandableComochegarExpandableController;
 
@@ -108,6 +108,8 @@ class VagaBottomSheetModel extends FlutterFlowModel<VagaBottomSheetWidget> {
   bool? favoriteAccept;
   // Stores action output result for [Custom Action - insertCandidaturas] action in Button widget.
   String? insertFavorite;
+  // Stores action output result for [Custom Action - launchWhatsAppChat] action in Button widget.
+  bool? launchwhatsapp;
   // Stores action output result for [Custom Action - insertCandidaturas] action in Button widget.
   String? insertCandidatura;
 
