@@ -70,7 +70,6 @@ class _LoginPasswordWidgetState extends State<LoginPasswordWidget> {
                 model: _model.backTopBarModel,
                 updateCallback: () => safeSetState(() {}),
                 child: BackTopBarWidget(
-                  logo: false,
                   backButton: () async {
                     logFirebaseEvent(
                         'LOGIN_PASSWORD_Container_auua36w1_CALLBA');

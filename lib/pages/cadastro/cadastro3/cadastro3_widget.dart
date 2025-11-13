@@ -124,7 +124,6 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                   model: _model.backTopBarModel,
                   updateCallback: () => safeSetState(() {}),
                   child: BackTopBarWidget(
-                    logo: false,
                     backButton: () async {
                       logFirebaseEvent('CADASTRO3_Container_159mc222_CALLBACK');
                       logFirebaseEvent('BackTopBar_navigate_back');

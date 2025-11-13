@@ -78,7 +78,6 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                   model: _model.backTopBarModel,
                   updateCallback: () => safeSetState(() {}),
                   child: BackTopBarWidget(
-                    logo: false,
                     backButton: () async {
                       logFirebaseEvent(
                           'LOGIN_PHONE_Container_jx862q1l_CALLBACK');

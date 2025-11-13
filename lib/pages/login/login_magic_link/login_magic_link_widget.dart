@@ -82,7 +82,6 @@ class _LoginMagicLinkWidgetState extends State<LoginMagicLinkWidget> {
                 model: _model.backTopBarModel,
                 updateCallback: () => safeSetState(() {}),
                 child: BackTopBarWidget(
-                  logo: false,
                   backButton: () async {
                     logFirebaseEvent(
                         'LOGIN_MAGIC_LINK_Container_cauc43l1_CALL');

@@ -93,7 +93,6 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
                   model: _model.backTopBarModel,
                   updateCallback: () => safeSetState(() {}),
                   child: BackTopBarWidget(
-                    logo: true,
                     backButton: () async {
                       logFirebaseEvent(
                           'LOGIN_PHONE_CODE_Container_idz4yefd_CALL');

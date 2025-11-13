@@ -85,7 +85,6 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                   model: _model.backTopBarModel,
                   updateCallback: () => safeSetState(() {}),
                   child: BackTopBarWidget(
-                    logo: false,
                     backButton: () async {
                       logFirebaseEvent(
                           'LOGIN_EMAIL_Container_ewxxm4ln_CALLBACK');

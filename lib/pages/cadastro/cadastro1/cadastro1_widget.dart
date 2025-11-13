@@ -152,7 +152,6 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                   model: _model.backTopBarModel,
                   updateCallback: () => safeSetState(() {}),
                   child: BackTopBarWidget(
-                    logo: false,
                     backButton: () async {
                       logFirebaseEvent('CADASTRO1_Container_gx1u2v5a_CALLBACK');
                       logFirebaseEvent('BackTopBar_reset_form_fields');
