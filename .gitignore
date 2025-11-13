@@ -33,6 +33,24 @@
 /build/
 lib/flutter_flow/custom_functions_snapshot.txt
 
+# iOS related
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+ios/Flutter/Flutter.podspec
+ios/.DS_Store
+ios/**/.DS_Store
+
+# Android related
+.gradle/
+android/.gradle/
+android/captures/
+android/local.properties
+android/.DS_Store
+android/**/.DS_Store
+
 # Firebase – this is necessary if you use Firebase since it could otherwise 
 # lead to leaking of private certificates to your repository, which is no bueno.
 .firebase/
