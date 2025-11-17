@@ -146,16 +146,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 'vagas_status',
                 'aberta',
               )
-              .not(
-                'hospital_lat',
-                'is',
-                null,
-              )
-              .not(
-                'hospital_log',
-                'is',
-                null,
-              )
               .order('vagas_horainicio', ascending: true),
         ),
       )
@@ -284,16 +274,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             'medico_id',
                             currentUserUid,
                           )
-                          .not(
-                            'hospital_lat',
-                            'is',
-                            null,
-                          )
-                          .not(
-                            'hospital_log',
-                            'is',
-                            null,
-                          )
                           .order('vagas_horainicio', ascending: true),
                     ),
                   )
@@ -342,85 +322,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               child: HeaderWidget(),
                             ),
                           ),
-                          Container(
-                            decoration: BoxDecoration(),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      valueOrDefault<double>(
-                                        FFAppConstants.Gap,
-                                        0.0,
-                                      ),
-                                      0.0,
-                                      valueOrDefault<double>(
-                                        FFAppConstants.Gap,
-                                        0.0,
-                                      ),
-                                      0.0),
-                                  child: custom_widgets.CustomCalendar(
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 1.0,
-                                    height:
-                                        MediaQuery.sizeOf(context).height * 0.1,
-                                    events: containerVwVagasCandidaturasRowList
-                                        .where((e) =>
-                                            e.candidaturaStatus == 'APROVADO')
-                                        .toList()
-                                        .map((e) => e.vagasData)
-                                        .withoutNulls
-                                        .toList()
-                                        .unique((e) => e)
-                                        .sortedList(
-                                            keyOf: (e) => e, desc: false),
-                                    weekViewEnabled: _model.calendarView,
-                                    openVagas:
-                                        homePageVwVagasCandidaturasRowList
-                                            .where((e) =>
-                                                (e.vagasStatus == 'aberta') &&
-                                                (e.hospitalEstado ==
-                                                    FFAppState().estadoUF))
-                                            .toList()
-                                            .map((e) => e.vagasData)
-                                            .withoutNulls
-                                            .toList()
-                                            .unique((e) => e)
-                                            .sortedList(
-                                                keyOf: (e) => e, desc: false),
-                                    callback: () async {
-                                      logFirebaseEvent(
-                                          'HOME_Container_byk7bs38_CALLBACK');
-                                      logFirebaseEvent(
-                                          'CustomCalendar_refresh_database_request');
-                                      safeSetState(() {
-                                        FFAppState().clearEstadosCache();
-                                        _model.requestCompleted2 = false;
-                                      });
-                                      await _model.waitForRequestCompleted2();
-                                    },
-                                  ),
-                                ),
-                                ToggleIcon(
-                                  onPressed: () async {
-                                    safeSetState(() => _model.calendarView =
-                                        !_model.calendarView);
-                                  },
-                                  value: _model.calendarView,
-                                  onIcon: Icon(
-                                    FFIcons.kchevronDown,
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    size: 24.0,
-                                  ),
-                                  offIcon: Icon(
-                                    FFIcons.kchevronUp,
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    size: 24.0,
-                                  ),
-                                ),
-                              ].addToEnd(SizedBox(height: FFAppConstants.Gap)),
-                            ),
-                          ),
                           Expanded(
                             child: RefreshIndicator(
                               color: FlutterFlowTheme.of(context).primary,
@@ -454,6 +355,104 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
+                                    Container(
+                                      decoration: BoxDecoration(),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    valueOrDefault<double>(
+                                                      FFAppConstants.Gap,
+                                                      0.0,
+                                                    ),
+                                                    0.0,
+                                                    valueOrDefault<double>(
+                                                      FFAppConstants.Gap,
+                                                      0.0,
+                                                    ),
+                                                    0.0),
+                                            child:
+                                                custom_widgets.CustomCalendar(
+                                              width: MediaQuery.sizeOf(context)
+                                                      .width *
+                                                  1.0,
+                                              height: MediaQuery.sizeOf(context)
+                                                      .height *
+                                                  0.1,
+                                              events: containerVwVagasCandidaturasRowList
+                                                  .where((e) =>
+                                                      e.candidaturaStatus ==
+                                                      'APROVADO')
+                                                  .toList()
+                                                  .map((e) => e.vagasData)
+                                                  .withoutNulls
+                                                  .toList()
+                                                  .unique((e) => e)
+                                                  .sortedList(
+                                                      keyOf: (e) => e,
+                                                      desc: false),
+                                              weekViewEnabled:
+                                                  _model.calendarView,
+                                              openVagas:
+                                                  homePageVwVagasCandidaturasRowList
+                                                      .where((e) =>
+                                                          (e.vagasStatus ==
+                                                              'aberta') &&
+                                                          (e.hospitalEstado ==
+                                                              FFAppState()
+                                                                  .estadoUF))
+                                                      .toList()
+                                                      .map((e) => e.vagasData)
+                                                      .withoutNulls
+                                                      .toList()
+                                                      .unique((e) => e)
+                                                      .sortedList(
+                                                          keyOf: (e) => e,
+                                                          desc: false),
+                                              callback: () async {
+                                                logFirebaseEvent(
+                                                    'HOME_Container_byk7bs38_CALLBACK');
+                                                logFirebaseEvent(
+                                                    'CustomCalendar_refresh_database_request');
+                                                safeSetState(() {
+                                                  FFAppState()
+                                                      .clearEstadosCache();
+                                                  _model.requestCompleted2 =
+                                                      false;
+                                                });
+                                                await _model
+                                                    .waitForRequestCompleted2();
+                                              },
+                                            ),
+                                          ),
+                                          ToggleIcon(
+                                            onPressed: () async {
+                                              safeSetState(() =>
+                                                  _model.calendarView =
+                                                      !_model.calendarView);
+                                            },
+                                            value: _model.calendarView,
+                                            onIcon: Icon(
+                                              FFIcons.kchevronDown,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                              size: 24.0,
+                                            ),
+                                            offIcon: Icon(
+                                              FFIcons.kchevronUp,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                              size: 24.0,
+                                            ),
+                                          ),
+                                        ].addToEnd(SizedBox(
+                                            height: FFAppConstants.Gap)),
+                                      ),
+                                    ),
                                     if (!(containerVwVagasCandidaturasRowList
                                             .where((e) =>
                                                 (e.vagasData ==

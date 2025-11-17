@@ -16,7 +16,6 @@ import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
-import '/flutter_flow/permissions_util.dart';
 import '/index.dart';
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -45,7 +44,6 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
   late InitialPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  LatLng? currentUserLocationValue;
 
   @override
   void initState() {
@@ -73,47 +71,10 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
       });
       await _model.waitForRequestCompleted3();
     });
-
-    getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0), cached: true)
-        .then((loc) => safeSetState(() => currentUserLocationValue = loc));
   }
 
   @override
   void dispose() {
-    // On page dispose action.
-    () async {
-      logFirebaseEvent('INITIAL_PAGE_PAGE_InitialPage_ON_DISPOSE');
-      if (isiOS) {
-        logFirebaseEvent('InitialPage_custom_action');
-        _model.appTracking = await actions.appTracking();
-        if (_model.appTracking!) {
-          logFirebaseEvent('InitialPage_backend_call');
-          _model.medicoTrackingUpdateTrueCopy = await MedicosTable().update(
-            data: {
-              'tracking_privacy': true,
-            },
-            matchingRows: (rows) => rows.eqOrNull(
-              'id',
-              currentUserUid,
-            ),
-            returnRows: true,
-          );
-        } else {
-          logFirebaseEvent('InitialPage_backend_call');
-          _model.medicoTrackingUpdateFalseCopy = await MedicosTable().update(
-            data: {
-              'tracking_privacy': false,
-            },
-            matchingRows: (rows) => rows.eqOrNull(
-              'id',
-              currentUserUid,
-            ),
-            returnRows: true,
-          );
-        }
-      }
-    }();
-
     _model.dispose();
 
     super.dispose();
@@ -122,39 +83,12 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
   @override
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
-    if (currentUserLocationValue == null) {
-      return Container(
-        color: FlutterFlowTheme.of(context).primaryBackground,
-        child: Center(
-          child: SizedBox(
-            width: 50.0,
-            height: 50.0,
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(
-                FlutterFlowTheme.of(context).primary,
-              ),
-            ),
-          ),
-        ),
-      );
-    }
 
     return FutureBuilder<List<VwVagasAbertasRow>>(
       future: FFAppState()
           .vagasAbertasInicial(
         requestFn: () => VwVagasAbertasTable().queryRows(
-          queryFn: (q) => q
-              .not(
-                'hospital_lat',
-                'is',
-                null,
-              )
-              .not(
-                'hospital_log',
-                'is',
-                null,
-              )
-              .order('vagas_valor'),
+          queryFn: (q) => q.order('vagas_valor'),
         ),
       )
           .then((result) {
@@ -369,31 +303,64 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                             .fontStyle,
                                                   ),
                                             ),
-                                            Hero(
-                                              tag: valueOrDefault<String>(
-                                                FFAppState().profilepicture,
-                                                'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                                              ),
-                                              transitionOnUserGestures: true,
-                                              child: Container(
-                                                clipBehavior: Clip.antiAlias,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: Image.network(
-                                                  valueOrDefault<String>(
-                                                    FFAppState().profilepicture,
-                                                    'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                  errorBuilder: (context, error,
-                                                          stackTrace) =>
-                                                      Image.asset(
-                                                    'assets/images/error_image.png',
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              ),
+                                            Builder(
+                                              builder: (context) {
+                                                if (FFAppState()
+                                                            .profilepicture !=
+                                                        null &&
+                                                    FFAppState()
+                                                            .profilepicture !=
+                                                        '') {
+                                                  return Hero(
+                                                    tag: valueOrDefault<String>(
+                                                      FFAppState()
+                                                          .profilepicture,
+                                                      'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
+                                                    ),
+                                                    transitionOnUserGestures:
+                                                        true,
+                                                    child: Container(
+                                                      clipBehavior:
+                                                          Clip.antiAlias,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Image.network(
+                                                        valueOrDefault<String>(
+                                                          FFAppState()
+                                                              .profilepicture,
+                                                          'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
+                                                        ),
+                                                        fit: BoxFit.cover,
+                                                        errorBuilder: (context,
+                                                                error,
+                                                                stackTrace) =>
+                                                            Image.asset(
+                                                          'assets/images/error_image.png',
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return Hero(
+                                                    tag: 'perfilHero',
+                                                    transitionOnUserGestures:
+                                                        true,
+                                                    child: Container(
+                                                      clipBehavior:
+                                                          Clip.antiAlias,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Image.asset(
+                                                        'assets/images/Avatar.png',
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                              },
                                             ),
                                           ].divide(SizedBox(
                                               width: FFAppConstants.Gap)),
@@ -613,9 +580,9 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                             logFirebaseEvent(
                                                                 'INITIAL_PAGE_PAGE__BTN_ON_TAP');
                                                             logFirebaseEvent(
-                                                                'Button_request_permissions');
-                                                            await requestPermission(
-                                                                locationPermission);
+                                                                'Button_custom_action');
+                                                            await actions
+                                                                .requestLocationPermission();
                                                           },
                                                           text: '',
                                                           options:
@@ -1440,21 +1407,22 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                 _model.dropDownValue1 != '') {
                                               return Builder(
                                                 builder: (context) {
-                                                  final homeList = initialPageVwVagasAbertasRowList
-                                                      .where((e) =>
-                                                          (e.vagasData ==
-                                                              FFAppState()
-                                                                  .selectedDay) &&
-                                                          (e.hospitalEstado ==
-                                                              FFAppState()
-                                                                  .estadoUF) &&
-                                                          (e.vagasStatus ==
-                                                              'aberta') &&
-                                                          (e.especialidadeId ==
-                                                              _model
-                                                                  .dropDownValue1))
-                                                      .toList();
-                                                  if (homeList.isEmpty) {
+                                                  final filteredList =
+                                                      initialPageVwVagasAbertasRowList
+                                                          .where((e) =>
+                                                              (e.vagasData ==
+                                                                  FFAppState()
+                                                                      .selectedDay) &&
+                                                              (e.hospitalEstado ==
+                                                                  FFAppState()
+                                                                      .estadoUF) &&
+                                                              (e.vagasStatus ==
+                                                                  'aberta') &&
+                                                              (e.especialidadeId ==
+                                                                  _model
+                                                                      .dropDownValue1))
+                                                          .toList();
+                                                  if (filteredList.isEmpty) {
                                                     return EmptyListWidget(
                                                       text:
                                                           'Sem vagas para mostrar',
@@ -1469,23 +1437,24 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                     shrinkWrap: true,
                                                     scrollDirection:
                                                         Axis.vertical,
-                                                    itemCount: homeList.length,
+                                                    itemCount:
+                                                        filteredList.length,
                                                     separatorBuilder: (_, __) =>
                                                         SizedBox(height: 2.0),
                                                     itemBuilder: (context,
-                                                        homeListIndex) {
-                                                      final homeListItem =
-                                                          homeList[
-                                                              homeListIndex];
+                                                        filteredListIndex) {
+                                                      final filteredListItem =
+                                                          filteredList[
+                                                              filteredListIndex];
                                                       return Stack(
                                                         children: [
                                                           wrapWithModel(
                                                             model: _model
                                                                 .cardVagasInitialModels1
                                                                 .getModel(
-                                                              homeListItem
+                                                              filteredListItem
                                                                   .vagasId!,
-                                                              homeListIndex,
+                                                              filteredListIndex,
                                                             ),
                                                             updateCallback: () =>
                                                                 safeSetState(
@@ -1495,14 +1464,14 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                             child:
                                                                 CardVagasInitialWidget(
                                                               key: Key(
-                                                                'Keyf29_${homeListItem.vagasId!}',
+                                                                'Keyf29_${filteredListItem.vagasId!}',
                                                               ),
                                                               specialty:
-                                                                  homeListItem
+                                                                  filteredListItem
                                                                       .especialidadeNome,
                                                               value:
                                                                   formatNumber(
-                                                                homeListItem
+                                                                filteredListItem
                                                                     .vagasValor,
                                                                 formatType:
                                                                     FormatType
@@ -1515,7 +1484,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                               time:
                                                                   '${dateTimeFormat(
                                                                 "H",
-                                                                homeListItem
+                                                                filteredListItem
                                                                     .vagasHorainicio
                                                                     ?.time,
                                                                 locale: FFLocalizations.of(
@@ -1523,7 +1492,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                     .languageCode,
                                                               )}h-${dateTimeFormat(
                                                                 "H",
-                                                                homeListItem
+                                                                filteredListItem
                                                                     .vagasHorafim
                                                                     ?.time,
                                                                 locale: FFLocalizations.of(
@@ -1533,7 +1502,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                               datecount:
                                                                   'há ${dateTimeFormat(
                                                                 "relative",
-                                                                homeListItem
+                                                                filteredListItem
                                                                     .vagasCreatedate,
                                                                 locale: FFLocalizations.of(
                                                                             context)
@@ -1543,21 +1512,22 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                         .languageCode,
                                                               )}',
                                                               shift: '',
-                                                              type: homeListItem
+                                                              type: filteredListItem
                                                                   .vagasTipoNome,
                                                               hospital: functions.cleanHospitalName(
-                                                                  homeListItem
+                                                                  filteredListItem
                                                                       .hospitalNome!,
                                                                   FFAppState()
                                                                       .cleanHospital
                                                                       .toList()),
-                                                              vaga: homeListItem
-                                                                  .vagasId,
+                                                              vaga:
+                                                                  filteredListItem
+                                                                      .vagasId,
                                                               avatarHospital:
-                                                                  homeListItem
+                                                                  filteredListItem
                                                                       .hospitalAvatar,
                                                               sector:
-                                                                  homeListItem
+                                                                  filteredListItem
                                                                       .setorNome,
                                                             ),
                                                           ),
@@ -1567,11 +1537,6 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                   () async {
                                                                 logFirebaseEvent(
                                                                     'INITIAL_PAGE_PAGE__BTN_ON_TAP');
-                                                                currentUserLocationValue =
-                                                                    await getCurrentUserLocation(
-                                                                        defaultLocation: LatLng(
-                                                                            0.0,
-                                                                            0.0));
                                                                 if (_model
                                                                     .isBottomSheetLoading) {
                                                                   return;
@@ -1611,50 +1576,50 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                         child:
                                                                             VagaBottomSheetWidget(
                                                                           speciality:
-                                                                              homeListItem.especialidadeNome,
-                                                                          value: homeListItem
+                                                                              filteredListItem.especialidadeNome,
+                                                                          value: filteredListItem
                                                                               .vagasValor
                                                                               ?.toDouble(),
                                                                           hospital:
-                                                                              homeListItem.hospitalNome,
+                                                                              filteredListItem.hospitalNome,
                                                                           date:
-                                                                              homeListItem.vagasData,
+                                                                              filteredListItem.vagasData,
                                                                           datecreated:
-                                                                              homeListItem.vagasCreatedate,
-                                                                          startTime: homeListItem
+                                                                              filteredListItem.vagasCreatedate,
+                                                                          startTime: filteredListItem
                                                                               .vagasHorainicio
                                                                               ?.time,
-                                                                          endTime: homeListItem
+                                                                          endTime: filteredListItem
                                                                               .vagasHorafim
                                                                               ?.time,
                                                                           shift:
-                                                                              homeListItem.vagasPeriodoNome,
+                                                                              filteredListItem.vagasPeriodoNome,
                                                                           type:
-                                                                              homeListItem.vagasTipoNome,
-                                                                          lat: homeListItem
+                                                                              filteredListItem.vagasTipoNome,
+                                                                          lat: filteredListItem
                                                                               .hospitalLat,
-                                                                          lon: homeListItem
+                                                                          lon: filteredListItem
                                                                               .hospitalLog,
                                                                           address:
-                                                                              homeListItem.hospitalEnd,
+                                                                              filteredListItem.hospitalEnd,
                                                                           jobid:
-                                                                              homeListItem.vagasId,
+                                                                              filteredListItem.vagasId,
                                                                           contractor:
-                                                                              homeListItem.grupoNome,
+                                                                              filteredListItem.grupoNome,
                                                                           contractorName:
-                                                                              homeListItem.escalistaNome,
+                                                                              filteredListItem.escalistaNome,
                                                                           contractorPhone:
-                                                                              homeListItem.escalistaTelefone,
+                                                                              filteredListItem.escalistaTelefone,
                                                                           contractorEmail:
-                                                                              homeListItem.escalistaEmail,
+                                                                              filteredListItem.escalistaEmail,
                                                                           payday:
-                                                                              homeListItem.vagasDatapagamento,
+                                                                              filteredListItem.vagasDatapagamento,
                                                                           payment:
-                                                                              homeListItem.vagasFormarecebimentoNome,
+                                                                              filteredListItem.vagasFormarecebimentoNome,
                                                                           avatarHospital:
-                                                                              homeListItem.hospitalAvatar,
+                                                                              filteredListItem.hospitalAvatar,
                                                                           sector:
-                                                                              homeListItem.setorNome,
+                                                                              filteredListItem.setorNome,
                                                                           showFavorite:
                                                                               false,
                                                                           callback:
@@ -1676,16 +1641,14 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                 logFirebaseEvent(
                                                                     'Button_google_analytics_event');
                                                                 logFirebaseEvent(
-                                                                  'vagas_exibicao',
+                                                                  'vagas_exibicao_initial',
                                                                   parameters: {
                                                                     'user_id':
                                                                         currentUserUid,
                                                                     'time':
                                                                         getCurrentTimestamp,
-                                                                    'location':
-                                                                        currentUserLocationValue,
                                                                     'vaga_id':
-                                                                        homeListItem
+                                                                        filteredListItem
                                                                             .vagasId,
                                                                   },
                                                                 );
@@ -1760,7 +1723,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                             } else {
                                               return Builder(
                                                 builder: (context) {
-                                                  final homeList =
+                                                  final defaultList =
                                                       initialPageVwVagasAbertasRowList
                                                           .where((e) =>
                                                               (e.vagasData ==
@@ -1772,7 +1735,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                               (e.vagasStatus ==
                                                                   'aberta'))
                                                           .toList();
-                                                  if (homeList.isEmpty) {
+                                                  if (defaultList.isEmpty) {
                                                     return EmptyListWidget(
                                                       text:
                                                           'Sem vagas para mostrar',
@@ -1787,14 +1750,15 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                     shrinkWrap: true,
                                                     scrollDirection:
                                                         Axis.vertical,
-                                                    itemCount: homeList.length,
+                                                    itemCount:
+                                                        defaultList.length,
                                                     separatorBuilder: (_, __) =>
                                                         SizedBox(height: 2.0),
                                                     itemBuilder: (context,
-                                                        homeListIndex) {
-                                                      final homeListItem =
-                                                          homeList[
-                                                              homeListIndex];
+                                                        defaultListIndex) {
+                                                      final defaultListItem =
+                                                          defaultList[
+                                                              defaultListIndex];
                                                       return Stack(
                                                         children: [
                                                           Align(
@@ -1806,9 +1770,9 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                               model: _model
                                                                   .cardVagasInitialModels2
                                                                   .getModel(
-                                                                homeListItem
+                                                                defaultListItem
                                                                     .vagasId!,
-                                                                homeListIndex,
+                                                                defaultListIndex,
                                                               ),
                                                               updateCallback: () =>
                                                                   safeSetState(
@@ -1818,14 +1782,14 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                               child:
                                                                   CardVagasInitialWidget(
                                                                 key: Key(
-                                                                  'Keyhhr_${homeListItem.vagasId!}',
+                                                                  'Keyhhr_${defaultListItem.vagasId!}',
                                                                 ),
                                                                 specialty:
-                                                                    homeListItem
+                                                                    defaultListItem
                                                                         .especialidadeNome,
                                                                 value:
                                                                     formatNumber(
-                                                                  homeListItem
+                                                                  defaultListItem
                                                                       .vagasValor,
                                                                   formatType:
                                                                       FormatType
@@ -1839,7 +1803,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                 time:
                                                                     '${dateTimeFormat(
                                                                   "H",
-                                                                  homeListItem
+                                                                  defaultListItem
                                                                       .vagasHorainicio
                                                                       ?.time,
                                                                   locale: FFLocalizations.of(
@@ -1847,7 +1811,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                       .languageCode,
                                                                 )}h-${dateTimeFormat(
                                                                   "H",
-                                                                  homeListItem
+                                                                  defaultListItem
                                                                       .vagasHorafim
                                                                       ?.time,
                                                                   locale: FFLocalizations.of(
@@ -1857,7 +1821,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                 datecount:
                                                                     'há ${dateTimeFormat(
                                                                   "relative",
-                                                                  homeListItem
+                                                                  defaultListItem
                                                                       .vagasCreatedate,
                                                                   locale: FFLocalizations.of(
                                                                               context)
@@ -1866,24 +1830,24 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                               context)
                                                                           .languageCode,
                                                                 )}',
-                                                                shift: homeListItem
+                                                                shift: defaultListItem
                                                                     .vagasPeriodoNome,
-                                                                type: homeListItem
+                                                                type: defaultListItem
                                                                     .vagasTipoNome,
                                                                 hospital: functions.cleanHospitalName(
-                                                                    homeListItem
+                                                                    defaultListItem
                                                                         .hospitalNome!,
                                                                     FFAppState()
                                                                         .cleanHospital
                                                                         .toList()),
                                                                 vaga:
-                                                                    homeListItem
+                                                                    defaultListItem
                                                                         .vagasId,
                                                                 avatarHospital:
-                                                                    homeListItem
+                                                                    defaultListItem
                                                                         .hospitalAvatar,
                                                                 sector:
-                                                                    homeListItem
+                                                                    defaultListItem
                                                                         .setorNome,
                                                               ),
                                                             ),
@@ -1894,11 +1858,6 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                   () async {
                                                                 logFirebaseEvent(
                                                                     'INITIAL_PAGE_PAGE__BTN_ON_TAP');
-                                                                currentUserLocationValue =
-                                                                    await getCurrentUserLocation(
-                                                                        defaultLocation: LatLng(
-                                                                            0.0,
-                                                                            0.0));
                                                                 if (_model
                                                                     .isBottomSheetLoading) {
                                                                   return;
@@ -1938,50 +1897,50 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                         child:
                                                                             VagaBottomSheetWidget(
                                                                           speciality:
-                                                                              homeListItem.especialidadeNome,
-                                                                          value: homeListItem
+                                                                              defaultListItem.especialidadeNome,
+                                                                          value: defaultListItem
                                                                               .vagasValor
                                                                               ?.toDouble(),
                                                                           hospital:
-                                                                              homeListItem.hospitalNome,
+                                                                              defaultListItem.hospitalNome,
                                                                           date:
-                                                                              homeListItem.vagasData,
+                                                                              defaultListItem.vagasData,
                                                                           datecreated:
-                                                                              homeListItem.vagasCreatedate,
-                                                                          startTime: homeListItem
+                                                                              defaultListItem.vagasCreatedate,
+                                                                          startTime: defaultListItem
                                                                               .vagasHorainicio
                                                                               ?.time,
-                                                                          endTime: homeListItem
+                                                                          endTime: defaultListItem
                                                                               .vagasHorafim
                                                                               ?.time,
                                                                           shift:
-                                                                              homeListItem.vagasPeriodoNome,
+                                                                              defaultListItem.vagasPeriodoNome,
                                                                           type:
-                                                                              homeListItem.vagasTipoNome,
-                                                                          lat: homeListItem
+                                                                              defaultListItem.vagasTipoNome,
+                                                                          lat: defaultListItem
                                                                               .hospitalLat,
-                                                                          lon: homeListItem
+                                                                          lon: defaultListItem
                                                                               .hospitalLog,
                                                                           address:
-                                                                              homeListItem.hospitalEnd,
+                                                                              defaultListItem.hospitalEnd,
                                                                           jobid:
-                                                                              homeListItem.vagasId,
+                                                                              defaultListItem.vagasId,
                                                                           contractor:
-                                                                              homeListItem.grupoNome,
+                                                                              defaultListItem.grupoNome,
                                                                           contractorName:
-                                                                              homeListItem.escalistaNome,
+                                                                              defaultListItem.escalistaNome,
                                                                           contractorPhone:
-                                                                              homeListItem.escalistaTelefone,
+                                                                              defaultListItem.escalistaTelefone,
                                                                           contractorEmail:
-                                                                              homeListItem.escalistaEmail,
+                                                                              defaultListItem.escalistaEmail,
                                                                           payday:
-                                                                              homeListItem.vagasDatapagamento,
+                                                                              defaultListItem.vagasDatapagamento,
                                                                           payment:
-                                                                              homeListItem.vagasFormarecebimentoNome,
+                                                                              defaultListItem.vagasFormarecebimentoNome,
                                                                           avatarHospital:
-                                                                              homeListItem.hospitalAvatar,
+                                                                              defaultListItem.hospitalAvatar,
                                                                           sector:
-                                                                              homeListItem.setorNome,
+                                                                              defaultListItem.setorNome,
                                                                           showFavorite:
                                                                               false,
                                                                           callback:
@@ -2003,16 +1962,14 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                 logFirebaseEvent(
                                                                     'Button_google_analytics_event');
                                                                 logFirebaseEvent(
-                                                                  'vagas_exibicao',
+                                                                  'vagas_exibicao_initial',
                                                                   parameters: {
                                                                     'user_id':
                                                                         currentUserUid,
                                                                     'time':
                                                                         getCurrentTimestamp,
-                                                                    'location':
-                                                                        currentUserLocationValue,
                                                                     'vaga_id':
-                                                                        homeListItem
+                                                                        defaultListItem
                                                                             .vagasId,
                                                                   },
                                                                 );

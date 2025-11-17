@@ -336,46 +336,55 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Align(
-                                alignment: AlignmentDirectional(0.0, 0.0),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      1.0, 1.0, 1.0, 1.0),
-                                  child: Icon(
-                                    Icons.local_hospital_outlined,
-                                    color:
-                                        FlutterFlowTheme.of(context).tertiary,
-                                    size: 12.0,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                valueOrDefault<String>(
-                                  widget!.sector,
-                                  '[sector]',
-                                ),
-                                style: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .override(
-                                      font: GoogleFonts.geologica(
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontStyle,
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Align(
+                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          1.0, 1.0, 1.0, 1.0),
+                                      child: Icon(
+                                        Icons.local_hospital_outlined,
+                                        color: FlutterFlowTheme.of(context)
+                                            .tertiary,
+                                        size: 12.0,
                                       ),
-                                      fontSize: 12.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontStyle,
                                     ),
+                                  ),
+                                  Text(
+                                    valueOrDefault<String>(
+                                      widget!.sector,
+                                      '[sector]',
+                                    ),
+                                    style: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .override(
+                                          font: GoogleFonts.geologica(
+                                            fontWeight:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .fontWeight,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .fontStyle,
+                                          ),
+                                          fontSize: 12.0,
+                                          letterSpacing: 0.0,
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontStyle,
+                                        ),
+                                  ),
+                                ],
                               ),
-                            ].divide(SizedBox(width: 1.0)),
+                            ],
                           ),
                           if ('${(String distance) {
                                 return distance.split(':')[0];
@@ -471,7 +480,7 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                               ),
                             ].divide(SizedBox(width: 1.0)),
                           ),
-                        ].divide(SizedBox(width: 3.0)),
+                        ].divide(SizedBox(width: FFAppConstants.halfGap)),
                       ),
                     ].divide(SizedBox(height: FFAppConstants.halfGap)),
                   ),
