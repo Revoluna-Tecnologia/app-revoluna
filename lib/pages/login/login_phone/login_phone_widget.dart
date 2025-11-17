@@ -684,10 +684,10 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                             _model.phoneOnlynumbers =
                                                 '${(String var1) {
                                               return var1.replaceFirst('+', '');
-                                            }(FFAppState().inputAreacode)}${(String var1) {
+                                            }(loginPhoneFormValCodigosdeareaRowList.elementAtOrNull(_model.dropCodigoPaisValue!)!.codigo!)}${(String var1) {
                                               return var1.replaceAll(
                                                   RegExp(r'\D'), '');
-                                            }(FFAppState().inputPhone)}';
+                                            }(_model.campoTelefoneTextController.text)}';
                                             safeSetState(() {});
                                             logFirebaseEvent(
                                                 'Button_backend_call');
