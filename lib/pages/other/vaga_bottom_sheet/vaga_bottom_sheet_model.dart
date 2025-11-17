@@ -113,6 +113,8 @@ class VagaBottomSheetModel extends FlutterFlowModel<VagaBottomSheetWidget> {
   bool? locationrequest;
   // Stores action output result for [Custom Action - requestLocationPermission] action in Button widget.
   bool? permission;
+  // Stores action output result for [Backend Call - Query Rows] action in Button widget.
+  List<MedicosRow>? cRMCheck;
   // Stores action output result for [Alert Dialog - Custom Dialog] action in Button widget.
   bool? favoriteAccept;
   // Stores action output result for [Custom Action - insertCandidaturas] action in Button widget.

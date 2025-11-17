@@ -6402,186 +6402,21 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                           var _shouldSetState = false;
                                           if (currentJwtToken != null &&
                                               currentJwtToken != '') {
-                                            if (widget!.showFavorite) {
-                                              logFirebaseEvent(
-                                                  'Button_alert_dialog');
-                                              await showDialog(
-                                                context: context,
-                                                builder: (dialogContext) {
-                                                  return Dialog(
-                                                    elevation: 0,
-                                                    insetPadding:
-                                                        EdgeInsets.zero,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    alignment:
-                                                        AlignmentDirectional(
-                                                                0.0, 0.0)
-                                                            .resolve(
-                                                                Directionality.of(
-                                                                    context)),
-                                                    child:
-                                                        FavoriteDialogBoxWidget(),
-                                                  );
-                                                },
-                                              ).then((value) => safeSetState(
-                                                  () => _model.favoriteAccept =
-                                                      value));
-
-                                              _shouldSetState = true;
-                                              if (_model.favoriteAccept!) {
-                                                if (!_model.isCandidate) {
-                                                  logFirebaseEvent(
-                                                      'Button_custom_action');
-                                                  _model.insertFavorite =
-                                                      await actions
-                                                          .insertCandidaturas(
-                                                    currentUserUid,
-                                                    widget!.jobid!,
-                                                    widget!.value!,
-                                                  );
-                                                  _shouldSetState = true;
-                                                  if (_model.insertFavorite ==
-                                                      'success') {
-                                                    logFirebaseEvent(
-                                                        'Button_alert_dialog');
-                                                    await showDialog(
-                                                      context: context,
-                                                      builder: (dialogContext) {
-                                                        return Dialog(
-                                                          elevation: 0,
-                                                          insetPadding:
-                                                              EdgeInsets.zero,
-                                                          backgroundColor:
-                                                              Colors
-                                                                  .transparent,
-                                                          alignment: AlignmentDirectional(
-                                                                  0.0, 0.0)
-                                                              .resolve(
-                                                                  Directionality.of(
-                                                                      context)),
-                                                          child:
-                                                              PositiveDialogBoxWidget(
-                                                            dialog:
-                                                                'Plantão confirmado!',
-                                                          ),
-                                                        );
-                                                      },
-                                                    );
-
-                                                    logFirebaseEvent(
-                                                        'Button_update_component_state');
-                                                    _model.isApproved = true;
-                                                    safeSetState(() {});
-                                                  } else {
-                                                    logFirebaseEvent(
-                                                        'Button_alert_dialog');
-                                                    await showDialog(
-                                                      context: context,
-                                                      builder: (dialogContext) {
-                                                        return Dialog(
-                                                          elevation: 0,
-                                                          insetPadding:
-                                                              EdgeInsets.zero,
-                                                          backgroundColor:
-                                                              Colors
-                                                                  .transparent,
-                                                          alignment: AlignmentDirectional(
-                                                                  0.0, 0.0)
-                                                              .resolve(
-                                                                  Directionality.of(
-                                                                      context)),
-                                                          child:
-                                                              NegativeInformativeBoxWidget(
-                                                            title:
-                                                                'Não foi possível se candidatar',
-                                                            body:
-                                                                'Verifique se já não tem plantão confirmado no mesmo horário!',
-                                                          ),
-                                                        );
-                                                      },
-                                                    );
-                                                  }
-                                                }
-                                              } else {
-                                                if (_shouldSetState)
-                                                  safeSetState(() {});
-                                                return;
-                                              }
-                                            } else {
-                                              logFirebaseEvent(
-                                                  'Button_custom_action');
-                                              _model.launchwhatsapp =
-                                                  await actions
-                                                      .launchWhatsAppChat(
-                                                '${"Olá, encontrei essa vaga de plantão na Revoluna.\n\n"}${(String? speciality) {
-                                                  return "*$speciality*\n";
-                                                }(widget!.speciality)}${(String value) {
-                                                  return "_" + value + "_\n";
-                                                }(formatNumber(
-                                                  widget!.value,
-                                                  formatType:
-                                                      FormatType.decimal,
-                                                  decimalType:
-                                                      DecimalType.commaDecimal,
-                                                  currency: 'R\$ ',
-                                                ))}${(String? hospital) {
-                                                  return "$hospital\n";
-                                                }(widget!.hospital)}${(String? date) {
-                                                  return "$date\n";
-                                                }(dateTimeFormat(
-                                                  "EEEE, dd/M",
-                                                  widget!.date,
-                                                  locale: FFLocalizations.of(
-                                                          context)
-                                                      .languageCode,
-                                                ))}${(String? start, String end) {
-                                                  return "Início: $start Fim: $end\n";
-                                                }(dateTimeFormat(
-                                                      "Hm",
-                                                      widget!.startTime,
-                                                      locale:
-                                                          FFLocalizations.of(
-                                                                  context)
-                                                              .languageCode,
-                                                    ), dateTimeFormat(
-                                                      "Hm",
-                                                      widget!.endTime,
-                                                      locale:
-                                                          FFLocalizations.of(
-                                                                  context)
-                                                              .languageCode,
-                                                    ))}${(String? shift, String type) {
-                                                  return "$shift / $type\n";
-                                                }(widget!.shift, widget!.type!)}${(String? sector) {
-                                                  return "Setor: $sector\n\n";
-                                                }(widget!.sector)}${(String? shift, String type) {
-                                                  return "Gostaria de me candidatar para essa vaga. Poderia me enviar mais informações?";
-                                                }(widget!.shift, widget!.type!)}',
-                                                (widget!.contractorPhone ==
-                                                                null ||
-                                                            widget!.contractorPhone ==
-                                                                '') &&
-                                                        (widget!.contractorPhone ==
-                                                            'Não informado')
-                                                    ? FFAppState().concierge
-                                                    : widget!.contractorPhone!,
-                                              );
-                                              _shouldSetState = true;
-                                              if (_model.launchwhatsapp!) {
-                                                if (!_model.isCandidate) {
-                                                  logFirebaseEvent(
-                                                      'Button_custom_action');
-                                                  _model.insertCandidatura =
-                                                      await actions
-                                                          .insertCandidaturas(
-                                                    currentUserUid,
-                                                    widget!.jobid!,
-                                                    widget!.value!,
-                                                  );
-                                                  _shouldSetState = true;
-                                                }
-                                              } else {
+                                            logFirebaseEvent(
+                                                'Button_backend_call');
+                                            _model.cRMCheck =
+                                                await MedicosTable().queryRows(
+                                              queryFn: (q) => q.eqOrNull(
+                                                'id',
+                                                currentUserUid,
+                                              ),
+                                            );
+                                            _shouldSetState = true;
+                                            if ('${(String var1) {
+                                                  return var1.split('-')[1];
+                                                }(_model.cRMCheck!.firstOrNull!.medicoCrm!)}' ==
+                                                'estudante') {
+                                              if (widget!.showFavorite) {
                                                 logFirebaseEvent(
                                                     'Button_alert_dialog');
                                                 await showDialog(
@@ -6600,21 +6435,233 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                   Directionality.of(
                                                                       context)),
                                                       child:
-                                                          NegativeInformativeBoxWidget(
-                                                        title:
-                                                            'Necessário WhatsApp',
-                                                        body:
-                                                            'Para prosseguir é preciso ter o aplicativo WhatsaApp instalado no seu  aparelho',
-                                                      ),
+                                                          FavoriteDialogBoxWidget(),
                                                     );
                                                   },
-                                                );
-                                              }
-                                            }
+                                                ).then((value) => safeSetState(
+                                                    () =>
+                                                        _model.favoriteAccept =
+                                                            value));
 
-                                            logFirebaseEvent(
-                                                'Button_execute_callback');
-                                            await widget.callback?.call();
+                                                _shouldSetState = true;
+                                                if (_model.favoriteAccept!) {
+                                                  if (!_model.isCandidate) {
+                                                    logFirebaseEvent(
+                                                        'Button_custom_action');
+                                                    _model.insertFavorite =
+                                                        await actions
+                                                            .insertCandidaturas(
+                                                      currentUserUid,
+                                                      widget!.jobid!,
+                                                      widget!.value!,
+                                                    );
+                                                    _shouldSetState = true;
+                                                    if (_model.insertFavorite ==
+                                                        'success') {
+                                                      logFirebaseEvent(
+                                                          'Button_alert_dialog');
+                                                      await showDialog(
+                                                        context: context,
+                                                        builder:
+                                                            (dialogContext) {
+                                                          return Dialog(
+                                                            elevation: 0,
+                                                            insetPadding:
+                                                                EdgeInsets.zero,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            alignment: AlignmentDirectional(
+                                                                    0.0, 0.0)
+                                                                .resolve(
+                                                                    Directionality.of(
+                                                                        context)),
+                                                            child:
+                                                                PositiveDialogBoxWidget(
+                                                              dialog:
+                                                                  'Plantão confirmado!',
+                                                            ),
+                                                          );
+                                                        },
+                                                      );
+
+                                                      logFirebaseEvent(
+                                                          'Button_update_component_state');
+                                                      _model.isApproved = true;
+                                                      safeSetState(() {});
+                                                    } else {
+                                                      logFirebaseEvent(
+                                                          'Button_alert_dialog');
+                                                      await showDialog(
+                                                        context: context,
+                                                        builder:
+                                                            (dialogContext) {
+                                                          return Dialog(
+                                                            elevation: 0,
+                                                            insetPadding:
+                                                                EdgeInsets.zero,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            alignment: AlignmentDirectional(
+                                                                    0.0, 0.0)
+                                                                .resolve(
+                                                                    Directionality.of(
+                                                                        context)),
+                                                            child:
+                                                                NegativeInformativeBoxWidget(
+                                                              title:
+                                                                  'Não foi possível se candidatar',
+                                                              body:
+                                                                  'Verifique se já não tem plantão confirmado no mesmo horário!',
+                                                            ),
+                                                          );
+                                                        },
+                                                      );
+                                                    }
+                                                  }
+                                                } else {
+                                                  if (_shouldSetState)
+                                                    safeSetState(() {});
+                                                  return;
+                                                }
+                                              } else {
+                                                logFirebaseEvent(
+                                                    'Button_custom_action');
+                                                _model.launchwhatsapp =
+                                                    await actions
+                                                        .launchWhatsAppChat(
+                                                  '${"Olá, encontrei essa vaga de plantão na Revoluna.\n\n"}${(String? speciality) {
+                                                    return "*$speciality*\n";
+                                                  }(widget!.speciality)}${(String value) {
+                                                    return "_" + value + "_\n";
+                                                  }(formatNumber(
+                                                    widget!.value,
+                                                    formatType:
+                                                        FormatType.decimal,
+                                                    decimalType: DecimalType
+                                                        .commaDecimal,
+                                                    currency: 'R\$ ',
+                                                  ))}${(String? hospital) {
+                                                    return "$hospital\n";
+                                                  }(widget!.hospital)}${(String? date) {
+                                                    return "$date\n";
+                                                  }(dateTimeFormat(
+                                                    "EEEE, dd/M",
+                                                    widget!.date,
+                                                    locale: FFLocalizations.of(
+                                                            context)
+                                                        .languageCode,
+                                                  ))}${(String? start, String end) {
+                                                    return "Início: $start Fim: $end\n";
+                                                  }(dateTimeFormat(
+                                                        "Hm",
+                                                        widget!.startTime,
+                                                        locale:
+                                                            FFLocalizations.of(
+                                                                    context)
+                                                                .languageCode,
+                                                      ), dateTimeFormat(
+                                                        "Hm",
+                                                        widget!.endTime,
+                                                        locale:
+                                                            FFLocalizations.of(
+                                                                    context)
+                                                                .languageCode,
+                                                      ))}${(String? shift, String type) {
+                                                    return "$shift / $type\n";
+                                                  }(widget!.shift, widget!.type!)}${(String? sector) {
+                                                    return "Setor: $sector\n\n";
+                                                  }(widget!.sector)}${(String? shift, String type) {
+                                                    return "Gostaria de me candidatar para essa vaga. Poderia me enviar mais informações?";
+                                                  }(widget!.shift, widget!.type!)}',
+                                                  (widget!.contractorPhone ==
+                                                                  null ||
+                                                              widget!.contractorPhone ==
+                                                                  '') &&
+                                                          (widget!.contractorPhone ==
+                                                              'Não informado')
+                                                      ? FFAppState().concierge
+                                                      : widget!
+                                                          .contractorPhone!,
+                                                );
+                                                _shouldSetState = true;
+                                                if (_model.launchwhatsapp!) {
+                                                  if (!_model.isCandidate) {
+                                                    logFirebaseEvent(
+                                                        'Button_custom_action');
+                                                    _model.insertCandidatura =
+                                                        await actions
+                                                            .insertCandidaturas(
+                                                      currentUserUid,
+                                                      widget!.jobid!,
+                                                      widget!.value!,
+                                                    );
+                                                    _shouldSetState = true;
+                                                  }
+                                                } else {
+                                                  logFirebaseEvent(
+                                                      'Button_alert_dialog');
+                                                  await showDialog(
+                                                    context: context,
+                                                    builder: (dialogContext) {
+                                                      return Dialog(
+                                                        elevation: 0,
+                                                        insetPadding:
+                                                            EdgeInsets.zero,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        alignment:
+                                                            AlignmentDirectional(
+                                                                    0.0, 0.0)
+                                                                .resolve(
+                                                                    Directionality.of(
+                                                                        context)),
+                                                        child:
+                                                            NegativeInformativeBoxWidget(
+                                                          title:
+                                                              'Necessário WhatsApp',
+                                                          body:
+                                                              'Para prosseguir é preciso ter o aplicativo WhatsaApp instalado no seu  aparelho',
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                }
+                                              }
+
+                                              logFirebaseEvent(
+                                                  'Button_execute_callback');
+                                              await widget.callback?.call();
+                                            } else {
+                                              logFirebaseEvent(
+                                                  'Button_alert_dialog');
+                                              await showDialog(
+                                                context: context,
+                                                builder: (dialogContext) {
+                                                  return Dialog(
+                                                    elevation: 0,
+                                                    insetPadding:
+                                                        EdgeInsets.zero,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    alignment:
+                                                        AlignmentDirectional(
+                                                                0.0, 0.0)
+                                                            .resolve(
+                                                                Directionality.of(
+                                                                    context)),
+                                                    child:
+                                                        NegativeInformativeBoxWidget(
+                                                      title:
+                                                          'Não é possível prosseguir',
+                                                      body:
+                                                          'Sem um CRM válido não é possível  participar de processos de seleção',
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            }
                                           } else {
                                             logFirebaseEvent(
                                                 'Button_bottom_sheet');
