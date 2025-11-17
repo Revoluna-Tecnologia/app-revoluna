@@ -1,11 +1,14 @@
 import '/auth/supabase_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/components/back_top_bar/back_top_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/instant_timer.dart';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
+import '/flutter_flow/permissions_util.dart';
 import '/index.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:flutter/gestures.dart';
@@ -49,6 +52,33 @@ class _LoginMagicLinkWidgetState extends State<LoginMagicLinkWidget> {
       );
       logFirebaseEvent('LoginMagicLink_timer');
       _model.timerController.onStartTimer();
+      if (!FFAppState().wasUser) {
+        logFirebaseEvent('LoginMagicLink_start_periodic_action');
+        _model.instantTimer = InstantTimer.periodic(
+          duration: Duration(milliseconds: 500),
+          callback: (timer) async {
+            logFirebaseEvent('LoginMagicLink_backend_call');
+            _model.listenVerifyEmail = await ListenVerifyEmailCall.call(
+              email: FFAppState().inputEmail,
+            );
+
+            if ((_model.listenVerifyEmail?.succeeded ?? true)) {
+              if ((_model.listenVerifyEmail?.bodyText ?? '') ==
+                  '{\"verified\":true}') {
+                logFirebaseEvent('LoginMagicLink_stop_periodic_action');
+                _model.instantTimer?.cancel();
+                logFirebaseEvent('LoginMagicLink_update_page_state');
+                _model.emailVerified = true;
+                safeSetState(() {});
+                return;
+              }
+            } else {
+              return;
+            }
+          },
+          startImmediately: true,
+        );
+      }
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
@@ -476,7 +506,8 @@ class _LoginMagicLinkWidgetState extends State<LoginMagicLinkWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           FFButtonWidget(
-                            onPressed: currentUserEmailVerified
+                            onPressed: (currentUserEmailVerified ||
+                                    _model.emailVerified)
                                 ? null
                                 : () async {
                                     logFirebaseEvent(
@@ -528,15 +559,25 @@ class _LoginMagicLinkWidgetState extends State<LoginMagicLinkWidget> {
                             ),
                           ),
                           FFButtonWidget(
-                            onPressed: !currentUserEmailVerified
+                            onPressed: !(currentUserEmailVerified ||
+                                    _model.emailVerified)
                                 ? null
                                 : () async {
                                     logFirebaseEvent(
                                         'LOGIN_MAGIC_LINK_CONTINUAR_BTN_ON_TAP');
                                     if (FFAppState().wasUser) {
-                                      logFirebaseEvent('Button_navigate_to');
+                                      if (await getPermissionStatus(
+                                          locationPermission)) {
+                                        logFirebaseEvent('Button_navigate_to');
 
-                                      context.goNamed(HomePageWidget.routeName);
+                                        context
+                                            .goNamed(HomePageWidget.routeName);
+                                      } else {
+                                        logFirebaseEvent('Button_navigate_to');
+
+                                        context.goNamed(
+                                            LocalizacaoWidget.routeName);
+                                      }
                                     } else {
                                       logFirebaseEvent('Button_navigate_to');
                                       if (Navigator.of(context).canPop()) {
@@ -686,8 +727,108 @@ class _LoginMagicLinkWidgetState extends State<LoginMagicLinkWidget> {
                                 );
                               } else {
                                 return FFButtonWidget(
-                                  onPressed: () {
-                                    print('Button pressed ...');
+                                  onPressed: () async {
+                                    logFirebaseEvent(
+                                        'LOGIN_MAGIC_LINK_REENVIAR_LINK_BTN_ON_TA');
+                                    logFirebaseEvent('Button_alert_dialog');
+                                    var confirmDialogResponse =
+                                        await showDialog<bool>(
+                                              context: context,
+                                              builder: (alertDialogContext) {
+                                                return AlertDialog(
+                                                  title:
+                                                      Text('Reenviar código'),
+                                                  content: Text(
+                                                      'Deseja enviar um novo código?'),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext,
+                                                              false),
+                                                      child: Text('Sim'),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext,
+                                                              true),
+                                                      child: Text('Não'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ) ??
+                                            false;
+                                    if (confirmDialogResponse) {
+                                      if (FFAppState().wasUser) {
+                                        logFirebaseEvent(
+                                            'Button_custom_action');
+                                        _model.magiclinksent =
+                                            await actions.otpEmailMagic(
+                                          FFAppState().inputEmail,
+                                        );
+                                      } else {
+                                        logFirebaseEvent('Button_backend_call');
+                                        _model.sendVerifyEmail =
+                                            await SendVerifyEmailCall.call(
+                                          email: FFAppState().inputEmail,
+                                        );
+                                      }
+
+                                      logFirebaseEvent('Button_show_snack_bar');
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Novo link enviado por E-mail! Verifique novamente.',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  font: GoogleFonts.geologica(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMedium
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyMedium
+                                                          .fontWeight,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyMedium
+                                                          .fontStyle,
+                                                  lineHeight: 1.0,
+                                                ),
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 6000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
+                                      logFirebaseEvent('Button_timer');
+                                      _model.timerController.onResetTimer();
+
+                                      logFirebaseEvent('Button_timer');
+                                      _model.timerController.onStartTimer();
+                                    }
+
+                                    safeSetState(() {});
                                   },
                                   text: 'Reenviar link',
                                   options: FFButtonOptions(
