@@ -1557,11 +1557,8 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                           )
                                                         ],
                                                       ),
-                                                      hintText: _model
-                                                                  .checkboxValue ==
-                                                              true
-                                                          ? 'Não se aplica'
-                                                          : 'Selecione seu estado',
+                                                      hintText:
+                                                          'Selecione seu estado',
                                                       searchHintText:
                                                           'Pesquisar...',
                                                       searchCursorColor:
@@ -1570,34 +1567,19 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                               .primaryText,
                                                       icon: Icon(
                                                         FFIcons.kchevronDown,
-                                                        color: _model
-                                                                    .checkboxValue ==
-                                                                true
-                                                            ? FlutterFlowTheme
-                                                                    .of(context)
-                                                                .accent2
-                                                            : FlutterFlowTheme
-                                                                    .of(context)
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
                                                                 .primary,
                                                         size: 24.0,
                                                       ),
-                                                      fillColor: _model
-                                                                  .checkboxValue ==
-                                                              true
-                                                          ? FlutterFlowTheme.of(
-                                                                  context)
-                                                              .accent2
-                                                          : FlutterFlowTheme.of(
+                                                      fillColor:
+                                                          FlutterFlowTheme.of(
                                                                   context)
                                                               .primaryBackground,
                                                       elevation: 2.0,
-                                                      borderColor: _model
-                                                                  .checkboxValue ==
-                                                              true
-                                                          ? FlutterFlowTheme.of(
-                                                                  context)
-                                                              .accent2
-                                                          : _model.ufborder,
+                                                      borderColor:
+                                                          _model.ufborder,
                                                       borderWidth: 1.0,
                                                       borderRadius:
                                                           FFAppConstants
@@ -1620,9 +1602,6 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                   ),
                                                                   0.0),
                                                       hidesUnderline: true,
-                                                      disabled: _model
-                                                              .checkboxValue ==
-                                                          true,
                                                       isOverButton: true,
                                                       isSearchable: true,
                                                       isMultiSelect: false,
@@ -2278,13 +2257,6 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                 'Checkbox_reset_form_fields');
                                                             safeSetState(() {
                                                               _model
-                                                                  .dropdownEstadosValueController
-                                                                  ?.reset();
-                                                            });
-                                                            logFirebaseEvent(
-                                                                'Checkbox_reset_form_fields');
-                                                            safeSetState(() {
-                                                              _model
                                                                   .crmTextController
                                                                   ?.text = '';
                                                             });
@@ -2391,7 +2363,8 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                   FlutterFlowTheme.of(context)
                                                                       .error)) ||
                                                           (_model.checkboxValue == true
-                                                              ? false
+                                                              ? (_model.dropdownEstadosValue ==
+                                                                  null)
                                                               : ((_model.crmTextController.text == null ||
                                                                       _model.crmTextController.text ==
                                                                           '') ||
