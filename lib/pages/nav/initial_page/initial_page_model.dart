@@ -16,7 +16,6 @@ import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
-import '/flutter_flow/permissions_util.dart';
 import '/flutter_flow/request_manager.dart';
 
 import '/index.dart';
@@ -43,12 +42,6 @@ class InitialPageModel extends FlutterFlowModel<InitialPageWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  // Stores action output result for [Custom Action - appTracking] action in InitialPage widget.
-  bool? appTracking;
-  // Stores action output result for [Backend Call - Update Row(s)] action in InitialPage widget.
-  List<MedicosRow>? medicoTrackingUpdateTrueCopy;
-  // Stores action output result for [Backend Call - Update Row(s)] action in InitialPage widget.
-  List<MedicosRow>? medicoTrackingUpdateFalseCopy;
   bool requestCompleted3 = false;
   String? requestLastUniqueKey3;
   // Stores action output result for [Custom Action - launchWhatsAppChat] action in FloatingActionButton widget.

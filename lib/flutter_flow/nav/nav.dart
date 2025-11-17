@@ -360,6 +360,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: InitialPageWidget.routeName,
           path: InitialPageWidget.routePath,
           builder: (context, params) => InitialPageWidget(),
+        ),
+        FFRoute(
+          name: LocalizacaoWidget.routeName,
+          path: LocalizacaoWidget.routePath,
+          builder: (context, params) => LocalizacaoWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

@@ -21,3 +21,4 @@ export 'launch_whats_app_chat.dart' show launchWhatsAppChat;
 export 'initialize_deeplinks.dart' show initializeDeeplinks;
 export 'load_clean_hospital_terms.dart' show loadCleanHospitalTerms;
 export 'initialize_selected_day.dart' show initializeSelectedDay;
+export 'request_location_permission.dart' show requestLocationPermission;

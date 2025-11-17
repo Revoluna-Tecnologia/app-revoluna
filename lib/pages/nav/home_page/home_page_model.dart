@@ -51,10 +51,10 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   late DrawerMenuModel drawerMenuModel;
   // Model for Header component.
   late HeaderModel headerModel;
-  bool requestCompleted2 = false;
-  String? requestLastUniqueKey2;
   bool requestCompleted1 = false;
   String? requestLastUniqueKey1;
+  bool requestCompleted2 = false;
+  String? requestLastUniqueKey2;
   // Model for emptyList component.
   late EmptyListModel emptyListModel;
   // Models for cardVagas dynamic component.
@@ -106,21 +106,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
     }
   }
 
-  Future waitForRequestCompleted2({
-    double minWait = 0,
-    double maxWait = double.infinity,
-  }) async {
-    final stopwatch = Stopwatch()..start();
-    while (true) {
-      await Future.delayed(Duration(milliseconds: 50));
-      final timeElapsed = stopwatch.elapsedMilliseconds;
-      final requestComplete = requestCompleted2;
-      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
-        break;
-      }
-    }
-  }
-
   Future waitForRequestCompleted1({
     double minWait = 0,
     double maxWait = double.infinity,
@@ -130,6 +115,21 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
       await Future.delayed(Duration(milliseconds: 50));
       final timeElapsed = stopwatch.elapsedMilliseconds;
       final requestComplete = requestCompleted1;
+      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
+        break;
+      }
+    }
+  }
+
+  Future waitForRequestCompleted2({
+    double minWait = 0,
+    double maxWait = double.infinity,
+  }) async {
+    final stopwatch = Stopwatch()..start();
+    while (true) {
+      await Future.delayed(Duration(milliseconds: 50));
+      final timeElapsed = stopwatch.elapsedMilliseconds;
+      final requestComplete = requestCompleted2;
       if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
         break;
       }
