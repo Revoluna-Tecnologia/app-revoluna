@@ -1,25 +1,219 @@
 # Histórico de Versões - Revoluna
 
+## [2.2.1] - 17/11/2025
+
+### 🐛 **Correções de Bugs**
+
+#### 🔐 **Sistema de Autenticação**
+- **Login por E-mail**: Corrigido fluxo de navegação
+- **Login por Telefone**: Corrigida verificação de número de telefone usando valores atuais do formulário ao invés de variáveis globais vazias
+- **Cadastro de Estudantes**: Não enviava o Estado (UF) para variáveis globais e impedia o progresso no cadastro
+
+#### 🎨 **Interface e Componentes**
+- **Barra de Navegação Superior**: Removido logo da barra superior de voltar em 13 páginas para simplificação visual
+- **Ícones Adaptativos**: Atualizados ícones adaptativos do Android
+
+#### **Candidaturas**
+- **Verificação de estudades**: Check de CRM para impedir estudantes de se candidatar
+
+---
+
+### ✨ **Novas Funcionalidades**
+
+#### 📍 **Sistema Completo de Gerenciamento de Permissões de Localização**
+- **Página Dedicada**: Nova tela para explicação do uso da localização para o usuário 
+- **Integração nos Fluxos**:
+  - Verificação automática após login (e-mail, telefone, senha)
+  - Verificação após finalizar cadastro
+  - Redirecionamento condicional: HomePage (com permissão) ou LocalizacaoWidget (sem permissão)
+- **Queries Simplificadas**: Removidos filtros que faziam o sistema pedir permissão de localização (`hospital_lat`, `hospital_log`)
+
+---
+
+### 🔄 **Melhorias e Refatorações**
+
+#### ✉️ **Login por E-mail com Verificação em Tempo Real**
+- **Login por MagicLink**: Reconstrução do sistema que foi quebrado em alguma alteração acidental
+
+#### 🎨 **Ajustes Visuais nas Páginas Inicial e Home**
+- **HomePage**:
+  - Calendário colocado dentro do scroll vertical
+- **InitialPage**:
+  - Removida obtenção automática de localização na inicialização
+  - Carregamento imediato sem esperar geolocalização
+  - Eliminado código de tracking de privacidade no dispose clonado da Home
+- **Cards de Vagas**:
+  - Adicionado ícone para os setores
+  - Removido texto "Setor: "
+  - Espaçamento padronizado
+  - Melhor alinhamento visual
+- **Avatar de Perfil**: Implementada lógica condicional utilizando arquivo de imagem local
+
+---
+
+### 🔧 **Configurações e Build**
+
+#### 📱 **iOS - Entitlements**
+- **Push Notifications**: Ambiente de produção configurado (`aps-environment: production`)
+- **Sign in with Apple**: Habilitado com configuração padrão
+
+#### 📋 **iOS - Registro de Aplicativos e Serviços Terceiros**
+- **LSApplicationQueriesSchemes**: Registrados 12 esquemas de URL
+  - **Mapas**: Waze, Google Maps, 99 Taxi
+  - **Comunicação**: WhatsApp, Gmail, Outlook
+  - **Calendários**: Apple Calendar, Fantastical, Spark, Outlook Calendar, Google Calendar
+- **Background Modes**: Habilitados `processing`, `fetch`, `remote-notification`
+- **Notificações**: Configuradas alertas, badges, sons e notificações críticas
+- **Outras**: UIUserInterfaceStyle (Light), FirebaseAppDelegateProxyEnabled (true)
+
+#### 🗂️ **GitIgnore Atualizado**
+- **iOS**: Pods, symlinks, arquivos gerados, .DS_Store
+- **Android**: .gradle, captures, local.properties, .DS_Store
+- **Arquivos Removidos**: `flutter_lldb_helper.py`, `flutter_lldbinit`
+- **Total**: 18 novas regras adicionadas
+
+#### 📦 **Dependências**
+- **file_selector_platform_interface**: 2.6.2 → 2.7.0
+
+---
+
+### 📊 **Estatísticas da Versão 2.2.1**
+
+- **Total de Commits**: 11
+- **Arquivos Modificados**: 40+
+- **Linhas Adicionadas**: ~1.500
+- **Linhas Removidas**: ~500
+- **Arquivos Novos**: 5 (actions, widgets, models)
+
+#### 🎯 **Impactos Principais**
+- **Autenticação**: Correções críticas em 3 fluxos diferentes
+- **Permissões**: Sistema completo implementado
+- **UX**: Carregamento mais rápido, interface mais limpa
+- **iOS**: Configurações completas para integrações e funcionalidades nativas
+- **Manutenibilidade**: Código mais limpo, menos duplicação
+
+---
+
 ## [2.2.0] - 11/11/2025
 
-### 🎨 **Redesign de Interface**
+### 🎨 **Redesign Completo de Interface**
 
-#### 🔄 **Refatoração Completa da UI**
-- **Nova Página Inicial**: Redesign completo da área deslogada com interface modernizada
-- **Header Aprimorado**: Novo header com contagem de plantões integrada
-- **Página de Vagas Renovada**: Refatoração completa da página de vagas com melhor organização e usabilidade
-- **Navegação Redesenhada**: Refatoração do sistema de navegação para melhor experiência do usuário
+#### 🌟 **Nova Página Inicial para Área Deslogada**
+- **Acesso Público a Vagas**: Usuários não autenticados podem visualizar vagas disponíveis antes de se cadastrar
+- **Carrossel de Banners**: Sistema de banners de marketing para comunicação visual
+- **Botão de WhatsApp Flutuante**: Contato direto com concierge via WhatsApp
+- **Navegação Intuitiva**: Botão "Entrar" proeminente que direciona para login por telefone
+- **Queries Otimizadas**: Filtragem automática de vagas com dados de localização válidos
 
-#### 🎯 **Acesso Ampliado**
-- **Acesso para Usuários Não Cadastrados**: Usuários não logados agora podem visualizar vagas
-- **Nova Lógica de Candidatura**: Sistema de candidatura repensado para suportar diferentes tipos de acesso
+#### 📊 **Header Inteligente com Contagem de Plantões**
+- **Contagem Dinâmica**: Exibição automática da quantidade de plantões da semana atual
+- **Pluralização Inteligente**: Sistema que adapta o texto ("plantão" vs "plantões") automaticamente
+- **Filtro Temporal**: Contagem baseada em vagas dentro da semana corrente
 
+#### 🏥 **Página de Vagas Completamente Refatorada**
+- **Sistema de Paywall**: Implementado controle de acesso para candidaturas de usuários não cadastrados
+- **Lógica de Candidatura Repensada**: Novo sistema com verificação de status (candidato, convocado, aprovado, check-in)
+- **Integração Financeira**: Inserção automática em tabela de pagamentos ao se candidatar
+- **Deep Links Otimizados**: Melhor tratamento de URLs compartilhadas de vagas
+- **Estados de Candidatura**: Visualização clara do status em tempo real
 
-#### **Logo atualizado**
--  Novo logo e suas aplicações em toda a plataforma
+#### 📱 **Nova Página de Histórico**
+- **Visualização Completa**: Nova tela dedicada para histórico de plantões e candidaturas
+- **Filtros Inteligentes**: Exclusão automática de vagas canceladas e sem geolocalização
+- **Ordenação por Data**: Plantões ordenados por horário de início
+- **Cards Otimizados**: Novo componente `card_escala` para melhor apresentação
 
-### 🔧 **Melhorias Técnicas**
-- **Atualizações de Dependências**: Atualização de bibliotecas e pacotes do projeto
+#### 🎯 **Navegação Redesenhada**
+- **Estrutura Reorganizada**: Sistema de navegação mais fluido e responsivo
+- **Componentes Novos**:
+  - `empty_list_houston` - Estado vazio personalizado
+  - `dropdown_loading` - Loading específico para dropdowns
+  - `calendar_loading` - Loading otimizado para calendário
+- **Remoção de Redundâncias**: Página `plantoes` removida (1.743 linhas) em favor do novo histórico
+- **Transições Melhoradas**: Animações de página mais suaves (500ms com rightToLeft)
+
+#### 🔐 **Páginas de Login Modernizadas**
+- **Botão de Voltar Reposicionado**: Movido para o topo para melhor ergonomia
+- **Layout Otimizado**: Ajustes de espaçamento e posicionamento de elementos
+- **Experiência Visual Melhorada**: Integração harmoniosa com novo logo
+
+#### 🎨 **Identidade Visual Atualizada**
+- **Novo Logo**: Design renovado em formato SVG (10 linhas otimizadas)
+- **Ícone de App**: Atualizado de 3KB para 222KB (maior qualidade)
+- **Splash Screen**: Nova tela de abertura (6.677 bytes)
+- **Ícones Adaptativos Android**:
+  - Foreground: 12.587 → 14.393 bytes
+  - Background: 186.962 bytes (novo)
+- **Aplicação Universal**: Logo atualizado em 30+ componentes e páginas do app
+
+#### 🏗️ **Alterações Estruturais Profundas**
+- **Migração de Armazenamento**: Transição de SharedPreferences para FlutterSecureStorage (maior segurança)
+- **Novas Views de Banco de Dados**:
+  - `VwVagasAbertasTable` - View otimizada para vagas abertas (134 linhas)
+  - `VwFolhaPagamentoTable` - View para gestão de folha de pagamento (142 linhas)
+- **Funções Customizadas**:
+  - `cleanHospitalName()` - Limpeza automática de nomes de hospitais
+  - `initialize_selected_day` - Inicialização de datas selecionadas
+  - `load_clean_hospital_terms` - Carregamento de termos para limpeza
+- **App State Expandido**:
+  - Campo `estadoUF` migrado de `int` para `String`
+  - Novo campo `estadoUFIndex` (int) para compatibilidade
+  - Novo campo `cleanHospital` (List<String>) para termos de limpeza
+  - Métodos `delete` adicionados a todos os campos
+- **Componentes de Loading Refatorados**: Sistema modular com loading específico por contexto
+
+---
+
+### 🔧 **Melhorias Técnicas e Configurações**
+
+#### 📦 **Atualizações de Dependências**
+- **Commit**: eff6bcd2
+- **Arquivos**: pubspec.lock atualizado
+- **Objetivo**: Manter bibliotecas atualizadas e seguras
+
+---
+
+### 🗄️ **Backend e Banco de Dados**
+
+#### 📊 **Novas Views Otimizadas**
+- **VwVagasAbertasRow** (134 linhas):
+  - Dados completos de vagas abertas
+  - Informações de hospital com geolocalização
+  - Períodos, tipos e formas de recebimento
+  - Observações e metadados
+- **VwFolhaPagamentoRow** (142 linhas):
+  - Consolidação de dados para folha de pagamento
+  - Informações do médico (nome, CPF, CRM)
+  - Valores e datas de pagamento
+  - Status de candidatura e razão social
+
+#### 🔄 **Tabelas Atualizadas**
+- `medicos.dart` - 18 linhas adicionadas
+- `medicos_precadastro.dart` - 18 linhas adicionadas
+- `pagamentos.dart` - 4 linhas modificadas
+- `vw_vagas_candidaturas.dart` - 3 linhas adicionadas
+
+#### 🎨 **Custom Widgets**
+- **Calendário Customizado**: 28 linhas modificadas com melhorias na renderização
+- **Serialization**: 4 linhas adicionadas para melhor tratamento de parâmetros de navegação
+
+---
+
+### 📊 **Estatísticas da Versão 2.2.0**
+
+- **Total de Commits**: 11
+- **Arquivos Modificados**: 110+
+- **Linhas Totais**: ~13.500 modificadas
+- **Arquivos Novos Criados**: 10+
+- **Arquivos Removidos**: 5
+- **Componentes Refatorados**: 80+
+
+#### 🎯 **Impactos Principais**
+- **Segurança**: Migração para FlutterSecureStorage
+- **Performance**: Views otimizadas e queries eficientes
+- **UX**: Acesso público para visualização de vagas
+- **Manutenibilidade**: Código mais limpo, componentes reutilizáveis
+- **Qualidade Visual**: Novo logo, ícones HD, splash screen renovado
 
 ---
 
