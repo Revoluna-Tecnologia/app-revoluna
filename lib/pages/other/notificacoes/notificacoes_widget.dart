@@ -81,7 +81,6 @@ class _NotificacoesWidgetState extends State<NotificacoesWidget> {
                 model: _model.backTopBarModel,
                 updateCallback: () => safeSetState(() {}),
                 child: BackTopBarWidget(
-                  logo: true,
                   backButton: () async {
                     logFirebaseEvent(
                         'NOTIFICACOES_Container_bdcz8mfv_CALLBACK');

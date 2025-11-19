@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
+import '/flutter_flow/permissions_util.dart';
 import '/index.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/gestures.dart';
@@ -70,7 +71,6 @@ class _LoginPasswordWidgetState extends State<LoginPasswordWidget> {
                 model: _model.backTopBarModel,
                 updateCallback: () => safeSetState(() {}),
                 child: BackTopBarWidget(
-                  logo: false,
                   backButton: () async {
                     logFirebaseEvent(
                         'LOGIN_PASSWORD_Container_auua36w1_CALLBA');
@@ -473,10 +473,20 @@ class _LoginPasswordWidgetState extends State<LoginPasswordWidget> {
                                 }
 
                                 if (loggedIn) {
-                                  logFirebaseEvent('Button_navigate_to');
+                                  if (await getPermissionStatus(
+                                      locationPermission)) {
+                                    logFirebaseEvent('Button_navigate_to');
 
-                                  context.goNamedAuth(HomePageWidget.routeName,
-                                      context.mounted);
+                                    context.goNamedAuth(
+                                        HomePageWidget.routeName,
+                                        context.mounted);
+                                  } else {
+                                    logFirebaseEvent('Button_navigate_to');
+
+                                    context.goNamedAuth(
+                                        LocalizacaoWidget.routeName,
+                                        context.mounted);
+                                  }
                                 } else {
                                   logFirebaseEvent('Button_update_page_state');
                                   _model.passwordborder =

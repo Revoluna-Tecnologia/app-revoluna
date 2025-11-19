@@ -81,16 +81,6 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                 'vagas_status',
                 'abertas',
               )
-              .not(
-                'hospital_lat',
-                'is',
-                null,
-              )
-              .not(
-                'hospital_log',
-                'is',
-                null,
-              )
               .order('vagas_horainicio', ascending: true),
         ),
       )

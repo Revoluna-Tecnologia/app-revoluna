@@ -85,7 +85,6 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                   model: _model.backTopBarModel,
                   updateCallback: () => safeSetState(() {}),
                   child: BackTopBarWidget(
-                    logo: false,
                     backButton: () async {
                       logFirebaseEvent(
                           'LOGIN_EMAIL_Container_ewxxm4ln_CALLBACK');
@@ -570,11 +569,6 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                                 safeSetState(() {});
                                               return;
                                             }
-                                            logFirebaseEvent(
-                                                'Button_navigate_to');
-
-                                            context.pushNamed(
-                                                LoginMagicLinkWidget.routeName);
                                           }
                                         } else {
                                           logFirebaseEvent(
@@ -608,6 +602,11 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                           return;
                                         }
                                       }
+
+                                      logFirebaseEvent('Button_navigate_to');
+
+                                      context.pushNamed(
+                                          LoginMagicLinkWidget.routeName);
 
                                       if (_shouldSetState) safeSetState(() {});
                                     },

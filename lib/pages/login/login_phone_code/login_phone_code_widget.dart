@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
+import '/flutter_flow/permissions_util.dart';
 import '/index.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
@@ -93,7 +94,6 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
                   model: _model.backTopBarModel,
                   updateCallback: () => safeSetState(() {}),
                   child: BackTopBarWidget(
-                    logo: true,
                     backButton: () async {
                       logFirebaseEvent(
                           'LOGIN_PHONE_CODE_Container_idz4yefd_CALL');
@@ -604,11 +604,20 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
                                           widget!.phoneOnlynumbers!,
                                         );
                                         if (_model.otpPhoneConfirm!) {
-                                          logFirebaseEvent(
-                                              'Button_navigate_to');
+                                          if (await getPermissionStatus(
+                                              locationPermission)) {
+                                            logFirebaseEvent(
+                                                'Button_navigate_to');
 
-                                          context.goNamed(
-                                              HomePageWidget.routeName);
+                                            context.goNamed(
+                                                HomePageWidget.routeName);
+                                          } else {
+                                            logFirebaseEvent(
+                                                'Button_navigate_to');
+
+                                            context.goNamed(
+                                                LocalizacaoWidget.routeName);
+                                          }
                                         } else {
                                           logFirebaseEvent(
                                               'Button_update_page_state');

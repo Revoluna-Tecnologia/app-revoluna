@@ -69,7 +69,6 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                   model: _model.backTopBarModel,
                   updateCallback: () => safeSetState(() {}),
                   child: BackTopBarWidget(
-                    logo: false,
                     backButton: () async {
                       logFirebaseEvent(
                           'PRIVACIDADE_Container_3bv2bmfm_CALLBACK');

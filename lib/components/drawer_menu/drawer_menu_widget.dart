@@ -69,7 +69,6 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
               model: _model.backTopBarModel,
               updateCallback: () => safeSetState(() {}),
               child: BackTopBarWidget(
-                logo: false,
                 backButton: () async {
                   logFirebaseEvent('DRAWER_MENU_Container_thiqrtjg_CALLBACK');
                   logFirebaseEvent('BackTopBar_navigate_back');

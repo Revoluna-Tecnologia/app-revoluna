@@ -68,7 +68,6 @@ class _TermosWidgetState extends State<TermosWidget> {
                 model: _model.backTopBarModel,
                 updateCallback: () => safeSetState(() {}),
                 child: BackTopBarWidget(
-                  logo: false,
                   backButton: () async {
                     logFirebaseEvent('TERMOS_PAGE_Container_iv7yjxw0_CALLBACK');
                     logFirebaseEvent('BackTopBar_navigate_back');

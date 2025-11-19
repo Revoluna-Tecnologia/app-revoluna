@@ -220,7 +220,6 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                   model: _model.backTopBarModel,
                                   updateCallback: () => safeSetState(() {}),
                                   child: BackTopBarWidget(
-                                    logo: false,
                                     backButton: () async {
                                       logFirebaseEvent(
                                           'PERFIL_PAGE_Container_ogjqkhak_CALLBACK');

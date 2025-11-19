@@ -2,6 +2,7 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/dialogs/favorite_dialog_box/favorite_dialog_box_widget.dart';
 import '/components/dialogs/justification_box/justification_box_widget.dart';
+import '/components/dialogs/location_request/location_request_widget.dart';
 import '/components/dialogs/negative_dialog_box/negative_dialog_box_widget.dart';
 import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/components/dialogs/passar_plantao_dialog_box/passar_plantao_dialog_box_widget.dart';
@@ -98,12 +99,22 @@ class VagaBottomSheetModel extends FlutterFlowModel<VagaBottomSheetWidget> {
   String? checkOutJustification;
   // Stores action output result for [Custom Action - checkInCheckOut] action in Button widget.
   String? checkOut02;
+  // Stores action output result for [Alert Dialog - Custom Dialog] action in Button widget.
+  bool? locationrequest2;
+  // Stores action output result for [Custom Action - requestLocationPermission] action in Button widget.
+  bool? permission2;
   // Stores action output result for [Custom Action - checkInCheckOut] action in Button widget.
   String? checkIn01;
   // Stores action output result for [Alert Dialog - Custom Dialog] action in Button widget.
   String? checkInJustification;
   // Stores action output result for [Custom Action - checkInCheckOut] action in Button widget.
   String? checkIn02;
+  // Stores action output result for [Alert Dialog - Custom Dialog] action in Button widget.
+  bool? locationrequest;
+  // Stores action output result for [Custom Action - requestLocationPermission] action in Button widget.
+  bool? permission;
+  // Stores action output result for [Backend Call - Query Rows] action in Button widget.
+  List<MedicosRow>? cRMCheck;
   // Stores action output result for [Alert Dialog - Custom Dialog] action in Button widget.
   bool? favoriteAccept;
   // Stores action output result for [Custom Action - insertCandidaturas] action in Button widget.

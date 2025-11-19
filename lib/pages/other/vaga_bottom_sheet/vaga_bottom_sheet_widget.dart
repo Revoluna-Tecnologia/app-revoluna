@@ -2,6 +2,7 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/dialogs/favorite_dialog_box/favorite_dialog_box_widget.dart';
 import '/components/dialogs/justification_box/justification_box_widget.dart';
+import '/components/dialogs/location_request/location_request_widget.dart';
 import '/components/dialogs/negative_dialog_box/negative_dialog_box_widget.dart';
 import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/components/dialogs/passar_plantao_dialog_box/passar_plantao_dialog_box_widget.dart';
@@ -5668,64 +5669,114 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                           logFirebaseEvent(
                                               'VAGA_BOTTOM_SHEET_ENCERRAR_PLANTO_BTN_ON');
                                           var _shouldSetState = false;
-                                          logFirebaseEvent(
-                                              'Button_custom_action');
-                                          _model.checkOut01 =
-                                              await actions.checkInCheckOut(
-                                            widget!.jobid!,
-                                            widget!.lat!,
-                                            widget!.lon!,
-                                            '',
-                                            false,
-                                          );
-                                          _shouldSetState = true;
-                                          if (_model.checkOut01 != 'SUCESSO') {
-                                            if (_model.checkOut01 ==
-                                                'ERRO Horário requer justificativa obrigatória.') {
-                                              logFirebaseEvent(
-                                                  'Button_alert_dialog');
-                                              await showDialog(
-                                                context: context,
-                                                builder: (dialogContext) {
-                                                  return Dialog(
-                                                    elevation: 0,
-                                                    insetPadding:
-                                                        EdgeInsets.zero,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    alignment:
-                                                        AlignmentDirectional(
-                                                                0.0, 0.0)
-                                                            .resolve(
-                                                                Directionality.of(
-                                                                    context)),
-                                                    child:
-                                                        JustificationBoxWidget(),
-                                                  );
-                                                },
-                                              ).then((value) => safeSetState(() =>
-                                                  _model.checkOutJustification =
-                                                      value));
-
-                                              _shouldSetState = true;
-                                              if (_model.checkOutJustification !=
-                                                      null &&
-                                                  _model.checkOutJustification !=
-                                                      '') {
+                                          if (await getPermissionStatus(
+                                              locationPermission)) {
+                                            logFirebaseEvent(
+                                                'Button_custom_action');
+                                            _model.checkOut01 =
+                                                await actions.checkInCheckOut(
+                                              widget!.jobid!,
+                                              widget!.lat!,
+                                              widget!.lon!,
+                                              '',
+                                              false,
+                                            );
+                                            _shouldSetState = true;
+                                            if (_model.checkOut01 !=
+                                                'SUCESSO') {
+                                              if (_model.checkOut01 ==
+                                                  'ERRO Horário requer justificativa obrigatória.') {
                                                 logFirebaseEvent(
-                                                    'Button_custom_action');
-                                                _model.checkOut02 =
-                                                    await actions
-                                                        .checkInCheckOut(
-                                                  widget!.jobid!,
-                                                  widget!.lat!,
-                                                  widget!.lon!,
-                                                  _model.checkOutJustification,
-                                                  false,
-                                                );
+                                                    'Button_alert_dialog');
+                                                await showDialog(
+                                                  context: context,
+                                                  builder: (dialogContext) {
+                                                    return Dialog(
+                                                      elevation: 0,
+                                                      insetPadding:
+                                                          EdgeInsets.zero,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      alignment:
+                                                          AlignmentDirectional(
+                                                                  0.0, 0.0)
+                                                              .resolve(
+                                                                  Directionality.of(
+                                                                      context)),
+                                                      child:
+                                                          JustificationBoxWidget(),
+                                                    );
+                                                  },
+                                                ).then((value) => safeSetState(
+                                                    () => _model
+                                                            .checkOutJustification =
+                                                        value));
+
                                                 _shouldSetState = true;
-                                                if (_model.checkOut02 !=
-                                                    'SUCESSO') {
+                                                if (_model.checkOutJustification !=
+                                                        null &&
+                                                    _model.checkOutJustification !=
+                                                        '') {
+                                                  logFirebaseEvent(
+                                                      'Button_custom_action');
+                                                  _model.checkOut02 =
+                                                      await actions
+                                                          .checkInCheckOut(
+                                                    widget!.jobid!,
+                                                    widget!.lat!,
+                                                    widget!.lon!,
+                                                    _model
+                                                        .checkOutJustification,
+                                                    false,
+                                                  );
+                                                  _shouldSetState = true;
+                                                  if (_model.checkOut02 !=
+                                                      'SUCESSO') {
+                                                    logFirebaseEvent(
+                                                        'Button_alert_dialog');
+                                                    await showDialog(
+                                                      context: context,
+                                                      builder: (dialogContext) {
+                                                        return Dialog(
+                                                          elevation: 0,
+                                                          insetPadding:
+                                                              EdgeInsets.zero,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          alignment: AlignmentDirectional(
+                                                                  0.0, 0.0)
+                                                              .resolve(
+                                                                  Directionality.of(
+                                                                      context)),
+                                                          child:
+                                                              NegativeInformativeBoxWidget(
+                                                            title:
+                                                                'Check-out não realizado',
+                                                            body: (String
+                                                                var1) {
+                                                              return var1
+                                                                  .replaceAll(
+                                                                      RegExp(
+                                                                          r'\b(ERRO)\b'),
+                                                                      '')
+                                                                  .replaceAll(
+                                                                      RegExp(
+                                                                          r'\s+'),
+                                                                      ' ')
+                                                                  .trim();
+                                                            }(_model
+                                                                .checkOut02!),
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+
+                                                    if (_shouldSetState)
+                                                      safeSetState(() {});
+                                                    return;
+                                                  }
+                                                } else {
                                                   logFirebaseEvent(
                                                       'Button_alert_dialog');
                                                   await showDialog(
@@ -5744,21 +5795,9 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                     Directionality.of(
                                                                         context)),
                                                         child:
-                                                            NegativeInformativeBoxWidget(
-                                                          title:
+                                                            NegativeDialogBoxWidget(
+                                                          dialog:
                                                               'Check-out não realizado',
-                                                          body: (String var1) {
-                                                            return var1
-                                                                .replaceAll(
-                                                                    RegExp(
-                                                                        r'\b(ERRO)\b'),
-                                                                    '')
-                                                                .replaceAll(
-                                                                    RegExp(
-                                                                        r'\s+'),
-                                                                    ' ')
-                                                                .trim();
-                                                          }(_model.checkOut02!),
                                                         ),
                                                       );
                                                     },
@@ -5787,9 +5826,21 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                   Directionality.of(
                                                                       context)),
                                                       child:
-                                                          NegativeDialogBoxWidget(
-                                                        dialog:
+                                                          NegativeInformativeBoxWidget(
+                                                        title:
                                                             'Check-out não realizado',
+                                                        body: (String var1) {
+                                                          return var1
+                                                              .replaceAll(
+                                                                  RegExp(
+                                                                      r'\b(ERRO)\b'),
+                                                                  '')
+                                                              .replaceAll(
+                                                                  RegExp(
+                                                                      r'\s+'),
+                                                                  ' ')
+                                                              .trim();
+                                                        }(_model.checkOut01!),
                                                       ),
                                                     );
                                                   },
@@ -5799,6 +5850,71 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                   safeSetState(() {});
                                                 return;
                                               }
+                                            }
+                                            logFirebaseEvent(
+                                                'Button_alert_dialog');
+                                            await showDialog(
+                                              context: context,
+                                              builder: (dialogContext) {
+                                                return Dialog(
+                                                  elevation: 0,
+                                                  insetPadding: EdgeInsets.zero,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  alignment:
+                                                      AlignmentDirectional(
+                                                              0.0, 0.0)
+                                                          .resolve(
+                                                              Directionality.of(
+                                                                  context)),
+                                                  child:
+                                                      PositiveDialogBoxWidget(
+                                                    dialog:
+                                                        'Check-out realizado!',
+                                                  ),
+                                                );
+                                              },
+                                            );
+
+                                            logFirebaseEvent(
+                                                'Button_update_component_state');
+                                            _model.isCheckedOut = true;
+                                            safeSetState(() {});
+                                          } else {
+                                            logFirebaseEvent(
+                                                'Button_alert_dialog');
+                                            await showDialog(
+                                              context: context,
+                                              builder: (dialogContext) {
+                                                return Dialog(
+                                                  elevation: 0,
+                                                  insetPadding: EdgeInsets.zero,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  alignment:
+                                                      AlignmentDirectional(
+                                                              0.0, 0.0)
+                                                          .resolve(
+                                                              Directionality.of(
+                                                                  context)),
+                                                  child:
+                                                      LocationRequestWidget(),
+                                                );
+                                              },
+                                            ).then((value) => safeSetState(() =>
+                                                _model.locationrequest2 =
+                                                    value));
+
+                                            _shouldSetState = true;
+                                            if (_model.locationrequest2!) {
+                                              logFirebaseEvent(
+                                                  'Button_custom_action');
+                                              _model.permission2 = await actions
+                                                  .requestLocationPermission();
+                                              _shouldSetState = true;
+                                              if (_shouldSetState)
+                                                safeSetState(() {});
+                                              return;
                                             } else {
                                               logFirebaseEvent(
                                                   'Button_alert_dialog');
@@ -5818,20 +5934,9 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                 Directionality.of(
                                                                     context)),
                                                     child:
-                                                        NegativeInformativeBoxWidget(
-                                                      title:
-                                                          'Check-out não realizado',
-                                                      body: (String var1) {
-                                                        return var1
-                                                            .replaceAll(
-                                                                RegExp(
-                                                                    r'\b(ERRO)\b'),
-                                                                '')
-                                                            .replaceAll(
-                                                                RegExp(r'\s+'),
-                                                                ' ')
-                                                            .trim();
-                                                      }(_model.checkOut01!),
+                                                        NegativeDialogBoxWidget(
+                                                      dialog:
+                                                          'Checkout não realizado',
                                                     ),
                                                   );
                                                 },
@@ -5842,32 +5947,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                               return;
                                             }
                                           }
-                                          logFirebaseEvent(
-                                              'Button_alert_dialog');
-                                          await showDialog(
-                                            context: context,
-                                            builder: (dialogContext) {
-                                              return Dialog(
-                                                elevation: 0,
-                                                insetPadding: EdgeInsets.zero,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                alignment: AlignmentDirectional(
-                                                        0.0, 0.0)
-                                                    .resolve(Directionality.of(
-                                                        context)),
-                                                child: PositiveDialogBoxWidget(
-                                                  dialog:
-                                                      'Check-out realizado!',
-                                                ),
-                                              );
-                                            },
-                                          );
 
-                                          logFirebaseEvent(
-                                              'Button_update_component_state');
-                                          _model.isCheckedOut = true;
-                                          safeSetState(() {});
                                           if (_shouldSetState)
                                             safeSetState(() {});
                                         },
@@ -5942,64 +6022,112 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                           logFirebaseEvent(
                                               'VAGA_BOTTOM_SHEET_FAZER_CHECK_IN_BTN_ON_');
                                           var _shouldSetState = false;
-                                          logFirebaseEvent(
-                                              'Button_custom_action');
-                                          _model.checkIn01 =
-                                              await actions.checkInCheckOut(
-                                            widget!.jobid!,
-                                            widget!.lat!,
-                                            widget!.lon!,
-                                            '',
-                                            true,
-                                          );
-                                          _shouldSetState = true;
-                                          if (_model.checkIn01 != 'SUCESSO') {
-                                            if (_model.checkIn01 ==
-                                                'ERRO Horário requer justificativa obrigatória.') {
-                                              logFirebaseEvent(
-                                                  'Button_alert_dialog');
-                                              await showDialog(
-                                                context: context,
-                                                builder: (dialogContext) {
-                                                  return Dialog(
-                                                    elevation: 0,
-                                                    insetPadding:
-                                                        EdgeInsets.zero,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    alignment:
-                                                        AlignmentDirectional(
-                                                                0.0, 0.0)
-                                                            .resolve(
-                                                                Directionality.of(
-                                                                    context)),
-                                                    child:
-                                                        JustificationBoxWidget(),
-                                                  );
-                                                },
-                                              ).then((value) => safeSetState(
-                                                  () => _model
-                                                          .checkInJustification =
-                                                      value));
-
-                                              _shouldSetState = true;
-                                              if (_model.checkInJustification !=
-                                                      null &&
-                                                  _model.checkInJustification !=
-                                                      '') {
+                                          if (await getPermissionStatus(
+                                              locationPermission)) {
+                                            logFirebaseEvent(
+                                                'Button_custom_action');
+                                            _model.checkIn01 =
+                                                await actions.checkInCheckOut(
+                                              widget!.jobid!,
+                                              widget!.lat!,
+                                              widget!.lon!,
+                                              '',
+                                              true,
+                                            );
+                                            _shouldSetState = true;
+                                            if (_model.checkIn01 != 'SUCESSO') {
+                                              if (_model.checkIn01 ==
+                                                  'ERRO Horário requer justificativa obrigatória.') {
                                                 logFirebaseEvent(
-                                                    'Button_custom_action');
-                                                _model.checkIn02 = await actions
-                                                    .checkInCheckOut(
-                                                  widget!.jobid!,
-                                                  widget!.lat!,
-                                                  widget!.lon!,
-                                                  _model.checkInJustification,
-                                                  true,
-                                                );
+                                                    'Button_alert_dialog');
+                                                await showDialog(
+                                                  context: context,
+                                                  builder: (dialogContext) {
+                                                    return Dialog(
+                                                      elevation: 0,
+                                                      insetPadding:
+                                                          EdgeInsets.zero,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      alignment:
+                                                          AlignmentDirectional(
+                                                                  0.0, 0.0)
+                                                              .resolve(
+                                                                  Directionality.of(
+                                                                      context)),
+                                                      child:
+                                                          JustificationBoxWidget(),
+                                                    );
+                                                  },
+                                                ).then((value) => safeSetState(
+                                                    () => _model
+                                                            .checkInJustification =
+                                                        value));
+
                                                 _shouldSetState = true;
-                                                if (_model.checkIn02 !=
-                                                    'SUCESSO') {
+                                                if (_model.checkInJustification !=
+                                                        null &&
+                                                    _model.checkInJustification !=
+                                                        '') {
+                                                  logFirebaseEvent(
+                                                      'Button_custom_action');
+                                                  _model.checkIn02 =
+                                                      await actions
+                                                          .checkInCheckOut(
+                                                    widget!.jobid!,
+                                                    widget!.lat!,
+                                                    widget!.lon!,
+                                                    _model.checkInJustification,
+                                                    true,
+                                                  );
+                                                  _shouldSetState = true;
+                                                  if (_model.checkIn02 !=
+                                                      'SUCESSO') {
+                                                    logFirebaseEvent(
+                                                        'Button_alert_dialog');
+                                                    await showDialog(
+                                                      context: context,
+                                                      builder: (dialogContext) {
+                                                        return Dialog(
+                                                          elevation: 0,
+                                                          insetPadding:
+                                                              EdgeInsets.zero,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          alignment: AlignmentDirectional(
+                                                                  0.0, 0.0)
+                                                              .resolve(
+                                                                  Directionality.of(
+                                                                      context)),
+                                                          child:
+                                                              NegativeInformativeBoxWidget(
+                                                            title:
+                                                                'Check-in não realizado',
+                                                            body: (String
+                                                                var1) {
+                                                              return var1
+                                                                  .replaceAll(
+                                                                      RegExp(
+                                                                          r'\b(ERRO)\b'),
+                                                                      '')
+                                                                  .replaceAll(
+                                                                      RegExp(
+                                                                          r'\s+'),
+                                                                      ' ')
+                                                                  .trim();
+                                                            }(_model
+                                                                .checkIn02!),
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+
+                                                    if (_shouldSetState)
+                                                      safeSetState(() {});
+                                                    return;
+                                                  }
+                                                } else {
                                                   logFirebaseEvent(
                                                       'Button_alert_dialog');
                                                   await showDialog(
@@ -6018,21 +6146,9 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                     Directionality.of(
                                                                         context)),
                                                         child:
-                                                            NegativeInformativeBoxWidget(
-                                                          title:
+                                                            NegativeDialogBoxWidget(
+                                                          dialog:
                                                               'Check-in não realizado',
-                                                          body: (String var1) {
-                                                            return var1
-                                                                .replaceAll(
-                                                                    RegExp(
-                                                                        r'\b(ERRO)\b'),
-                                                                    '')
-                                                                .replaceAll(
-                                                                    RegExp(
-                                                                        r'\s+'),
-                                                                    ' ')
-                                                                .trim();
-                                                          }(_model.checkIn02!),
                                                         ),
                                                       );
                                                     },
@@ -6061,9 +6177,21 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                   Directionality.of(
                                                                       context)),
                                                       child:
-                                                          NegativeDialogBoxWidget(
-                                                        dialog:
+                                                          NegativeInformativeBoxWidget(
+                                                        title:
                                                             'Check-in não realizado',
+                                                        body: (String var1) {
+                                                          return var1
+                                                              .replaceAll(
+                                                                  RegExp(
+                                                                      r'\b(ERRO)\b'),
+                                                                  '')
+                                                              .replaceAll(
+                                                                  RegExp(
+                                                                      r'\s+'),
+                                                                  ' ')
+                                                              .trim();
+                                                        }(_model.checkIn01!),
                                                       ),
                                                     );
                                                   },
@@ -6073,6 +6201,71 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                   safeSetState(() {});
                                                 return;
                                               }
+                                            }
+                                            logFirebaseEvent(
+                                                'Button_alert_dialog');
+                                            await showDialog(
+                                              context: context,
+                                              builder: (dialogContext) {
+                                                return Dialog(
+                                                  elevation: 0,
+                                                  insetPadding: EdgeInsets.zero,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  alignment:
+                                                      AlignmentDirectional(
+                                                              0.0, 0.0)
+                                                          .resolve(
+                                                              Directionality.of(
+                                                                  context)),
+                                                  child:
+                                                      PositiveDialogBoxWidget(
+                                                    dialog:
+                                                        'Check-in realizado!',
+                                                  ),
+                                                );
+                                              },
+                                            );
+
+                                            logFirebaseEvent(
+                                                'Button_update_component_state');
+                                            _model.isCheckedIn = true;
+                                            safeSetState(() {});
+                                          } else {
+                                            logFirebaseEvent(
+                                                'Button_alert_dialog');
+                                            await showDialog(
+                                              context: context,
+                                              builder: (dialogContext) {
+                                                return Dialog(
+                                                  elevation: 0,
+                                                  insetPadding: EdgeInsets.zero,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  alignment:
+                                                      AlignmentDirectional(
+                                                              0.0, 0.0)
+                                                          .resolve(
+                                                              Directionality.of(
+                                                                  context)),
+                                                  child:
+                                                      LocationRequestWidget(),
+                                                );
+                                              },
+                                            ).then((value) => safeSetState(() =>
+                                                _model.locationrequest =
+                                                    value));
+
+                                            _shouldSetState = true;
+                                            if (_model.locationrequest!) {
+                                              logFirebaseEvent(
+                                                  'Button_custom_action');
+                                              _model.permission = await actions
+                                                  .requestLocationPermission();
+                                              _shouldSetState = true;
+                                              if (_shouldSetState)
+                                                safeSetState(() {});
+                                              return;
                                             } else {
                                               logFirebaseEvent(
                                                   'Button_alert_dialog');
@@ -6092,20 +6285,9 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                 Directionality.of(
                                                                     context)),
                                                     child:
-                                                        NegativeInformativeBoxWidget(
-                                                      title:
+                                                        NegativeDialogBoxWidget(
+                                                      dialog:
                                                           'Check-in não realizado',
-                                                      body: (String var1) {
-                                                        return var1
-                                                            .replaceAll(
-                                                                RegExp(
-                                                                    r'\b(ERRO)\b'),
-                                                                '')
-                                                            .replaceAll(
-                                                                RegExp(r'\s+'),
-                                                                ' ')
-                                                            .trim();
-                                                      }(_model.checkIn01!),
                                                     ),
                                                   );
                                                 },
@@ -6116,31 +6298,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                               return;
                                             }
                                           }
-                                          logFirebaseEvent(
-                                              'Button_alert_dialog');
-                                          await showDialog(
-                                            context: context,
-                                            builder: (dialogContext) {
-                                              return Dialog(
-                                                elevation: 0,
-                                                insetPadding: EdgeInsets.zero,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                alignment: AlignmentDirectional(
-                                                        0.0, 0.0)
-                                                    .resolve(Directionality.of(
-                                                        context)),
-                                                child: PositiveDialogBoxWidget(
-                                                  dialog: 'Check-in realizado!',
-                                                ),
-                                              );
-                                            },
-                                          );
 
-                                          logFirebaseEvent(
-                                              'Button_update_component_state');
-                                          _model.isCheckedIn = true;
-                                          safeSetState(() {});
                                           if (_shouldSetState)
                                             safeSetState(() {});
                                         },
@@ -6241,193 +6399,24 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                       : () async {
                                           logFirebaseEvent(
                                               'VAGA_BOTTOM_SHEET_Button_1hfx73kw_ON_TAP');
-                                          currentUserLocationValue =
-                                              await getCurrentUserLocation(
-                                                  defaultLocation:
-                                                      LatLng(0.0, 0.0));
                                           var _shouldSetState = false;
                                           if (currentJwtToken != null &&
                                               currentJwtToken != '') {
-                                            if (widget!.showFavorite) {
-                                              logFirebaseEvent(
-                                                  'Button_alert_dialog');
-                                              await showDialog(
-                                                context: context,
-                                                builder: (dialogContext) {
-                                                  return Dialog(
-                                                    elevation: 0,
-                                                    insetPadding:
-                                                        EdgeInsets.zero,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    alignment:
-                                                        AlignmentDirectional(
-                                                                0.0, 0.0)
-                                                            .resolve(
-                                                                Directionality.of(
-                                                                    context)),
-                                                    child:
-                                                        FavoriteDialogBoxWidget(),
-                                                  );
-                                                },
-                                              ).then((value) => safeSetState(
-                                                  () => _model.favoriteAccept =
-                                                      value));
-
-                                              _shouldSetState = true;
-                                              if (_model.favoriteAccept!) {
-                                                if (!_model.isCandidate) {
-                                                  logFirebaseEvent(
-                                                      'Button_custom_action');
-                                                  _model.insertFavorite =
-                                                      await actions
-                                                          .insertCandidaturas(
-                                                    currentUserUid,
-                                                    widget!.jobid!,
-                                                    widget!.value!,
-                                                  );
-                                                  _shouldSetState = true;
-                                                  if (_model.insertFavorite ==
-                                                      'success') {
-                                                    logFirebaseEvent(
-                                                        'Button_alert_dialog');
-                                                    await showDialog(
-                                                      context: context,
-                                                      builder: (dialogContext) {
-                                                        return Dialog(
-                                                          elevation: 0,
-                                                          insetPadding:
-                                                              EdgeInsets.zero,
-                                                          backgroundColor:
-                                                              Colors
-                                                                  .transparent,
-                                                          alignment: AlignmentDirectional(
-                                                                  0.0, 0.0)
-                                                              .resolve(
-                                                                  Directionality.of(
-                                                                      context)),
-                                                          child:
-                                                              PositiveDialogBoxWidget(
-                                                            dialog:
-                                                                'Plantão confirmado!',
-                                                          ),
-                                                        );
-                                                      },
-                                                    );
-
-                                                    logFirebaseEvent(
-                                                        'Button_update_component_state');
-                                                    _model.isApproved = true;
-                                                    safeSetState(() {});
-                                                  } else {
-                                                    logFirebaseEvent(
-                                                        'Button_alert_dialog');
-                                                    await showDialog(
-                                                      context: context,
-                                                      builder: (dialogContext) {
-                                                        return Dialog(
-                                                          elevation: 0,
-                                                          insetPadding:
-                                                              EdgeInsets.zero,
-                                                          backgroundColor:
-                                                              Colors
-                                                                  .transparent,
-                                                          alignment: AlignmentDirectional(
-                                                                  0.0, 0.0)
-                                                              .resolve(
-                                                                  Directionality.of(
-                                                                      context)),
-                                                          child:
-                                                              NegativeInformativeBoxWidget(
-                                                            title:
-                                                                'Não foi possível se candidatar',
-                                                            body:
-                                                                'Verifique se já não tem plantão confirmado no mesmo horário!',
-                                                          ),
-                                                        );
-                                                      },
-                                                    );
-                                                  }
-                                                }
-                                              } else {
-                                                if (_shouldSetState)
-                                                  safeSetState(() {});
-                                                return;
-                                              }
-                                            } else {
-                                              logFirebaseEvent(
-                                                  'Button_custom_action');
-                                              _model.launchwhatsapp =
-                                                  await actions
-                                                      .launchWhatsAppChat(
-                                                '${"Olá, encontrei essa vaga de plantão na Revoluna.\n\n"}${(String? speciality) {
-                                                  return "*$speciality*\n";
-                                                }(widget!.speciality)}${(String value) {
-                                                  return "_" + value + "_\n";
-                                                }(formatNumber(
-                                                  widget!.value,
-                                                  formatType:
-                                                      FormatType.decimal,
-                                                  decimalType:
-                                                      DecimalType.commaDecimal,
-                                                  currency: 'R\$ ',
-                                                ))}${(String? hospital) {
-                                                  return "$hospital\n";
-                                                }(widget!.hospital)}${(String? date) {
-                                                  return "$date\n";
-                                                }(dateTimeFormat(
-                                                  "EEEE, dd/M",
-                                                  widget!.date,
-                                                  locale: FFLocalizations.of(
-                                                          context)
-                                                      .languageCode,
-                                                ))}${(String? start, String end) {
-                                                  return "Início: $start Fim: $end\n";
-                                                }(dateTimeFormat(
-                                                      "Hm",
-                                                      widget!.startTime,
-                                                      locale:
-                                                          FFLocalizations.of(
-                                                                  context)
-                                                              .languageCode,
-                                                    ), dateTimeFormat(
-                                                      "Hm",
-                                                      widget!.endTime,
-                                                      locale:
-                                                          FFLocalizations.of(
-                                                                  context)
-                                                              .languageCode,
-                                                    ))}${(String? shift, String type) {
-                                                  return "$shift / $type\n";
-                                                }(widget!.shift, widget!.type!)}${(String? sector) {
-                                                  return "Setor: $sector\n\n";
-                                                }(widget!.sector)}${(String? shift, String type) {
-                                                  return "Gostaria de me candidatar para essa vaga. Poderia me enviar mais informações?";
-                                                }(widget!.shift, widget!.type!)}',
-                                                (widget!.contractorPhone ==
-                                                                null ||
-                                                            widget!.contractorPhone ==
-                                                                '') &&
-                                                        (widget!.contractorPhone ==
-                                                            'Não informado')
-                                                    ? FFAppState().concierge
-                                                    : widget!.contractorPhone!,
-                                              );
-                                              _shouldSetState = true;
-                                              if (_model.launchwhatsapp!) {
-                                                if (!_model.isCandidate) {
-                                                  logFirebaseEvent(
-                                                      'Button_custom_action');
-                                                  _model.insertCandidatura =
-                                                      await actions
-                                                          .insertCandidaturas(
-                                                    currentUserUid,
-                                                    widget!.jobid!,
-                                                    widget!.value!,
-                                                  );
-                                                  _shouldSetState = true;
-                                                }
-                                              } else {
+                                            logFirebaseEvent(
+                                                'Button_backend_call');
+                                            _model.cRMCheck =
+                                                await MedicosTable().queryRows(
+                                              queryFn: (q) => q.eqOrNull(
+                                                'id',
+                                                currentUserUid,
+                                              ),
+                                            );
+                                            _shouldSetState = true;
+                                            if ('${(String var1) {
+                                                  return var1.split('-')[1];
+                                                }(_model.cRMCheck!.firstOrNull!.medicoCrm!)}' ==
+                                                'estudante') {
+                                              if (widget!.showFavorite) {
                                                 logFirebaseEvent(
                                                     'Button_alert_dialog');
                                                 await showDialog(
@@ -6446,21 +6435,233 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                   Directionality.of(
                                                                       context)),
                                                       child:
-                                                          NegativeInformativeBoxWidget(
-                                                        title:
-                                                            'Necessário WhatsApp',
-                                                        body:
-                                                            'Para prosseguir é preciso ter o aplicativo WhatsaApp instalado no seu  aparelho',
-                                                      ),
+                                                          FavoriteDialogBoxWidget(),
                                                     );
                                                   },
-                                                );
-                                              }
-                                            }
+                                                ).then((value) => safeSetState(
+                                                    () =>
+                                                        _model.favoriteAccept =
+                                                            value));
 
-                                            logFirebaseEvent(
-                                                'Button_execute_callback');
-                                            await widget.callback?.call();
+                                                _shouldSetState = true;
+                                                if (_model.favoriteAccept!) {
+                                                  if (!_model.isCandidate) {
+                                                    logFirebaseEvent(
+                                                        'Button_custom_action');
+                                                    _model.insertFavorite =
+                                                        await actions
+                                                            .insertCandidaturas(
+                                                      currentUserUid,
+                                                      widget!.jobid!,
+                                                      widget!.value!,
+                                                    );
+                                                    _shouldSetState = true;
+                                                    if (_model.insertFavorite ==
+                                                        'success') {
+                                                      logFirebaseEvent(
+                                                          'Button_alert_dialog');
+                                                      await showDialog(
+                                                        context: context,
+                                                        builder:
+                                                            (dialogContext) {
+                                                          return Dialog(
+                                                            elevation: 0,
+                                                            insetPadding:
+                                                                EdgeInsets.zero,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            alignment: AlignmentDirectional(
+                                                                    0.0, 0.0)
+                                                                .resolve(
+                                                                    Directionality.of(
+                                                                        context)),
+                                                            child:
+                                                                PositiveDialogBoxWidget(
+                                                              dialog:
+                                                                  'Plantão confirmado!',
+                                                            ),
+                                                          );
+                                                        },
+                                                      );
+
+                                                      logFirebaseEvent(
+                                                          'Button_update_component_state');
+                                                      _model.isApproved = true;
+                                                      safeSetState(() {});
+                                                    } else {
+                                                      logFirebaseEvent(
+                                                          'Button_alert_dialog');
+                                                      await showDialog(
+                                                        context: context,
+                                                        builder:
+                                                            (dialogContext) {
+                                                          return Dialog(
+                                                            elevation: 0,
+                                                            insetPadding:
+                                                                EdgeInsets.zero,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            alignment: AlignmentDirectional(
+                                                                    0.0, 0.0)
+                                                                .resolve(
+                                                                    Directionality.of(
+                                                                        context)),
+                                                            child:
+                                                                NegativeInformativeBoxWidget(
+                                                              title:
+                                                                  'Não foi possível se candidatar',
+                                                              body:
+                                                                  'Verifique se já não tem plantão confirmado no mesmo horário!',
+                                                            ),
+                                                          );
+                                                        },
+                                                      );
+                                                    }
+                                                  }
+                                                } else {
+                                                  if (_shouldSetState)
+                                                    safeSetState(() {});
+                                                  return;
+                                                }
+                                              } else {
+                                                logFirebaseEvent(
+                                                    'Button_custom_action');
+                                                _model.launchwhatsapp =
+                                                    await actions
+                                                        .launchWhatsAppChat(
+                                                  '${"Olá, encontrei essa vaga de plantão na Revoluna.\n\n"}${(String? speciality) {
+                                                    return "*$speciality*\n";
+                                                  }(widget!.speciality)}${(String value) {
+                                                    return "_" + value + "_\n";
+                                                  }(formatNumber(
+                                                    widget!.value,
+                                                    formatType:
+                                                        FormatType.decimal,
+                                                    decimalType: DecimalType
+                                                        .commaDecimal,
+                                                    currency: 'R\$ ',
+                                                  ))}${(String? hospital) {
+                                                    return "$hospital\n";
+                                                  }(widget!.hospital)}${(String? date) {
+                                                    return "$date\n";
+                                                  }(dateTimeFormat(
+                                                    "EEEE, dd/M",
+                                                    widget!.date,
+                                                    locale: FFLocalizations.of(
+                                                            context)
+                                                        .languageCode,
+                                                  ))}${(String? start, String end) {
+                                                    return "Início: $start Fim: $end\n";
+                                                  }(dateTimeFormat(
+                                                        "Hm",
+                                                        widget!.startTime,
+                                                        locale:
+                                                            FFLocalizations.of(
+                                                                    context)
+                                                                .languageCode,
+                                                      ), dateTimeFormat(
+                                                        "Hm",
+                                                        widget!.endTime,
+                                                        locale:
+                                                            FFLocalizations.of(
+                                                                    context)
+                                                                .languageCode,
+                                                      ))}${(String? shift, String type) {
+                                                    return "$shift / $type\n";
+                                                  }(widget!.shift, widget!.type!)}${(String? sector) {
+                                                    return "Setor: $sector\n\n";
+                                                  }(widget!.sector)}${(String? shift, String type) {
+                                                    return "Gostaria de me candidatar para essa vaga. Poderia me enviar mais informações?";
+                                                  }(widget!.shift, widget!.type!)}',
+                                                  (widget!.contractorPhone ==
+                                                                  null ||
+                                                              widget!.contractorPhone ==
+                                                                  '') &&
+                                                          (widget!.contractorPhone ==
+                                                              'Não informado')
+                                                      ? FFAppState().concierge
+                                                      : widget!
+                                                          .contractorPhone!,
+                                                );
+                                                _shouldSetState = true;
+                                                if (_model.launchwhatsapp!) {
+                                                  if (!_model.isCandidate) {
+                                                    logFirebaseEvent(
+                                                        'Button_custom_action');
+                                                    _model.insertCandidatura =
+                                                        await actions
+                                                            .insertCandidaturas(
+                                                      currentUserUid,
+                                                      widget!.jobid!,
+                                                      widget!.value!,
+                                                    );
+                                                    _shouldSetState = true;
+                                                  }
+                                                } else {
+                                                  logFirebaseEvent(
+                                                      'Button_alert_dialog');
+                                                  await showDialog(
+                                                    context: context,
+                                                    builder: (dialogContext) {
+                                                      return Dialog(
+                                                        elevation: 0,
+                                                        insetPadding:
+                                                            EdgeInsets.zero,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        alignment:
+                                                            AlignmentDirectional(
+                                                                    0.0, 0.0)
+                                                                .resolve(
+                                                                    Directionality.of(
+                                                                        context)),
+                                                        child:
+                                                            NegativeInformativeBoxWidget(
+                                                          title:
+                                                              'Necessário WhatsApp',
+                                                          body:
+                                                              'Para prosseguir é preciso ter o aplicativo WhatsaApp instalado no seu  aparelho',
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                }
+                                              }
+
+                                              logFirebaseEvent(
+                                                  'Button_execute_callback');
+                                              await widget.callback?.call();
+                                            } else {
+                                              logFirebaseEvent(
+                                                  'Button_alert_dialog');
+                                              await showDialog(
+                                                context: context,
+                                                builder: (dialogContext) {
+                                                  return Dialog(
+                                                    elevation: 0,
+                                                    insetPadding:
+                                                        EdgeInsets.zero,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    alignment:
+                                                        AlignmentDirectional(
+                                                                0.0, 0.0)
+                                                            .resolve(
+                                                                Directionality.of(
+                                                                    context)),
+                                                    child:
+                                                        NegativeInformativeBoxWidget(
+                                                      title:
+                                                          'Não é possível prosseguir',
+                                                      body:
+                                                          'Sem um CRM válido não é possível  participar de processos de seleção',
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            }
                                           } else {
                                             logFirebaseEvent(
                                                 'Button_bottom_sheet');
@@ -6495,8 +6696,6 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                             parameters: {
                                               'user_id': currentUserUid,
                                               'time': getCurrentTimestamp,
-                                              'location':
-                                                  currentUserLocationValue,
                                               'vaga_id': widget!.jobid,
                                             },
                                           );

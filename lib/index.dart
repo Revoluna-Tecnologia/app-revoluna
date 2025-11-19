@@ -22,3 +22,5 @@ export '/pages/nav/escalas/escalas_widget.dart' show EscalasWidget;
 export '/pages/nav/home_page/home_page_widget.dart' show HomePageWidget;
 export '/pages/nav/initial_page/initial_page_widget.dart'
     show InitialPageWidget;
+export '/pages/other/localizacao/localizacao_widget.dart'
+    show LocalizacaoWidget;

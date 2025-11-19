@@ -87,16 +87,6 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                 'medico_id',
                 currentUserUid,
               )
-              .not(
-                'hospital_lat',
-                'is',
-                null,
-              )
-              .not(
-                'hospital_log',
-                'is',
-                null,
-              )
               .neqOrNull(
                 'vagas_status',
                 'cancelada',

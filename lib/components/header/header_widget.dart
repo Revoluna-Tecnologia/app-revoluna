@@ -55,16 +55,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                 'medico_id',
                 currentUserUid,
               )
-              .not(
-                'hospital_lat',
-                'is',
-                null,
-              )
-              .not(
-                'hospital_log',
-                'is',
-                null,
-              ),
+              .order('vagas_horainicio', ascending: true),
         ),
       ),
       builder: (context, snapshot) {

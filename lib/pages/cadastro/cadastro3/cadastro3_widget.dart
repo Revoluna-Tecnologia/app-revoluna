@@ -11,6 +11,7 @@ import '/flutter_flow/upload_data.dart';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
+import '/flutter_flow/permissions_util.dart';
 import '/index.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -124,7 +125,6 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                   model: _model.backTopBarModel,
                   updateCallback: () => safeSetState(() {}),
                   child: BackTopBarWidget(
-                    logo: false,
                     backButton: () async {
                       logFirebaseEvent('CADASTRO3_Container_159mc222_CALLBACK');
                       logFirebaseEvent('BackTopBar_navigate_back');
@@ -1000,6 +1000,7 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                           'UFindex': widget!.estadoUFindex,
                                           'specialtyIndex':
                                               widget!.specialtyindex,
+                                          'platform': isiOS ? 'ios' : 'android',
                                         },
                                         matchingRows: (rows) => rows.eqOrNull(
                                           'id',
@@ -1055,11 +1056,20 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                         },
                                       );
 
-                                      logFirebaseEvent('Button_navigate_to');
+                                      if (await getPermissionStatus(
+                                          locationPermission)) {
+                                        logFirebaseEvent('Button_navigate_to');
 
-                                      context.pushNamedAuth(
-                                          HomePageWidget.routeName,
-                                          context.mounted);
+                                        context.goNamedAuth(
+                                            HomePageWidget.routeName,
+                                            context.mounted);
+                                      } else {
+                                        logFirebaseEvent('Button_navigate_to');
+
+                                        context.goNamedAuth(
+                                            LocalizacaoWidget.routeName,
+                                            context.mounted);
+                                      }
 
                                       safeSetState(() {});
                                     },
