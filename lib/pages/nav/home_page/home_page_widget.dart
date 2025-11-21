@@ -479,10 +479,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                             .toList()
                                             .isNotEmpty))
                                       wrapWithModel(
-                                        model: _model.emptyListModel,
+                                        model: _model.emptyListModel1,
                                         updateCallback: () =>
                                             safeSetState(() {}),
-                                        child: EmptyListWidget(),
+                                        child: EmptyListWidget(
+                                          text:
+                                              'Sem vagas para mostrar, selecione outra data',
+                                        ),
                                       ),
                                     if (containerVwVagasCandidaturasRowList
                                         .where((e) =>
@@ -1042,8 +1045,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                     .bodyMedium
                                                                     .fontStyle,
                                                               ),
-                                                      hintText:
-                                                          'Especialidades',
+                                                      hintText: 'Especialidade',
                                                       icon: Icon(
                                                         Icons
                                                             .keyboard_arrow_down_rounded,
@@ -1224,6 +1226,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                         .bodyMedium
                                                                         .fontStyle,
                                                                   ),
+                                                          hintText: 'Região',
                                                           icon: Icon(
                                                             Icons
                                                                 .keyboard_arrow_down_rounded,
@@ -1280,666 +1283,568 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           ),
                                           child: Builder(
                                             builder: (context) {
-                                              if (_model.dropDownValue1 !=
-                                                      null &&
-                                                  _model.dropDownValue1 != '') {
+                                              if (homePageVwVagasCandidaturasRowList
+                                                  .where((e) =>
+                                                      e.hospitalEstado ==
+                                                      FFAppState().estadoUF)
+                                                  .toList()
+                                                  .isNotEmpty) {
                                                 return Builder(
                                                   builder: (context) {
-                                                    final homeOpenList1 = functions
-                                                        .sortByLocation(
-                                                            currentUserLocationValue!,
-                                                            homePageVwVagasCandidaturasRowList
-                                                                .toList(),
-                                                            true)
-                                                        .where((e) =>
-                                                            (e.vagasData ==
-                                                                FFAppState()
-                                                                    .selectedDay) &&
-                                                            (e.hospitalEstado ==
-                                                                FFAppState()
-                                                                    .estadoUF) &&
-                                                            (e.especialidadeId ==
-                                                                _model
-                                                                    .dropDownValue1))
-                                                        .toList()
-                                                        .unique(
-                                                            (e) => e.vagasId!)
-                                                        .sortedList(
-                                                            keyOf: (e) =>
-                                                                e.vagasValor!,
-                                                            desc: true)
-                                                        .toList();
+                                                    if (_model.dropDownValue1 !=
+                                                            null &&
+                                                        _model.dropDownValue1 !=
+                                                            '') {
+                                                      return Builder(
+                                                        builder: (context) {
+                                                          final homeOpenList1 = functions
+                                                              .sortByLocation(
+                                                                  currentUserLocationValue!,
+                                                                  homePageVwVagasCandidaturasRowList
+                                                                      .toList(),
+                                                                  true)
+                                                              .where((e) =>
+                                                                  (e.vagasData == FFAppState().selectedDay) &&
+                                                                  (e.hospitalEstado ==
+                                                                      FFAppState()
+                                                                          .estadoUF) &&
+                                                                  (e.especialidadeId ==
+                                                                      _model
+                                                                          .dropDownValue1))
+                                                              .toList()
+                                                              .unique((e) =>
+                                                                  e.vagasId!)
+                                                              .sortedList(
+                                                                  keyOf: (e) =>
+                                                                      e.vagasValor!,
+                                                                  desc: true)
+                                                              .toList();
 
-                                                    return ListView.separated(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 2.0),
-                                                      primary: false,
-                                                      shrinkWrap: true,
-                                                      scrollDirection:
-                                                          Axis.vertical,
-                                                      itemCount:
-                                                          homeOpenList1.length,
-                                                      separatorBuilder: (_,
-                                                              __) =>
-                                                          SizedBox(height: 2.0),
-                                                      itemBuilder: (context,
-                                                          homeOpenList1Index) {
-                                                        final homeOpenList1Item =
-                                                            homeOpenList1[
-                                                                homeOpenList1Index];
-                                                        return Stack(
-                                                          children: [
-                                                            wrapWithModel(
-                                                              model: _model
-                                                                  .cardVagasModels2
-                                                                  .getModel(
-                                                                homeOpenList1Item
-                                                                    .vagasId!,
-                                                                homeOpenList1Index,
-                                                              ),
-                                                              updateCallback: () =>
-                                                                  safeSetState(
-                                                                      () {}),
-                                                              child:
-                                                                  CardVagasWidget(
-                                                                key: Key(
-                                                                  'Keyhcx_${homeOpenList1Item.vagasId!}',
-                                                                ),
-                                                                specialty:
-                                                                    homeOpenList1Item
-                                                                        .especialidadeNome,
-                                                                value:
-                                                                    formatNumber(
-                                                                  homeOpenList1Item
-                                                                      .vagasValor,
-                                                                  formatType:
-                                                                      FormatType
-                                                                          .decimal,
-                                                                  decimalType:
-                                                                      DecimalType
-                                                                          .commaDecimal,
-                                                                  currency:
-                                                                      'R\$',
-                                                                ),
-                                                                date:
-                                                                    '${dateTimeFormat(
-                                                                  "H",
-                                                                  homeOpenList1Item
-                                                                      .vagasHorainicio
-                                                                      ?.time,
-                                                                  locale: FFLocalizations.of(
-                                                                          context)
-                                                                      .languageCode,
-                                                                )}h-${dateTimeFormat(
-                                                                  "H",
-                                                                  homeOpenList1Item
-                                                                      .vagasHorafim
-                                                                      ?.time,
-                                                                  locale: FFLocalizations.of(
-                                                                          context)
-                                                                      .languageCode,
-                                                                )}h',
-                                                                datecount:
-                                                                    'há ${dateTimeFormat(
-                                                                  "relative",
-                                                                  homeOpenList1Item
-                                                                      .vagasCreatedate,
-                                                                  locale: FFLocalizations.of(
-                                                                              context)
-                                                                          .languageShortCode ??
-                                                                      FFLocalizations.of(
-                                                                              context)
-                                                                          .languageCode,
-                                                                )}',
-                                                                shift: '',
-                                                                type: homeOpenList1Item
-                                                                    .vagasTipoNome,
-                                                                hospital: functions.cleanHospitalName(
-                                                                    homeOpenList1Item
-                                                                        .hospitalNome!,
-                                                                    FFAppState()
-                                                                        .cleanHospital
-                                                                        .toList()),
-                                                                vaga:
-                                                                    homeOpenList1Item
-                                                                        .vagasId,
-                                                                avatarHospital:
-                                                                    homeOpenList1Item
-                                                                        .hospitalAvatar,
-                                                                showPay: false,
-                                                                sector:
-                                                                    homeOpenList1Item
-                                                                        .setorNome,
-                                                                distance: functions.distanceCalc(
-                                                                    homeOpenList1Item
-                                                                        .hospitalLat!,
-                                                                    homeOpenList1Item
-                                                                        .hospitalLog!,
-                                                                    currentUserLocationValue!),
-                                                                showSign: false,
-                                                              ),
-                                                            ),
-                                                            if (true)
-                                                              FFButtonWidget(
-                                                                onPressed:
-                                                                    () async {
-                                                                  logFirebaseEvent(
-                                                                      'HOME_PAGE_PAGE__BTN_ON_TAP');
-                                                                  currentUserLocationValue = await getCurrentUserLocation(
-                                                                      defaultLocation:
-                                                                          LatLng(
-                                                                              0.0,
-                                                                              0.0));
-                                                                  if (_model
-                                                                      .isBottomSheetLoading) {
-                                                                    return;
-                                                                  }
-
-                                                                  logFirebaseEvent(
-                                                                      'Button_update_page_state');
-                                                                  _model.isBottomSheetLoading =
-                                                                      true;
-                                                                  safeSetState(
-                                                                      () {});
-                                                                  logFirebaseEvent(
-                                                                      'Button_bottom_sheet');
-                                                                  await showModalBottomSheet(
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (context) {
-                                                                      return GestureDetector(
-                                                                        onTap:
-                                                                            () {
-                                                                          FocusScope.of(context)
-                                                                              .unfocus();
-                                                                          FocusManager
-                                                                              .instance
-                                                                              .primaryFocus
-                                                                              ?.unfocus();
-                                                                        },
-                                                                        child:
-                                                                            Padding(
-                                                                          padding:
-                                                                              MediaQuery.viewInsetsOf(context),
-                                                                          child:
-                                                                              VagaBottomSheetWidget(
-                                                                            speciality:
-                                                                                homeOpenList1Item.especialidadeNome,
-                                                                            value:
-                                                                                homeOpenList1Item.vagasValor?.toDouble(),
-                                                                            hospital:
-                                                                                homeOpenList1Item.hospitalNome,
-                                                                            date:
-                                                                                homeOpenList1Item.vagasData,
-                                                                            datecreated:
-                                                                                homeOpenList1Item.vagasCreatedate,
-                                                                            startTime:
-                                                                                homeOpenList1Item.vagasHorainicio?.time,
-                                                                            endTime:
-                                                                                homeOpenList1Item.vagasHorafim?.time,
-                                                                            shift:
-                                                                                homeOpenList1Item.vagasPeriodoNome,
-                                                                            type:
-                                                                                homeOpenList1Item.vagasTipoNome,
-                                                                            lat:
-                                                                                homeOpenList1Item.hospitalLat,
-                                                                            lon:
-                                                                                homeOpenList1Item.hospitalLog,
-                                                                            address:
-                                                                                homeOpenList1Item.hospitalEnd,
-                                                                            jobid:
-                                                                                homeOpenList1Item.vagasId,
-                                                                            contractor:
-                                                                                homeOpenList1Item.grupoNome,
-                                                                            contractorName:
-                                                                                homeOpenList1Item.escalistaNome,
-                                                                            contractorPhone:
-                                                                                homeOpenList1Item.escalistaTelefone,
-                                                                            contractorEmail:
-                                                                                homeOpenList1Item.escalistaEmail,
-                                                                            payday:
-                                                                                homeOpenList1Item.vagasDatapagamento,
-                                                                            payment:
-                                                                                homeOpenList1Item.vagasFormarecebimentoNome,
-                                                                            avatarHospital:
-                                                                                homeOpenList1Item.hospitalAvatar,
-                                                                            sector:
-                                                                                homeOpenList1Item.setorNome,
-                                                                            showFavorite:
-                                                                                homeOpenList1Item.medicoFavorito,
-                                                                            candidates: homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList1Item.vagasId)).toList().isNotEmpty
-                                                                                ? homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList1Item.vagasId)).toList().firstOrNull
-                                                                                : homeOpenList1Item,
-                                                                            callback:
-                                                                                () async {},
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  ).then((value) =>
-                                                                      safeSetState(
-                                                                          () {}));
-
-                                                                  logFirebaseEvent(
-                                                                      'Button_update_page_state');
-                                                                  _model.isBottomSheetLoading =
-                                                                      false;
-                                                                  safeSetState(
-                                                                      () {});
-                                                                  logFirebaseEvent(
-                                                                      'Button_google_analytics_event');
-                                                                  logFirebaseEvent(
-                                                                    'vagas_exibicao',
-                                                                    parameters: {
-                                                                      'user_id':
-                                                                          currentUserUid,
-                                                                      'time':
-                                                                          getCurrentTimestamp,
-                                                                      'location':
-                                                                          currentUserLocationValue,
-                                                                      'vaga_id':
-                                                                          homeOpenList1Item
-                                                                              .vagasId,
-                                                                    },
-                                                                  );
-                                                                  return;
-                                                                },
-                                                                text: '',
-                                                                options:
-                                                                    FFButtonOptions(
-                                                                  width: double
-                                                                      .infinity,
-                                                                  height: MediaQuery.sizeOf(
-                                                                              context)
-                                                                          .height *
-                                                                      0.13,
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                  iconPadding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                  color: Color(
-                                                                      0x00A369ED),
-                                                                  textStyle: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .override(
-                                                                        font: GoogleFonts
-                                                                            .geologica(
-                                                                          fontWeight: FlutterFlowTheme.of(context)
-                                                                              .titleSmall
-                                                                              .fontWeight,
-                                                                          fontStyle: FlutterFlowTheme.of(context)
-                                                                              .titleSmall
-                                                                              .fontStyle,
-                                                                        ),
-                                                                        color: Colors
-                                                                            .white,
-                                                                        letterSpacing:
-                                                                            0.0,
-                                                                        fontWeight: FlutterFlowTheme.of(context)
-                                                                            .titleSmall
-                                                                            .fontWeight,
-                                                                        fontStyle: FlutterFlowTheme.of(context)
-                                                                            .titleSmall
-                                                                            .fontStyle,
+                                                          return ListView
+                                                              .separated(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        2.0),
+                                                            primary: false,
+                                                            shrinkWrap: true,
+                                                            scrollDirection:
+                                                                Axis.vertical,
+                                                            itemCount:
+                                                                homeOpenList1
+                                                                    .length,
+                                                            separatorBuilder:
+                                                                (_, __) =>
+                                                                    SizedBox(
+                                                                        height:
+                                                                            2.0),
+                                                            itemBuilder: (context,
+                                                                homeOpenList1Index) {
+                                                              final homeOpenList1Item =
+                                                                  homeOpenList1[
+                                                                      homeOpenList1Index];
+                                                              return Stack(
+                                                                children: [
+                                                                  wrapWithModel(
+                                                                    model: _model
+                                                                        .cardVagasModels2
+                                                                        .getModel(
+                                                                      homeOpenList1Item
+                                                                          .vagasId!,
+                                                                      homeOpenList1Index,
+                                                                    ),
+                                                                    updateCallback: () =>
+                                                                        safeSetState(
+                                                                            () {}),
+                                                                    child:
+                                                                        CardVagasWidget(
+                                                                      key: Key(
+                                                                        'Keyhcx_${homeOpenList1Item.vagasId!}',
                                                                       ),
-                                                                  elevation:
-                                                                      0.0,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              8.0),
-                                                                ),
-                                                                showLoadingIndicator:
-                                                                    false,
-                                                              ),
-                                                          ],
-                                                        );
-                                                      },
-                                                    );
+                                                                      specialty:
+                                                                          homeOpenList1Item
+                                                                              .especialidadeNome,
+                                                                      value:
+                                                                          formatNumber(
+                                                                        homeOpenList1Item
+                                                                            .vagasValor,
+                                                                        formatType:
+                                                                            FormatType.decimal,
+                                                                        decimalType:
+                                                                            DecimalType.commaDecimal,
+                                                                        currency:
+                                                                            'R\$',
+                                                                      ),
+                                                                      date:
+                                                                          '${dateTimeFormat(
+                                                                        "H",
+                                                                        homeOpenList1Item
+                                                                            .vagasHorainicio
+                                                                            ?.time,
+                                                                        locale:
+                                                                            FFLocalizations.of(context).languageCode,
+                                                                      )}h-${dateTimeFormat(
+                                                                        "H",
+                                                                        homeOpenList1Item
+                                                                            .vagasHorafim
+                                                                            ?.time,
+                                                                        locale:
+                                                                            FFLocalizations.of(context).languageCode,
+                                                                      )}h',
+                                                                      datecount:
+                                                                          'há ${dateTimeFormat(
+                                                                        "relative",
+                                                                        homeOpenList1Item
+                                                                            .vagasCreatedate,
+                                                                        locale: FFLocalizations.of(context).languageShortCode ??
+                                                                            FFLocalizations.of(context).languageCode,
+                                                                      )}',
+                                                                      shift: '',
+                                                                      type: homeOpenList1Item
+                                                                          .vagasTipoNome,
+                                                                      hospital: functions.cleanHospitalName(
+                                                                          homeOpenList1Item
+                                                                              .hospitalNome!,
+                                                                          FFAppState()
+                                                                              .cleanHospital
+                                                                              .toList()),
+                                                                      vaga: homeOpenList1Item
+                                                                          .vagasId,
+                                                                      avatarHospital:
+                                                                          homeOpenList1Item
+                                                                              .hospitalAvatar,
+                                                                      showPay:
+                                                                          false,
+                                                                      sector: homeOpenList1Item
+                                                                          .setorNome,
+                                                                      distance: functions.distanceCalc(
+                                                                          homeOpenList1Item
+                                                                              .hospitalLat!,
+                                                                          homeOpenList1Item
+                                                                              .hospitalLog!,
+                                                                          currentUserLocationValue!),
+                                                                      showSign:
+                                                                          false,
+                                                                    ),
+                                                                  ),
+                                                                  if (true)
+                                                                    FFButtonWidget(
+                                                                      onPressed:
+                                                                          () async {
+                                                                        logFirebaseEvent(
+                                                                            'HOME_PAGE_PAGE__BTN_ON_TAP');
+                                                                        currentUserLocationValue =
+                                                                            await getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0));
+                                                                        if (_model
+                                                                            .isBottomSheetLoading) {
+                                                                          return;
+                                                                        }
+
+                                                                        logFirebaseEvent(
+                                                                            'Button_update_page_state');
+                                                                        _model.isBottomSheetLoading =
+                                                                            true;
+                                                                        safeSetState(
+                                                                            () {});
+                                                                        logFirebaseEvent(
+                                                                            'Button_bottom_sheet');
+                                                                        await showModalBottomSheet(
+                                                                          isScrollControlled:
+                                                                              true,
+                                                                          useSafeArea:
+                                                                              true,
+                                                                          context:
+                                                                              context,
+                                                                          builder:
+                                                                              (context) {
+                                                                            return GestureDetector(
+                                                                              onTap: () {
+                                                                                FocusScope.of(context).unfocus();
+                                                                                FocusManager.instance.primaryFocus?.unfocus();
+                                                                              },
+                                                                              child: Padding(
+                                                                                padding: MediaQuery.viewInsetsOf(context),
+                                                                                child: VagaBottomSheetWidget(
+                                                                                  speciality: homeOpenList1Item.especialidadeNome,
+                                                                                  value: homeOpenList1Item.vagasValor?.toDouble(),
+                                                                                  hospital: homeOpenList1Item.hospitalNome,
+                                                                                  date: homeOpenList1Item.vagasData,
+                                                                                  datecreated: homeOpenList1Item.vagasCreatedate,
+                                                                                  startTime: homeOpenList1Item.vagasHorainicio?.time,
+                                                                                  endTime: homeOpenList1Item.vagasHorafim?.time,
+                                                                                  shift: homeOpenList1Item.vagasPeriodoNome,
+                                                                                  type: homeOpenList1Item.vagasTipoNome,
+                                                                                  lat: homeOpenList1Item.hospitalLat,
+                                                                                  lon: homeOpenList1Item.hospitalLog,
+                                                                                  address: homeOpenList1Item.hospitalEnd,
+                                                                                  jobid: homeOpenList1Item.vagasId,
+                                                                                  contractor: homeOpenList1Item.grupoNome,
+                                                                                  contractorName: homeOpenList1Item.escalistaNome,
+                                                                                  contractorPhone: homeOpenList1Item.escalistaTelefone,
+                                                                                  contractorEmail: homeOpenList1Item.escalistaEmail,
+                                                                                  payday: homeOpenList1Item.vagasDatapagamento,
+                                                                                  payment: homeOpenList1Item.vagasFormarecebimentoNome,
+                                                                                  avatarHospital: homeOpenList1Item.hospitalAvatar,
+                                                                                  sector: homeOpenList1Item.setorNome,
+                                                                                  showFavorite: homeOpenList1Item.medicoFavorito,
+                                                                                  candidates: homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList1Item.vagasId)).toList().isNotEmpty ? homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList1Item.vagasId)).toList().firstOrNull : homeOpenList1Item,
+                                                                                  callback: () async {},
+                                                                                ),
+                                                                              ),
+                                                                            );
+                                                                          },
+                                                                        ).then((value) =>
+                                                                            safeSetState(() {}));
+
+                                                                        logFirebaseEvent(
+                                                                            'Button_update_page_state');
+                                                                        _model.isBottomSheetLoading =
+                                                                            false;
+                                                                        safeSetState(
+                                                                            () {});
+                                                                        logFirebaseEvent(
+                                                                            'Button_google_analytics_event');
+                                                                        logFirebaseEvent(
+                                                                          'vagas_exibicao',
+                                                                          parameters: {
+                                                                            'user_id':
+                                                                                currentUserUid,
+                                                                            'time':
+                                                                                getCurrentTimestamp,
+                                                                            'location':
+                                                                                currentUserLocationValue,
+                                                                            'vaga_id':
+                                                                                homeOpenList1Item.vagasId,
+                                                                          },
+                                                                        );
+                                                                        return;
+                                                                      },
+                                                                      text: '',
+                                                                      options:
+                                                                          FFButtonOptions(
+                                                                        width: double
+                                                                            .infinity,
+                                                                        height: MediaQuery.sizeOf(context).height *
+                                                                            0.13,
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                        iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                        color: Color(
+                                                                            0x00A369ED),
+                                                                        textStyle: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .override(
+                                                                              font: GoogleFonts.geologica(
+                                                                                fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                                fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                              ),
+                                                                              color: Colors.white,
+                                                                              letterSpacing: 0.0,
+                                                                              fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                              fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                            ),
+                                                                        elevation:
+                                                                            0.0,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(8.0),
+                                                                      ),
+                                                                      showLoadingIndicator:
+                                                                          false,
+                                                                    ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          );
+                                                        },
+                                                      );
+                                                    } else {
+                                                      return Builder(
+                                                        builder: (context) {
+                                                          final homeOpenList2 = functions
+                                                              .sortByLocation(
+                                                                  currentUserLocationValue!,
+                                                                  homePageVwVagasCandidaturasRowList
+                                                                      .toList(),
+                                                                  true)
+                                                              .where((e) =>
+                                                                  (e.vagasData ==
+                                                                      FFAppState()
+                                                                          .selectedDay) &&
+                                                                  (e.hospitalEstado ==
+                                                                      FFAppState()
+                                                                          .estadoUF))
+                                                              .toList()
+                                                              .unique((e) =>
+                                                                  e.vagasId!)
+                                                              .sortedList(
+                                                                  keyOf: (e) =>
+                                                                      e.vagasValor!,
+                                                                  desc: true)
+                                                              .toList();
+
+                                                          return ListView
+                                                              .separated(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        2.0),
+                                                            primary: false,
+                                                            shrinkWrap: true,
+                                                            scrollDirection:
+                                                                Axis.vertical,
+                                                            itemCount:
+                                                                homeOpenList2
+                                                                    .length,
+                                                            separatorBuilder:
+                                                                (_, __) =>
+                                                                    SizedBox(
+                                                                        height:
+                                                                            2.0),
+                                                            itemBuilder: (context,
+                                                                homeOpenList2Index) {
+                                                              final homeOpenList2Item =
+                                                                  homeOpenList2[
+                                                                      homeOpenList2Index];
+                                                              return Stack(
+                                                                children: [
+                                                                  wrapWithModel(
+                                                                    model: _model
+                                                                        .cardVagasModels3
+                                                                        .getModel(
+                                                                      homeOpenList2Item
+                                                                          .vagasId!,
+                                                                      homeOpenList2Index,
+                                                                    ),
+                                                                    updateCallback: () =>
+                                                                        safeSetState(
+                                                                            () {}),
+                                                                    child:
+                                                                        CardVagasWidget(
+                                                                      key: Key(
+                                                                        'Key0i9_${homeOpenList2Item.vagasId!}',
+                                                                      ),
+                                                                      specialty:
+                                                                          homeOpenList2Item
+                                                                              .especialidadeNome,
+                                                                      value:
+                                                                          formatNumber(
+                                                                        homeOpenList2Item
+                                                                            .vagasValor,
+                                                                        formatType:
+                                                                            FormatType.decimal,
+                                                                        decimalType:
+                                                                            DecimalType.commaDecimal,
+                                                                        currency:
+                                                                            'R\$',
+                                                                      ),
+                                                                      date:
+                                                                          '${dateTimeFormat(
+                                                                        "H",
+                                                                        homeOpenList2Item
+                                                                            .vagasHorainicio
+                                                                            ?.time,
+                                                                        locale:
+                                                                            FFLocalizations.of(context).languageCode,
+                                                                      )}h-${dateTimeFormat(
+                                                                        "H",
+                                                                        homeOpenList2Item
+                                                                            .vagasHorafim
+                                                                            ?.time,
+                                                                        locale:
+                                                                            FFLocalizations.of(context).languageCode,
+                                                                      )}h',
+                                                                      datecount:
+                                                                          'há ${dateTimeFormat(
+                                                                        "relative",
+                                                                        homeOpenList2Item
+                                                                            .vagasCreatedate,
+                                                                        locale: FFLocalizations.of(context).languageShortCode ??
+                                                                            FFLocalizations.of(context).languageCode,
+                                                                      )}',
+                                                                      shift: '',
+                                                                      type: homeOpenList2Item
+                                                                          .vagasTipoNome,
+                                                                      hospital: functions.cleanHospitalName(
+                                                                          homeOpenList2Item
+                                                                              .hospitalNome!,
+                                                                          FFAppState()
+                                                                              .cleanHospital
+                                                                              .toList()),
+                                                                      vaga: homeOpenList2Item
+                                                                          .vagasId,
+                                                                      avatarHospital:
+                                                                          homeOpenList2Item
+                                                                              .hospitalAvatar,
+                                                                      showPay:
+                                                                          false,
+                                                                      sector: homeOpenList2Item
+                                                                          .setorNome,
+                                                                      distance: functions.distanceCalc(
+                                                                          homeOpenList2Item
+                                                                              .hospitalLat!,
+                                                                          homeOpenList2Item
+                                                                              .hospitalLog!,
+                                                                          currentUserLocationValue!),
+                                                                      showSign:
+                                                                          false,
+                                                                    ),
+                                                                  ),
+                                                                  if (true)
+                                                                    FFButtonWidget(
+                                                                      onPressed:
+                                                                          () async {
+                                                                        logFirebaseEvent(
+                                                                            'HOME_PAGE_PAGE__BTN_ON_TAP');
+                                                                        currentUserLocationValue =
+                                                                            await getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0));
+                                                                        if (_model
+                                                                            .isBottomSheetLoading) {
+                                                                          return;
+                                                                        }
+
+                                                                        logFirebaseEvent(
+                                                                            'Button_update_page_state');
+                                                                        _model.isBottomSheetLoading =
+                                                                            true;
+                                                                        safeSetState(
+                                                                            () {});
+                                                                        logFirebaseEvent(
+                                                                            'Button_bottom_sheet');
+                                                                        await showModalBottomSheet(
+                                                                          isScrollControlled:
+                                                                              true,
+                                                                          useSafeArea:
+                                                                              true,
+                                                                          context:
+                                                                              context,
+                                                                          builder:
+                                                                              (context) {
+                                                                            return GestureDetector(
+                                                                              onTap: () {
+                                                                                FocusScope.of(context).unfocus();
+                                                                                FocusManager.instance.primaryFocus?.unfocus();
+                                                                              },
+                                                                              child: Padding(
+                                                                                padding: MediaQuery.viewInsetsOf(context),
+                                                                                child: VagaBottomSheetWidget(
+                                                                                  speciality: homeOpenList2Item.especialidadeNome,
+                                                                                  value: homeOpenList2Item.vagasValor?.toDouble(),
+                                                                                  hospital: homeOpenList2Item.hospitalNome,
+                                                                                  date: homeOpenList2Item.vagasData,
+                                                                                  datecreated: homeOpenList2Item.vagasCreatedate,
+                                                                                  startTime: homeOpenList2Item.vagasHorainicio?.time,
+                                                                                  endTime: homeOpenList2Item.vagasHorafim?.time,
+                                                                                  shift: homeOpenList2Item.vagasPeriodoNome,
+                                                                                  type: homeOpenList2Item.vagasTipoNome,
+                                                                                  lat: homeOpenList2Item.hospitalLat,
+                                                                                  lon: homeOpenList2Item.hospitalLog,
+                                                                                  address: homeOpenList2Item.hospitalEnd,
+                                                                                  jobid: homeOpenList2Item.vagasId,
+                                                                                  contractor: homeOpenList2Item.grupoNome,
+                                                                                  contractorName: homeOpenList2Item.escalistaNome,
+                                                                                  contractorPhone: homeOpenList2Item.escalistaTelefone,
+                                                                                  contractorEmail: homeOpenList2Item.escalistaEmail,
+                                                                                  payday: homeOpenList2Item.vagasDatapagamento,
+                                                                                  payment: homeOpenList2Item.vagasFormarecebimentoNome,
+                                                                                  avatarHospital: homeOpenList2Item.hospitalAvatar,
+                                                                                  sector: homeOpenList2Item.setorNome,
+                                                                                  showFavorite: homeOpenList2Item.medicoFavorito,
+                                                                                  candidates: homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList2Item.vagasId)).toList().isNotEmpty ? homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList2Item.vagasId)).toList().firstOrNull : homeOpenList2Item,
+                                                                                  callback: () async {},
+                                                                                ),
+                                                                              ),
+                                                                            );
+                                                                          },
+                                                                        ).then((value) =>
+                                                                            safeSetState(() {}));
+
+                                                                        logFirebaseEvent(
+                                                                            'Button_update_page_state');
+                                                                        _model.isBottomSheetLoading =
+                                                                            false;
+                                                                        safeSetState(
+                                                                            () {});
+                                                                        logFirebaseEvent(
+                                                                            'Button_google_analytics_event');
+                                                                        logFirebaseEvent(
+                                                                          'vagas_exibicao',
+                                                                          parameters: {
+                                                                            'user_id':
+                                                                                currentUserUid,
+                                                                            'time':
+                                                                                getCurrentTimestamp,
+                                                                            'location':
+                                                                                currentUserLocationValue,
+                                                                            'vaga_id':
+                                                                                homeOpenList2Item.vagasId,
+                                                                          },
+                                                                        );
+                                                                        return;
+                                                                      },
+                                                                      text: '',
+                                                                      options:
+                                                                          FFButtonOptions(
+                                                                        width: double
+                                                                            .infinity,
+                                                                        height: MediaQuery.sizeOf(context).height *
+                                                                            0.13,
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                        iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                        color: Color(
+                                                                            0x00A369ED),
+                                                                        textStyle: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .override(
+                                                                              font: GoogleFonts.geologica(
+                                                                                fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                                fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                              ),
+                                                                              color: Colors.white,
+                                                                              letterSpacing: 0.0,
+                                                                              fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                              fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                            ),
+                                                                        elevation:
+                                                                            0.0,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(8.0),
+                                                                      ),
+                                                                      showLoadingIndicator:
+                                                                          false,
+                                                                    ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          );
+                                                        },
+                                                      );
+                                                    }
                                                   },
                                                 );
                                               } else {
-                                                return Builder(
-                                                  builder: (context) {
-                                                    final homeOpenList2 = functions
-                                                        .sortByLocation(
-                                                            currentUserLocationValue!,
-                                                            homePageVwVagasCandidaturasRowList
-                                                                .toList(),
-                                                            true)
-                                                        .where((e) =>
-                                                            (e.vagasData ==
-                                                                FFAppState()
-                                                                    .selectedDay) &&
-                                                            (e.hospitalEstado ==
-                                                                FFAppState()
-                                                                    .estadoUF))
-                                                        .toList()
-                                                        .unique(
-                                                            (e) => e.vagasId!)
-                                                        .sortedList(
-                                                            keyOf: (e) =>
-                                                                e.vagasValor!,
-                                                            desc: true)
-                                                        .toList();
-
-                                                    return ListView.separated(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 2.0),
-                                                      primary: false,
-                                                      shrinkWrap: true,
-                                                      scrollDirection:
-                                                          Axis.vertical,
-                                                      itemCount:
-                                                          homeOpenList2.length,
-                                                      separatorBuilder: (_,
-                                                              __) =>
-                                                          SizedBox(height: 2.0),
-                                                      itemBuilder: (context,
-                                                          homeOpenList2Index) {
-                                                        final homeOpenList2Item =
-                                                            homeOpenList2[
-                                                                homeOpenList2Index];
-                                                        return Stack(
-                                                          children: [
-                                                            wrapWithModel(
-                                                              model: _model
-                                                                  .cardVagasModels3
-                                                                  .getModel(
-                                                                homeOpenList2Item
-                                                                    .vagasId!,
-                                                                homeOpenList2Index,
-                                                              ),
-                                                              updateCallback: () =>
-                                                                  safeSetState(
-                                                                      () {}),
-                                                              child:
-                                                                  CardVagasWidget(
-                                                                key: Key(
-                                                                  'Key0i9_${homeOpenList2Item.vagasId!}',
-                                                                ),
-                                                                specialty:
-                                                                    homeOpenList2Item
-                                                                        .especialidadeNome,
-                                                                value:
-                                                                    formatNumber(
-                                                                  homeOpenList2Item
-                                                                      .vagasValor,
-                                                                  formatType:
-                                                                      FormatType
-                                                                          .decimal,
-                                                                  decimalType:
-                                                                      DecimalType
-                                                                          .commaDecimal,
-                                                                  currency:
-                                                                      'R\$',
-                                                                ),
-                                                                date:
-                                                                    '${dateTimeFormat(
-                                                                  "H",
-                                                                  homeOpenList2Item
-                                                                      .vagasHorainicio
-                                                                      ?.time,
-                                                                  locale: FFLocalizations.of(
-                                                                          context)
-                                                                      .languageCode,
-                                                                )}h-${dateTimeFormat(
-                                                                  "H",
-                                                                  homeOpenList2Item
-                                                                      .vagasHorafim
-                                                                      ?.time,
-                                                                  locale: FFLocalizations.of(
-                                                                          context)
-                                                                      .languageCode,
-                                                                )}h',
-                                                                datecount:
-                                                                    'há ${dateTimeFormat(
-                                                                  "relative",
-                                                                  homeOpenList2Item
-                                                                      .vagasCreatedate,
-                                                                  locale: FFLocalizations.of(
-                                                                              context)
-                                                                          .languageShortCode ??
-                                                                      FFLocalizations.of(
-                                                                              context)
-                                                                          .languageCode,
-                                                                )}',
-                                                                shift: '',
-                                                                type: homeOpenList2Item
-                                                                    .vagasTipoNome,
-                                                                hospital: functions.cleanHospitalName(
-                                                                    homeOpenList2Item
-                                                                        .hospitalNome!,
-                                                                    FFAppState()
-                                                                        .cleanHospital
-                                                                        .toList()),
-                                                                vaga:
-                                                                    homeOpenList2Item
-                                                                        .vagasId,
-                                                                avatarHospital:
-                                                                    homeOpenList2Item
-                                                                        .hospitalAvatar,
-                                                                showPay: false,
-                                                                sector:
-                                                                    homeOpenList2Item
-                                                                        .setorNome,
-                                                                distance: functions.distanceCalc(
-                                                                    homeOpenList2Item
-                                                                        .hospitalLat!,
-                                                                    homeOpenList2Item
-                                                                        .hospitalLog!,
-                                                                    currentUserLocationValue!),
-                                                                showSign: false,
-                                                              ),
-                                                            ),
-                                                            if (true)
-                                                              FFButtonWidget(
-                                                                onPressed:
-                                                                    () async {
-                                                                  logFirebaseEvent(
-                                                                      'HOME_PAGE_PAGE__BTN_ON_TAP');
-                                                                  currentUserLocationValue = await getCurrentUserLocation(
-                                                                      defaultLocation:
-                                                                          LatLng(
-                                                                              0.0,
-                                                                              0.0));
-                                                                  if (_model
-                                                                      .isBottomSheetLoading) {
-                                                                    return;
-                                                                  }
-
-                                                                  logFirebaseEvent(
-                                                                      'Button_update_page_state');
-                                                                  _model.isBottomSheetLoading =
-                                                                      true;
-                                                                  safeSetState(
-                                                                      () {});
-                                                                  logFirebaseEvent(
-                                                                      'Button_bottom_sheet');
-                                                                  await showModalBottomSheet(
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (context) {
-                                                                      return GestureDetector(
-                                                                        onTap:
-                                                                            () {
-                                                                          FocusScope.of(context)
-                                                                              .unfocus();
-                                                                          FocusManager
-                                                                              .instance
-                                                                              .primaryFocus
-                                                                              ?.unfocus();
-                                                                        },
-                                                                        child:
-                                                                            Padding(
-                                                                          padding:
-                                                                              MediaQuery.viewInsetsOf(context),
-                                                                          child:
-                                                                              VagaBottomSheetWidget(
-                                                                            speciality:
-                                                                                homeOpenList2Item.especialidadeNome,
-                                                                            value:
-                                                                                homeOpenList2Item.vagasValor?.toDouble(),
-                                                                            hospital:
-                                                                                homeOpenList2Item.hospitalNome,
-                                                                            date:
-                                                                                homeOpenList2Item.vagasData,
-                                                                            datecreated:
-                                                                                homeOpenList2Item.vagasCreatedate,
-                                                                            startTime:
-                                                                                homeOpenList2Item.vagasHorainicio?.time,
-                                                                            endTime:
-                                                                                homeOpenList2Item.vagasHorafim?.time,
-                                                                            shift:
-                                                                                homeOpenList2Item.vagasPeriodoNome,
-                                                                            type:
-                                                                                homeOpenList2Item.vagasTipoNome,
-                                                                            lat:
-                                                                                homeOpenList2Item.hospitalLat,
-                                                                            lon:
-                                                                                homeOpenList2Item.hospitalLog,
-                                                                            address:
-                                                                                homeOpenList2Item.hospitalEnd,
-                                                                            jobid:
-                                                                                homeOpenList2Item.vagasId,
-                                                                            contractor:
-                                                                                homeOpenList2Item.grupoNome,
-                                                                            contractorName:
-                                                                                homeOpenList2Item.escalistaNome,
-                                                                            contractorPhone:
-                                                                                homeOpenList2Item.escalistaTelefone,
-                                                                            contractorEmail:
-                                                                                homeOpenList2Item.escalistaEmail,
-                                                                            payday:
-                                                                                homeOpenList2Item.vagasDatapagamento,
-                                                                            payment:
-                                                                                homeOpenList2Item.vagasFormarecebimentoNome,
-                                                                            avatarHospital:
-                                                                                homeOpenList2Item.hospitalAvatar,
-                                                                            sector:
-                                                                                homeOpenList2Item.setorNome,
-                                                                            showFavorite:
-                                                                                homeOpenList2Item.medicoFavorito,
-                                                                            candidates: homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList2Item.vagasId)).toList().isNotEmpty
-                                                                                ? homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList2Item.vagasId)).toList().firstOrNull
-                                                                                : homeOpenList2Item,
-                                                                            callback:
-                                                                                () async {},
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  ).then((value) =>
-                                                                      safeSetState(
-                                                                          () {}));
-
-                                                                  logFirebaseEvent(
-                                                                      'Button_update_page_state');
-                                                                  _model.isBottomSheetLoading =
-                                                                      false;
-                                                                  safeSetState(
-                                                                      () {});
-                                                                  logFirebaseEvent(
-                                                                      'Button_google_analytics_event');
-                                                                  logFirebaseEvent(
-                                                                    'vagas_exibicao',
-                                                                    parameters: {
-                                                                      'user_id':
-                                                                          currentUserUid,
-                                                                      'time':
-                                                                          getCurrentTimestamp,
-                                                                      'location':
-                                                                          currentUserLocationValue,
-                                                                      'vaga_id':
-                                                                          homeOpenList2Item
-                                                                              .vagasId,
-                                                                    },
-                                                                  );
-                                                                  return;
-                                                                },
-                                                                text: '',
-                                                                options:
-                                                                    FFButtonOptions(
-                                                                  width: double
-                                                                      .infinity,
-                                                                  height: MediaQuery.sizeOf(
-                                                                              context)
-                                                                          .height *
-                                                                      0.13,
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                  iconPadding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                  color: Color(
-                                                                      0x00A369ED),
-                                                                  textStyle: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .override(
-                                                                        font: GoogleFonts
-                                                                            .geologica(
-                                                                          fontWeight: FlutterFlowTheme.of(context)
-                                                                              .titleSmall
-                                                                              .fontWeight,
-                                                                          fontStyle: FlutterFlowTheme.of(context)
-                                                                              .titleSmall
-                                                                              .fontStyle,
-                                                                        ),
-                                                                        color: Colors
-                                                                            .white,
-                                                                        letterSpacing:
-                                                                            0.0,
-                                                                        fontWeight: FlutterFlowTheme.of(context)
-                                                                            .titleSmall
-                                                                            .fontWeight,
-                                                                        fontStyle: FlutterFlowTheme.of(context)
-                                                                            .titleSmall
-                                                                            .fontStyle,
-                                                                      ),
-                                                                  elevation:
-                                                                      0.0,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              8.0),
-                                                                ),
-                                                                showLoadingIndicator:
-                                                                    false,
-                                                              ),
-                                                          ],
-                                                        );
-                                                      },
-                                                    );
-                                                  },
+                                                return wrapWithModel(
+                                                  model: _model.emptyListModel2,
+                                                  updateCallback: () =>
+                                                      safeSetState(() {}),
+                                                  child: EmptyListWidget(
+                                                    text:
+                                                        'Selecione uma região',
+                                                  ),
                                                 );
                                               }
                                             },
