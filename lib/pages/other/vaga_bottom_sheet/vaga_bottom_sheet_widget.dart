@@ -2988,105 +2988,41 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                             builder: (context) {
                                               if (currentJwtToken != null &&
                                                   currentJwtToken != '') {
-                                                return Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          'Recrutador: ',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .titleSmall
-                                                              .override(
-                                                                font: GoogleFonts
-                                                                    .geologica(
-                                                                  fontWeight: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .fontWeight,
-                                                                  fontStyle: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .fontStyle,
-                                                                ),
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                fontWeight: FlutterFlowTheme.of(
+                                                return Builder(
+                                                  builder: (context) {
+                                                    if (FFAppState().CRMCheck) {
+                                                      return Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                'Recrutador: ',
+                                                                style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .titleSmall
-                                                                    .fontWeight,
-                                                                fontStyle: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontStyle,
-                                                              ),
-                                                        ),
-                                                        Text(
-                                                          valueOrDefault<
-                                                              String>(
-                                                            widget!.contractor,
-                                                            '[contractor]',
-                                                          ).maybeHandleOverflow(
-                                                            maxChars: 27,
-                                                            replacement: '…',
-                                                          ),
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                font: GoogleFonts
-                                                                    .geologica(
-                                                                  fontWeight: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .fontWeight,
-                                                                  fontStyle: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .fontStyle,
-                                                                ),
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                fontWeight: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontWeight,
-                                                                fontStyle: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                              ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            Text(
-                                                              'Contato: ',
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .titleSmall
-                                                                  .override(
-                                                                    font: GoogleFonts
-                                                                        .geologica(
+                                                                    .override(
+                                                                      font: GoogleFonts
+                                                                          .geologica(
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontStyle,
+                                                                      ),
+                                                                      letterSpacing:
+                                                                          0.0,
                                                                       fontWeight: FlutterFlowTheme.of(
                                                                               context)
                                                                           .titleSmall
@@ -3096,38 +3032,431 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                           .titleSmall
                                                                           .fontStyle,
                                                                     ),
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                    fontWeight: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .titleSmall
-                                                                        .fontWeight,
-                                                                    fontStyle: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .titleSmall
-                                                                        .fontStyle,
-                                                                  ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              valueOrDefault<
-                                                                  String>(
-                                                                widget!
-                                                                    .contractorName,
-                                                                '[contractorName]',
-                                                              ).maybeHandleOverflow(
-                                                                maxChars: 28,
-                                                                replacement:
-                                                                    '…',
                                                               ),
+                                                              Text(
+                                                                valueOrDefault<
+                                                                    String>(
+                                                                  widget!
+                                                                      .contractor,
+                                                                  '[contractor]',
+                                                                ).maybeHandleOverflow(
+                                                                  maxChars: 27,
+                                                                  replacement:
+                                                                      '…',
+                                                                ),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      font: GoogleFonts
+                                                                          .geologica(
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .fontStyle,
+                                                                      ),
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                      fontWeight: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyMedium
+                                                                          .fontWeight,
+                                                                      fontStyle: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyMedium
+                                                                          .fontStyle,
+                                                                    ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  Text(
+                                                                    'Contato: ',
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .titleSmall
+                                                                        .override(
+                                                                          font:
+                                                                              GoogleFonts.geologica(
+                                                                            fontWeight:
+                                                                                FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                            fontStyle:
+                                                                                FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                          ),
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontStyle,
+                                                                        ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    valueOrDefault<
+                                                                        String>(
+                                                                      widget!
+                                                                          .contractorName,
+                                                                      '[contractorName]',
+                                                                    ).maybeHandleOverflow(
+                                                                      maxChars:
+                                                                          28,
+                                                                      replacement:
+                                                                          '…',
+                                                                    ),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          font:
+                                                                              GoogleFonts.geologica(
+                                                                            fontWeight:
+                                                                                FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                            fontStyle:
+                                                                                FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                          ),
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .fontStyle,
+                                                                        ),
+                                                                  ),
+                                                                  Stack(
+                                                                    children: [
+                                                                      Row(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children:
+                                                                            [
+                                                                          Icon(
+                                                                            FFIcons.kphone,
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).tertiary,
+                                                                            size:
+                                                                                14.0,
+                                                                          ),
+                                                                          Text(
+                                                                            valueOrDefault<String>(
+                                                                              functions.aplicarmascara(widget!.contractorPhone, '(##) #####-####'),
+                                                                              'Não informado',
+                                                                            ).maybeHandleOverflow(
+                                                                              maxChars: 13,
+                                                                              replacement: '…',
+                                                                            ),
+                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  font: GoogleFonts.geologica(
+                                                                                    fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                  ),
+                                                                                  color: FlutterFlowTheme.of(context).tertiary,
+                                                                                  letterSpacing: 0.0,
+                                                                                  fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                  fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                ),
+                                                                          ),
+                                                                        ].divide(SizedBox(width: FFAppConstants.halfGap)),
+                                                                      ),
+                                                                      Builder(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                FFButtonWidget(
+                                                                          onPressed:
+                                                                              () async {
+                                                                            logFirebaseEvent('VAGA_BOTTOM_SHEET_PHONE_BUTTON_BTN_ON_TA');
+                                                                            currentUserLocationValue =
+                                                                                await getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0));
+                                                                            if (currentJwtToken != null &&
+                                                                                currentJwtToken != '') {
+                                                                              logFirebaseEvent('Button_custom_action');
+                                                                              _model.launchwhatsapPhone = await actions.launchWhatsAppChat(
+                                                                                '${"Olá, encontrei essa vaga de plantão na Revoluna.\n\n"}${(String? speciality) {
+                                                                                  return "*$speciality*\n";
+                                                                                }(widget!.speciality)}${(String value) {
+                                                                                  return "_" + value + "_\n";
+                                                                                }(formatNumber(
+                                                                                  widget!.value,
+                                                                                  formatType: FormatType.decimal,
+                                                                                  decimalType: DecimalType.commaDecimal,
+                                                                                  currency: 'R\$ ',
+                                                                                ))}${(String? hospital) {
+                                                                                  return "$hospital\n";
+                                                                                }(widget!.hospital)}${(String? date) {
+                                                                                  return "$date\n";
+                                                                                }(dateTimeFormat(
+                                                                                  "EEEE, dd/M",
+                                                                                  widget!.date,
+                                                                                  locale: FFLocalizations.of(context).languageCode,
+                                                                                ))}${(String? start, String end) {
+                                                                                  return "Início: $start Fim: $end\n";
+                                                                                }(dateTimeFormat(
+                                                                                      "Hm",
+                                                                                      widget!.startTime,
+                                                                                      locale: FFLocalizations.of(context).languageCode,
+                                                                                    ), dateTimeFormat(
+                                                                                      "Hm",
+                                                                                      widget!.endTime,
+                                                                                      locale: FFLocalizations.of(context).languageCode,
+                                                                                    ))}${(String? shift, String type) {
+                                                                                  return "$shift / $type\n";
+                                                                                }(widget!.shift, widget!.type!)}${(String? sector) {
+                                                                                  return "Setor: $sector\n\n";
+                                                                                }(widget!.sector)}${(String? shift, String type) {
+                                                                                  return "Gostaria de me candidatar para essa vaga. Poderia me enviar mais informações?";
+                                                                                }(widget!.shift, widget!.type!)}',
+                                                                                (widget!.contractorPhone == null || widget!.contractorPhone == '') && (widget!.contractorPhone == 'Não informado') ? FFAppState().concierge : widget!.contractorPhone!,
+                                                                              );
+                                                                              if (_model.launchwhatsapPhone!) {
+                                                                                if (!_model.isCandidate) {
+                                                                                  logFirebaseEvent('Button_custom_action');
+                                                                                  _model.insertCandidaturaPhone = await actions.insertCandidaturas(
+                                                                                    currentUserUid,
+                                                                                    widget!.jobid!,
+                                                                                    widget!.value!,
+                                                                                  );
+                                                                                }
+                                                                              } else {
+                                                                                logFirebaseEvent('Button_alert_dialog');
+                                                                                await showDialog(
+                                                                                  context: context,
+                                                                                  builder: (dialogContext) {
+                                                                                    return Dialog(
+                                                                                      elevation: 0,
+                                                                                      insetPadding: EdgeInsets.zero,
+                                                                                      backgroundColor: Colors.transparent,
+                                                                                      alignment: AlignmentDirectional(0.0, 0.0).resolve(Directionality.of(context)),
+                                                                                      child: NegativeInformativeBoxWidget(
+                                                                                        title: 'Necessário WhatsApp',
+                                                                                        body: 'Para prosseguir é preciso ter o aplicativo WhatsaApp instalado no seu  aparelho',
+                                                                                      ),
+                                                                                    );
+                                                                                  },
+                                                                                );
+                                                                              }
+
+                                                                              logFirebaseEvent('Button_execute_callback');
+                                                                              await widget.callback?.call();
+                                                                            } else {
+                                                                              logFirebaseEvent('Button_bottom_sheet');
+                                                                              await showModalBottomSheet(
+                                                                                isScrollControlled: true,
+                                                                                backgroundColor: Colors.transparent,
+                                                                                enableDrag: false,
+                                                                                context: context,
+                                                                                builder: (context) {
+                                                                                  return Padding(
+                                                                                    padding: MediaQuery.viewInsetsOf(context),
+                                                                                    child: Container(
+                                                                                      height: MediaQuery.sizeOf(context).height * 0.6,
+                                                                                      child: PaywallWidget(),
+                                                                                    ),
+                                                                                  );
+                                                                                },
+                                                                              ).then((value) => safeSetState(() {}));
+                                                                            }
+
+                                                                            logFirebaseEvent('Button_google_analytics_event');
+                                                                            logFirebaseEvent(
+                                                                              'vagas_interesse_telefone',
+                                                                              parameters: {
+                                                                                'user_id': currentUserUid,
+                                                                                'time': getCurrentTimestamp,
+                                                                                'location': currentUserLocationValue,
+                                                                                'vaga_id': widget!.jobid,
+                                                                              },
+                                                                            );
+
+                                                                            safeSetState(() {});
+                                                                          },
+                                                                          text:
+                                                                              'phone_button',
+                                                                          options:
+                                                                              FFButtonOptions(
+                                                                            width:
+                                                                                121.0,
+                                                                            height:
+                                                                                20.0,
+                                                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                                                0.0,
+                                                                                0.0,
+                                                                                0.0,
+                                                                                0.0),
+                                                                            iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                                                                0.0,
+                                                                                0.0,
+                                                                                0.0,
+                                                                                0.0),
+                                                                            color:
+                                                                                Color(0x00A369ED),
+                                                                            textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  font: GoogleFonts.geologica(
+                                                                                    fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                  ),
+                                                                                  color: Color(0x000FADEB),
+                                                                                  letterSpacing: 0.0,
+                                                                                  fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                  fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                ),
+                                                                            elevation:
+                                                                                0.0,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ].divide(SizedBox(
+                                                                    height: FFAppConstants
+                                                                        .halfGap)),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ]
+                                                            .divide(SizedBox(
+                                                                height:
+                                                                    FFAppConstants
+                                                                        .Gap))
+                                                            .addToEnd(SizedBox(
+                                                                height: FFAppConstants
+                                                                    .doubleGap)),
+                                                      );
+                                                    } else {
+                                                      return Padding(
+                                                        padding: EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                valueOrDefault<
+                                                                    double>(
+                                                                  FFAppConstants
+                                                                      .Gap,
+                                                                  0.0,
+                                                                ),
+                                                                valueOrDefault<
+                                                                    double>(
+                                                                  FFAppConstants
+                                                                      .doubleGap,
+                                                                  0.0,
+                                                                ),
+                                                                valueOrDefault<
+                                                                    double>(
+                                                                  FFAppConstants
+                                                                      .Gap,
+                                                                  0.0,
+                                                                ),
+                                                                valueOrDefault<
+                                                                    double>(
+                                                                  FFAppConstants
+                                                                      .doubleGap,
+                                                                  0.0,
+                                                                )),
+                                                        child: InkWell(
+                                                          splashColor: Colors
+                                                              .transparent,
+                                                          focusColor: Colors
+                                                              .transparent,
+                                                          hoverColor: Colors
+                                                              .transparent,
+                                                          highlightColor: Colors
+                                                              .transparent,
+                                                          onTap: () async {
+                                                            logFirebaseEvent(
+                                                                'VAGA_BOTTOM_SHEET_RichText_pqx9d3r4_ON_T');
+                                                            logFirebaseEvent(
+                                                                'RichText_navigate_to');
+
+                                                            context.pushNamed(
+                                                                PerfilWidget
+                                                                    .routeName);
+                                                          },
+                                                          child: RichText(
+                                                            textScaler:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .textScaler,
+                                                            text: TextSpan(
+                                                              children: [
+                                                                TextSpan(
+                                                                  text:
+                                                                      'Atualize seu CRM',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .override(
+                                                                        font: GoogleFonts
+                                                                            .geologica(
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontStyle,
+                                                                        ),
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .primary,
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontStyle,
+                                                                      ),
+                                                                ),
+                                                                TextSpan(
+                                                                  text:
+                                                                      ' e tenha acesso a todos os detalhes das vagas',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        font: GoogleFonts
+                                                                            .geologica(
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .fontStyle,
+                                                                        ),
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .fontStyle,
+                                                                      ),
+                                                                )
+                                                              ],
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyMedium
@@ -3155,265 +3484,11 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                         .fontStyle,
                                                                   ),
                                                             ),
-                                                            Stack(
-                                                              children: [
-                                                                Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    Icon(
-                                                                      FFIcons
-                                                                          .kphone,
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .tertiary,
-                                                                      size:
-                                                                          14.0,
-                                                                    ),
-                                                                    Text(
-                                                                      valueOrDefault<
-                                                                          String>(
-                                                                        functions.aplicarmascara(
-                                                                            widget!.contractorPhone,
-                                                                            '(##) #####-####'),
-                                                                        'Não informado',
-                                                                      ).maybeHandleOverflow(
-                                                                        maxChars:
-                                                                            13,
-                                                                        replacement:
-                                                                            '…',
-                                                                      ),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            font:
-                                                                                GoogleFonts.geologica(
-                                                                              fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                            ),
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).tertiary,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                            fontStyle:
-                                                                                FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                          ),
-                                                                    ),
-                                                                  ].divide(SizedBox(
-                                                                      width: FFAppConstants
-                                                                          .halfGap)),
-                                                                ),
-                                                                Builder(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          FFButtonWidget(
-                                                                    onPressed:
-                                                                        () async {
-                                                                      logFirebaseEvent(
-                                                                          'VAGA_BOTTOM_SHEET_PHONE_BUTTON_BTN_ON_TA');
-                                                                      currentUserLocationValue = await getCurrentUserLocation(
-                                                                          defaultLocation: LatLng(
-                                                                              0.0,
-                                                                              0.0));
-                                                                      if (currentJwtToken !=
-                                                                              null &&
-                                                                          currentJwtToken !=
-                                                                              '') {
-                                                                        logFirebaseEvent(
-                                                                            'Button_custom_action');
-                                                                        _model.launchwhatsapPhone =
-                                                                            await actions.launchWhatsAppChat(
-                                                                          '${"Olá, encontrei essa vaga de plantão na Revoluna.\n\n"}${(String? speciality) {
-                                                                            return "*$speciality*\n";
-                                                                          }(widget!.speciality)}${(String value) {
-                                                                            return "_" +
-                                                                                value +
-                                                                                "_\n";
-                                                                          }(formatNumber(
-                                                                            widget!.value,
-                                                                            formatType:
-                                                                                FormatType.decimal,
-                                                                            decimalType:
-                                                                                DecimalType.commaDecimal,
-                                                                            currency:
-                                                                                'R\$ ',
-                                                                          ))}${(String? hospital) {
-                                                                            return "$hospital\n";
-                                                                          }(widget!.hospital)}${(String? date) {
-                                                                            return "$date\n";
-                                                                          }(dateTimeFormat(
-                                                                            "EEEE, dd/M",
-                                                                            widget!.date,
-                                                                            locale:
-                                                                                FFLocalizations.of(context).languageCode,
-                                                                          ))}${(String? start, String end) {
-                                                                            return "Início: $start Fim: $end\n";
-                                                                          }(dateTimeFormat(
-                                                                                "Hm",
-                                                                                widget!.startTime,
-                                                                                locale: FFLocalizations.of(context).languageCode,
-                                                                              ), dateTimeFormat(
-                                                                                "Hm",
-                                                                                widget!.endTime,
-                                                                                locale: FFLocalizations.of(context).languageCode,
-                                                                              ))}${(String? shift, String type) {
-                                                                            return "$shift / $type\n";
-                                                                          }(widget!.shift, widget!.type!)}${(String? sector) {
-                                                                            return "Setor: $sector\n\n";
-                                                                          }(widget!.sector)}${(String? shift, String type) {
-                                                                            return "Gostaria de me candidatar para essa vaga. Poderia me enviar mais informações?";
-                                                                          }(widget!.shift, widget!.type!)}',
-                                                                          (widget!.contractorPhone == null || widget!.contractorPhone == '') && (widget!.contractorPhone == 'Não informado')
-                                                                              ? FFAppState().concierge
-                                                                              : widget!.contractorPhone!,
-                                                                        );
-                                                                        if (_model
-                                                                            .launchwhatsapPhone!) {
-                                                                          if (!_model
-                                                                              .isCandidate) {
-                                                                            logFirebaseEvent('Button_custom_action');
-                                                                            _model.insertCandidaturaPhone =
-                                                                                await actions.insertCandidaturas(
-                                                                              currentUserUid,
-                                                                              widget!.jobid!,
-                                                                              widget!.value!,
-                                                                            );
-                                                                          }
-                                                                        } else {
-                                                                          logFirebaseEvent(
-                                                                              'Button_alert_dialog');
-                                                                          await showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder:
-                                                                                (dialogContext) {
-                                                                              return Dialog(
-                                                                                elevation: 0,
-                                                                                insetPadding: EdgeInsets.zero,
-                                                                                backgroundColor: Colors.transparent,
-                                                                                alignment: AlignmentDirectional(0.0, 0.0).resolve(Directionality.of(context)),
-                                                                                child: NegativeInformativeBoxWidget(
-                                                                                  title: 'Necessário WhatsApp',
-                                                                                  body: 'Para prosseguir é preciso ter o aplicativo WhatsaApp instalado no seu  aparelho',
-                                                                                ),
-                                                                              );
-                                                                            },
-                                                                          );
-                                                                        }
-
-                                                                        logFirebaseEvent(
-                                                                            'Button_execute_callback');
-                                                                        await widget
-                                                                            .callback
-                                                                            ?.call();
-                                                                      } else {
-                                                                        logFirebaseEvent(
-                                                                            'Button_bottom_sheet');
-                                                                        await showModalBottomSheet(
-                                                                          isScrollControlled:
-                                                                              true,
-                                                                          backgroundColor:
-                                                                              Colors.transparent,
-                                                                          enableDrag:
-                                                                              false,
-                                                                          context:
-                                                                              context,
-                                                                          builder:
-                                                                              (context) {
-                                                                            return Padding(
-                                                                              padding: MediaQuery.viewInsetsOf(context),
-                                                                              child: Container(
-                                                                                height: MediaQuery.sizeOf(context).height * 0.6,
-                                                                                child: PaywallWidget(),
-                                                                              ),
-                                                                            );
-                                                                          },
-                                                                        ).then((value) =>
-                                                                            safeSetState(() {}));
-                                                                      }
-
-                                                                      logFirebaseEvent(
-                                                                          'Button_google_analytics_event');
-                                                                      logFirebaseEvent(
-                                                                        'vagas_interesse_telefone',
-                                                                        parameters: {
-                                                                          'user_id':
-                                                                              currentUserUid,
-                                                                          'time':
-                                                                              getCurrentTimestamp,
-                                                                          'location':
-                                                                              currentUserLocationValue,
-                                                                          'vaga_id':
-                                                                              widget!.jobid,
-                                                                        },
-                                                                      );
-
-                                                                      safeSetState(
-                                                                          () {});
-                                                                    },
-                                                                    text:
-                                                                        'phone_button',
-                                                                    options:
-                                                                        FFButtonOptions(
-                                                                      width:
-                                                                          121.0,
-                                                                      height:
-                                                                          20.0,
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                      iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                      color: Color(
-                                                                          0x00A369ED),
-                                                                      textStyle: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            font:
-                                                                                GoogleFonts.geologica(
-                                                                              fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                            ),
-                                                                            color:
-                                                                                Color(0x000FADEB),
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                            fontStyle:
-                                                                                FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                          ),
-                                                                      elevation:
-                                                                          0.0,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ].divide(SizedBox(
-                                                              height:
-                                                                  FFAppConstants
-                                                                      .halfGap)),
+                                                          ),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ]
-                                                      .divide(SizedBox(
-                                                          height: FFAppConstants
-                                                              .Gap))
-                                                      .addToEnd(SizedBox(
-                                                          height: FFAppConstants
-                                                              .doubleGap)),
+                                                      );
+                                                    }
+                                                  },
                                                 );
                                               } else {
                                                 return Padding(
@@ -3685,251 +3760,420 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                             builder: (context) {
                                               if (currentJwtToken != null &&
                                                   currentJwtToken != '') {
-                                                return Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: MediaQuery.sizeOf(
-                                                                  context)
-                                                              .width *
-                                                          1.0,
-                                                      height: MediaQuery.sizeOf(
-                                                                  context)
-                                                              .height *
-                                                          0.227,
-                                                      decoration:
-                                                          BoxDecoration(),
-                                                      child: Builder(
-                                                          builder: (context) {
-                                                        final _googleMapMarker =
-                                                            functions.map(
-                                                                widget!.lat!,
-                                                                widget!.lon!);
-                                                        return FlutterFlowGoogleMap(
-                                                          controller: _model
-                                                              .googleMapsController,
-                                                          onCameraIdle:
-                                                              (latLng) => _model
-                                                                      .googleMapsCenter =
-                                                                  latLng,
-                                                          initialLocation: _model
-                                                                  .googleMapsCenter ??=
-                                                              functions.map(
-                                                                  widget!.lat!,
-                                                                  widget!
-                                                                      .lon!)!,
-                                                          markers: [
-                                                            if (_googleMapMarker !=
-                                                                null)
-                                                              FlutterFlowMarker(
-                                                                _googleMapMarker
-                                                                    .serialize(),
-                                                                _googleMapMarker,
+                                                return Builder(
+                                                  builder: (context) {
+                                                    if (FFAppState().CRMCheck) {
+                                                      return Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Container(
+                                                            width: MediaQuery
+                                                                        .sizeOf(
+                                                                            context)
+                                                                    .width *
+                                                                1.0,
+                                                            height: MediaQuery
+                                                                        .sizeOf(
+                                                                            context)
+                                                                    .height *
+                                                                0.227,
+                                                            decoration:
+                                                                BoxDecoration(),
+                                                            child: Builder(
+                                                                builder:
+                                                                    (context) {
+                                                              final _googleMapMarker =
+                                                                  functions.map(
+                                                                      widget!
+                                                                          .lat!,
+                                                                      widget!
+                                                                          .lon!);
+                                                              return FlutterFlowGoogleMap(
+                                                                controller: _model
+                                                                    .googleMapsController,
+                                                                onCameraIdle:
+                                                                    (latLng) =>
+                                                                        _model.googleMapsCenter =
+                                                                            latLng,
+                                                                initialLocation: _model
+                                                                        .googleMapsCenter ??=
+                                                                    functions.map(
+                                                                        widget!
+                                                                            .lat!,
+                                                                        widget!
+                                                                            .lon!)!,
+                                                                markers: [
+                                                                  if (_googleMapMarker !=
+                                                                      null)
+                                                                    FlutterFlowMarker(
+                                                                      _googleMapMarker
+                                                                          .serialize(),
+                                                                      _googleMapMarker,
+                                                                    ),
+                                                                ],
+                                                                markerColor:
+                                                                    GoogleMarkerColor
+                                                                        .violet,
+                                                                mapType: MapType
+                                                                    .normal,
+                                                                style:
+                                                                    GoogleMapStyle
+                                                                        .retro,
+                                                                initialZoom:
+                                                                    16.0,
+                                                                allowInteraction:
+                                                                    true,
+                                                                allowZoom: true,
+                                                                showZoomControls:
+                                                                    true,
+                                                                showLocation:
+                                                                    false,
+                                                                showCompass:
+                                                                    false,
+                                                                showMapToolbar:
+                                                                    false,
+                                                                showTraffic:
+                                                                    true,
+                                                                centerMapOnMarkerTap:
+                                                                    true,
+                                                                mapTakesGesturePreference:
+                                                                    true,
+                                                              );
+                                                            }),
+                                                          ),
+                                                          custom_widgets
+                                                              .WidgetRichText(
+                                                            width:
+                                                                double.infinity,
+                                                            height: MediaQuery
+                                                                        .sizeOf(
+                                                                            context)
+                                                                    .height *
+                                                                0.075,
+                                                            address:
+                                                                widget!.address,
+                                                            widgetbuilder: () =>
+                                                                AddressIconButtonWidget(
+                                                              address: widget!
+                                                                  .address,
+                                                            ),
+                                                          ),
+                                                          Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                'Chegue mais rápido:',
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleSmall
+                                                                    .override(
+                                                                      font: GoogleFonts
+                                                                          .geologica(
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontStyle,
+                                                                      ),
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                      fontWeight: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .titleSmall
+                                                                          .fontWeight,
+                                                                      fontStyle: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .titleSmall
+                                                                          .fontStyle,
+                                                                    ),
                                                               ),
-                                                          ],
-                                                          markerColor:
-                                                              GoogleMarkerColor
-                                                                  .violet,
-                                                          mapType:
-                                                              MapType.normal,
-                                                          style: GoogleMapStyle
-                                                              .retro,
-                                                          initialZoom: 16.0,
-                                                          allowInteraction:
-                                                              true,
-                                                          allowZoom: true,
-                                                          showZoomControls:
-                                                              true,
-                                                          showLocation: false,
-                                                          showCompass: false,
-                                                          showMapToolbar: false,
-                                                          showTraffic: true,
-                                                          centerMapOnMarkerTap:
-                                                              true,
-                                                          mapTakesGesturePreference:
-                                                              true,
-                                                        );
-                                                      }),
-                                                    ),
-                                                    custom_widgets
-                                                        .WidgetRichText(
-                                                      width: double.infinity,
-                                                      height: MediaQuery.sizeOf(
-                                                                  context)
-                                                              .height *
-                                                          0.075,
-                                                      address: widget!.address,
-                                                      widgetbuilder: () =>
-                                                          AddressIconButtonWidget(
-                                                        address:
-                                                            widget!.address,
-                                                      ),
-                                                    ),
-                                                    Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          'Chegue mais rápido:',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .titleSmall
-                                                              .override(
-                                                                font: GoogleFonts
-                                                                    .geologica(
-                                                                  fontWeight: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .fontWeight,
-                                                                  fontStyle: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .fontStyle,
+                                                              Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                children: [
+                                                                  FlutterFlowIconButton(
+                                                                    borderRadius:
+                                                                        8.0,
+                                                                    buttonSize:
+                                                                        48.0,
+                                                                    icon:
+                                                                        FaIcon(
+                                                                      FontAwesomeIcons
+                                                                          .waze,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryText,
+                                                                      size:
+                                                                          25.0,
+                                                                    ),
+                                                                    onPressed:
+                                                                        () async {
+                                                                      logFirebaseEvent(
+                                                                          'VAGA_BOTTOM_SHEET_COMP_waze_ICN_ON_TAP');
+                                                                      logFirebaseEvent(
+                                                                          'IconButton_launch_u_r_l');
+                                                                      await launchURL(isiOS
+                                                                          ? 'waze://?ll=${widget!.lat?.toString()},${widget!.lon?.toString()}'
+                                                                          : 'https://waze.com/ul?ll=${widget!.lat?.toString()},${widget!.lon?.toString()}');
+                                                                    },
+                                                                  ),
+                                                                  FlutterFlowIconButton(
+                                                                    borderRadius:
+                                                                        8.0,
+                                                                    buttonSize:
+                                                                        48.0,
+                                                                    icon:
+                                                                        FaIcon(
+                                                                      FontAwesomeIcons
+                                                                          .google,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryText,
+                                                                      size:
+                                                                          22.0,
+                                                                    ),
+                                                                    onPressed:
+                                                                        () async {
+                                                                      logFirebaseEvent(
+                                                                          'VAGA_BOTTOM_SHEET_COMP_google_ICN_ON_TAP');
+                                                                      logFirebaseEvent(
+                                                                          'IconButton_launch_u_r_l');
+                                                                      await launchURL(isiOS
+                                                                          ? 'comgooglemaps://?q=${widget!.lat?.toString()},${widget!.lon?.toString()}(${widget!.hospital})'
+                                                                          : 'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent('${widget!.lat?.toString()},${widget!.lon?.toString()}')}+${widget!.hospital}');
+                                                                    },
+                                                                  ),
+                                                                  FlutterFlowIconButton(
+                                                                    borderRadius:
+                                                                        8.0,
+                                                                    buttonSize:
+                                                                        48.0,
+                                                                    icon:
+                                                                        FaIcon(
+                                                                      FontAwesomeIcons
+                                                                          .uber,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryText,
+                                                                      size:
+                                                                          30.0,
+                                                                    ),
+                                                                    onPressed:
+                                                                        () async {
+                                                                      logFirebaseEvent(
+                                                                          'VAGA_BOTTOM_SHEET_COMP_uber_ICN_ON_TAP');
+                                                                      logFirebaseEvent(
+                                                                          'IconButton_launch_u_r_l');
+                                                                      await launchURL(
+                                                                          'uber://riderequest?pickup=my_location&dropoff[latitude]=${widget!.lat?.toString()}&dropoff[longitude]=${widget!.lon?.toString()}&dropoff[nickname]=${widget!.hospital}&dropoff[formatted_address]=${(String var1) {
+                                                                        return var1.replaceAll(
+                                                                            ' ',
+                                                                            '%');
+                                                                      }(widget!.address!)}');
+                                                                    },
+                                                                  ),
+                                                                  FlutterFlowIconButton(
+                                                                    borderRadius:
+                                                                        8.0,
+                                                                    buttonSize:
+                                                                        48.0,
+                                                                    icon: Icon(
+                                                                      FFIcons
+                                                                          .k99,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryText,
+                                                                      size:
+                                                                          25.0,
+                                                                    ),
+                                                                    onPressed:
+                                                                        () async {
+                                                                      logFirebaseEvent(
+                                                                          'VAGA_BOTTOM_SHEET_COMP_99_ICN_ON_TAP');
+                                                                      currentUserLocationValue = await getCurrentUserLocation(
+                                                                          defaultLocation: LatLng(
+                                                                              0.0,
+                                                                              0.0));
+                                                                      logFirebaseEvent(
+                                                                          'IconButton_launch_u_r_l');
+                                                                      await launchURL(
+                                                                          'taxis99://call?pickup_latitude=${(String var1) {
+                                                                        return var1.split(',')[0].replaceAll(
+                                                                            RegExp(r'[^\d\-\.]'),
+                                                                            '');
+                                                                      }(currentUserLocationValue!.toString())}&pickup_longitude=${(String var1) {
+                                                                        return var1.split(',')[1].replaceAll(
+                                                                            RegExp(r'[^\d\-\.]'),
+                                                                            '');
+                                                                      }(currentUserLocationValue!.toString())}&dropoff_latitude=${widget!.lat?.toString()}&dropoff_longitude=${widget!.lon?.toString()}&dropoff_title=${widget!.hospital}&deep_link_product_id=316&client_id=MAP_***');
+                                                                    },
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ]
+                                                            .divide(SizedBox(
+                                                                height:
+                                                                    FFAppConstants
+                                                                        .Gap))
+                                                            .addToEnd(SizedBox(
+                                                                height:
+                                                                    FFAppConstants
+                                                                        .Gap)),
+                                                      );
+                                                    } else {
+                                                      return Padding(
+                                                        padding: EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                valueOrDefault<
+                                                                    double>(
+                                                                  FFAppConstants
+                                                                      .Gap,
+                                                                  0.0,
                                                                 ),
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                fontWeight: FlutterFlowTheme.of(
+                                                                valueOrDefault<
+                                                                    double>(
+                                                                  FFAppConstants
+                                                                      .doubleGap,
+                                                                  0.0,
+                                                                ),
+                                                                valueOrDefault<
+                                                                    double>(
+                                                                  FFAppConstants
+                                                                      .Gap,
+                                                                  0.0,
+                                                                ),
+                                                                valueOrDefault<
+                                                                    double>(
+                                                                  FFAppConstants
+                                                                      .doubleGap,
+                                                                  0.0,
+                                                                )),
+                                                        child: InkWell(
+                                                          splashColor: Colors
+                                                              .transparent,
+                                                          focusColor: Colors
+                                                              .transparent,
+                                                          hoverColor: Colors
+                                                              .transparent,
+                                                          highlightColor: Colors
+                                                              .transparent,
+                                                          onTap: () async {
+                                                            logFirebaseEvent(
+                                                                'VAGA_BOTTOM_SHEET_RichText_4vgyw7cf_ON_T');
+                                                            logFirebaseEvent(
+                                                                'RichText_navigate_to');
+
+                                                            context.pushNamed(
+                                                                PerfilWidget
+                                                                    .routeName);
+                                                          },
+                                                          child: RichText(
+                                                            textScaler:
+                                                                MediaQuery.of(
                                                                         context)
-                                                                    .titleSmall
-                                                                    .fontWeight,
-                                                                fontStyle: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontStyle,
-                                                              ),
-                                                        ),
-                                                        Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          children: [
-                                                            FlutterFlowIconButton(
-                                                              borderRadius: 8.0,
-                                                              buttonSize: 48.0,
-                                                              icon: FaIcon(
-                                                                FontAwesomeIcons
-                                                                    .waze,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryText,
-                                                                size: 25.0,
-                                                              ),
-                                                              onPressed:
-                                                                  () async {
-                                                                logFirebaseEvent(
-                                                                    'VAGA_BOTTOM_SHEET_COMP_waze_ICN_ON_TAP');
-                                                                logFirebaseEvent(
-                                                                    'IconButton_launch_u_r_l');
-                                                                await launchURL(isiOS
-                                                                    ? 'waze://?ll=${widget!.lat?.toString()},${widget!.lon?.toString()}'
-                                                                    : 'https://waze.com/ul?ll=${widget!.lat?.toString()},${widget!.lon?.toString()}');
-                                                              },
-                                                            ),
-                                                            FlutterFlowIconButton(
-                                                              borderRadius: 8.0,
-                                                              buttonSize: 48.0,
-                                                              icon: FaIcon(
-                                                                FontAwesomeIcons
-                                                                    .google,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryText,
-                                                                size: 22.0,
-                                                              ),
-                                                              onPressed:
-                                                                  () async {
-                                                                logFirebaseEvent(
-                                                                    'VAGA_BOTTOM_SHEET_COMP_google_ICN_ON_TAP');
-                                                                logFirebaseEvent(
-                                                                    'IconButton_launch_u_r_l');
-                                                                await launchURL(isiOS
-                                                                    ? 'comgooglemaps://?q=${widget!.lat?.toString()},${widget!.lon?.toString()}(${widget!.hospital})'
-                                                                    : 'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent('${widget!.lat?.toString()},${widget!.lon?.toString()}')}+${widget!.hospital}');
-                                                              },
-                                                            ),
-                                                            FlutterFlowIconButton(
-                                                              borderRadius: 8.0,
-                                                              buttonSize: 48.0,
-                                                              icon: FaIcon(
-                                                                FontAwesomeIcons
-                                                                    .uber,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryText,
-                                                                size: 30.0,
-                                                              ),
-                                                              onPressed:
-                                                                  () async {
-                                                                logFirebaseEvent(
-                                                                    'VAGA_BOTTOM_SHEET_COMP_uber_ICN_ON_TAP');
-                                                                logFirebaseEvent(
-                                                                    'IconButton_launch_u_r_l');
-                                                                await launchURL(
-                                                                    'uber://riderequest?pickup=my_location&dropoff[latitude]=${widget!.lat?.toString()}&dropoff[longitude]=${widget!.lon?.toString()}&dropoff[nickname]=${widget!.hospital}&dropoff[formatted_address]=${(String var1) {
-                                                                  return var1
-                                                                      .replaceAll(
-                                                                          ' ',
-                                                                          '%');
-                                                                }(widget!.address!)}');
-                                                              },
-                                                            ),
-                                                            FlutterFlowIconButton(
-                                                              borderRadius: 8.0,
-                                                              buttonSize: 48.0,
-                                                              icon: Icon(
-                                                                FFIcons.k99,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryText,
-                                                                size: 25.0,
-                                                              ),
-                                                              onPressed:
-                                                                  () async {
-                                                                logFirebaseEvent(
-                                                                    'VAGA_BOTTOM_SHEET_COMP_99_ICN_ON_TAP');
-                                                                currentUserLocationValue =
-                                                                    await getCurrentUserLocation(
-                                                                        defaultLocation: LatLng(
+                                                                    .textScaler,
+                                                            text: TextSpan(
+                                                              children: [
+                                                                TextSpan(
+                                                                  text:
+                                                                      'Atualize seu CRM',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .override(
+                                                                        font: GoogleFonts
+                                                                            .geologica(
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontStyle,
+                                                                        ),
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .primary,
+                                                                        letterSpacing:
                                                                             0.0,
-                                                                            0.0));
-                                                                logFirebaseEvent(
-                                                                    'IconButton_launch_u_r_l');
-                                                                await launchURL(
-                                                                    'taxis99://call?pickup_latitude=${(String var1) {
-                                                                  return var1
-                                                                      .split(',')[
-                                                                          0]
-                                                                      .replaceAll(
-                                                                          RegExp(
-                                                                              r'[^\d\-\.]'),
-                                                                          '');
-                                                                }(currentUserLocationValue!.toString())}&pickup_longitude=${(String var1) {
-                                                                  return var1
-                                                                      .split(',')[
-                                                                          1]
-                                                                      .replaceAll(
-                                                                          RegExp(
-                                                                              r'[^\d\-\.]'),
-                                                                          '');
-                                                                }(currentUserLocationValue!.toString())}&dropoff_latitude=${widget!.lat?.toString()}&dropoff_longitude=${widget!.lon?.toString()}&dropoff_title=${widget!.hospital}&deep_link_product_id=316&client_id=MAP_***');
-                                                              },
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontStyle,
+                                                                      ),
+                                                                ),
+                                                                TextSpan(
+                                                                  text:
+                                                                      ' e tenha acesso a todos os detalhes das vagas!',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        font: GoogleFonts
+                                                                            .geologica(
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .fontStyle,
+                                                                        ),
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .fontStyle,
+                                                                      ),
+                                                                )
+                                                              ],
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    font: GoogleFonts
+                                                                        .geologica(
+                                                                      fontWeight: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyMedium
+                                                                          .fontWeight,
+                                                                      fontStyle: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyMedium
+                                                                          .fontStyle,
+                                                                    ),
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                    fontWeight: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .fontWeight,
+                                                                    fontStyle: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .fontStyle,
+                                                                  ),
                                                             ),
-                                                          ],
+                                                          ),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ]
-                                                      .divide(SizedBox(
-                                                          height: FFAppConstants
-                                                              .Gap))
-                                                      .addToEnd(SizedBox(
-                                                          height: FFAppConstants
-                                                              .Gap)),
+                                                      );
+                                                    }
+                                                  },
                                                 );
                                               } else {
                                                 return Padding(
@@ -4204,156 +4448,623 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                               builder: (context) {
                                                 if (currentJwtToken != null &&
                                                     currentJwtToken != '') {
-                                                  return Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                valueOrDefault<
-                                                                    double>(
-                                                                  FFAppConstants
-                                                                      .Gap,
+                                                  return Builder(
+                                                    builder: (context) {
+                                                      if (FFAppState()
+                                                          .CRMCheck) {
+                                                        return Padding(
+                                                          padding: EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                                    FFAppConstants
+                                                                        .Gap,
+                                                                    0.0,
+                                                                  ),
                                                                   0.0,
-                                                                ),
-                                                                0.0,
-                                                                0.0,
-                                                                0.0),
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        SingleChildScrollView(
-                                                          scrollDirection:
-                                                              Axis.horizontal,
-                                                          child: Row(
+                                                                  0.0,
+                                                                  0.0),
+                                                          child: Column(
                                                             mainAxisSize:
                                                                 MainAxisSize
                                                                     .max,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
+                                                              SingleChildScrollView(
+                                                                scrollDirection:
+                                                                    Axis.horizontal,
+                                                                child: Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          2.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          Text(
+                                                                        '●',
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .override(
+                                                                              font: GoogleFonts.geologica(
+                                                                                fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                                fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                              ),
+                                                                              fontSize: 6.0,
+                                                                              letterSpacing: 0.0,
+                                                                              fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                              fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                            ),
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                      valueOrDefault<
+                                                                          String>(
+                                                                        widget!
+                                                                            .payment,
+                                                                        '[payment]',
+                                                                      ),
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            font:
+                                                                                GoogleFonts.geologica(
+                                                                              fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                              fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                            ),
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                            fontWeight:
+                                                                                FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                            fontStyle:
+                                                                                FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                          ),
+                                                                    ),
+                                                                  ].divide(SizedBox(
+                                                                      width: FFAppConstants
+                                                                          .halfGap)),
+                                                                ),
+                                                              ),
+                                                              Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                children: [
+                                                                  Padding(
+                                                                    padding: EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             0.0,
                                                                             2.0,
                                                                             0.0,
                                                                             0.0),
-                                                                child: Text(
-                                                                  '●',
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .override(
-                                                                        font: GoogleFonts
-                                                                            .geologica(
-                                                                          fontWeight: FlutterFlowTheme.of(context)
-                                                                              .titleSmall
-                                                                              .fontWeight,
-                                                                          fontStyle: FlutterFlowTheme.of(context)
-                                                                              .titleSmall
-                                                                              .fontStyle,
+                                                                    child: Text(
+                                                                      '●',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .titleSmall
+                                                                          .override(
+                                                                            font:
+                                                                                GoogleFonts.geologica(
+                                                                              fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                              fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                            ),
+                                                                            fontSize:
+                                                                                6.0,
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                            fontWeight:
+                                                                                FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                            fontStyle:
+                                                                                FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                  RichText(
+                                                                    textScaler:
+                                                                        MediaQuery.of(context)
+                                                                            .textScaler,
+                                                                    text:
+                                                                        TextSpan(
+                                                                      children: [
+                                                                        TextSpan(
+                                                                          text:
+                                                                              'Data do pagamento: ',
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .override(
+                                                                                font: GoogleFonts.geologica(
+                                                                                  fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                  fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                ),
+                                                                                letterSpacing: 0.0,
+                                                                                fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                              ),
                                                                         ),
-                                                                        fontSize:
-                                                                            6.0,
-                                                                        letterSpacing:
-                                                                            0.0,
-                                                                        fontWeight: FlutterFlowTheme.of(context)
-                                                                            .titleSmall
-                                                                            .fontWeight,
-                                                                        fontStyle: FlutterFlowTheme.of(context)
-                                                                            .titleSmall
-                                                                            .fontStyle,
-                                                                      ),
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                valueOrDefault<
-                                                                    String>(
-                                                                  widget!
-                                                                      .payment,
-                                                                  '[payment]',
-                                                                ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .override(
-                                                                      font: GoogleFonts
-                                                                          .geologica(
-                                                                        fontWeight: FlutterFlowTheme.of(context)
-                                                                            .bodyMedium
-                                                                            .fontWeight,
-                                                                        fontStyle: FlutterFlowTheme.of(context)
-                                                                            .bodyMedium
-                                                                            .fontStyle,
-                                                                      ),
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                      fontWeight: FlutterFlowTheme.of(
+                                                                        TextSpan(
+                                                                          text:
+                                                                              dateTimeFormat(
+                                                                            "dd/MM/yyyy",
+                                                                            widget!.payday,
+                                                                            locale:
+                                                                                FFLocalizations.of(context).languageCode,
+                                                                          ),
+                                                                          style:
+                                                                              TextStyle(),
+                                                                        )
+                                                                      ],
+                                                                      style: FlutterFlowTheme.of(
                                                                               context)
                                                                           .bodyMedium
-                                                                          .fontWeight,
-                                                                      fontStyle: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .fontStyle,
+                                                                          .override(
+                                                                            font:
+                                                                                GoogleFonts.geologica(
+                                                                              fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                              fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                            ),
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                            fontWeight:
+                                                                                FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                            fontStyle:
+                                                                                FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                          ),
                                                                     ),
+                                                                  ),
+                                                                ].divide(SizedBox(
+                                                                    width: FFAppConstants
+                                                                        .halfGap)),
                                                               ),
-                                                            ].divide(SizedBox(
-                                                                width: FFAppConstants
-                                                                    .halfGap)),
+                                                              if (((widget!.payday!
+                                                                              .secondsSinceEpoch
+                                                                              .toDouble() -
+                                                                          widget!
+                                                                              .date!
+                                                                              .secondsSinceEpoch
+                                                                              .toDouble()) /
+                                                                      86400) !=
+                                                                  0.0)
+                                                                Builder(
+                                                                  builder:
+                                                                      (context) {
+                                                                    if (((widget!.payday!.secondsSinceEpoch.toDouble() - widget!.date!.secondsSinceEpoch.toDouble()) /
+                                                                            86400) >
+                                                                        1.0) {
+                                                                      return Row(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children:
+                                                                            [
+                                                                          Padding(
+                                                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                                                0.0,
+                                                                                2.0,
+                                                                                0.0,
+                                                                                0.0),
+                                                                            child:
+                                                                                Text(
+                                                                              '●',
+                                                                              textAlign: TextAlign.center,
+                                                                              style: FlutterFlowTheme.of(context).titleSmall.override(
+                                                                                    font: GoogleFonts.geologica(
+                                                                                      fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                                      fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                                    ),
+                                                                                    fontSize: 6.0,
+                                                                                    letterSpacing: 0.0,
+                                                                                    fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                                  ),
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            'Em ${formatNumber(
+                                                                              (widget!.payday!.secondsSinceEpoch.toDouble() - widget!.date!.secondsSinceEpoch.toDouble()) / 86400,
+                                                                              formatType: FormatType.custom,
+                                                                              format: '0',
+                                                                              locale: '',
+                                                                            )} dias',
+                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  font: GoogleFonts.geologica(
+                                                                                    fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                  ),
+                                                                                  letterSpacing: 0.0,
+                                                                                  fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                  fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                ),
+                                                                          ),
+                                                                        ].divide(SizedBox(width: FFAppConstants.halfGap)),
+                                                                      );
+                                                                    } else if (((widget!.payday!.secondsSinceEpoch.toDouble() -
+                                                                                widget!.date!.secondsSinceEpoch.toDouble()) /
+                                                                            86400) ==
+                                                                        1.0) {
+                                                                      return Row(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children:
+                                                                            [
+                                                                          Padding(
+                                                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                                                0.0,
+                                                                                2.0,
+                                                                                0.0,
+                                                                                0.0),
+                                                                            child:
+                                                                                Text(
+                                                                              '●',
+                                                                              textAlign: TextAlign.center,
+                                                                              style: FlutterFlowTheme.of(context).titleSmall.override(
+                                                                                    font: GoogleFonts.geologica(
+                                                                                      fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                                      fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                                    ),
+                                                                                    fontSize: 6.0,
+                                                                                    letterSpacing: 0.0,
+                                                                                    fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                                  ),
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            'Em ${formatNumber(
+                                                                              (widget!.payday!.secondsSinceEpoch.toDouble() - widget!.date!.secondsSinceEpoch.toDouble()) / 86400,
+                                                                              formatType: FormatType.custom,
+                                                                              format: '0',
+                                                                              locale: '',
+                                                                            )} dias',
+                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  font: GoogleFonts.geologica(
+                                                                                    fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                  ),
+                                                                                  letterSpacing: 0.0,
+                                                                                  fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                  fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                ),
+                                                                          ),
+                                                                          FFButtonWidget(
+                                                                            onPressed:
+                                                                                () {
+                                                                              print('Button pressed ...');
+                                                                            },
+                                                                            text:
+                                                                                '',
+                                                                            options:
+                                                                                FFButtonOptions(
+                                                                              height: 20.0,
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                                                              iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                                                              color: Color(0x00A369ED),
+                                                                              textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                    font: GoogleFonts.geologica(
+                                                                                      fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                      fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                    ),
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                    letterSpacing: 0.0,
+                                                                                    fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                  ),
+                                                                              elevation: 0.0,
+                                                                              borderRadius: BorderRadius.circular(valueOrDefault<double>(
+                                                                                FFAppConstants.borderS,
+                                                                                0.0,
+                                                                              )),
+                                                                            ),
+                                                                            showLoadingIndicator:
+                                                                                false,
+                                                                          ),
+                                                                        ].divide(SizedBox(width: FFAppConstants.halfGap)),
+                                                                      );
+                                                                    } else {
+                                                                      return Row(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children:
+                                                                            [
+                                                                          Padding(
+                                                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                                                0.0,
+                                                                                2.0,
+                                                                                0.0,
+                                                                                0.0),
+                                                                            child:
+                                                                                Text(
+                                                                              '●',
+                                                                              textAlign: TextAlign.center,
+                                                                              style: FlutterFlowTheme.of(context).titleSmall.override(
+                                                                                    font: GoogleFonts.geologica(
+                                                                                      fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                                      fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                                    ),
+                                                                                    fontSize: 6.0,
+                                                                                    letterSpacing: 0.0,
+                                                                                    fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                                  ),
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            'No mesmo dia',
+                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  font: GoogleFonts.geologica(
+                                                                                    fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                  ),
+                                                                                  letterSpacing: 0.0,
+                                                                                  fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                  fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                ),
+                                                                          ),
+                                                                          FFButtonWidget(
+                                                                            onPressed:
+                                                                                () {
+                                                                              print('Button pressed ...');
+                                                                            },
+                                                                            text:
+                                                                                '',
+                                                                            options:
+                                                                                FFButtonOptions(
+                                                                              height: 20.0,
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                                                              iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                                                              color: Color(0x00A369ED),
+                                                                              textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                    font: GoogleFonts.geologica(
+                                                                                      fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                      fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                    ),
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                    letterSpacing: 0.0,
+                                                                                    fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                  ),
+                                                                              elevation: 0.0,
+                                                                              borderRadius: BorderRadius.circular(valueOrDefault<double>(
+                                                                                FFAppConstants.borderS,
+                                                                                0.0,
+                                                                              )),
+                                                                            ),
+                                                                            showLoadingIndicator:
+                                                                                false,
+                                                                          ),
+                                                                        ].divide(SizedBox(width: FFAppConstants.halfGap)),
+                                                                      );
+                                                                    }
+                                                                  },
+                                                                ),
+                                                              if (_model
+                                                                  .isApproved)
+                                                                Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  children: [
+                                                                    Builder(
+                                                                      builder: (context) =>
+                                                                          StreamBuilder<
+                                                                              List<PagamentosRow>>(
+                                                                        stream: _model.switchSupabaseStream ??= SupaFlow
+                                                                            .client
+                                                                            .from(
+                                                                                "pagamentos")
+                                                                            .stream(primaryKey: [
+                                                                              'pagamento_id'
+                                                                            ])
+                                                                            .eqOrNull(
+                                                                              'vagas_id',
+                                                                              widget!.jobid,
+                                                                            )
+                                                                            .map((list) =>
+                                                                                list.map((item) => PagamentosRow(item)).toList()),
+                                                                        builder:
+                                                                            (context,
+                                                                                snapshot) {
+                                                                          // Customize what your widget looks like when it's loading.
+                                                                          if (!snapshot
+                                                                              .hasData) {
+                                                                            return Center(
+                                                                              child: SizedBox(
+                                                                                width: 50.0,
+                                                                                height: 50.0,
+                                                                                child: CircularProgressIndicator(
+                                                                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                                                                    FlutterFlowTheme.of(context).primary,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            );
+                                                                          }
+                                                                          List<PagamentosRow>
+                                                                              switchPagamentosRowList =
+                                                                              snapshot.data!;
+
+                                                                          return Switch
+                                                                              .adaptive(
+                                                                            value: _model.switchValue ??=
+                                                                                switchPagamentosRowList.length != 0,
+                                                                            onChanged:
+                                                                                (newValue) async {
+                                                                              safeSetState(() => _model.switchValue = newValue!);
+                                                                              if (newValue!) {
+                                                                                logFirebaseEvent('VAGA_BOTTOM_SHEET_Switch_y42beszi_ON_TOG');
+                                                                                logFirebaseEvent('Switch_backend_call');
+                                                                                _model.insertPay = await PagamentosTable().insert({
+                                                                                  'medico_id': currentUserUid,
+                                                                                  'candidaturas_id': widget!.candidates?.candidaturasId,
+                                                                                  'valor': (widget!.value!).toInt(),
+                                                                                  'vagas_id': widget!.jobid,
+                                                                                });
+                                                                                if (_model.insertPay != null) {
+                                                                                  logFirebaseEvent('Switch_alert_dialog');
+                                                                                  await showDialog(
+                                                                                    context: context,
+                                                                                    builder: (dialogContext) {
+                                                                                      return Dialog(
+                                                                                        elevation: 0,
+                                                                                        insetPadding: EdgeInsets.zero,
+                                                                                        backgroundColor: Colors.transparent,
+                                                                                        alignment: AlignmentDirectional(0.0, 0.0).resolve(Directionality.of(context)),
+                                                                                        child: PositiveDialogBoxWidget(
+                                                                                          dialog: 'Pagamento confirmado!',
+                                                                                        ),
+                                                                                      );
+                                                                                    },
+                                                                                  );
+                                                                                } else {
+                                                                                  logFirebaseEvent('Switch_reset_form_fields');
+                                                                                  safeSetState(() {
+                                                                                    _model.switchValue = switchPagamentosRowList.length != 0;
+                                                                                  });
+                                                                                }
+
+                                                                                safeSetState(() {});
+                                                                              } else {
+                                                                                logFirebaseEvent('VAGA_BOTTOM_SHEET_Switch_y42beszi_ON_TOG');
+                                                                                if (switchPagamentosRowList.isNotEmpty) {
+                                                                                  logFirebaseEvent('Switch_backend_call');
+                                                                                  await PagamentosTable().delete(
+                                                                                    matchingRows: (rows) => rows
+                                                                                        .eqOrNull(
+                                                                                          'medico_id',
+                                                                                          currentUserUid,
+                                                                                        )
+                                                                                        .eqOrNull(
+                                                                                          'vagas_id',
+                                                                                          widget!.jobid,
+                                                                                        ),
+                                                                                  );
+                                                                                }
+                                                                              }
+                                                                            },
+                                                                            activeColor:
+                                                                                FlutterFlowTheme.of(context).primaryBackground,
+                                                                            activeTrackColor:
+                                                                                FlutterFlowTheme.of(context).primary,
+                                                                            inactiveTrackColor:
+                                                                                FlutterFlowTheme.of(context).accent3,
+                                                                            inactiveThumbColor:
+                                                                                FlutterFlowTheme.of(context).primaryBackground,
+                                                                          );
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                    Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Text(
+                                                                          'Pagamento recebido',
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .override(
+                                                                                font: GoogleFonts.geologica(
+                                                                                  fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                                  fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                                ),
+                                                                                letterSpacing: 0.0,
+                                                                                fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                                fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                              ),
+                                                                        ),
+                                                                        Text(
+                                                                          'Ative para adicionar aos seus resultados',
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .labelSmall
+                                                                              .override(
+                                                                                font: GoogleFonts.geologica(
+                                                                                  fontWeight: FlutterFlowTheme.of(context).labelSmall.fontWeight,
+                                                                                  fontStyle: FlutterFlowTheme.of(context).labelSmall.fontStyle,
+                                                                                ),
+                                                                                letterSpacing: 0.0,
+                                                                                fontWeight: FlutterFlowTheme.of(context).labelSmall.fontWeight,
+                                                                                fontStyle: FlutterFlowTheme.of(context).labelSmall.fontStyle,
+                                                                              ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ].divide(SizedBox(
+                                                                      width: FFAppConstants
+                                                                          .Gap)),
+                                                                ),
+                                                            ]
+                                                                .divide(SizedBox(
+                                                                    height:
+                                                                        FFAppConstants
+                                                                            .Gap))
+                                                                .addToEnd(SizedBox(
+                                                                    height:
+                                                                        FFAppConstants
+                                                                            .Gap)),
                                                           ),
-                                                        ),
-                                                        Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          2.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                              child: Text(
-                                                                '●',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .override(
-                                                                      font: GoogleFonts
-                                                                          .geologica(
-                                                                        fontWeight: FlutterFlowTheme.of(context)
-                                                                            .titleSmall
-                                                                            .fontWeight,
-                                                                        fontStyle: FlutterFlowTheme.of(context)
-                                                                            .titleSmall
-                                                                            .fontStyle,
-                                                                      ),
-                                                                      fontSize:
-                                                                          6.0,
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                      fontWeight: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .titleSmall
-                                                                          .fontWeight,
-                                                                      fontStyle: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .titleSmall
-                                                                          .fontStyle,
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                            RichText(
+                                                        );
+                                                      } else {
+                                                        return Padding(
+                                                          padding: EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                                    FFAppConstants
+                                                                        .Gap,
+                                                                    0.0,
+                                                                  ),
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                                    FFAppConstants
+                                                                        .doubleGap,
+                                                                    0.0,
+                                                                  ),
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                                    FFAppConstants
+                                                                        .Gap,
+                                                                    0.0,
+                                                                  ),
+                                                                  valueOrDefault<
+                                                                      double>(
+                                                                    FFAppConstants
+                                                                        .doubleGap,
+                                                                    0.0,
+                                                                  )),
+                                                          child: InkWell(
+                                                            splashColor: Colors
+                                                                .transparent,
+                                                            focusColor: Colors
+                                                                .transparent,
+                                                            hoverColor: Colors
+                                                                .transparent,
+                                                            highlightColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            onTap: () async {
+                                                              logFirebaseEvent(
+                                                                  'VAGA_BOTTOM_SHEET_RichText_5tvb4ian_ON_T');
+                                                              logFirebaseEvent(
+                                                                  'RichText_navigate_to');
+
+                                                              context.pushNamed(
+                                                                  PerfilWidget
+                                                                      .routeName);
+                                                            },
+                                                            child: RichText(
                                                               textScaler:
                                                                   MediaQuery.of(
                                                                           context)
@@ -4362,7 +5073,33 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                 children: [
                                                                   TextSpan(
                                                                     text:
-                                                                        'Data do pagamento: ',
+                                                                        'Atualize seu CRM',
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .titleSmall
+                                                                        .override(
+                                                                          font:
+                                                                              GoogleFonts.geologica(
+                                                                            fontWeight:
+                                                                                FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                            fontStyle:
+                                                                                FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                          ),
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).primary,
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontStyle,
+                                                                        ),
+                                                                  ),
+                                                                  TextSpan(
+                                                                    text:
+                                                                        ' e tenha acesso a todos os detalhes das vagas!',
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
                                                                         .bodyMedium
@@ -4383,19 +5120,6 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                               .bodyMedium
                                                                               .fontStyle,
                                                                         ),
-                                                                  ),
-                                                                  TextSpan(
-                                                                    text:
-                                                                        dateTimeFormat(
-                                                                      "dd/MM/yyyy",
-                                                                      widget!
-                                                                          .payday,
-                                                                      locale: FFLocalizations.of(
-                                                                              context)
-                                                                          .languageCode,
-                                                                    ),
-                                                                    style:
-                                                                        TextStyle(),
                                                                   )
                                                                 ],
                                                                 style: FlutterFlowTheme.of(
@@ -4424,533 +5148,10 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                     ),
                                                               ),
                                                             ),
-                                                          ].divide(SizedBox(
-                                                              width:
-                                                                  FFAppConstants
-                                                                      .halfGap)),
-                                                        ),
-                                                        if (((widget!.payday!
-                                                                        .secondsSinceEpoch
-                                                                        .toDouble() -
-                                                                    widget!
-                                                                        .date!
-                                                                        .secondsSinceEpoch
-                                                                        .toDouble()) /
-                                                                86400) !=
-                                                            0.0)
-                                                          Builder(
-                                                            builder: (context) {
-                                                              if (((widget!.payday!
-                                                                              .secondsSinceEpoch
-                                                                              .toDouble() -
-                                                                          widget!
-                                                                              .date!
-                                                                              .secondsSinceEpoch
-                                                                              .toDouble()) /
-                                                                      86400) >
-                                                                  1.0) {
-                                                                return Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                                                          0.0,
-                                                                          2.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                      child:
-                                                                          Text(
-                                                                        '●',
-                                                                        textAlign:
-                                                                            TextAlign.center,
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .titleSmall
-                                                                            .override(
-                                                                              font: GoogleFonts.geologica(
-                                                                                fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
-                                                                              ),
-                                                                              fontSize: 6.0,
-                                                                              letterSpacing: 0.0,
-                                                                              fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
-                                                                            ),
-                                                                      ),
-                                                                    ),
-                                                                    Text(
-                                                                      'Em ${formatNumber(
-                                                                        (widget!.payday!.secondsSinceEpoch.toDouble() -
-                                                                                widget!.date!.secondsSinceEpoch.toDouble()) /
-                                                                            86400,
-                                                                        formatType:
-                                                                            FormatType.custom,
-                                                                        format:
-                                                                            '0',
-                                                                        locale:
-                                                                            '',
-                                                                      )} dias',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            font:
-                                                                                GoogleFonts.geologica(
-                                                                              fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                            ),
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                            fontStyle:
-                                                                                FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                          ),
-                                                                    ),
-                                                                  ].divide(SizedBox(
-                                                                      width: FFAppConstants
-                                                                          .halfGap)),
-                                                                );
-                                                              } else if (((widget!
-                                                                              .payday!
-                                                                              .secondsSinceEpoch
-                                                                              .toDouble() -
-                                                                          widget!
-                                                                              .date!
-                                                                              .secondsSinceEpoch
-                                                                              .toDouble()) /
-                                                                      86400) ==
-                                                                  1.0) {
-                                                                return Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                                                          0.0,
-                                                                          2.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                      child:
-                                                                          Text(
-                                                                        '●',
-                                                                        textAlign:
-                                                                            TextAlign.center,
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .titleSmall
-                                                                            .override(
-                                                                              font: GoogleFonts.geologica(
-                                                                                fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
-                                                                              ),
-                                                                              fontSize: 6.0,
-                                                                              letterSpacing: 0.0,
-                                                                              fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
-                                                                            ),
-                                                                      ),
-                                                                    ),
-                                                                    Text(
-                                                                      'Em ${formatNumber(
-                                                                        (widget!.payday!.secondsSinceEpoch.toDouble() -
-                                                                                widget!.date!.secondsSinceEpoch.toDouble()) /
-                                                                            86400,
-                                                                        formatType:
-                                                                            FormatType.custom,
-                                                                        format:
-                                                                            '0',
-                                                                        locale:
-                                                                            '',
-                                                                      )} dias',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            font:
-                                                                                GoogleFonts.geologica(
-                                                                              fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                            ),
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                            fontStyle:
-                                                                                FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                          ),
-                                                                    ),
-                                                                    FFButtonWidget(
-                                                                      onPressed:
-                                                                          () {
-                                                                        print(
-                                                                            'Button pressed ...');
-                                                                      },
-                                                                      text: '',
-                                                                      options:
-                                                                          FFButtonOptions(
-                                                                        height:
-                                                                            20.0,
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                        iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                        color: Color(
-                                                                            0x00A369ED),
-                                                                        textStyle: FlutterFlowTheme.of(context)
-                                                                            .bodyMedium
-                                                                            .override(
-                                                                              font: GoogleFonts.geologica(
-                                                                                fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                              ),
-                                                                              color: FlutterFlowTheme.of(context).tertiary,
-                                                                              letterSpacing: 0.0,
-                                                                              fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                            ),
-                                                                        elevation:
-                                                                            0.0,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(valueOrDefault<double>(
-                                                                          FFAppConstants
-                                                                              .borderS,
-                                                                          0.0,
-                                                                        )),
-                                                                      ),
-                                                                      showLoadingIndicator:
-                                                                          false,
-                                                                    ),
-                                                                  ].divide(SizedBox(
-                                                                      width: FFAppConstants
-                                                                          .halfGap)),
-                                                                );
-                                                              } else {
-                                                                return Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                                                          0.0,
-                                                                          2.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                      child:
-                                                                          Text(
-                                                                        '●',
-                                                                        textAlign:
-                                                                            TextAlign.center,
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .titleSmall
-                                                                            .override(
-                                                                              font: GoogleFonts.geologica(
-                                                                                fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
-                                                                              ),
-                                                                              fontSize: 6.0,
-                                                                              letterSpacing: 0.0,
-                                                                              fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
-                                                                            ),
-                                                                      ),
-                                                                    ),
-                                                                    Text(
-                                                                      'No mesmo dia',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            font:
-                                                                                GoogleFonts.geologica(
-                                                                              fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                            ),
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                            fontStyle:
-                                                                                FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                          ),
-                                                                    ),
-                                                                    FFButtonWidget(
-                                                                      onPressed:
-                                                                          () {
-                                                                        print(
-                                                                            'Button pressed ...');
-                                                                      },
-                                                                      text: '',
-                                                                      options:
-                                                                          FFButtonOptions(
-                                                                        height:
-                                                                            20.0,
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                        iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                        color: Color(
-                                                                            0x00A369ED),
-                                                                        textStyle: FlutterFlowTheme.of(context)
-                                                                            .bodyMedium
-                                                                            .override(
-                                                                              font: GoogleFonts.geologica(
-                                                                                fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                              ),
-                                                                              color: FlutterFlowTheme.of(context).tertiary,
-                                                                              letterSpacing: 0.0,
-                                                                              fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                            ),
-                                                                        elevation:
-                                                                            0.0,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(valueOrDefault<double>(
-                                                                          FFAppConstants
-                                                                              .borderS,
-                                                                          0.0,
-                                                                        )),
-                                                                      ),
-                                                                      showLoadingIndicator:
-                                                                          false,
-                                                                    ),
-                                                                  ].divide(SizedBox(
-                                                                      width: FFAppConstants
-                                                                          .halfGap)),
-                                                                );
-                                                              }
-                                                            },
                                                           ),
-                                                        if (_model.isApproved)
-                                                          Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            children: [
-                                                              Builder(
-                                                                builder: (context) =>
-                                                                    StreamBuilder<
-                                                                        List<
-                                                                            PagamentosRow>>(
-                                                                  stream: _model.switchSupabaseStream ??= SupaFlow
-                                                                      .client
-                                                                      .from(
-                                                                          "pagamentos")
-                                                                      .stream(
-                                                                          primaryKey: [
-                                                                            'pagamento_id'
-                                                                          ])
-                                                                      .eqOrNull(
-                                                                        'vagas_id',
-                                                                        widget!
-                                                                            .jobid,
-                                                                      )
-                                                                      .map((list) => list
-                                                                          .map((item) =>
-                                                                              PagamentosRow(item))
-                                                                          .toList()),
-                                                                  builder: (context,
-                                                                      snapshot) {
-                                                                    // Customize what your widget looks like when it's loading.
-                                                                    if (!snapshot
-                                                                        .hasData) {
-                                                                      return Center(
-                                                                        child:
-                                                                            SizedBox(
-                                                                          width:
-                                                                              50.0,
-                                                                          height:
-                                                                              50.0,
-                                                                          child:
-                                                                              CircularProgressIndicator(
-                                                                            valueColor:
-                                                                                AlwaysStoppedAnimation<Color>(
-                                                                              FlutterFlowTheme.of(context).primary,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                    }
-                                                                    List<PagamentosRow>
-                                                                        switchPagamentosRowList =
-                                                                        snapshot
-                                                                            .data!;
-
-                                                                    return Switch
-                                                                        .adaptive(
-                                                                      value: _model
-                                                                              .switchValue ??=
-                                                                          switchPagamentosRowList.length !=
-                                                                              0,
-                                                                      onChanged:
-                                                                          (newValue) async {
-                                                                        safeSetState(() =>
-                                                                            _model.switchValue =
-                                                                                newValue!);
-                                                                        if (newValue!) {
-                                                                          logFirebaseEvent(
-                                                                              'VAGA_BOTTOM_SHEET_Switch_y42beszi_ON_TOG');
-                                                                          logFirebaseEvent(
-                                                                              'Switch_backend_call');
-                                                                          _model.insertPay =
-                                                                              await PagamentosTable().insert({
-                                                                            'medico_id':
-                                                                                currentUserUid,
-                                                                            'candidaturas_id':
-                                                                                widget!.candidates?.candidaturasId,
-                                                                            'valor':
-                                                                                (widget!.value!).toInt(),
-                                                                            'vagas_id':
-                                                                                widget!.jobid,
-                                                                          });
-                                                                          if (_model.insertPay !=
-                                                                              null) {
-                                                                            logFirebaseEvent('Switch_alert_dialog');
-                                                                            await showDialog(
-                                                                              context: context,
-                                                                              builder: (dialogContext) {
-                                                                                return Dialog(
-                                                                                  elevation: 0,
-                                                                                  insetPadding: EdgeInsets.zero,
-                                                                                  backgroundColor: Colors.transparent,
-                                                                                  alignment: AlignmentDirectional(0.0, 0.0).resolve(Directionality.of(context)),
-                                                                                  child: PositiveDialogBoxWidget(
-                                                                                    dialog: 'Pagamento confirmado!',
-                                                                                  ),
-                                                                                );
-                                                                              },
-                                                                            );
-                                                                          } else {
-                                                                            logFirebaseEvent('Switch_reset_form_fields');
-                                                                            safeSetState(() {
-                                                                              _model.switchValue = switchPagamentosRowList.length != 0;
-                                                                            });
-                                                                          }
-
-                                                                          safeSetState(
-                                                                              () {});
-                                                                        } else {
-                                                                          logFirebaseEvent(
-                                                                              'VAGA_BOTTOM_SHEET_Switch_y42beszi_ON_TOG');
-                                                                          if (switchPagamentosRowList
-                                                                              .isNotEmpty) {
-                                                                            logFirebaseEvent('Switch_backend_call');
-                                                                            await PagamentosTable().delete(
-                                                                              matchingRows: (rows) => rows
-                                                                                  .eqOrNull(
-                                                                                    'medico_id',
-                                                                                    currentUserUid,
-                                                                                  )
-                                                                                  .eqOrNull(
-                                                                                    'vagas_id',
-                                                                                    widget!.jobid,
-                                                                                  ),
-                                                                            );
-                                                                          }
-                                                                        }
-                                                                      },
-                                                                      activeColor:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .primaryBackground,
-                                                                      activeTrackColor:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .primary,
-                                                                      inactiveTrackColor:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .accent3,
-                                                                      inactiveThumbColor:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .primaryBackground,
-                                                                    );
-                                                                  },
-                                                                ),
-                                                              ),
-                                                              Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text(
-                                                                    'Pagamento recebido',
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .titleSmall
-                                                                        .override(
-                                                                          font:
-                                                                              GoogleFonts.geologica(
-                                                                            fontWeight:
-                                                                                FlutterFlowTheme.of(context).titleSmall.fontWeight,
-                                                                            fontStyle:
-                                                                                FlutterFlowTheme.of(context).titleSmall.fontStyle,
-                                                                          ),
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                          fontWeight: FlutterFlowTheme.of(context)
-                                                                              .titleSmall
-                                                                              .fontWeight,
-                                                                          fontStyle: FlutterFlowTheme.of(context)
-                                                                              .titleSmall
-                                                                              .fontStyle,
-                                                                        ),
-                                                                  ),
-                                                                  Text(
-                                                                    'Ative para adicionar aos seus resultados',
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .labelSmall
-                                                                        .override(
-                                                                          font:
-                                                                              GoogleFonts.geologica(
-                                                                            fontWeight:
-                                                                                FlutterFlowTheme.of(context).labelSmall.fontWeight,
-                                                                            fontStyle:
-                                                                                FlutterFlowTheme.of(context).labelSmall.fontStyle,
-                                                                          ),
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                          fontWeight: FlutterFlowTheme.of(context)
-                                                                              .labelSmall
-                                                                              .fontWeight,
-                                                                          fontStyle: FlutterFlowTheme.of(context)
-                                                                              .labelSmall
-                                                                              .fontStyle,
-                                                                        ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ].divide(SizedBox(
-                                                                width:
-                                                                    FFAppConstants
-                                                                        .Gap)),
-                                                          ),
-                                                      ]
-                                                          .divide(SizedBox(
-                                                              height:
-                                                                  FFAppConstants
-                                                                      .Gap))
-                                                          .addToEnd(SizedBox(
-                                                              height:
-                                                                  FFAppConstants
-                                                                      .Gap)),
-                                                    ),
+                                                        );
+                                                      }
+                                                    },
                                                   );
                                                 } else {
                                                   return Padding(
@@ -5227,177 +5428,305 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                             builder: (context) {
                                               if (currentJwtToken != null &&
                                                   currentJwtToken != '') {
-                                                return Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0,
-                                                          0.0,
-                                                          0.0,
-                                                          valueOrDefault<
-                                                              double>(
-                                                            FFAppConstants.Gap,
-                                                            0.0,
-                                                          )),
-                                                  child: FutureBuilder<
-                                                      List<VagasBeneficioRow>>(
-                                                    future:
-                                                        VagasBeneficioTable()
-                                                            .queryRows(
-                                                      queryFn: (q) =>
-                                                          q.eqOrNull(
-                                                        'vagas_id',
-                                                        widget!.jobid,
-                                                      ),
-                                                    ),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      // Customize what your widget looks like when it's loading.
-                                                      if (!snapshot.hasData) {
-                                                        return Center(
-                                                          child: SizedBox(
-                                                            width: 50.0,
-                                                            height: 50.0,
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              valueColor:
-                                                                  AlwaysStoppedAnimation<
-                                                                      Color>(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primary,
-                                                              ),
+                                                return Builder(
+                                                  builder: (context) {
+                                                    if (FFAppState().CRMCheck) {
+                                                      return Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    0.0,
+                                                                    valueOrDefault<
+                                                                        double>(
+                                                                      FFAppConstants
+                                                                          .Gap,
+                                                                      0.0,
+                                                                    )),
+                                                        child: FutureBuilder<
+                                                            List<
+                                                                VagasBeneficioRow>>(
+                                                          future:
+                                                              VagasBeneficioTable()
+                                                                  .queryRows(
+                                                            queryFn: (q) =>
+                                                                q.eqOrNull(
+                                                              'vagas_id',
+                                                              widget!.jobid,
                                                             ),
                                                           ),
-                                                        );
-                                                      }
-                                                      List<VagasBeneficioRow>
-                                                          conditionalBuilderVagasBeneficioRowList =
-                                                          snapshot.data!;
-
-                                                      return Builder(
-                                                        builder: (context) {
-                                                          if (conditionalBuilderVagasBeneficioRowList
-                                                              .isNotEmpty) {
-                                                            return FutureBuilder<
-                                                                List<
-                                                                    BeneficioTipoRow>>(
-                                                              future:
-                                                                  BeneficioTipoTable()
-                                                                      .queryRows(
-                                                                queryFn: (q) =>
-                                                                    q.inFilterOrNull(
-                                                                  'beneficio_id',
-                                                                  conditionalBuilderVagasBeneficioRowList
-                                                                      .map((e) =>
-                                                                          e.beneficioId)
-                                                                      .toList(),
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            // Customize what your widget looks like when it's loading.
+                                                            if (!snapshot
+                                                                .hasData) {
+                                                              return Center(
+                                                                child: SizedBox(
+                                                                  width: 50.0,
+                                                                  height: 50.0,
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    valueColor:
+                                                                        AlwaysStoppedAnimation<
+                                                                            Color>(
+                                                                      FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primary,
+                                                                    ),
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              builder: (context,
-                                                                  snapshot) {
-                                                                // Customize what your widget looks like when it's loading.
-                                                                if (!snapshot
-                                                                    .hasData) {
-                                                                  return Center(
-                                                                    child:
-                                                                        SizedBox(
-                                                                      width:
-                                                                          50.0,
-                                                                      height:
-                                                                          50.0,
-                                                                      child:
-                                                                          CircularProgressIndicator(
-                                                                        valueColor:
-                                                                            AlwaysStoppedAnimation<Color>(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .primary,
-                                                                        ),
+                                                              );
+                                                            }
+                                                            List<VagasBeneficioRow>
+                                                                conditionalBuilderVagasBeneficioRowList =
+                                                                snapshot.data!;
+
+                                                            return Builder(
+                                                              builder:
+                                                                  (context) {
+                                                                if (conditionalBuilderVagasBeneficioRowList
+                                                                    .isNotEmpty) {
+                                                                  return FutureBuilder<
+                                                                      List<
+                                                                          BeneficioTipoRow>>(
+                                                                    future: BeneficioTipoTable()
+                                                                        .queryRows(
+                                                                      queryFn:
+                                                                          (q) =>
+                                                                              q.inFilterOrNull(
+                                                                        'beneficio_id',
+                                                                        conditionalBuilderVagasBeneficioRowList
+                                                                            .map((e) =>
+                                                                                e.beneficioId)
+                                                                            .toList(),
                                                                       ),
                                                                     ),
+                                                                    builder:
+                                                                        (context,
+                                                                            snapshot) {
+                                                                      // Customize what your widget looks like when it's loading.
+                                                                      if (!snapshot
+                                                                          .hasData) {
+                                                                        return Center(
+                                                                          child:
+                                                                              SizedBox(
+                                                                            width:
+                                                                                50.0,
+                                                                            height:
+                                                                                50.0,
+                                                                            child:
+                                                                                CircularProgressIndicator(
+                                                                              valueColor: AlwaysStoppedAnimation<Color>(
+                                                                                FlutterFlowTheme.of(context).primary,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      }
+                                                                      List<BeneficioTipoRow>
+                                                                          listViewBeneficioTipoRowList =
+                                                                          snapshot
+                                                                              .data!;
+
+                                                                      return ListView
+                                                                          .separated(
+                                                                        padding:
+                                                                            EdgeInsets.fromLTRB(
+                                                                          0,
+                                                                          0,
+                                                                          0,
+                                                                          FFAppConstants
+                                                                              .Gap,
+                                                                        ),
+                                                                        shrinkWrap:
+                                                                            true,
+                                                                        scrollDirection:
+                                                                            Axis.vertical,
+                                                                        itemCount:
+                                                                            listViewBeneficioTipoRowList.length,
+                                                                        separatorBuilder:
+                                                                            (_, __) =>
+                                                                                SizedBox(height: FFAppConstants.Gap),
+                                                                        itemBuilder:
+                                                                            (context,
+                                                                                listViewIndex) {
+                                                                          final listViewBeneficioTipoRow =
+                                                                              listViewBeneficioTipoRowList[listViewIndex];
+                                                                          return Row(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.min,
+                                                                            children:
+                                                                                [
+                                                                              Icon(
+                                                                                FFIcons.kstar,
+                                                                                color: FlutterFlowTheme.of(context).tertiary,
+                                                                                size: 16.0,
+                                                                              ),
+                                                                              Text(
+                                                                                valueOrDefault<String>(
+                                                                                  listViewBeneficioTipoRow.beneficioNome,
+                                                                                  '[benefício_nome]',
+                                                                                ).maybeHandleOverflow(
+                                                                                  maxChars: 33,
+                                                                                  replacement: '…',
+                                                                                ),
+                                                                                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                      font: GoogleFonts.geologica(
+                                                                                        fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                        fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                      ),
+                                                                                      color: Color(0x8A000000),
+                                                                                      letterSpacing: 0.0,
+                                                                                      fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                      fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                    ),
+                                                                              ),
+                                                                            ].divide(SizedBox(width: FFAppConstants.halfGap)),
+                                                                          );
+                                                                        },
+                                                                      );
+                                                                    },
+                                                                  );
+                                                                } else {
+                                                                  return Text(
+                                                                    'Não foram listados benefícios',
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          font:
+                                                                              GoogleFonts.geologica(
+                                                                            fontWeight:
+                                                                                FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                            fontStyle:
+                                                                                FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                          ),
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .fontStyle,
+                                                                        ),
                                                                   );
                                                                 }
-                                                                List<BeneficioTipoRow>
-                                                                    listViewBeneficioTipoRowList =
-                                                                    snapshot
-                                                                        .data!;
-
-                                                                return ListView
-                                                                    .separated(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .fromLTRB(
-                                                                    0,
-                                                                    0,
-                                                                    0,
-                                                                    FFAppConstants
-                                                                        .Gap,
-                                                                  ),
-                                                                  shrinkWrap:
-                                                                      true,
-                                                                  scrollDirection:
-                                                                      Axis.vertical,
-                                                                  itemCount:
-                                                                      listViewBeneficioTipoRowList
-                                                                          .length,
-                                                                  separatorBuilder: (_,
-                                                                          __) =>
-                                                                      SizedBox(
-                                                                          height:
-                                                                              FFAppConstants.Gap),
-                                                                  itemBuilder:
-                                                                      (context,
-                                                                          listViewIndex) {
-                                                                    final listViewBeneficioTipoRow =
-                                                                        listViewBeneficioTipoRowList[
-                                                                            listViewIndex];
-                                                                    return Row(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .min,
-                                                                      children:
-                                                                          [
-                                                                        Icon(
-                                                                          FFIcons
-                                                                              .kstar,
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).tertiary,
-                                                                          size:
-                                                                              16.0,
-                                                                        ),
-                                                                        Text(
-                                                                          valueOrDefault<
-                                                                              String>(
-                                                                            listViewBeneficioTipoRow.beneficioNome,
-                                                                            '[benefício_nome]',
-                                                                          ).maybeHandleOverflow(
-                                                                            maxChars:
-                                                                                33,
-                                                                            replacement:
-                                                                                '…',
-                                                                          ),
-                                                                          style: FlutterFlowTheme.of(context)
-                                                                              .bodyMedium
-                                                                              .override(
-                                                                                font: GoogleFonts.geologica(
-                                                                                  fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                                  fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                                ),
-                                                                                color: Color(0x8A000000),
-                                                                                letterSpacing: 0.0,
-                                                                                fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                              ),
-                                                                        ),
-                                                                      ].divide(SizedBox(
-                                                                              width: FFAppConstants.halfGap)),
-                                                                    );
-                                                                  },
-                                                                );
                                                               },
                                                             );
-                                                          } else {
-                                                            return Text(
-                                                              'Não foram listados benefícios',
+                                                          },
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      return Padding(
+                                                        padding: EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                valueOrDefault<
+                                                                    double>(
+                                                                  FFAppConstants
+                                                                      .Gap,
+                                                                  0.0,
+                                                                ),
+                                                                valueOrDefault<
+                                                                    double>(
+                                                                  FFAppConstants
+                                                                      .doubleGap,
+                                                                  0.0,
+                                                                ),
+                                                                valueOrDefault<
+                                                                    double>(
+                                                                  FFAppConstants
+                                                                      .Gap,
+                                                                  0.0,
+                                                                ),
+                                                                valueOrDefault<
+                                                                    double>(
+                                                                  FFAppConstants
+                                                                      .doubleGap,
+                                                                  0.0,
+                                                                )),
+                                                        child: InkWell(
+                                                          splashColor: Colors
+                                                              .transparent,
+                                                          focusColor: Colors
+                                                              .transparent,
+                                                          hoverColor: Colors
+                                                              .transparent,
+                                                          highlightColor: Colors
+                                                              .transparent,
+                                                          onTap: () async {
+                                                            logFirebaseEvent(
+                                                                'VAGA_BOTTOM_SHEET_RichText_dngkftj5_ON_T');
+                                                            logFirebaseEvent(
+                                                                'RichText_navigate_to');
+
+                                                            context.pushNamed(
+                                                                PerfilWidget
+                                                                    .routeName);
+                                                          },
+                                                          child: RichText(
+                                                            textScaler:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .textScaler,
+                                                            text: TextSpan(
+                                                              children: [
+                                                                TextSpan(
+                                                                  text:
+                                                                      'Atualize seu CRM',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .override(
+                                                                        font: GoogleFonts
+                                                                            .geologica(
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .titleSmall
+                                                                              .fontStyle,
+                                                                        ),
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .primary,
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .titleSmall
+                                                                            .fontStyle,
+                                                                      ),
+                                                                ),
+                                                                TextSpan(
+                                                                  text:
+                                                                      ' e tenha acesso a todos os detalhes das vagas!',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        font: GoogleFonts
+                                                                            .geologica(
+                                                                          fontWeight: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .fontWeight,
+                                                                          fontStyle: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .fontStyle,
+                                                                        ),
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                        fontWeight: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .fontWeight,
+                                                                        fontStyle: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .fontStyle,
+                                                                      ),
+                                                                )
+                                                              ],
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyMedium
@@ -5424,12 +5753,12 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                         .bodyMedium
                                                                         .fontStyle,
                                                                   ),
-                                                            );
-                                                          }
-                                                        },
+                                                            ),
+                                                          ),
+                                                        ),
                                                       );
-                                                    },
-                                                  ),
+                                                    }
+                                                  },
                                                 );
                                               } else {
                                                 return Padding(
@@ -6391,10 +6720,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                       0.0,
                                     )),
                                 child: FFButtonWidget(
-                                  onPressed: ('${(String crm) {
-                                            return crm.split('-')[0];
-                                          }('')}' ==
-                                          'estudante')
+                                  onPressed: !FFAppState().CRMCheck
                                       ? null
                                       : () async {
                                           logFirebaseEvent(
@@ -6402,238 +6728,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                           var _shouldSetState = false;
                                           if (currentJwtToken != null &&
                                               currentJwtToken != '') {
-                                            logFirebaseEvent(
-                                                'Button_backend_call');
-                                            _model.cRMCheck =
-                                                await MedicosTable().queryRows(
-                                              queryFn: (q) => q.eqOrNull(
-                                                'id',
-                                                currentUserUid,
-                                              ),
-                                            );
-                                            _shouldSetState = true;
-                                            if ('${(String var1) {
-                                                  return var1.split('-')[1];
-                                                }(_model.cRMCheck!.firstOrNull!.medicoCrm!)}' ==
-                                                'estudante') {
-                                              if (widget!.showFavorite) {
-                                                logFirebaseEvent(
-                                                    'Button_alert_dialog');
-                                                await showDialog(
-                                                  context: context,
-                                                  builder: (dialogContext) {
-                                                    return Dialog(
-                                                      elevation: 0,
-                                                      insetPadding:
-                                                          EdgeInsets.zero,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      alignment:
-                                                          AlignmentDirectional(
-                                                                  0.0, 0.0)
-                                                              .resolve(
-                                                                  Directionality.of(
-                                                                      context)),
-                                                      child:
-                                                          FavoriteDialogBoxWidget(),
-                                                    );
-                                                  },
-                                                ).then((value) => safeSetState(
-                                                    () =>
-                                                        _model.favoriteAccept =
-                                                            value));
-
-                                                _shouldSetState = true;
-                                                if (_model.favoriteAccept!) {
-                                                  if (!_model.isCandidate) {
-                                                    logFirebaseEvent(
-                                                        'Button_custom_action');
-                                                    _model.insertFavorite =
-                                                        await actions
-                                                            .insertCandidaturas(
-                                                      currentUserUid,
-                                                      widget!.jobid!,
-                                                      widget!.value!,
-                                                    );
-                                                    _shouldSetState = true;
-                                                    if (_model.insertFavorite ==
-                                                        'success') {
-                                                      logFirebaseEvent(
-                                                          'Button_alert_dialog');
-                                                      await showDialog(
-                                                        context: context,
-                                                        builder:
-                                                            (dialogContext) {
-                                                          return Dialog(
-                                                            elevation: 0,
-                                                            insetPadding:
-                                                                EdgeInsets.zero,
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            alignment: AlignmentDirectional(
-                                                                    0.0, 0.0)
-                                                                .resolve(
-                                                                    Directionality.of(
-                                                                        context)),
-                                                            child:
-                                                                PositiveDialogBoxWidget(
-                                                              dialog:
-                                                                  'Plantão confirmado!',
-                                                            ),
-                                                          );
-                                                        },
-                                                      );
-
-                                                      logFirebaseEvent(
-                                                          'Button_update_component_state');
-                                                      _model.isApproved = true;
-                                                      safeSetState(() {});
-                                                    } else {
-                                                      logFirebaseEvent(
-                                                          'Button_alert_dialog');
-                                                      await showDialog(
-                                                        context: context,
-                                                        builder:
-                                                            (dialogContext) {
-                                                          return Dialog(
-                                                            elevation: 0,
-                                                            insetPadding:
-                                                                EdgeInsets.zero,
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            alignment: AlignmentDirectional(
-                                                                    0.0, 0.0)
-                                                                .resolve(
-                                                                    Directionality.of(
-                                                                        context)),
-                                                            child:
-                                                                NegativeInformativeBoxWidget(
-                                                              title:
-                                                                  'Não foi possível se candidatar',
-                                                              body:
-                                                                  'Verifique se já não tem plantão confirmado no mesmo horário!',
-                                                            ),
-                                                          );
-                                                        },
-                                                      );
-                                                    }
-                                                  }
-                                                } else {
-                                                  if (_shouldSetState)
-                                                    safeSetState(() {});
-                                                  return;
-                                                }
-                                              } else {
-                                                logFirebaseEvent(
-                                                    'Button_custom_action');
-                                                _model.launchwhatsapp =
-                                                    await actions
-                                                        .launchWhatsAppChat(
-                                                  '${"Olá, encontrei essa vaga de plantão na Revoluna.\n\n"}${(String? speciality) {
-                                                    return "*$speciality*\n";
-                                                  }(widget!.speciality)}${(String value) {
-                                                    return "_" + value + "_\n";
-                                                  }(formatNumber(
-                                                    widget!.value,
-                                                    formatType:
-                                                        FormatType.decimal,
-                                                    decimalType: DecimalType
-                                                        .commaDecimal,
-                                                    currency: 'R\$ ',
-                                                  ))}${(String? hospital) {
-                                                    return "$hospital\n";
-                                                  }(widget!.hospital)}${(String? date) {
-                                                    return "$date\n";
-                                                  }(dateTimeFormat(
-                                                    "EEEE, dd/M",
-                                                    widget!.date,
-                                                    locale: FFLocalizations.of(
-                                                            context)
-                                                        .languageCode,
-                                                  ))}${(String? start, String end) {
-                                                    return "Início: $start Fim: $end\n";
-                                                  }(dateTimeFormat(
-                                                        "Hm",
-                                                        widget!.startTime,
-                                                        locale:
-                                                            FFLocalizations.of(
-                                                                    context)
-                                                                .languageCode,
-                                                      ), dateTimeFormat(
-                                                        "Hm",
-                                                        widget!.endTime,
-                                                        locale:
-                                                            FFLocalizations.of(
-                                                                    context)
-                                                                .languageCode,
-                                                      ))}${(String? shift, String type) {
-                                                    return "$shift / $type\n";
-                                                  }(widget!.shift, widget!.type!)}${(String? sector) {
-                                                    return "Setor: $sector\n\n";
-                                                  }(widget!.sector)}${(String? shift, String type) {
-                                                    return "Gostaria de me candidatar para essa vaga. Poderia me enviar mais informações?";
-                                                  }(widget!.shift, widget!.type!)}',
-                                                  (widget!.contractorPhone ==
-                                                                  null ||
-                                                              widget!.contractorPhone ==
-                                                                  '') &&
-                                                          (widget!.contractorPhone ==
-                                                              'Não informado')
-                                                      ? FFAppState().concierge
-                                                      : widget!
-                                                          .contractorPhone!,
-                                                );
-                                                _shouldSetState = true;
-                                                if (_model.launchwhatsapp!) {
-                                                  if (!_model.isCandidate) {
-                                                    logFirebaseEvent(
-                                                        'Button_custom_action');
-                                                    _model.insertCandidatura =
-                                                        await actions
-                                                            .insertCandidaturas(
-                                                      currentUserUid,
-                                                      widget!.jobid!,
-                                                      widget!.value!,
-                                                    );
-                                                    _shouldSetState = true;
-                                                  }
-                                                } else {
-                                                  logFirebaseEvent(
-                                                      'Button_alert_dialog');
-                                                  await showDialog(
-                                                    context: context,
-                                                    builder: (dialogContext) {
-                                                      return Dialog(
-                                                        elevation: 0,
-                                                        insetPadding:
-                                                            EdgeInsets.zero,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                    0.0, 0.0)
-                                                                .resolve(
-                                                                    Directionality.of(
-                                                                        context)),
-                                                        child:
-                                                            NegativeInformativeBoxWidget(
-                                                          title:
-                                                              'Necessário WhatsApp',
-                                                          body:
-                                                              'Para prosseguir é preciso ter o aplicativo WhatsaApp instalado no seu  aparelho',
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
-                                                }
-                                              }
-
-                                              logFirebaseEvent(
-                                                  'Button_execute_callback');
-                                              await widget.callback?.call();
-                                            } else {
+                                            if (widget!.showFavorite) {
                                               logFirebaseEvent(
                                                   'Button_alert_dialog');
                                               await showDialog(
@@ -6652,16 +6747,200 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                 Directionality.of(
                                                                     context)),
                                                     child:
-                                                        NegativeInformativeBoxWidget(
-                                                      title:
-                                                          'Não é possível prosseguir',
-                                                      body:
-                                                          'Sem um CRM válido não é possível  participar de processos de seleção',
-                                                    ),
+                                                        FavoriteDialogBoxWidget(),
                                                   );
                                                 },
+                                              ).then((value) => safeSetState(
+                                                  () => _model.favoriteAccept =
+                                                      value));
+
+                                              _shouldSetState = true;
+                                              if (_model.favoriteAccept!) {
+                                                if (!_model.isCandidate) {
+                                                  logFirebaseEvent(
+                                                      'Button_custom_action');
+                                                  _model.insertFavorite =
+                                                      await actions
+                                                          .insertCandidaturas(
+                                                    currentUserUid,
+                                                    widget!.jobid!,
+                                                    widget!.value!,
+                                                  );
+                                                  _shouldSetState = true;
+                                                  if (_model.insertFavorite ==
+                                                      'success') {
+                                                    logFirebaseEvent(
+                                                        'Button_alert_dialog');
+                                                    await showDialog(
+                                                      context: context,
+                                                      builder: (dialogContext) {
+                                                        return Dialog(
+                                                          elevation: 0,
+                                                          insetPadding:
+                                                              EdgeInsets.zero,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          alignment: AlignmentDirectional(
+                                                                  0.0, 0.0)
+                                                              .resolve(
+                                                                  Directionality.of(
+                                                                      context)),
+                                                          child:
+                                                              PositiveDialogBoxWidget(
+                                                            dialog:
+                                                                'Plantão confirmado!',
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+
+                                                    logFirebaseEvent(
+                                                        'Button_update_component_state');
+                                                    _model.isApproved = true;
+                                                    safeSetState(() {});
+                                                  } else {
+                                                    logFirebaseEvent(
+                                                        'Button_alert_dialog');
+                                                    await showDialog(
+                                                      context: context,
+                                                      builder: (dialogContext) {
+                                                        return Dialog(
+                                                          elevation: 0,
+                                                          insetPadding:
+                                                              EdgeInsets.zero,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          alignment: AlignmentDirectional(
+                                                                  0.0, 0.0)
+                                                              .resolve(
+                                                                  Directionality.of(
+                                                                      context)),
+                                                          child:
+                                                              NegativeInformativeBoxWidget(
+                                                            title:
+                                                                'Não foi possível se candidatar',
+                                                            body:
+                                                                'Verifique se já não tem plantão confirmado no mesmo horário!',
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                  }
+                                                }
+                                              } else {
+                                                if (_shouldSetState)
+                                                  safeSetState(() {});
+                                                return;
+                                              }
+                                            } else {
+                                              logFirebaseEvent(
+                                                  'Button_custom_action');
+                                              _model.launchwhatsapp =
+                                                  await actions
+                                                      .launchWhatsAppChat(
+                                                '${"Olá, encontrei essa vaga de plantão na Revoluna.\n\n"}${(String? speciality) {
+                                                  return "*$speciality*\n";
+                                                }(widget!.speciality)}${(String value) {
+                                                  return "_" + value + "_\n";
+                                                }(formatNumber(
+                                                  widget!.value,
+                                                  formatType:
+                                                      FormatType.decimal,
+                                                  decimalType:
+                                                      DecimalType.commaDecimal,
+                                                  currency: 'R\$ ',
+                                                ))}${(String? hospital) {
+                                                  return "$hospital\n";
+                                                }(widget!.hospital)}${(String? date) {
+                                                  return "$date\n";
+                                                }(dateTimeFormat(
+                                                  "EEEE, dd/M",
+                                                  widget!.date,
+                                                  locale: FFLocalizations.of(
+                                                          context)
+                                                      .languageCode,
+                                                ))}${(String? start, String end) {
+                                                  return "Início: $start Fim: $end\n";
+                                                }(dateTimeFormat(
+                                                      "Hm",
+                                                      widget!.startTime,
+                                                      locale:
+                                                          FFLocalizations.of(
+                                                                  context)
+                                                              .languageCode,
+                                                    ), dateTimeFormat(
+                                                      "Hm",
+                                                      widget!.endTime,
+                                                      locale:
+                                                          FFLocalizations.of(
+                                                                  context)
+                                                              .languageCode,
+                                                    ))}${(String? shift, String type) {
+                                                  return "$shift / $type\n";
+                                                }(widget!.shift, widget!.type!)}${(String? sector) {
+                                                  return "Setor: $sector\n\n";
+                                                }(widget!.sector)}${(String? shift, String type) {
+                                                  return "Gostaria de me candidatar para essa vaga. Poderia me enviar mais informações?";
+                                                }(widget!.shift, widget!.type!)}',
+                                                (widget!.contractorPhone ==
+                                                                null ||
+                                                            widget!.contractorPhone ==
+                                                                '') &&
+                                                        (widget!.contractorPhone ==
+                                                            'Não informado')
+                                                    ? FFAppState().concierge
+                                                    : widget!.contractorPhone!,
                                               );
+                                              _shouldSetState = true;
+                                              if (_model.launchwhatsapp!) {
+                                                if (!_model.isCandidate) {
+                                                  logFirebaseEvent(
+                                                      'Button_custom_action');
+                                                  _model.insertCandidatura =
+                                                      await actions
+                                                          .insertCandidaturas(
+                                                    currentUserUid,
+                                                    widget!.jobid!,
+                                                    widget!.value!,
+                                                  );
+                                                  _shouldSetState = true;
+                                                }
+                                              } else {
+                                                logFirebaseEvent(
+                                                    'Button_alert_dialog');
+                                                await showDialog(
+                                                  context: context,
+                                                  builder: (dialogContext) {
+                                                    return Dialog(
+                                                      elevation: 0,
+                                                      insetPadding:
+                                                          EdgeInsets.zero,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      alignment:
+                                                          AlignmentDirectional(
+                                                                  0.0, 0.0)
+                                                              .resolve(
+                                                                  Directionality.of(
+                                                                      context)),
+                                                      child:
+                                                          NegativeInformativeBoxWidget(
+                                                        title:
+                                                            'Necessário WhatsApp',
+                                                        body:
+                                                            'Para prosseguir é preciso ter o aplicativo WhatsaApp instalado no seu  aparelho',
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              }
                                             }
+
+                                            logFirebaseEvent(
+                                                'Button_execute_callback');
+                                            await widget.callback?.call();
                                           } else {
                                             logFirebaseEvent(
                                                 'Button_bottom_sheet');
