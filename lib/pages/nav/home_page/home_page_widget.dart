@@ -61,8 +61,19 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       await actions.unreadNotifications();
       logFirebaseEvent('HomePage_custom_action');
       await actions.markAppAsLoaded();
+      logFirebaseEvent('HomePage_backend_call');
+      _model.queryMedico = await MedicosTable().queryRows(
+        queryFn: (q) => q.eqOrNull(
+          'id',
+          currentUserUid,
+        ),
+      );
       logFirebaseEvent('HomePage_update_app_state');
       FFAppState().selectedDay = functions.currentDate();
+      FFAppState().CRMCheck = '${(String crm) {
+            return crm.split('-')[0];
+          }(_model.queryMedico!.firstOrNull!.medicoCrm!)}' !=
+          'estudante';
       safeSetState(() {});
       logFirebaseEvent('HomePage_refresh_database_request');
       safeSetState(() {

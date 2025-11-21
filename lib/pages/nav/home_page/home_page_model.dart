@@ -43,6 +43,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   List<MedicosRow>? medicoTrackingUpdateTrueCopy;
   // Stores action output result for [Backend Call - Update Row(s)] action in HomePage widget.
   List<MedicosRow>? medicoTrackingUpdateFalseCopy;
+  // Stores action output result for [Backend Call - Query Rows] action in HomePage widget.
+  List<MedicosRow>? queryMedico;
   bool requestCompleted3 = false;
   String? requestLastUniqueKey3;
   // Stores action output result for [Custom Action - launchWhatsAppChat] action in FloatingActionButton widget.

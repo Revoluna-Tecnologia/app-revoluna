@@ -2511,6 +2511,14 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                         safeSetState(
                                                                             () {});
                                                                       return;
+                                                                    } else {
+                                                                      logFirebaseEvent(
+                                                                          'Button_update_app_state');
+                                                                      FFAppState()
+                                                                              .CRMCheck =
+                                                                          true;
+                                                                      safeSetState(
+                                                                          () {});
                                                                     }
                                                                   } else {
                                                                     logFirebaseEvent(
