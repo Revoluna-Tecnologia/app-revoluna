@@ -2,6 +2,7 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/back_top_bar/back_top_bar_widget.dart';
+import '/components/dialogs/positive_dialog_box/positive_dialog_box_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_radio_button.dart';
@@ -10,7 +11,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/upload_data.dart';
-import 'dart:async';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
@@ -164,6 +164,14 @@ class PerfilModel extends FlutterFlowModel<PerfilWidget> {
   FocusNode? crmFocusNode;
   TextEditingController? crmTextController;
   String? Function(BuildContext, String?)? crmTextControllerValidator;
+  String? _crmTextControllerValidator(BuildContext context, String? val) {
+    if (val == null || val.isEmpty) {
+      return 'medico_crm is required';
+    }
+
+    return null;
+  }
+
   // State field(s) for dropdownEspecialidades widget.
   int? dropdownEspecialidadesValue;
   FormFieldController<int>? dropdownEspecialidadesValueController;
@@ -193,6 +201,7 @@ class PerfilModel extends FlutterFlowModel<PerfilWidget> {
     eMailTextControllerValidator = _eMailTextControllerValidator;
     birthDateTextControllerValidator = _birthDateTextControllerValidator;
     cpfTextControllerValidator = _cpfTextControllerValidator;
+    crmTextControllerValidator = _crmTextControllerValidator;
   }
 
   @override
