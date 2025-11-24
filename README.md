@@ -22,17 +22,21 @@ O Revoluna é uma plataforma abrangente de gestão de escalas médicas que ofere
 - Cadastro em 3 etapas com validação de documentos
 - Verificação de CPF e dados profissionais
 
-### 👨‍⚕️ **Perfil Médico**  
+### 👨‍⚕️ **Perfil Médico**
 - Dados pessoais e profissionais completos
-- CRM, RQE e especialidade médica
-- Sistema de verificação profissional
+- CRM, RQE e especialidade médica editáveis diretamente no perfil
+- Sistema de verificação profissional centralizado
+- Validação em tempo real de dados profissionais
+- Feedback visual ao atualizar informações
 
 ### 🏥 **Sistema de Vagas**
 - Listagem de plantões disponíveis com mapas interativos
+- Filtros inteligentes com fallbacks automáticos e mensagens contextualizadas
 - Filtros avançados por especialidade, data e localização
 - Candidatura com um toque e rastreamento de status
 - Bottom sheet detalhado para cada vaga
 - Sistema de vagas favoritas
+- Proteção de dados sensíveis baseada em permissões do usuário
 
 ### 📅 **Escalas e Check-in**
 - Aba dedicada para gerenciar horários e plantões
@@ -119,7 +123,7 @@ firebase/
 ### **Gerenciamento de Estado**
 - **Provider Pattern** com `FFAppState` para estado global
 - **Local State** gerenciado via modelo de página do FlutterFlow
-- **Persistência** via SharedPreferences para dados locais
+- **Persistência Segura** via FlutterSecureStorage para dados sensíveis
 
 ### **Banco de Dados**
 - **Schema PostgreSQL** com tabelas especializadas:
@@ -189,6 +193,6 @@ firebase functions:deploy # Deploy para produção
 
 ## 📈 Versão Atual
 
-**v2.2.1**
+**v2.2.2**
 
 Para detalhes completos das mudanças, consulte o [CHANGELOG.md](CHANGELOG.md).

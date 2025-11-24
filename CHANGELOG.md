@@ -1,5 +1,77 @@
 # Histórico de Versões - Revoluna
 
+## [2.2.2] - 20/11/2025
+
+### ✨ **Novas Funcionalidades**
+
+#### 👨‍⚕️ **Edição de Dados Profissionais no Perfil**
+- **Campos Editáveis**: CRM, Especialidade e RQE agora podem ser atualizados diretamente no perfil
+- **Validação de CRM**: Campo CRM não pode ficar vazio, com validação em tempo real
+- **Feedback Visual**: Diálogo de confirmação "Perfil atualizado!" após salvar com sucesso
+- **Detecção de Mudanças**: Sistema detecta alterações e habilita botão de salvar automaticamente
+- **Atualização de Estado**: CRMCheck atualizado automaticamente após edição bem-sucedida
+
+---
+
+### 🐛 **Correções de Bugs**
+
+#### 🔒 **Proteção de Rotas e Informações para Estudantes**
+- **Botão de Candidatura**: Desabilitado para estudantes usando verificação centralizada (`FFAppState().CRMCheck`)
+- **Informações de Contato**: Dados do recrutador (nome, telefone, endereço) ocultos para estudantes
+- **Remoção de Query Desnecessária**: Eliminada verificação inline que fazia query no banco a cada visualização
+- **Performance Melhorada**: Verificação agora usa estado em memória ao invés de consultar banco de dados
+
+---
+
+### 🔄 **Melhorias e Refatorações**
+
+#### 🎯 **Sistema Centralizado de Verificação de CRM**
+- **Variável Global**: Novo campo `CRMCheck` no `FFAppState` armazenado em FlutterSecureStorage
+- **Inicialização Automática**: Carregado na HomePage através de query única ao banco
+- **Lógica Centralizada**: Verifica se CRM não começa com "estudante"
+- **Atualização no Cadastro**: Definido automaticamente como `true` para médicos não-estudantes
+- **Persistência**: Valor mantido entre sessões usando armazenamento seguro
+
+#### 🔍 **Gestão Melhorada de Filtros de Vagas**
+- **Mensagens Contextualizadas**:
+  - "Sem vagas para mostrar, selecione outra data" - quando não há vagas na data
+  - "Selecione uma região" - quando nenhuma região foi escolhida
+- **Validação Estruturada**: Verifica disponibilidade de vagas antes de renderizar listas
+- **Estados Vazios Separados**: Dois componentes EmptyList diferentes para contextos distintos
+- **Filtros Robustos**: Lógica separada para filtros com e sem especialidade selecionada
+
+---
+
+### 🔧 **Configurações e Build**
+
+#### 📦 **Atualizações de Dependências**
+- **cross_file**: 0.3.5 → 0.3.5+1
+- **file_selector_linux**: 0.9.3+2 → 0.9.3+3
+- **file_selector_windows**: 0.9.3+4 → 0.9.3+5
+- **Flutter SDK**: Requisito mínimo atualizado de 3.29.0 → 3.32.0
+
+#### 🗂️ **GitIgnore**
+- **VS Code**: Adicionada pasta `.vscode/` para ignorar configurações do editor
+
+---
+
+### 📊 **Estatísticas da Versão 2.2.2**
+
+- **Total de Commits**: 5
+- **Arquivos Modificados**: 13
+- **Linhas Adicionadas**: ~7.900
+- **Linhas Removidas**: ~7.600
+- **Net Change**: +300 linhas (otimizações e novas funcionalidades)
+
+#### 🎯 **Impactos Principais**
+- **Segurança**: Proteção robusta contra acesso não autorizado de estudantes
+- **Performance**: Redução de queries desnecessárias ao banco de dados
+- **UX**: Feedback visual claro e mensagens contextualizadas
+- **Manutenibilidade**: Lógica centralizada e código mais limpo
+- **Conformidade**: Garantia de que apenas médicos registrados podem se candidatar
+
+---
+
 ## [2.2.1] - 17/11/2025
 
 ### 🐛 **Correções de Bugs**
