@@ -66,6 +66,10 @@ class InitialPageModel extends FlutterFlowModel<InitialPageWidget> {
   late FlutterFlowDynamicModels<CardVagasInitialModel> cardVagasInitialModels1;
   // Models for cardVagasInitial dynamic component.
   late FlutterFlowDynamicModels<CardVagasInitialModel> cardVagasInitialModels2;
+  // Model for emptyList component.
+  late EmptyListModel emptyListModel1;
+  // Model for emptyList component.
+  late EmptyListModel emptyListModel2;
 
   /// Query cache managers for this widget.
 
@@ -90,12 +94,16 @@ class InitialPageModel extends FlutterFlowModel<InitialPageWidget> {
         FlutterFlowDynamicModels(() => CardVagasInitialModel());
     cardVagasInitialModels2 =
         FlutterFlowDynamicModels(() => CardVagasInitialModel());
+    emptyListModel1 = createModel(context, () => EmptyListModel());
+    emptyListModel2 = createModel(context, () => EmptyListModel());
   }
 
   @override
   void dispose() {
     cardVagasInitialModels1.dispose();
     cardVagasInitialModels2.dispose();
+    emptyListModel1.dispose();
+    emptyListModel2.dispose();
 
     /// Dispose query cache managers for this widget.
 

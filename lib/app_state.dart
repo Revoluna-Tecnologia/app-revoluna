@@ -71,6 +71,9 @@ class FFAppState extends ChangeNotifier {
       _cleanHospital = await secureStorage.getStringList('ff_cleanHospital') ??
           _cleanHospital;
     });
+    await _safeInitAsync(() async {
+      _CRMCheck = await secureStorage.getBool('ff_CRMCheck') ?? _CRMCheck;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -312,6 +315,17 @@ class FFAppState extends ChangeNotifier {
   void insertAtIndexInCleanHospital(int index, String value) {
     cleanHospital.insert(index, value);
     secureStorage.setStringList('ff_cleanHospital', _cleanHospital);
+  }
+
+  bool _CRMCheck = false;
+  bool get CRMCheck => _CRMCheck;
+  set CRMCheck(bool value) {
+    _CRMCheck = value;
+    secureStorage.setBool('ff_CRMCheck', value);
+  }
+
+  void deleteCRMCheck() {
+    secureStorage.delete(key: 'ff_CRMCheck');
   }
 
   final _cleanHospitalTermsManager =

@@ -43,6 +43,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   List<MedicosRow>? medicoTrackingUpdateTrueCopy;
   // Stores action output result for [Backend Call - Update Row(s)] action in HomePage widget.
   List<MedicosRow>? medicoTrackingUpdateFalseCopy;
+  // Stores action output result for [Backend Call - Query Rows] action in HomePage widget.
+  List<MedicosRow>? queryMedico;
   bool requestCompleted3 = false;
   String? requestLastUniqueKey3;
   // Stores action output result for [Custom Action - launchWhatsAppChat] action in FloatingActionButton widget.
@@ -56,7 +58,7 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   bool requestCompleted2 = false;
   String? requestLastUniqueKey2;
   // Model for emptyList component.
-  late EmptyListModel emptyListModel;
+  late EmptyListModel emptyListModel1;
   // Models for cardVagas dynamic component.
   late FlutterFlowDynamicModels<CardVagasModel> cardVagasModels1;
   // State field(s) for DropDown widget.
@@ -69,25 +71,29 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   late FlutterFlowDynamicModels<CardVagasModel> cardVagasModels2;
   // Models for cardVagas dynamic component.
   late FlutterFlowDynamicModels<CardVagasModel> cardVagasModels3;
+  // Model for emptyList component.
+  late EmptyListModel emptyListModel2;
 
   @override
   void initState(BuildContext context) {
     drawerMenuModel = createModel(context, () => DrawerMenuModel());
     headerModel = createModel(context, () => HeaderModel());
-    emptyListModel = createModel(context, () => EmptyListModel());
+    emptyListModel1 = createModel(context, () => EmptyListModel());
     cardVagasModels1 = FlutterFlowDynamicModels(() => CardVagasModel());
     cardVagasModels2 = FlutterFlowDynamicModels(() => CardVagasModel());
     cardVagasModels3 = FlutterFlowDynamicModels(() => CardVagasModel());
+    emptyListModel2 = createModel(context, () => EmptyListModel());
   }
 
   @override
   void dispose() {
     drawerMenuModel.dispose();
     headerModel.dispose();
-    emptyListModel.dispose();
+    emptyListModel1.dispose();
     cardVagasModels1.dispose();
     cardVagasModels2.dispose();
     cardVagasModels3.dispose();
+    emptyListModel2.dispose();
   }
 
   /// Additional helper methods.

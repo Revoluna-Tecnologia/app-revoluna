@@ -79,7 +79,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
           queryFn: (q) => q
               .eqOrNull(
                 'vagas_status',
-                'abertas',
+                'aberta',
               )
               .order('vagas_horainicio', ascending: true),
         ),
@@ -1325,347 +1325,8 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                         ),
                         child: Builder(
                           builder: (context) {
-                            if (_model.variableQuery.isNotEmpty) {
-                              return Builder(
-                                builder: (context) {
-                                  final variableList = _model.variableQuery
-                                      .where((e) =>
-                                          (_model.dropDownValue != null &&
-                                                  (_model.dropDownValue)!
-                                                      .isNotEmpty
-                                              ? _model.dropDownValue!
-                                                  .contains(e.hospitalId)
-                                              : true) &&
-                                          (e.vagasStatus == 'aberta') &&
-                                          (e.vagasData! >=
-                                              functions.currentDate()!))
-                                      .toList()
-                                      .unique((e) => e.vagasId!)
-                                      .toList();
-                                  if (variableList.isEmpty) {
-                                    return EmptyListWidget(
-                                      text: 'Sem vagas para mostrar',
-                                    );
-                                  }
-
-                                  return RefreshIndicator(
-                                    key: Key('RefreshIndicator_33py6qco'),
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    onRefresh: () async {
-                                      logFirebaseEvent(
-                                          'EXPLORAR_ListView_2y2hmp1n_ON_PULL_TO_RE');
-                                      logFirebaseEvent(
-                                          'ListView_refresh_database_request');
-                                      safeSetState(() {
-                                        FFAppState().clearVagasAbertasCache();
-                                        _model.requestCompleted = false;
-                                      });
-                                      await _model.waitForRequestCompleted();
-                                    },
-                                    child: ListView.separated(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 2.0),
-                                      primary: false,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.vertical,
-                                      itemCount: variableList.length,
-                                      separatorBuilder: (_, __) =>
-                                          SizedBox(height: 2.0),
-                                      itemBuilder:
-                                          (context, variableListIndex) {
-                                        final variableListItem =
-                                            variableList[variableListIndex];
-                                        return Stack(
-                                          children: [
-                                            wrapWithModel(
-                                              model: _model.cardVagasModels1
-                                                  .getModel(
-                                                variableListItem.vagasId!,
-                                                variableListIndex,
-                                              ),
-                                              updateCallback: () =>
-                                                  safeSetState(() {}),
-                                              child: CardVagasWidget(
-                                                key: Key(
-                                                  'Keyvfd_${variableListItem.vagasId!}',
-                                                ),
-                                                specialty: variableListItem
-                                                    .especialidadeNome,
-                                                value: formatNumber(
-                                                  variableListItem.vagasValor,
-                                                  formatType:
-                                                      FormatType.decimal,
-                                                  decimalType:
-                                                      DecimalType.commaDecimal,
-                                                  currency: 'R\$ ',
-                                                ),
-                                                date: dateTimeFormat(
-                                                  "dd/MM",
-                                                  variableListItem.vagasData,
-                                                  locale: FFLocalizations.of(
-                                                          context)
-                                                      .languageCode,
-                                                ),
-                                                datecount: 'há ${dateTimeFormat(
-                                                  "relative",
-                                                  variableListItem
-                                                      .vagasCreatedate,
-                                                  locale: FFLocalizations.of(
-                                                              context)
-                                                          .languageShortCode ??
-                                                      FFLocalizations.of(
-                                                              context)
-                                                          .languageCode,
-                                                )}',
-                                                shift: '',
-                                                type: variableListItem
-                                                    .vagasTipoNome,
-                                                hospital:
-                                                    functions.cleanHospitalName(
-                                                        variableListItem
-                                                            .hospitalNome!,
-                                                        FFAppState()
-                                                            .cleanHospital
-                                                            .toList()),
-                                                vaga: variableListItem.vagasId,
-                                                avatarHospital: variableListItem
-                                                    .hospitalAvatar,
-                                                showPay: false,
-                                                sector:
-                                                    variableListItem.setorNome,
-                                                distance: functions.distanceCalc(
-                                                    variableListItem
-                                                        .hospitalLat!,
-                                                    variableListItem
-                                                        .hospitalLog!,
-                                                    currentUserLocationValue!),
-                                                showSign:
-                                                    (int job, int payment) {
-                                                  return (payment - job) <=
-                                                      86400;
-                                                }(
-                                                        variableListItem
-                                                            .vagasData!
-                                                            .secondsSinceEpoch,
-                                                        variableListItem
-                                                            .vagasDatapagamento!
-                                                            .secondsSinceEpoch),
-                                              ),
-                                            ),
-                                            if (true)
-                                              FFButtonWidget(
-                                                onPressed: () async {
-                                                  logFirebaseEvent(
-                                                      'EXPLORAR_PAGE__BTN_ON_TAP');
-                                                  currentUserLocationValue =
-                                                      await getCurrentUserLocation(
-                                                          defaultLocation:
-                                                              LatLng(0.0, 0.0));
-                                                  if (_model
-                                                      .isBottomSheetLoading) {
-                                                    return;
-                                                  }
-
-                                                  logFirebaseEvent(
-                                                      'Button_update_page_state');
-                                                  _model.isBottomSheetLoading =
-                                                      true;
-                                                  safeSetState(() {});
-                                                  logFirebaseEvent(
-                                                      'Button_bottom_sheet');
-                                                  await showModalBottomSheet(
-                                                    isScrollControlled: true,
-                                                    useSafeArea: true,
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return GestureDetector(
-                                                        onTap: () {
-                                                          FocusScope.of(context)
-                                                              .unfocus();
-                                                          FocusManager.instance
-                                                              .primaryFocus
-                                                              ?.unfocus();
-                                                        },
-                                                        child: Padding(
-                                                          padding: MediaQuery
-                                                              .viewInsetsOf(
-                                                                  context),
-                                                          child:
-                                                              VagaBottomSheetWidget(
-                                                            speciality:
-                                                                variableListItem
-                                                                    .especialidadeNome,
-                                                            value:
-                                                                variableListItem
-                                                                    .vagasValor
-                                                                    ?.toDouble(),
-                                                            hospital:
-                                                                variableListItem
-                                                                    .hospitalNome,
-                                                            date:
-                                                                variableListItem
-                                                                    .vagasData,
-                                                            datecreated:
-                                                                variableListItem
-                                                                    .vagasCreatedate,
-                                                            startTime:
-                                                                variableListItem
-                                                                    .vagasHorainicio
-                                                                    ?.time,
-                                                            endTime:
-                                                                variableListItem
-                                                                    .vagasHorafim
-                                                                    ?.time,
-                                                            shift: variableListItem
-                                                                .vagasPeriodoNome,
-                                                            type: variableListItem
-                                                                .vagasTipoNome,
-                                                            lat: variableListItem
-                                                                .hospitalLat,
-                                                            lon: variableListItem
-                                                                .hospitalLog,
-                                                            address:
-                                                                variableListItem
-                                                                    .hospitalEnd,
-                                                            jobid:
-                                                                variableListItem
-                                                                    .vagasId,
-                                                            contractor:
-                                                                variableListItem
-                                                                    .grupoNome,
-                                                            contractorName:
-                                                                variableListItem
-                                                                    .escalistaNome,
-                                                            contractorPhone:
-                                                                variableListItem
-                                                                    .escalistaTelefone,
-                                                            contractorEmail:
-                                                                variableListItem
-                                                                    .escalistaEmail,
-                                                            payday: variableListItem
-                                                                .vagasDatapagamento,
-                                                            payment:
-                                                                variableListItem
-                                                                    .vagasFormarecebimentoNome,
-                                                            avatarHospital:
-                                                                variableListItem
-                                                                    .hospitalAvatar,
-                                                            sector:
-                                                                variableListItem
-                                                                    .setorNome,
-                                                            showFavorite:
-                                                                variableListItem
-                                                                    .medicoFavorito,
-                                                            candidates: explorarVwVagasCandidaturasRowList
-                                                                    .where((e) =>
-                                                                        (e.vagasId ==
-                                                                            variableListItem
-                                                                                .vagasId) &&
-                                                                        (e.medicoId ==
-                                                                            currentUserUid))
-                                                                    .toList()
-                                                                    .isNotEmpty
-                                                                ? explorarVwVagasCandidaturasRowList
-                                                                    .where((e) =>
-                                                                        (e.vagasId ==
-                                                                            variableListItem
-                                                                                .vagasId) &&
-                                                                        (e.medicoId ==
-                                                                            currentUserUid))
-                                                                    .toList()
-                                                                    .firstOrNull
-                                                                : variableListItem,
-                                                            callback:
-                                                                () async {},
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ).then((value) =>
-                                                      safeSetState(() {}));
-
-                                                  logFirebaseEvent(
-                                                      'Button_update_page_state');
-                                                  _model.isBottomSheetLoading =
-                                                      false;
-                                                  safeSetState(() {});
-                                                  logFirebaseEvent(
-                                                      'Button_google_analytics_event');
-                                                  logFirebaseEvent(
-                                                    'vagas_exibicao',
-                                                    parameters: {
-                                                      'user_id': currentUserUid,
-                                                      'time':
-                                                          getCurrentTimestamp,
-                                                      'location':
-                                                          currentUserLocationValue,
-                                                      'vaga_id':
-                                                          variableListItem
-                                                              .vagasId,
-                                                    },
-                                                  );
-                                                  return;
-                                                },
-                                                text: '',
-                                                options: FFButtonOptions(
-                                                  width: double.infinity,
-                                                  height:
-                                                      MediaQuery.sizeOf(context)
-                                                              .height *
-                                                          0.13,
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          16.0, 0.0, 16.0, 0.0),
-                                                  iconPadding:
-                                                      EdgeInsetsDirectional
-                                                          .fromSTEB(0.0, 0.0,
-                                                              0.0, 0.0),
-                                                  color: Color(0x00A369ED),
-                                                  textStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleSmall
-                                                          .override(
-                                                            font: GoogleFonts
-                                                                .geologica(
-                                                              fontWeight:
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .fontWeight,
-                                                              fontStyle:
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .fontStyle,
-                                                            ),
-                                                            color: Colors.white,
-                                                            letterSpacing: 0.0,
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontStyle,
-                                                          ),
-                                                  elevation: 0.0,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                              ),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                              );
-                            } else {
+                            if (!(_model.variableQuery.isNotEmpty) &&
+                                (_model.sortBy == 'vagas_createdate')) {
                               return Builder(
                                 builder: (context) {
                                   final initialList =
@@ -1725,7 +1386,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                         return Stack(
                                           children: [
                                             wrapWithModel(
-                                              model: _model.cardVagasModels2
+                                              model: _model.cardVagasModels1
                                                   .getModel(
                                                 initialListItem.vagasId!,
                                                 initialListIndex,
@@ -1947,6 +1608,346 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                           currentUserLocationValue,
                                                       'vaga_id': initialListItem
                                                           .vagasId,
+                                                    },
+                                                  );
+                                                  return;
+                                                },
+                                                text: '',
+                                                options: FFButtonOptions(
+                                                  width: double.infinity,
+                                                  height:
+                                                      MediaQuery.sizeOf(context)
+                                                              .height *
+                                                          0.13,
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          16.0, 0.0, 16.0, 0.0),
+                                                  iconPadding:
+                                                      EdgeInsetsDirectional
+                                                          .fromSTEB(0.0, 0.0,
+                                                              0.0, 0.0),
+                                                  color: Color(0x00A369ED),
+                                                  textStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .titleSmall
+                                                          .override(
+                                                            font: GoogleFonts
+                                                                .geologica(
+                                                              fontWeight:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .fontWeight,
+                                                              fontStyle:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .titleSmall
+                                                                      .fontStyle,
+                                                            ),
+                                                            color: Colors.white,
+                                                            letterSpacing: 0.0,
+                                                            fontWeight:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleSmall
+                                                                    .fontWeight,
+                                                            fontStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .titleSmall
+                                                                    .fontStyle,
+                                                          ),
+                                                  elevation: 0.0,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                ),
+                                              ),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                              );
+                            } else {
+                              return Builder(
+                                builder: (context) {
+                                  final variableList = _model.variableQuery
+                                      .where((e) =>
+                                          (_model.dropDownValue != null &&
+                                                  (_model.dropDownValue)!
+                                                      .isNotEmpty
+                                              ? _model.dropDownValue!
+                                                  .contains(e.hospitalId)
+                                              : true) &&
+                                          (e.vagasStatus == 'aberta') &&
+                                          (e.vagasData! >=
+                                              functions.currentDate()!))
+                                      .toList()
+                                      .unique((e) => e.vagasId!)
+                                      .toList();
+                                  if (variableList.isEmpty) {
+                                    return EmptyListWidget(
+                                      text: 'Sem vagas para mostrar',
+                                    );
+                                  }
+
+                                  return RefreshIndicator(
+                                    key: Key('RefreshIndicator_sg1lzcrb'),
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    onRefresh: () async {
+                                      logFirebaseEvent(
+                                          'EXPLORAR_ListView_bh771fn0_ON_PULL_TO_RE');
+                                      logFirebaseEvent(
+                                          'ListView_refresh_database_request');
+                                      safeSetState(() {
+                                        FFAppState().clearVagasAbertasCache();
+                                        _model.requestCompleted = false;
+                                      });
+                                      await _model.waitForRequestCompleted();
+                                    },
+                                    child: ListView.separated(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 2.0),
+                                      primary: false,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: variableList.length,
+                                      separatorBuilder: (_, __) =>
+                                          SizedBox(height: 2.0),
+                                      itemBuilder:
+                                          (context, variableListIndex) {
+                                        final variableListItem =
+                                            variableList[variableListIndex];
+                                        return Stack(
+                                          children: [
+                                            wrapWithModel(
+                                              model: _model.cardVagasModels2
+                                                  .getModel(
+                                                variableListItem.vagasId!,
+                                                variableListIndex,
+                                              ),
+                                              updateCallback: () =>
+                                                  safeSetState(() {}),
+                                              child: CardVagasWidget(
+                                                key: Key(
+                                                  'Keyxhf_${variableListItem.vagasId!}',
+                                                ),
+                                                specialty: variableListItem
+                                                    .especialidadeNome,
+                                                value: formatNumber(
+                                                  variableListItem.vagasValor,
+                                                  formatType:
+                                                      FormatType.decimal,
+                                                  decimalType:
+                                                      DecimalType.commaDecimal,
+                                                  currency: 'R\$ ',
+                                                ),
+                                                date: dateTimeFormat(
+                                                  "dd/MM",
+                                                  variableListItem.vagasData,
+                                                  locale: FFLocalizations.of(
+                                                          context)
+                                                      .languageCode,
+                                                ),
+                                                datecount: 'há ${dateTimeFormat(
+                                                  "relative",
+                                                  variableListItem
+                                                      .vagasCreatedate,
+                                                  locale: FFLocalizations.of(
+                                                              context)
+                                                          .languageShortCode ??
+                                                      FFLocalizations.of(
+                                                              context)
+                                                          .languageCode,
+                                                )}',
+                                                shift: '',
+                                                type: variableListItem
+                                                    .vagasTipoNome,
+                                                hospital:
+                                                    functions.cleanHospitalName(
+                                                        variableListItem
+                                                            .hospitalNome!,
+                                                        FFAppState()
+                                                            .cleanHospital
+                                                            .toList()),
+                                                vaga: variableListItem.vagasId,
+                                                avatarHospital: variableListItem
+                                                    .hospitalAvatar,
+                                                showPay: false,
+                                                sector:
+                                                    variableListItem.setorNome,
+                                                distance: functions.distanceCalc(
+                                                    variableListItem
+                                                        .hospitalLat!,
+                                                    variableListItem
+                                                        .hospitalLog!,
+                                                    currentUserLocationValue!),
+                                                showSign:
+                                                    (int job, int payment) {
+                                                  return (payment - job) <=
+                                                      86400;
+                                                }(
+                                                        variableListItem
+                                                            .vagasData!
+                                                            .secondsSinceEpoch,
+                                                        variableListItem
+                                                            .vagasDatapagamento!
+                                                            .secondsSinceEpoch),
+                                              ),
+                                            ),
+                                            if (true)
+                                              FFButtonWidget(
+                                                onPressed: () async {
+                                                  logFirebaseEvent(
+                                                      'EXPLORAR_PAGE__BTN_ON_TAP');
+                                                  currentUserLocationValue =
+                                                      await getCurrentUserLocation(
+                                                          defaultLocation:
+                                                              LatLng(0.0, 0.0));
+                                                  if (_model
+                                                      .isBottomSheetLoading) {
+                                                    return;
+                                                  }
+
+                                                  logFirebaseEvent(
+                                                      'Button_update_page_state');
+                                                  _model.isBottomSheetLoading =
+                                                      true;
+                                                  safeSetState(() {});
+                                                  logFirebaseEvent(
+                                                      'Button_bottom_sheet');
+                                                  await showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    useSafeArea: true,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          FocusScope.of(context)
+                                                              .unfocus();
+                                                          FocusManager.instance
+                                                              .primaryFocus
+                                                              ?.unfocus();
+                                                        },
+                                                        child: Padding(
+                                                          padding: MediaQuery
+                                                              .viewInsetsOf(
+                                                                  context),
+                                                          child:
+                                                              VagaBottomSheetWidget(
+                                                            speciality:
+                                                                variableListItem
+                                                                    .especialidadeNome,
+                                                            value:
+                                                                variableListItem
+                                                                    .vagasValor
+                                                                    ?.toDouble(),
+                                                            hospital:
+                                                                variableListItem
+                                                                    .hospitalNome,
+                                                            date:
+                                                                variableListItem
+                                                                    .vagasData,
+                                                            datecreated:
+                                                                variableListItem
+                                                                    .vagasCreatedate,
+                                                            startTime:
+                                                                variableListItem
+                                                                    .vagasHorainicio
+                                                                    ?.time,
+                                                            endTime:
+                                                                variableListItem
+                                                                    .vagasHorafim
+                                                                    ?.time,
+                                                            shift: variableListItem
+                                                                .vagasPeriodoNome,
+                                                            type: variableListItem
+                                                                .vagasTipoNome,
+                                                            lat: variableListItem
+                                                                .hospitalLat,
+                                                            lon: variableListItem
+                                                                .hospitalLog,
+                                                            address:
+                                                                variableListItem
+                                                                    .hospitalEnd,
+                                                            jobid:
+                                                                variableListItem
+                                                                    .vagasId,
+                                                            contractor:
+                                                                variableListItem
+                                                                    .grupoNome,
+                                                            contractorName:
+                                                                variableListItem
+                                                                    .escalistaNome,
+                                                            contractorPhone:
+                                                                variableListItem
+                                                                    .escalistaTelefone,
+                                                            contractorEmail:
+                                                                variableListItem
+                                                                    .escalistaEmail,
+                                                            payday: variableListItem
+                                                                .vagasDatapagamento,
+                                                            payment:
+                                                                variableListItem
+                                                                    .vagasFormarecebimentoNome,
+                                                            avatarHospital:
+                                                                variableListItem
+                                                                    .hospitalAvatar,
+                                                            sector:
+                                                                variableListItem
+                                                                    .setorNome,
+                                                            showFavorite:
+                                                                variableListItem
+                                                                    .medicoFavorito,
+                                                            candidates: explorarVwVagasCandidaturasRowList
+                                                                    .where((e) =>
+                                                                        (e.vagasId ==
+                                                                            variableListItem
+                                                                                .vagasId) &&
+                                                                        (e.medicoId ==
+                                                                            currentUserUid))
+                                                                    .toList()
+                                                                    .isNotEmpty
+                                                                ? explorarVwVagasCandidaturasRowList
+                                                                    .where((e) =>
+                                                                        (e.vagasId ==
+                                                                            variableListItem
+                                                                                .vagasId) &&
+                                                                        (e.medicoId ==
+                                                                            currentUserUid))
+                                                                    .toList()
+                                                                    .firstOrNull
+                                                                : variableListItem,
+                                                            callback:
+                                                                () async {},
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ).then((value) =>
+                                                      safeSetState(() {}));
+
+                                                  logFirebaseEvent(
+                                                      'Button_update_page_state');
+                                                  _model.isBottomSheetLoading =
+                                                      false;
+                                                  safeSetState(() {});
+                                                  logFirebaseEvent(
+                                                      'Button_google_analytics_event');
+                                                  logFirebaseEvent(
+                                                    'vagas_exibicao',
+                                                    parameters: {
+                                                      'user_id': currentUserUid,
+                                                      'time':
+                                                          getCurrentTimestamp,
+                                                      'location':
+                                                          currentUserLocationValue,
+                                                      'vaga_id':
+                                                          variableListItem
+                                                              .vagasId,
                                                     },
                                                   );
                                                   return;
