@@ -783,8 +783,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                                 homeApprovedListItem.hospitalAvatar,
                                                                             sector:
                                                                                 homeApprovedListItem.setorNome,
-                                                                            showFavorite:
-                                                                                homeApprovedListItem.medicoFavorito,
                                                                             candidates:
                                                                                 homeApprovedListItem,
                                                                             callback:
@@ -1488,8 +1486,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                                   payment: homeOpenList1Item.formaRecebimentoNome,
                                                                                   avatarHospital: homeOpenList1Item.hospitalAvatar,
                                                                                   sector: homeOpenList1Item.setorNome,
-                                                                                  showFavorite: homeOpenList1Item.medicoFavorito,
-                                                                                  candidates: homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList1Item.vagasId)).toList().isNotEmpty ? homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList1Item.vagasId)).toList().firstOrNull : homeOpenList1Item,
+                                                                                  candidates: homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagaId == homeOpenList1Item.vagaId)).toList().isNotEmpty ? homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagaId == homeOpenList1Item.vagaId)).toList().firstOrNull : homeOpenList1Item,
                                                                                   callback: () async {},
                                                                                 ),
                                                                               ),
@@ -1759,8 +1756,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                                   payment: homeOpenList2Item.formaRecebimentoNome,
                                                                                   avatarHospital: homeOpenList2Item.hospitalAvatar,
                                                                                   sector: homeOpenList2Item.setorNome,
-                                                                                  showFavorite: homeOpenList2Item.medicoFavorito,
-                                                                                  candidates: homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList2Item.vagasId)).toList().isNotEmpty ? homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList2Item.vagasId)).toList().firstOrNull : homeOpenList2Item,
+                                                                                  candidates: homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagaId == homeOpenList2Item.vagaId)).toList().isNotEmpty ? homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagaId == homeOpenList2Item.vagaId)).toList().firstOrNull : homeOpenList2Item,
                                                                                   callback: () async {},
                                                                                 ),
                                                                               ),

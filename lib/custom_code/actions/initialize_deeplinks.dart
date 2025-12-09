@@ -65,11 +65,6 @@ Future<void> _showVagaBottomSheet(String vagaId) async {
     // Pegar a primeira linha para os dados principais da vaga
     final vagaRow = VwVagasAbertasRow(vagaData.first);
 
-    // Determinar se é favorito (false se não autenticado ou se não houver dados)
-    final isFavorite = candidatesData != null
-        ? (candidatesData.medicoFavorito ?? false)
-        : false;
-
     final BuildContext? context = appNavigatorKey.currentContext;
 
     if (context != null && context.mounted) {
