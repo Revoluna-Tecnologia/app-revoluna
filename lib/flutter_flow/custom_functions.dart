@@ -42,15 +42,6 @@ String? aplicarmascara(
   return resultado.toString();
 }
 
-double sumList(List<int>? list) {
-  if (list == null || list.isEmpty) {
-    return 0.0;
-  }
-
-  return list.fold(
-      0.0, (sum, item) => sum + (item is num ? item.toDouble() : 0.0));
-}
-
 DateTime eighteenYearsAgo() {
   // Obtém a data atual
   DateTime dataAtual = DateTime.now();
