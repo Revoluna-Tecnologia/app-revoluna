@@ -1296,6 +1296,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                     logFirebaseEvent('Icon_reset_form_fields');
                                     safeSetState(() {
                                       _model.dropDownValueController?.reset();
+                                      _model.dropDownValue = null;
                                     });
                                     logFirebaseEvent('Icon_update_page_state');
                                     _model.clearDropColor =
