@@ -996,9 +996,10 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                           'gender': widget!.gender,
                                           'profilepicture':
                                               FFAppState().profilepicture,
-                                          'areacodeIndex': widget!.arecodeindex,
-                                          'UFindex': widget!.estadoUFindex,
-                                          'specialtyIndex':
+                                          'areacode_index':
+                                              widget!.arecodeindex,
+                                          'uf_index': widget!.estadoUFindex,
+                                          'specialty_index':
                                               widget!.specialtyindex,
                                           'platform': isiOS ? 'ios' : 'android',
                                         },
@@ -1011,19 +1012,17 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                       logFirebaseEvent('Button_backend_call');
                                       _model.updateMedicosRow =
                                           await MedicosTable().insert({
-                                        'medico_primeironome':
-                                            widget!.firstname,
-                                        'medico_sobrenome': widget!.lastname,
-                                        'medico_genero': widget!.gender,
-                                        'medico_cpf': widget!.cpf,
-                                        'medico_rqe': widget!.rqe,
-                                        'medico_email': widget!.email,
-                                        'medico_telefone': widget!.phone,
-                                        'medico_crm': widget!.crm,
-                                        'medico_estado': widget!.estadoUF,
-                                        'medico_especialidade':
-                                            widget!.specialty,
-                                        'medico_datanascimento':
+                                        'primeiro_nome': widget!.firstname,
+                                        'sobrenome': widget!.lastname,
+                                        'genero': widget!.gender,
+                                        'cpf': widget!.cpf,
+                                        'rqe': widget!.rqe,
+                                        'email': widget!.email,
+                                        'telefone': widget!.phone,
+                                        'crm': widget!.crm,
+                                        'estado': widget!.estadoUF,
+                                        'especialidade_id': widget!.specialty,
+                                        'data_nascimento':
                                             supaSerialize<DateTime>(
                                                 widget!.birthdate),
                                         'id': currentUserUid,

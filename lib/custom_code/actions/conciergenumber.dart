@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 Future conciergenumber() async {
   try {
     final response =
-        await SupaFlow.client.from('whatsappnumber').select('number');
+        await SupaFlow.client.from('whatsapp_number').select('number');
 
     String numberToSet;
     if (response != null && response.isNotEmpty) {

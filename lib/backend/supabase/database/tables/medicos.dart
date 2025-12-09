@@ -17,106 +17,93 @@ class MedicosRow extends SupabaseDataRow {
   String get id => getField<String>('id')!;
   set id(String value) => setField<String>('id', value);
 
-  String? get medicoRqe => getField<String>('medico_rqe');
-  set medicoRqe(String? value) => setField<String>('medico_rqe', value);
+  String? get rqe => getField<String>('rqe');
+  set rqe(String? value) => setField<String>('rqe', value);
 
-  String? get medicoGenero => getField<String>('medico_genero');
-  set medicoGenero(String? value) => setField<String>('medico_genero', value);
+  String? get genero => getField<String>('genero');
+  set genero(String? value) => setField<String>('genero', value);
 
-  String? get medicoCpf => getField<String>('medico_cpf');
-  set medicoCpf(String? value) => setField<String>('medico_cpf', value);
+  String? get cpf => getField<String>('cpf');
+  set cpf(String? value) => setField<String>('cpf', value);
 
-  String? get medicoRg => getField<String>('medico_rg');
-  set medicoRg(String? value) => setField<String>('medico_rg', value);
+  String? get rg => getField<String>('rg');
+  set rg(String? value) => setField<String>('rg', value);
 
-  String? get medicoCrm => getField<String>('medico_crm');
-  set medicoCrm(String? value) => setField<String>('medico_crm', value);
+  String? get crm => getField<String>('crm');
+  set crm(String? value) => setField<String>('crm', value);
 
-  String? get medicoNomedafaculdade =>
-      getField<String>('medico_nomedafaculdade');
-  set medicoNomedafaculdade(String? value) =>
-      setField<String>('medico_nomedafaculdade', value);
+  String? get nomeFaculdade => getField<String>('nome_faculdade');
+  set nomeFaculdade(String? value) => setField<String>('nome_faculdade', value);
 
-  String? get medicoTipofaculdade => getField<String>('medico_tipofaculdade');
-  set medicoTipofaculdade(String? value) =>
-      setField<String>('medico_tipofaculdade', value);
+  String? get tipoFaculdade => getField<String>('tipo_faculdade');
+  set tipoFaculdade(String? value) => setField<String>('tipo_faculdade', value);
 
-  String? get medicoPrimeironome => getField<String>('medico_primeironome');
-  set medicoPrimeironome(String? value) =>
-      setField<String>('medico_primeironome', value);
+  String? get primeiroNome => getField<String>('primeiro_nome');
+  set primeiroNome(String? value) => setField<String>('primeiro_nome', value);
 
-  String? get medicoSobrenome => getField<String>('medico_sobrenome');
-  set medicoSobrenome(String? value) =>
-      setField<String>('medico_sobrenome', value);
+  String? get sobrenome => getField<String>('sobrenome');
+  set sobrenome(String? value) => setField<String>('sobrenome', value);
 
-  String? get medicoEmail => getField<String>('medico_email');
-  set medicoEmail(String? value) => setField<String>('medico_email', value);
+  String? get email => getField<String>('email');
+  set email(String? value) => setField<String>('email', value);
 
-  String? get medicoTelefone => getField<String>('medico_telefone');
-  set medicoTelefone(String? value) =>
-      setField<String>('medico_telefone', value);
+  String? get telefone => getField<String>('telefone');
+  set telefone(String? value) => setField<String>('telefone', value);
 
-  DateTime? get medicoDatanascimento =>
-      getField<DateTime>('medico_datanascimento');
-  set medicoDatanascimento(DateTime? value) =>
-      setField<DateTime>('medico_datanascimento', value);
+  DateTime? get dataNascimento => getField<DateTime>('data_nascimento');
+  set dataNascimento(DateTime? value) =>
+      setField<DateTime>('data_nascimento', value);
 
-  String? get medicoLogradouro => getField<String>('medico_logradouro');
-  set medicoLogradouro(String? value) =>
-      setField<String>('medico_logradouro', value);
+  String? get logradouro => getField<String>('logradouro');
+  set logradouro(String? value) => setField<String>('logradouro', value);
 
-  String? get medicoNumero => getField<String>('medico_numero');
-  set medicoNumero(String? value) => setField<String>('medico_numero', value);
+  String? get numero => getField<String>('numero');
+  set numero(String? value) => setField<String>('numero', value);
 
-  String? get medicoBairro => getField<String>('medico_bairro');
-  set medicoBairro(String? value) => setField<String>('medico_bairro', value);
+  String? get bairro => getField<String>('bairro');
+  set bairro(String? value) => setField<String>('bairro', value);
 
-  String? get medicoCidade => getField<String>('medico_cidade');
-  set medicoCidade(String? value) => setField<String>('medico_cidade', value);
+  String? get cidade => getField<String>('cidade');
+  set cidade(String? value) => setField<String>('cidade', value);
 
-  String? get medicoEstado => getField<String>('medico_estado');
-  set medicoEstado(String? value) => setField<String>('medico_estado', value);
+  String? get estado => getField<String>('estado');
+  set estado(String? value) => setField<String>('estado', value);
 
-  String? get medicoPais => getField<String>('medico_pais');
-  set medicoPais(String? value) => setField<String>('medico_pais', value);
+  String? get pais => getField<String>('pais');
+  set pais(String? value) => setField<String>('pais', value);
 
-  String? get medicoCep => getField<String>('medico_cep');
-  set medicoCep(String? value) => setField<String>('medico_cep', value);
+  String? get cep => getField<String>('cep');
+  set cep(String? value) => setField<String>('cep', value);
 
   DateTime? get createdAt => getField<DateTime>('created_at');
   set createdAt(DateTime? value) => setField<DateTime>('created_at', value);
 
-  DateTime? get medicoUpdateat => getField<DateTime>('medico_updateat');
-  set medicoUpdateat(DateTime? value) =>
-      setField<DateTime>('medico_updateat', value);
+  DateTime? get updateAt => getField<DateTime>('update_at');
+  set updateAt(DateTime? value) => setField<DateTime>('update_at', value);
 
-  String? get medicoUpdateby => getField<String>('medico_updateby');
-  set medicoUpdateby(String? value) =>
-      setField<String>('medico_updateby', value);
+  String? get updateBy => getField<String>('update_by');
+  set updateBy(String? value) => setField<String>('update_by', value);
 
-  DateTime? get medicoDeleteat => getField<DateTime>('medico_deleteat');
-  set medicoDeleteat(DateTime? value) =>
-      setField<DateTime>('medico_deleteat', value);
+  DateTime? get deleteAt => getField<DateTime>('delete_at');
+  set deleteAt(DateTime? value) => setField<DateTime>('delete_at', value);
 
-  String? get medicoStatus => getField<String>('medico_status');
-  set medicoStatus(String? value) => setField<String>('medico_status', value);
+  String? get status => getField<String>('status');
+  set status(String? value) => setField<String>('status', value);
 
-  int? get medicoTotalplantoes => getField<int>('medico_totalplantoes');
-  set medicoTotalplantoes(int? value) =>
-      setField<int>('medico_totalplantoes', value);
+  int? get totalPlantoes => getField<int>('total_plantoes');
+  set totalPlantoes(int? value) => setField<int>('total_plantoes', value);
 
-  String? get medicoEspecialidade => getField<String>('medico_especialidade');
-  set medicoEspecialidade(String? value) =>
-      setField<String>('medico_especialidade', value);
+  String? get especialidadeId => getField<String>('especialidade_id');
+  set especialidadeId(String? value) =>
+      setField<String>('especialidade_id', value);
 
-  int? get medicoAnoterminoespecializacao =>
-      getField<int>('medico_anoterminoespecializacao');
-  set medicoAnoterminoespecializacao(int? value) =>
-      setField<int>('medico_anoterminoespecializacao', value);
+  int? get anoTerminoEspecializacao =>
+      getField<int>('ano_termino_especializacao');
+  set anoTerminoEspecializacao(int? value) =>
+      setField<int>('ano_termino_especializacao', value);
 
-  int? get medicoAnoformatura => getField<int>('medico_anoformatura');
-  set medicoAnoformatura(int? value) =>
-      setField<int>('medico_anoformatura', value);
+  int? get anoFormatura => getField<int>('ano_formatura');
+  set anoFormatura(int? value) => setField<int>('ano_formatura', value);
 
   bool? get trackingPrivacy => getField<bool>('tracking_privacy');
   set trackingPrivacy(bool? value) => setField<bool>('tracking_privacy', value);

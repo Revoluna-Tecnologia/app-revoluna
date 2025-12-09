@@ -3,8 +3,8 @@ import '/backend/supabase/supabase.dart';
 import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/components/header/header_widget.dart';
+import '/components/loading/dropdown_loading/dropdown_loading_widget.dart';
 import '/components/vagas/card_vagas/card_vagas_widget.dart';
-import '/components/vagas/dropdown_loading/dropdown_loading_widget.dart';
 import '/components/vagas/empty_list/empty_list_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -72,7 +72,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       FFAppState().selectedDay = functions.currentDate();
       FFAppState().CRMCheck = '${(String crm) {
             return crm.split('-')[0];
-          }(_model.queryMedico!.firstOrNull!.medicoCrm!)}' !=
+          }(_model.queryMedico!.firstOrNull!.crm!)}' !=
           'estudante';
       safeSetState(() {});
       logFirebaseEvent('HomePage_refresh_database_request');
@@ -154,10 +154,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         requestFn: () => VwVagasCandidaturasTable().queryRows(
           queryFn: (q) => q
               .eqOrNull(
-                'vagas_status',
+                'vaga_status',
                 'aberta',
               )
-              .order('vagas_horainicio', ascending: true),
+              .order('vaga_horainicio', ascending: true),
         ),
       )
           .then((result) {
@@ -285,7 +285,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             'medico_id',
                             currentUserUid,
                           )
-                          .order('vagas_horainicio', ascending: true),
+                          .order('vaga_horainicio', ascending: true),
                     ),
                   )
                       .then((result) {
@@ -353,13 +353,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   _model.requestCompleted1 = false;
                                 });
                                 await _model.waitForRequestCompleted1();
-                                logFirebaseEvent(
-                                    'Column_refresh_database_request');
-                                safeSetState(() {
-                                  FFAppState().clearEstadosCache();
-                                  _model.requestCompleted2 = false;
-                                });
-                                await _model.waitForRequestCompleted2();
                               },
                               child: SingleChildScrollView(
                                 physics: const AlwaysScrollableScrollPhysics(),
@@ -397,7 +390,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                       e.candidaturaStatus ==
                                                       'APROVADO')
                                                   .toList()
-                                                  .map((e) => e.vagasData)
+                                                  .map((e) => e.vagaData)
                                                   .withoutNulls
                                                   .toList()
                                                   .unique((e) => e)
@@ -409,13 +402,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                               openVagas:
                                                   homePageVwVagasCandidaturasRowList
                                                       .where((e) =>
-                                                          (e.vagasStatus ==
-                                                              'aberta') &&
-                                                          (e.hospitalEstado ==
-                                                              FFAppState()
-                                                                  .estadoUF))
+                                                          e.hospitalEstado ==
+                                                          FFAppState().estadoUF)
                                                       .toList()
-                                                      .map((e) => e.vagasData)
+                                                      .map((e) => e.vagaData)
                                                       .withoutNulls
                                                       .toList()
                                                       .unique((e) => e)
@@ -466,7 +456,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     ),
                                     if (!(containerVwVagasCandidaturasRowList
                                             .where((e) =>
-                                                (e.vagasData ==
+                                                (e.vagaData ==
                                                     FFAppState().selectedDay) &&
                                                 (e.candidaturaStatus ==
                                                     'APROVADO'))
@@ -474,7 +464,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                             .isNotEmpty) &&
                                         !(homePageVwVagasCandidaturasRowList
                                             .where((e) =>
-                                                e.vagasData ==
+                                                e.vagaData ==
                                                 FFAppState().selectedDay)
                                             .toList()
                                             .isNotEmpty))
@@ -489,7 +479,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       ),
                                     if (containerVwVagasCandidaturasRowList
                                         .where((e) =>
-                                            (e.vagasData ==
+                                            (e.vagaData ==
                                                 FFAppState().selectedDay) &&
                                             (e.candidaturaStatus == 'APROVADO'))
                                         .toList()
@@ -573,7 +563,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                     final homeApprovedList =
                                                         containerVwVagasCandidaturasRowList
                                                             .where((e) =>
-                                                                (e.vagasData ==
+                                                                (e.vagaData ==
                                                                     FFAppState()
                                                                         .selectedDay) &&
                                                                 (e.candidaturaStatus ==
@@ -606,7 +596,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                   .cardVagasModels1
                                                                   .getModel(
                                                                 homeApprovedListItem
-                                                                    .vagasId!,
+                                                                    .vagaId!,
                                                                 homeApprovedListIndex,
                                                               ),
                                                               updateCallback: () =>
@@ -615,7 +605,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                               child:
                                                                   CardVagasWidget(
                                                                 key: Key(
-                                                                  'Keygbb_${homeApprovedListItem.vagasId!}',
+                                                                  'Keygbb_${homeApprovedListItem.vagaId!}',
                                                                 ),
                                                                 specialty:
                                                                     homeApprovedListItem
@@ -623,7 +613,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                 value:
                                                                     formatNumber(
                                                                   homeApprovedListItem
-                                                                      .vagasValor,
+                                                                      .vagaValor,
                                                                   formatType:
                                                                       FormatType
                                                                           .decimal,
@@ -637,7 +627,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                     '${dateTimeFormat(
                                                                   "H",
                                                                   homeApprovedListItem
-                                                                      .vagasHorainicio
+                                                                      .vagaHorainicio
                                                                       ?.time,
                                                                   locale: FFLocalizations.of(
                                                                           context)
@@ -645,7 +635,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                 )}h-${dateTimeFormat(
                                                                   "H",
                                                                   homeApprovedListItem
-                                                                      .vagasHorafim
+                                                                      .vagaHorafim
                                                                       ?.time,
                                                                   locale: FFLocalizations.of(
                                                                           context)
@@ -655,7 +645,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                     'há ${dateTimeFormat(
                                                                   "relative",
                                                                   homeApprovedListItem
-                                                                      .vagasCreatedate,
+                                                                      .vagaCreatedate,
                                                                   locale: FFLocalizations.of(
                                                                               context)
                                                                           .languageShortCode ??
@@ -663,9 +653,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                               context)
                                                                           .languageCode,
                                                                 )}',
-                                                                shift: '',
+                                                                shift: homeApprovedListItem
+                                                                    .periodoNome,
                                                                 type: homeApprovedListItem
-                                                                    .vagasTipoNome,
+                                                                    .tiposVagaNome,
                                                                 hospital: functions.cleanHospitalName(
                                                                     homeApprovedListItem
                                                                         .hospitalNome!,
@@ -674,7 +665,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                         .toList()),
                                                                 vaga:
                                                                     homeApprovedListItem
-                                                                        .vagasId,
+                                                                        .vagaId,
                                                                 avatarHospital:
                                                                     homeApprovedListItem
                                                                         .hospitalAvatar,
@@ -743,21 +734,21 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                             speciality:
                                                                                 homeApprovedListItem.especialidadeNome,
                                                                             value:
-                                                                                homeApprovedListItem.vagasValor?.toDouble(),
+                                                                                homeApprovedListItem.vagaValor?.toDouble(),
                                                                             hospital:
                                                                                 homeApprovedListItem.hospitalNome,
                                                                             date:
-                                                                                homeApprovedListItem.vagasData,
+                                                                                homeApprovedListItem.vagaData,
                                                                             datecreated:
-                                                                                homeApprovedListItem.vagasCreatedate,
+                                                                                homeApprovedListItem.vagaCreatedate,
                                                                             startTime:
-                                                                                homeApprovedListItem.vagasHorainicio?.time,
+                                                                                homeApprovedListItem.vagaHorainicio?.time,
                                                                             endTime:
-                                                                                homeApprovedListItem.vagasHorafim?.time,
+                                                                                homeApprovedListItem.vagaHorafim?.time,
                                                                             shift:
-                                                                                homeApprovedListItem.vagasPeriodoNome,
+                                                                                homeApprovedListItem.periodoNome,
                                                                             type:
-                                                                                homeApprovedListItem.vagasTipoNome,
+                                                                                homeApprovedListItem.tiposVagaNome,
                                                                             lat:
                                                                                 homeApprovedListItem.hospitalLat,
                                                                             lon:
@@ -765,7 +756,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                             address:
                                                                                 homeApprovedListItem.hospitalEnd,
                                                                             jobid:
-                                                                                homeApprovedListItem.vagasId,
+                                                                                homeApprovedListItem.vagaId,
                                                                             contractor:
                                                                                 homeApprovedListItem.grupoNome,
                                                                             contractorName:
@@ -775,15 +766,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                             contractorEmail:
                                                                                 homeApprovedListItem.escalistaEmail,
                                                                             payday:
-                                                                                homeApprovedListItem.vagasDatapagamento,
+                                                                                homeApprovedListItem.vagaDatapagamento,
                                                                             payment:
-                                                                                homeApprovedListItem.vagasFormarecebimentoNome,
+                                                                                homeApprovedListItem.formaRecebimentoNome,
                                                                             avatarHospital:
                                                                                 homeApprovedListItem.hospitalAvatar,
                                                                             sector:
                                                                                 homeApprovedListItem.setorNome,
-                                                                            showFavorite:
-                                                                                homeApprovedListItem.medicoFavorito,
                                                                             candidates:
                                                                                 homeApprovedListItem,
                                                                             callback:
@@ -815,7 +804,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                           currentUserLocationValue,
                                                                       'vaga_id':
                                                                           homeApprovedListItem
-                                                                              .vagasId,
+                                                                              .vagaId,
                                                                     },
                                                                   );
                                                                   return;
@@ -890,7 +879,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       ),
                                     if (homePageVwVagasCandidaturasRowList
                                         .where((e) =>
-                                            e.vagasData ==
+                                            e.vagaData ==
                                             FFAppState().selectedDay)
                                         .toList()
                                         .isNotEmpty)
@@ -974,9 +963,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                               (e.hospitalEstado ==
                                                                   FFAppState()
                                                                       .estadoUF) &&
-                                                              (e.vagasStatus ==
-                                                                  'aberta') &&
-                                                              (e.vagasData ==
+                                                              (e.vagaData ==
                                                                   FFAppState()
                                                                       .selectedDay))
                                                           .toList()
@@ -992,14 +979,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                           .toList()),
                                                       optionLabels: homePageVwVagasCandidaturasRowList
                                                           .where((e) =>
-                                                              (e.vagasStatus ==
-                                                                  'aberta') &&
-                                                              (e.vagasData ==
-                                                                  FFAppState()
-                                                                      .selectedDay) &&
                                                               (e.hospitalEstado ==
                                                                   FFAppState()
-                                                                      .estadoUF))
+                                                                      .estadoUF) &&
+                                                              (e.vagaData ==
+                                                                  FFAppState()
+                                                                      .selectedDay))
                                                           .toList()
                                                           .unique((e) => e
                                                               .especialidadeId!)
@@ -1089,14 +1074,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                 .queryRows(
                                                           queryFn: (q) =>
                                                               q.inFilterOrNull(
-                                                            'Sigla',
+                                                            'sigla',
                                                             homePageVwVagasCandidaturasRowList
                                                                 .where((e) =>
-                                                                    (e.vagasData ==
-                                                                        FFAppState()
-                                                                            .selectedDay) &&
-                                                                    (e.vagasStatus ==
-                                                                        'aberta'))
+                                                                    e.vagaData ==
+                                                                    FFAppState()
+                                                                        .selectedDay)
                                                                 .toList()
                                                                 .unique((e) => e
                                                                     .hospitalEstado!)
@@ -1132,24 +1115,26 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                 FFAppState()
                                                                     .estadoUF,
                                                           ),
-                                                          options: List<String>.from(homePageVwVagasCandidaturasRowList
-                                                              .where((e) =>
-                                                                  (e.vagasStatus ==
-                                                                      'aberta') &&
-                                                                  (e.vagasData ==
+                                                          options: List<
+                                                                  String>.from(
+                                                              homePageVwVagasCandidaturasRowList
+                                                                  .where((e) =>
+                                                                      e.vagaData ==
                                                                       FFAppState()
-                                                                          .selectedDay))
-                                                              .toList()
-                                                              .unique((e) => e
-                                                                  .hospitalEstado!)
-                                                              .map((e) => e
-                                                                  .hospitalEstado)
-                                                              .withoutNulls
-                                                              .toList()
-                                                              .sortedList(
-                                                                  keyOf: (e) =>
-                                                                      e,
-                                                                  desc: false)),
+                                                                          .selectedDay)
+                                                                  .toList()
+                                                                  .unique((e) => e
+                                                                      .hospitalEstado!)
+                                                                  .map((e) => e
+                                                                      .hospitalEstado)
+                                                                  .withoutNulls
+                                                                  .toList()
+                                                                  .sortedList(
+                                                                      keyOf:
+                                                                          (e) =>
+                                                                              e,
+                                                                      desc:
+                                                                          false)),
                                                           optionLabels:
                                                               dropDownEstadosBrasilRowList
                                                                   .sortedList(
@@ -1304,7 +1289,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                       .toList(),
                                                                   true)
                                                               .where((e) =>
-                                                                  (e.vagasData == FFAppState().selectedDay) &&
+                                                                  (e.vagaData == FFAppState().selectedDay) &&
                                                                   (e.hospitalEstado ==
                                                                       FFAppState()
                                                                           .estadoUF) &&
@@ -1313,10 +1298,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                           .dropDownValue1))
                                                               .toList()
                                                               .unique((e) =>
-                                                                  e.vagasId!)
+                                                                  e.vagaId!)
                                                               .sortedList(
                                                                   keyOf: (e) =>
-                                                                      e.vagasValor!,
+                                                                      e.vagaValor!,
                                                                   desc: true)
                                                               .toList();
 
@@ -1350,7 +1335,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                         .cardVagasModels2
                                                                         .getModel(
                                                                       homeOpenList1Item
-                                                                          .vagasId!,
+                                                                          .vagaId!,
                                                                       homeOpenList1Index,
                                                                     ),
                                                                     updateCallback: () =>
@@ -1359,7 +1344,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                     child:
                                                                         CardVagasWidget(
                                                                       key: Key(
-                                                                        'Keyhcx_${homeOpenList1Item.vagasId!}',
+                                                                        'Keyhcx_${homeOpenList1Item.vagaId!}',
                                                                       ),
                                                                       specialty:
                                                                           homeOpenList1Item
@@ -1367,7 +1352,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                       value:
                                                                           formatNumber(
                                                                         homeOpenList1Item
-                                                                            .vagasValor,
+                                                                            .vagaValor,
                                                                         formatType:
                                                                             FormatType.decimal,
                                                                         decimalType:
@@ -1379,14 +1364,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                           '${dateTimeFormat(
                                                                         "H",
                                                                         homeOpenList1Item
-                                                                            .vagasHorainicio
+                                                                            .vagaHorainicio
                                                                             ?.time,
                                                                         locale:
                                                                             FFLocalizations.of(context).languageCode,
                                                                       )}h-${dateTimeFormat(
                                                                         "H",
                                                                         homeOpenList1Item
-                                                                            .vagasHorafim
+                                                                            .vagaHorafim
                                                                             ?.time,
                                                                         locale:
                                                                             FFLocalizations.of(context).languageCode,
@@ -1395,13 +1380,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                           'há ${dateTimeFormat(
                                                                         "relative",
                                                                         homeOpenList1Item
-                                                                            .vagasCreatedate,
+                                                                            .vagaCreatedate,
                                                                         locale: FFLocalizations.of(context).languageShortCode ??
                                                                             FFLocalizations.of(context).languageCode,
                                                                       )}',
-                                                                      shift: '',
+                                                                      shift: homeOpenList1Item
+                                                                          .periodoNome,
                                                                       type: homeOpenList1Item
-                                                                          .vagasTipoNome,
+                                                                          .tiposVagaNome,
                                                                       hospital: functions.cleanHospitalName(
                                                                           homeOpenList1Item
                                                                               .hospitalNome!,
@@ -1409,7 +1395,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                               .cleanHospital
                                                                               .toList()),
                                                                       vaga: homeOpenList1Item
-                                                                          .vagasId,
+                                                                          .vagaId,
                                                                       avatarHospital:
                                                                           homeOpenList1Item
                                                                               .hospitalAvatar,
@@ -1466,28 +1452,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                                 padding: MediaQuery.viewInsetsOf(context),
                                                                                 child: VagaBottomSheetWidget(
                                                                                   speciality: homeOpenList1Item.especialidadeNome,
-                                                                                  value: homeOpenList1Item.vagasValor?.toDouble(),
+                                                                                  value: homeOpenList1Item.vagaValor?.toDouble(),
                                                                                   hospital: homeOpenList1Item.hospitalNome,
-                                                                                  date: homeOpenList1Item.vagasData,
-                                                                                  datecreated: homeOpenList1Item.vagasCreatedate,
-                                                                                  startTime: homeOpenList1Item.vagasHorainicio?.time,
-                                                                                  endTime: homeOpenList1Item.vagasHorafim?.time,
-                                                                                  shift: homeOpenList1Item.vagasPeriodoNome,
-                                                                                  type: homeOpenList1Item.vagasTipoNome,
+                                                                                  date: homeOpenList1Item.vagaData,
+                                                                                  datecreated: homeOpenList1Item.vagaCreatedate,
+                                                                                  startTime: homeOpenList1Item.vagaHorainicio?.time,
+                                                                                  endTime: homeOpenList1Item.vagaHorafim?.time,
+                                                                                  shift: homeOpenList1Item.periodoNome,
+                                                                                  type: homeOpenList1Item.tiposVagaNome,
                                                                                   lat: homeOpenList1Item.hospitalLat,
                                                                                   lon: homeOpenList1Item.hospitalLog,
                                                                                   address: homeOpenList1Item.hospitalEnd,
-                                                                                  jobid: homeOpenList1Item.vagasId,
+                                                                                  jobid: homeOpenList1Item.vagaId,
                                                                                   contractor: homeOpenList1Item.grupoNome,
                                                                                   contractorName: homeOpenList1Item.escalistaNome,
                                                                                   contractorPhone: homeOpenList1Item.escalistaTelefone,
                                                                                   contractorEmail: homeOpenList1Item.escalistaEmail,
-                                                                                  payday: homeOpenList1Item.vagasDatapagamento,
-                                                                                  payment: homeOpenList1Item.vagasFormarecebimentoNome,
+                                                                                  payday: homeOpenList1Item.vagaDatapagamento,
+                                                                                  payment: homeOpenList1Item.formaRecebimentoNome,
                                                                                   avatarHospital: homeOpenList1Item.hospitalAvatar,
                                                                                   sector: homeOpenList1Item.setorNome,
-                                                                                  showFavorite: homeOpenList1Item.medicoFavorito,
-                                                                                  candidates: homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList1Item.vagasId)).toList().isNotEmpty ? homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList1Item.vagasId)).toList().firstOrNull : homeOpenList1Item,
+                                                                                  candidates: homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagaId == homeOpenList1Item.vagaId)).toList().isNotEmpty ? homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagaId == homeOpenList1Item.vagaId)).toList().firstOrNull : homeOpenList1Item,
                                                                                   callback: () async {},
                                                                                 ),
                                                                               ),
@@ -1514,7 +1499,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                             'location':
                                                                                 currentUserLocationValue,
                                                                             'vaga_id':
-                                                                                homeOpenList1Item.vagasId,
+                                                                                homeOpenList1Item.vagaId,
                                                                           },
                                                                         );
                                                                         return;
@@ -1574,18 +1559,18 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                       .toList(),
                                                                   true)
                                                               .where((e) =>
-                                                                  (e.vagasData ==
-                                                                      FFAppState()
-                                                                          .selectedDay) &&
                                                                   (e.hospitalEstado ==
                                                                       FFAppState()
-                                                                          .estadoUF))
+                                                                          .estadoUF) &&
+                                                                  (e.vagaData ==
+                                                                      FFAppState()
+                                                                          .selectedDay))
                                                               .toList()
                                                               .unique((e) =>
-                                                                  e.vagasId!)
+                                                                  e.vagaId!)
                                                               .sortedList(
                                                                   keyOf: (e) =>
-                                                                      e.vagasValor!,
+                                                                      e.vagaValor!,
                                                                   desc: true)
                                                               .toList();
 
@@ -1619,7 +1604,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                         .cardVagasModels3
                                                                         .getModel(
                                                                       homeOpenList2Item
-                                                                          .vagasId!,
+                                                                          .vagaData!
+                                                                          .toString(),
                                                                       homeOpenList2Index,
                                                                     ),
                                                                     updateCallback: () =>
@@ -1628,7 +1614,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                     child:
                                                                         CardVagasWidget(
                                                                       key: Key(
-                                                                        'Key0i9_${homeOpenList2Item.vagasId!}',
+                                                                        'Key0i9_${homeOpenList2Item.vagaData!.toString()}',
                                                                       ),
                                                                       specialty:
                                                                           homeOpenList2Item
@@ -1636,7 +1622,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                       value:
                                                                           formatNumber(
                                                                         homeOpenList2Item
-                                                                            .vagasValor,
+                                                                            .vagaValor,
                                                                         formatType:
                                                                             FormatType.decimal,
                                                                         decimalType:
@@ -1648,14 +1634,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                           '${dateTimeFormat(
                                                                         "H",
                                                                         homeOpenList2Item
-                                                                            .vagasHorainicio
+                                                                            .vagaHorainicio
                                                                             ?.time,
                                                                         locale:
                                                                             FFLocalizations.of(context).languageCode,
                                                                       )}h-${dateTimeFormat(
                                                                         "H",
                                                                         homeOpenList2Item
-                                                                            .vagasHorafim
+                                                                            .vagaHorafim
                                                                             ?.time,
                                                                         locale:
                                                                             FFLocalizations.of(context).languageCode,
@@ -1664,13 +1650,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                           'há ${dateTimeFormat(
                                                                         "relative",
                                                                         homeOpenList2Item
-                                                                            .vagasCreatedate,
+                                                                            .vagaCreatedate,
                                                                         locale: FFLocalizations.of(context).languageShortCode ??
                                                                             FFLocalizations.of(context).languageCode,
                                                                       )}',
-                                                                      shift: '',
+                                                                      shift: homeOpenList2Item
+                                                                          .periodoNome,
                                                                       type: homeOpenList2Item
-                                                                          .vagasTipoNome,
+                                                                          .tiposVagaNome,
                                                                       hospital: functions.cleanHospitalName(
                                                                           homeOpenList2Item
                                                                               .hospitalNome!,
@@ -1678,7 +1665,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                               .cleanHospital
                                                                               .toList()),
                                                                       vaga: homeOpenList2Item
-                                                                          .vagasId,
+                                                                          .vagaId,
                                                                       avatarHospital:
                                                                           homeOpenList2Item
                                                                               .hospitalAvatar,
@@ -1735,28 +1722,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                                 padding: MediaQuery.viewInsetsOf(context),
                                                                                 child: VagaBottomSheetWidget(
                                                                                   speciality: homeOpenList2Item.especialidadeNome,
-                                                                                  value: homeOpenList2Item.vagasValor?.toDouble(),
+                                                                                  value: homeOpenList2Item.vagaValor?.toDouble(),
                                                                                   hospital: homeOpenList2Item.hospitalNome,
-                                                                                  date: homeOpenList2Item.vagasData,
-                                                                                  datecreated: homeOpenList2Item.vagasCreatedate,
-                                                                                  startTime: homeOpenList2Item.vagasHorainicio?.time,
-                                                                                  endTime: homeOpenList2Item.vagasHorafim?.time,
-                                                                                  shift: homeOpenList2Item.vagasPeriodoNome,
-                                                                                  type: homeOpenList2Item.vagasTipoNome,
+                                                                                  date: homeOpenList2Item.vagaData,
+                                                                                  datecreated: homeOpenList2Item.vagaCreatedate,
+                                                                                  startTime: homeOpenList2Item.vagaHorainicio?.time,
+                                                                                  endTime: homeOpenList2Item.vagaHorafim?.time,
+                                                                                  shift: homeOpenList2Item.periodoNome,
+                                                                                  type: homeOpenList2Item.tiposVagaNome,
                                                                                   lat: homeOpenList2Item.hospitalLat,
                                                                                   lon: homeOpenList2Item.hospitalLog,
                                                                                   address: homeOpenList2Item.hospitalEnd,
-                                                                                  jobid: homeOpenList2Item.vagasId,
+                                                                                  jobid: homeOpenList2Item.vagaId,
                                                                                   contractor: homeOpenList2Item.grupoNome,
                                                                                   contractorName: homeOpenList2Item.escalistaNome,
                                                                                   contractorPhone: homeOpenList2Item.escalistaTelefone,
                                                                                   contractorEmail: homeOpenList2Item.escalistaEmail,
-                                                                                  payday: homeOpenList2Item.vagasDatapagamento,
-                                                                                  payment: homeOpenList2Item.vagasFormarecebimentoNome,
+                                                                                  payday: homeOpenList2Item.vagaDatapagamento,
+                                                                                  payment: homeOpenList2Item.formaRecebimentoNome,
                                                                                   avatarHospital: homeOpenList2Item.hospitalAvatar,
                                                                                   sector: homeOpenList2Item.setorNome,
-                                                                                  showFavorite: homeOpenList2Item.medicoFavorito,
-                                                                                  candidates: homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList2Item.vagasId)).toList().isNotEmpty ? homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagasId == homeOpenList2Item.vagasId)).toList().firstOrNull : homeOpenList2Item,
+                                                                                  candidates: homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagaId == homeOpenList2Item.vagaId)).toList().isNotEmpty ? homePageVwVagasCandidaturasRowList.where((e) => (e.medicoId == currentUserUid) && (e.vagaId == homeOpenList2Item.vagaId)).toList().firstOrNull : homeOpenList2Item,
                                                                                   callback: () async {},
                                                                                 ),
                                                                               ),
@@ -1783,7 +1769,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                             'location':
                                                                                 currentUserLocationValue,
                                                                             'vaga_id':
-                                                                                homeOpenList2Item.vagasId,
+                                                                                homeOpenList2Item.vagaId,
                                                                           },
                                                                         );
                                                                         return;

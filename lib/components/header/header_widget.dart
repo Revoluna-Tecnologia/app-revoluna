@@ -55,7 +55,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                 'medico_id',
                 currentUserUid,
               )
-              .order('vagas_horainicio', ascending: true),
+              .order('vaga_horainicio', ascending: true),
         ),
       ),
       builder: (context, snapshot) {
@@ -225,7 +225,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                     if (containerVwVagasCandidaturasRowList
                             .where((e) =>
                                 (e.candidaturaStatus == 'APROVADO') &&
-                                functions.inThisWeek(e.vagasData!))
+                                functions.inThisWeek(e.vagaData!))
                             .toList()
                             .length >
                         0)
@@ -260,7 +260,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                                 containerVwVagasCandidaturasRowList
                                     .where((e) =>
                                         (e.candidaturaStatus == 'APROVADO') &&
-                                        functions.inThisWeek(e.vagasData!))
+                                        functions.inThisWeek(e.vagaData!))
                                     .toList()
                                     .length,
                                 formatType: FormatType.custom,
@@ -300,7 +300,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                                                 (e.candidaturaStatus ==
                                                     'APROVADO') &&
                                                 functions
-                                                    .inThisWeek(e.vagasData!))
+                                                    .inThisWeek(e.vagaData!))
                                             .toList()
                                             .length,
                                         formatType: FormatType.custom,

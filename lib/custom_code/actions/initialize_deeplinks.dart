@@ -25,7 +25,7 @@ Future<void> _showVagaBottomSheet(String vagaId) async {
     final vagaData = await SupaFlow.client
         .from('vw_vagas_abertas')
         .select()
-        .eq('vagas_id', vagaId);
+        .eq('vaga_id', vagaId);
 
     // Verificar se o usuário está autenticado
     final isAuthenticated = currentUserUid.isNotEmpty;
@@ -38,7 +38,7 @@ Future<void> _showVagaBottomSheet(String vagaId) async {
         final medicoData = await SupaFlow.client
             .from('vw_vagas_candidaturas')
             .select()
-            .eq('vagas_id', vagaId)
+            .eq('vaga_id', vagaId)
             .eq('medico_id', currentUserUid)
             .maybeSingle();
 
@@ -49,7 +49,7 @@ Future<void> _showVagaBottomSheet(String vagaId) async {
           final anyData = await SupaFlow.client
               .from('vw_vagas_candidaturas')
               .select()
-              .eq('vagas_id', vagaId)
+              .eq('vaga_id', vagaId)
               .limit(1)
               .maybeSingle();
 
@@ -64,11 +64,6 @@ Future<void> _showVagaBottomSheet(String vagaId) async {
 
     // Pegar a primeira linha para os dados principais da vaga
     final vagaRow = VwVagasAbertasRow(vagaData.first);
-
-    // Determinar se é favorito (false se não autenticado ou se não houver dados)
-    final isFavorite = candidatesData != null
-        ? (candidatesData.medicoFavorito ?? false)
-        : false;
 
     final BuildContext? context = appNavigatorKey.currentContext;
 
@@ -86,30 +81,28 @@ Future<void> _showVagaBottomSheet(String vagaId) async {
             child: Padding(
               padding: MediaQuery.viewInsetsOf(context),
               child: VagaBottomSheetWidget(
-                speciality: vagaRow.especialidadeNome,
-                value: vagaRow.vagasValor?.toDouble(),
-                hospital: vagaRow.hospitalNome,
-                date: vagaRow.vagasData,
-                datecreated: vagaRow.vagasCreatedate,
-                startTime: vagaRow.vagasHorainicio?.time,
-                endTime: vagaRow.vagasHorafim?.time,
-                shift: vagaRow.vagasPeriodoNome,
-                type: vagaRow.vagasTipoNome,
-                lat: vagaRow.hospitalLat,
-                lon: vagaRow.hospitalLog,
-                address: vagaRow.hospitalEnd,
-                jobid: vagaRow.vagasId,
-                contractor: vagaRow.grupoNome,
-                contractorName: vagaRow.escalistaNome,
-                contractorPhone: vagaRow.escalistaTelefone ?? 'Não informado',
-                contractorEmail: vagaRow.escalistaEmail ?? 'Não informado',
-                payday: vagaRow.vagasDatapagamento,
-                payment: vagaRow.vagasFormarecebimentoNome,
-                avatarHospital: vagaRow.hospitalAvatar,
-                sector: vagaRow.setorNome,
-                candidates: candidatesData,
-                showFavorite: isFavorite,
-              ),
+                  speciality: vagaRow.especialidadeNome,
+                  value: vagaRow.vagaValor?.toDouble(),
+                  hospital: vagaRow.hospitalNome,
+                  date: vagaRow.vagaData,
+                  datecreated: vagaRow.vagaCreatedate,
+                  startTime: vagaRow.vagaHorainicio?.time,
+                  endTime: vagaRow.vagaHorafim?.time,
+                  shift: vagaRow.periodoNome,
+                  type: vagaRow.tiposVagaNome,
+                  lat: vagaRow.hospitalLat,
+                  lon: vagaRow.hospitalLog,
+                  address: vagaRow.hospitalEnd,
+                  jobid: vagaRow.vagaId,
+                  contractor: vagaRow.grupoNome,
+                  contractorName: vagaRow.escalistaNome,
+                  contractorPhone: vagaRow.escalistaTelefone ?? 'Não informado',
+                  contractorEmail: vagaRow.escalistaEmail ?? 'Não informado',
+                  payday: vagaRow.vagaDatapagamento,
+                  payment: vagaRow.formarecebimentoNome,
+                  avatarHospital: vagaRow.hospitalAvatar,
+                  sector: vagaRow.setorNome,
+                  candidates: candidatesData),
             ),
           );
         },

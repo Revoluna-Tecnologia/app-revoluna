@@ -31,10 +31,10 @@ class EscalasModel extends FlutterFlowModel<EscalasWidget> {
   late DrawerMenuModel drawerMenuModel;
   // Model for Header component.
   late HeaderModel headerModel;
-  // Models for cardEscala dynamic component.
-  late FlutterFlowDynamicModels<CardEscalaModel> cardEscalaModels;
   bool requestCompleted = false;
   String? requestLastUniqueKey;
+  // Models for cardEscala dynamic component.
+  late FlutterFlowDynamicModels<CardEscalaModel> cardEscalaModels;
   // Model for emptyListHouston component.
   late EmptyListHoustonModel emptyListHoustonModel;
 

@@ -497,7 +497,7 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                           queryFn: (q) => q.eqOrNull(
                                             'id',
                                             _model.queryUser?.firstOrNull
-                                                ?.uFindex,
+                                                ?.ufIndex,
                                           ),
                                         );
                                         _shouldSetState = true;
@@ -514,20 +514,13 @@ class _LoginEmailWidgetState extends State<LoginEmailWidget> {
                                             .firstOrNull!
                                             .profilepicture!;
                                         FFAppState().estadoUFIndex = _model
-                                            .queryUser!.firstOrNull!.uFindex;
+                                            .queryUser!.firstOrNull!.ufIndex;
                                         FFAppState().specialialityIndex = _model
                                             .queryUser!
                                             .firstOrNull!
                                             .specialtyIndex;
                                         FFAppState().estadoUF = _model
-                                            .queryEstado!
-                                            .where((e) =>
-                                                e.id ==
-                                                _model.queryUser?.firstOrNull
-                                                    ?.uFindex)
-                                            .toList()
-                                            .firstOrNull!
-                                            .sigla!;
+                                            .queryEstado!.firstOrNull!.sigla!;
                                         FFAppState().update(() {});
                                         if (_model
                                                 .queryUser?.firstOrNull?.role ==

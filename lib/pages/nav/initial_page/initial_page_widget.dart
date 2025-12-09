@@ -2,8 +2,8 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/components/loading/banner_loading/banner_loading_widget.dart';
+import '/components/loading/dropdown_loading/dropdown_loading_widget.dart';
 import '/components/vagas/card_vagas_initial/card_vagas_initial_widget.dart';
-import '/components/vagas/dropdown_loading/dropdown_loading_widget.dart';
 import '/components/vagas/empty_list/empty_list_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -88,7 +88,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
       future: FFAppState()
           .vagasAbertasInicial(
         requestFn: () => VwVagasAbertasTable().queryRows(
-          queryFn: (q) => q.order('vagas_valor'),
+          queryFn: (q) => q.order('vaga_valor'),
         ),
       )
           .then((result) {
@@ -485,11 +485,11 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                             0.0,
                                           ),
                                           0.0),
-                                      child: FutureBuilder<List<BannerMKTRow>>(
+                                      child: FutureBuilder<List<BannerMktRow>>(
                                         future: _model
                                             .banners(
                                           requestFn: () =>
-                                              BannerMKTTable().queryRows(
+                                              BannerMktTable().queryRows(
                                             queryFn: (q) => q,
                                           ),
                                         )
@@ -502,8 +502,8 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                           if (!snapshot.hasData) {
                                             return BannerLoadingWidget();
                                           }
-                                          List<BannerMKTRow>
-                                              bannerBannerMKTRowList =
+                                          List<BannerMktRow>
+                                              bannerBannerMktRowList =
                                               snapshot.data!;
 
                                           return ClipRRect(
@@ -541,7 +541,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                   milliseconds:
                                                                       500),
                                                           imageUrl:
-                                                              bannerBannerMKTRowList
+                                                              bannerBannerMktRowList
                                                                   .elementAtOrNull(
                                                                       0)!
                                                                   .imgpath!,
@@ -565,7 +565,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                   milliseconds:
                                                                       500),
                                                           imageUrl:
-                                                              bannerBannerMKTRowList
+                                                              bannerBannerMktRowList
                                                                   .elementAtOrNull(
                                                                       1)!
                                                                   .imgpath!,
@@ -655,7 +655,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                   milliseconds:
                                                                       500),
                                                           imageUrl:
-                                                              bannerBannerMKTRowList
+                                                              bannerBannerMktRowList
                                                                   .elementAtOrNull(
                                                                       2)!
                                                                   .imgpath!,
@@ -801,7 +801,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                   milliseconds:
                                                                       500),
                                                           imageUrl:
-                                                              bannerBannerMKTRowList
+                                                              bannerBannerMktRowList
                                                                   .elementAtOrNull(
                                                                       3)!
                                                                   .imgpath!,
@@ -953,9 +953,8 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                           e.hospitalEstado ==
                                                           FFAppState().estadoUF)
                                                       .toList()
-                                                      .unique(
-                                                          (e) => e.vagasData!)
-                                                      .map((e) => e.vagasData)
+                                                      .unique((e) => e.vagaId!)
+                                                      .map((e) => e.vagaData)
                                                       .withoutNulls
                                                       .toList()
                                                       .sortedList(
@@ -1004,7 +1003,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                     ),
                                     if (initialPageVwVagasAbertasRowList
                                         .where((e) =>
-                                            e.vagasData ==
+                                            e.vagaData ==
                                             FFAppState().selectedDay)
                                         .toList()
                                         .isNotEmpty)
@@ -1088,9 +1087,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                               (e.hospitalEstado ==
                                                                   FFAppState()
                                                                       .estadoUF) &&
-                                                              (e.vagasStatus ==
-                                                                  'aberta') &&
-                                                              (e.vagasData ==
+                                                              (e.vagaData ==
                                                                   FFAppState()
                                                                       .selectedDay))
                                                           .toList()
@@ -1106,9 +1103,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                           .toList()),
                                                       optionLabels: initialPageVwVagasAbertasRowList
                                                           .where((e) =>
-                                                              (e.vagasStatus ==
-                                                                  'aberta') &&
-                                                              (e.vagasData ==
+                                                              (e.vagaData ==
                                                                   FFAppState()
                                                                       .selectedDay) &&
                                                               (e.hospitalEstado ==
@@ -1203,14 +1198,12 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                 .queryRows(
                                                           queryFn: (q) =>
                                                               q.inFilterOrNull(
-                                                            'Sigla',
+                                                            'sigla',
                                                             initialPageVwVagasAbertasRowList
                                                                 .where((e) =>
-                                                                    (e.vagasData ==
-                                                                        FFAppState()
-                                                                            .selectedDay) &&
-                                                                    (e.vagasStatus ==
-                                                                        'aberta'))
+                                                                    e.vagaData ==
+                                                                    FFAppState()
+                                                                        .selectedDay)
                                                                 .toList()
                                                                 .unique((e) => e
                                                                     .hospitalEstado!)
@@ -1253,24 +1246,26 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                     .estadoUF
                                                                 : 'SP',
                                                           ),
-                                                          options: List<String>.from(initialPageVwVagasAbertasRowList
-                                                              .where((e) =>
-                                                                  (e.vagasStatus ==
-                                                                      'aberta') &&
-                                                                  (e.vagasData ==
+                                                          options: List<
+                                                                  String>.from(
+                                                              initialPageVwVagasAbertasRowList
+                                                                  .where((e) =>
+                                                                      e.vagaData ==
                                                                       FFAppState()
-                                                                          .selectedDay))
-                                                              .toList()
-                                                              .unique((e) => e
-                                                                  .hospitalEstado!)
-                                                              .map((e) => e
-                                                                  .hospitalEstado)
-                                                              .withoutNulls
-                                                              .toList()
-                                                              .sortedList(
-                                                                  keyOf: (e) =>
-                                                                      e,
-                                                                  desc: false)),
+                                                                          .selectedDay)
+                                                                  .toList()
+                                                                  .unique((e) => e
+                                                                      .hospitalEstado!)
+                                                                  .map((e) => e
+                                                                      .hospitalEstado)
+                                                                  .withoutNulls
+                                                                  .toList()
+                                                                  .sortedList(
+                                                                      keyOf:
+                                                                          (e) =>
+                                                                              e,
+                                                                      desc:
+                                                                          false)),
                                                           optionLabels:
                                                               dropDownEstadosBrasilRowList
                                                                   .sortedList(
@@ -1420,12 +1415,10 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                         builder: (context) {
                                                           final filteredList = initialPageVwVagasAbertasRowList
                                                               .where((e) =>
-                                                                  (e.vagasData == FFAppState().selectedDay) &&
+                                                                  (e.vagaData == FFAppState().selectedDay) &&
                                                                   (e.hospitalEstado ==
                                                                       FFAppState()
                                                                           .estadoUF) &&
-                                                                  (e.vagasStatus ==
-                                                                      'aberta') &&
                                                                   (e.especialidadeId ==
                                                                       _model
                                                                           .dropDownValue1))
@@ -1468,7 +1461,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                         .cardVagasInitialModels1
                                                                         .getModel(
                                                                       filteredListItem
-                                                                          .vagasId!,
+                                                                          .vagaId!,
                                                                       filteredListIndex,
                                                                     ),
                                                                     updateCallback: () =>
@@ -1479,7 +1472,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                     child:
                                                                         CardVagasInitialWidget(
                                                                       key: Key(
-                                                                        'Key0nl_${filteredListItem.vagasId!}',
+                                                                        'Key0nl_${filteredListItem.vagaId!}',
                                                                       ),
                                                                       specialty:
                                                                           filteredListItem
@@ -1487,7 +1480,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                       value:
                                                                           formatNumber(
                                                                         filteredListItem
-                                                                            .vagasValor,
+                                                                            .vagaValor,
                                                                         formatType:
                                                                             FormatType.decimal,
                                                                         decimalType:
@@ -1499,14 +1492,14 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                           '${dateTimeFormat(
                                                                         "H",
                                                                         filteredListItem
-                                                                            .vagasHorainicio
+                                                                            .vagaHorainicio
                                                                             ?.time,
                                                                         locale:
                                                                             FFLocalizations.of(context).languageCode,
                                                                       )}h-${dateTimeFormat(
                                                                         "H",
                                                                         filteredListItem
-                                                                            .vagasHorafim
+                                                                            .vagaHorafim
                                                                             ?.time,
                                                                         locale:
                                                                             FFLocalizations.of(context).languageCode,
@@ -1515,13 +1508,14 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                           'há ${dateTimeFormat(
                                                                         "relative",
                                                                         filteredListItem
-                                                                            .vagasCreatedate,
+                                                                            .vagaCreatedate,
                                                                         locale: FFLocalizations.of(context).languageShortCode ??
                                                                             FFLocalizations.of(context).languageCode,
                                                                       )}',
-                                                                      shift: '',
+                                                                      shift: filteredListItem
+                                                                          .periodoNome,
                                                                       type: filteredListItem
-                                                                          .vagasTipoNome,
+                                                                          .tiposVagaNome,
                                                                       hospital: functions.cleanHospitalName(
                                                                           filteredListItem
                                                                               .hospitalNome!,
@@ -1529,7 +1523,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                               .cleanHospital
                                                                               .toList()),
                                                                       vaga: filteredListItem
-                                                                          .vagasId,
+                                                                          .vagaId,
                                                                       avatarHospital:
                                                                           filteredListItem
                                                                               .hospitalAvatar,
@@ -1574,27 +1568,26 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                                 padding: MediaQuery.viewInsetsOf(context),
                                                                                 child: VagaBottomSheetWidget(
                                                                                   speciality: filteredListItem.especialidadeNome,
-                                                                                  value: filteredListItem.vagasValor?.toDouble(),
+                                                                                  value: filteredListItem.vagaValor?.toDouble(),
                                                                                   hospital: filteredListItem.hospitalNome,
-                                                                                  date: filteredListItem.vagasData,
-                                                                                  datecreated: filteredListItem.vagasCreatedate,
-                                                                                  startTime: filteredListItem.vagasHorainicio?.time,
-                                                                                  endTime: filteredListItem.vagasHorafim?.time,
-                                                                                  shift: filteredListItem.vagasPeriodoNome,
-                                                                                  type: filteredListItem.vagasTipoNome,
+                                                                                  date: filteredListItem.vagaData,
+                                                                                  datecreated: filteredListItem.vagaCreatedate,
+                                                                                  startTime: filteredListItem.vagaHorainicio?.time,
+                                                                                  endTime: filteredListItem.vagaHorafim?.time,
+                                                                                  shift: filteredListItem.periodoNome,
+                                                                                  type: filteredListItem.tiposVagaNome,
                                                                                   lat: filteredListItem.hospitalLat,
                                                                                   lon: filteredListItem.hospitalLog,
                                                                                   address: filteredListItem.hospitalEnd,
-                                                                                  jobid: filteredListItem.vagasId,
+                                                                                  jobid: filteredListItem.vagaId,
                                                                                   contractor: filteredListItem.grupoNome,
                                                                                   contractorName: filteredListItem.escalistaNome,
                                                                                   contractorPhone: filteredListItem.escalistaTelefone,
                                                                                   contractorEmail: filteredListItem.escalistaEmail,
-                                                                                  payday: filteredListItem.vagasDatapagamento,
-                                                                                  payment: filteredListItem.vagasFormarecebimentoNome,
+                                                                                  payday: filteredListItem.vagaDatapagamento,
+                                                                                  payment: filteredListItem.formarecebimentoNome,
                                                                                   avatarHospital: filteredListItem.hospitalAvatar,
                                                                                   sector: filteredListItem.setorNome,
-                                                                                  showFavorite: false,
                                                                                   callback: () async {},
                                                                                 ),
                                                                               ),
@@ -1619,7 +1612,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                             'time':
                                                                                 getCurrentTimestamp,
                                                                             'vaga_id':
-                                                                                filteredListItem.vagasId,
+                                                                                filteredListItem.vagaId,
                                                                           },
                                                                         );
                                                                         return;
@@ -1674,12 +1667,12 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                         builder: (context) {
                                                           final defaultList = initialPageVwVagasAbertasRowList
                                                               .where((e) =>
-                                                                  (e.vagasData == FFAppState().selectedDay) &&
+                                                                  (e.vagaData ==
+                                                                      FFAppState()
+                                                                          .selectedDay) &&
                                                                   (e.hospitalEstado ==
                                                                       FFAppState()
-                                                                          .estadoUF) &&
-                                                                  (e.vagasStatus ==
-                                                                      'aberta'))
+                                                                          .estadoUF))
                                                               .toList();
                                                           if (defaultList
                                                               .isEmpty) {
@@ -1725,7 +1718,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                           .cardVagasInitialModels2
                                                                           .getModel(
                                                                         defaultListItem
-                                                                            .vagasId!,
+                                                                            .vagaId!,
                                                                         defaultListIndex,
                                                                       ),
                                                                       updateCallback:
@@ -1737,14 +1730,14 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                           CardVagasInitialWidget(
                                                                         key:
                                                                             Key(
-                                                                          'Keytip_${defaultListItem.vagasId!}',
+                                                                          'Keytip_${defaultListItem.vagaId!}',
                                                                         ),
                                                                         specialty:
                                                                             defaultListItem.especialidadeNome,
                                                                         value:
                                                                             formatNumber(
                                                                           defaultListItem
-                                                                              .vagasValor,
+                                                                              .vagaValor,
                                                                           formatType:
                                                                               FormatType.decimal,
                                                                           decimalType:
@@ -1756,14 +1749,14 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                             '${dateTimeFormat(
                                                                           "H",
                                                                           defaultListItem
-                                                                              .vagasHorainicio
+                                                                              .vagaHorainicio
                                                                               ?.time,
                                                                           locale:
                                                                               FFLocalizations.of(context).languageCode,
                                                                         )}h-${dateTimeFormat(
                                                                           "H",
                                                                           defaultListItem
-                                                                              .vagasHorafim
+                                                                              .vagaHorafim
                                                                               ?.time,
                                                                           locale:
                                                                               FFLocalizations.of(context).languageCode,
@@ -1772,19 +1765,19 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                             'há ${dateTimeFormat(
                                                                           "relative",
                                                                           defaultListItem
-                                                                              .vagasCreatedate,
+                                                                              .vagaCreatedate,
                                                                           locale:
                                                                               FFLocalizations.of(context).languageShortCode ?? FFLocalizations.of(context).languageCode,
                                                                         )}',
                                                                         shift: defaultListItem
-                                                                            .vagasPeriodoNome,
+                                                                            .periodoNome,
                                                                         type: defaultListItem
-                                                                            .vagasTipoNome,
+                                                                            .tiposVagaNome,
                                                                         hospital: functions.cleanHospitalName(
                                                                             defaultListItem.hospitalNome!,
                                                                             FFAppState().cleanHospital.toList()),
                                                                         vaga: defaultListItem
-                                                                            .vagasId,
+                                                                            .vagaId,
                                                                         avatarHospital:
                                                                             defaultListItem.hospitalAvatar,
                                                                         sector:
@@ -1829,27 +1822,26 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                                 padding: MediaQuery.viewInsetsOf(context),
                                                                                 child: VagaBottomSheetWidget(
                                                                                   speciality: defaultListItem.especialidadeNome,
-                                                                                  value: defaultListItem.vagasValor?.toDouble(),
+                                                                                  value: defaultListItem.vagaValor?.toDouble(),
                                                                                   hospital: defaultListItem.hospitalNome,
-                                                                                  date: defaultListItem.vagasData,
-                                                                                  datecreated: defaultListItem.vagasCreatedate,
-                                                                                  startTime: defaultListItem.vagasHorainicio?.time,
-                                                                                  endTime: defaultListItem.vagasHorafim?.time,
-                                                                                  shift: defaultListItem.vagasPeriodoNome,
-                                                                                  type: defaultListItem.vagasTipoNome,
+                                                                                  date: defaultListItem.vagaData,
+                                                                                  datecreated: defaultListItem.vagaCreatedate,
+                                                                                  startTime: defaultListItem.vagaHorainicio?.time,
+                                                                                  endTime: defaultListItem.vagaHorafim?.time,
+                                                                                  shift: defaultListItem.periodoNome,
+                                                                                  type: defaultListItem.tiposVagaNome,
                                                                                   lat: defaultListItem.hospitalLat,
                                                                                   lon: defaultListItem.hospitalLog,
                                                                                   address: defaultListItem.hospitalEnd,
-                                                                                  jobid: defaultListItem.vagasId,
+                                                                                  jobid: defaultListItem.vagaId,
                                                                                   contractor: defaultListItem.grupoNome,
                                                                                   contractorName: defaultListItem.escalistaNome,
                                                                                   contractorPhone: defaultListItem.escalistaTelefone,
                                                                                   contractorEmail: defaultListItem.escalistaEmail,
-                                                                                  payday: defaultListItem.vagasDatapagamento,
-                                                                                  payment: defaultListItem.vagasFormarecebimentoNome,
+                                                                                  payday: defaultListItem.vagaDatapagamento,
+                                                                                  payment: defaultListItem.formarecebimentoNome,
                                                                                   avatarHospital: defaultListItem.hospitalAvatar,
                                                                                   sector: defaultListItem.setorNome,
-                                                                                  showFavorite: false,
                                                                                   callback: () async {},
                                                                                 ),
                                                                               ),
@@ -1874,7 +1866,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                             'time':
                                                                                 getCurrentTimestamp,
                                                                             'vaga_id':
-                                                                                defaultListItem.vagasId,
+                                                                                defaultListItem.vagaId,
                                                                           },
                                                                         );
                                                                         return;
@@ -1944,7 +1936,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                       ),
                                     if (!(initialPageVwVagasAbertasRowList
                                         .where((e) =>
-                                            e.vagasData ==
+                                            e.vagaData ==
                                             FFAppState().selectedDay)
                                         .toList()
                                         .isNotEmpty))

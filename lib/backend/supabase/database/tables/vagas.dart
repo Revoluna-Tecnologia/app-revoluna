@@ -14,84 +14,76 @@ class VagasRow extends SupabaseDataRow {
   @override
   SupabaseTable get table => VagasTable();
 
-  String get vagasId => getField<String>('vagas_id')!;
-  set vagasId(String value) => setField<String>('vagas_id', value);
+  String get id => getField<String>('id')!;
+  set id(String value) => setField<String>('id', value);
 
-  DateTime get vagasCreatedate => getField<DateTime>('vagas_createdate')!;
-  set vagasCreatedate(DateTime value) =>
-      setField<DateTime>('vagas_createdate', value);
+  DateTime get createdAt => getField<DateTime>('created_at')!;
+  set createdAt(DateTime value) => setField<DateTime>('created_at', value);
 
-  String get vagasHospital => getField<String>('vagas_hospital')!;
-  set vagasHospital(String value) => setField<String>('vagas_hospital', value);
+  String get hospitalId => getField<String>('hospital_id')!;
+  set hospitalId(String value) => setField<String>('hospital_id', value);
 
-  DateTime? get vagasData => getField<DateTime>('vagas_data');
-  set vagasData(DateTime? value) => setField<DateTime>('vagas_data', value);
+  DateTime? get dataField => getField<DateTime>('data');
+  set dataField(DateTime? value) => setField<DateTime>('data', value);
 
-  String get vagasPeriodo => getField<String>('vagas_periodo')!;
-  set vagasPeriodo(String value) => setField<String>('vagas_periodo', value);
+  String get periodoId => getField<String>('periodo_id')!;
+  set periodoId(String value) => setField<String>('periodo_id', value);
 
-  PostgresTime get vagasHorainicio =>
-      getField<PostgresTime>('vagas_horainicio')!;
-  set vagasHorainicio(PostgresTime value) =>
-      setField<PostgresTime>('vagas_horainicio', value);
+  PostgresTime get horaInicio => getField<PostgresTime>('hora_inicio')!;
+  set horaInicio(PostgresTime value) =>
+      setField<PostgresTime>('hora_inicio', value);
 
-  PostgresTime get vagasHorafim => getField<PostgresTime>('vagas_horafim')!;
-  set vagasHorafim(PostgresTime value) =>
-      setField<PostgresTime>('vagas_horafim', value);
+  PostgresTime get horaFim => getField<PostgresTime>('hora_fim')!;
+  set horaFim(PostgresTime value) => setField<PostgresTime>('hora_fim', value);
 
-  int get vagasValor => getField<int>('vagas_valor')!;
-  set vagasValor(int value) => setField<int>('vagas_valor', value);
+  int get valor => getField<int>('valor')!;
+  set valor(int value) => setField<int>('valor', value);
 
-  DateTime get vagasDatapagamento => getField<DateTime>('vagas_datapagamento')!;
-  set vagasDatapagamento(DateTime value) =>
-      setField<DateTime>('vagas_datapagamento', value);
+  DateTime get dataPagamento => getField<DateTime>('data_pagamento')!;
+  set dataPagamento(DateTime value) =>
+      setField<DateTime>('data_pagamento', value);
 
-  String get vagasTipo => getField<String>('vagas_tipo')!;
-  set vagasTipo(String value) => setField<String>('vagas_tipo', value);
+  String get tiposVagaId => getField<String>('tipos_vaga_id')!;
+  set tiposVagaId(String value) => setField<String>('tipos_vaga_id', value);
 
-  String? get vagasObservacoes => getField<String>('vagas_observacoes');
-  set vagasObservacoes(String? value) =>
-      setField<String>('vagas_observacoes', value);
+  String? get observacoes => getField<String>('observacoes');
+  set observacoes(String? value) => setField<String>('observacoes', value);
 
-  String get vagasSetor => getField<String>('vagas_setor')!;
-  set vagasSetor(String value) => setField<String>('vagas_setor', value);
+  String get setorId => getField<String>('setor_id')!;
+  set setorId(String value) => setField<String>('setor_id', value);
 
-  String get vagasEscalista => getField<String>('vagas_escalista')!;
-  set vagasEscalista(String value) =>
-      setField<String>('vagas_escalista', value);
+  String get escalistaId => getField<String>('escalista_id')!;
+  set escalistaId(String value) => setField<String>('escalista_id', value);
 
-  DateTime? get vagasUpdateat => getField<DateTime>('vagas_updateat');
-  set vagasUpdateat(DateTime? value) =>
-      setField<DateTime>('vagas_updateat', value);
+  DateTime? get updatedAt => getField<DateTime>('updated_at');
+  set updatedAt(DateTime? value) => setField<DateTime>('updated_at', value);
 
-  String get vagasUpdateby => getField<String>('vagas_updateby')!;
-  set vagasUpdateby(String value) => setField<String>('vagas_updateby', value);
+  String get updatedBy => getField<String>('updated_by')!;
+  set updatedBy(String value) => setField<String>('updated_by', value);
 
-  DateTime? get vagasDeleteat => getField<DateTime>('vagas_deleteat');
-  set vagasDeleteat(DateTime? value) =>
-      setField<DateTime>('vagas_deleteat', value);
+  DateTime? get deletedAt => getField<DateTime>('deleted_at');
+  set deletedAt(DateTime? value) => setField<DateTime>('deleted_at', value);
 
-  String? get vagasStatus => getField<String>('vagas_status');
-  set vagasStatus(String? value) => setField<String>('vagas_status', value);
+  String? get status => getField<String>('status');
+  set status(String? value) => setField<String>('status', value);
 
-  int? get vagasTotalcandidaturas => getField<int>('vagas_totalcandidaturas');
-  set vagasTotalcandidaturas(int? value) =>
-      setField<int>('vagas_totalcandidaturas', value);
+  int? get totalCandidaturas => getField<int>('total_candidaturas');
+  set totalCandidaturas(int? value) =>
+      setField<int>('total_candidaturas', value);
 
-  String get vagaEspecialidade => getField<String>('vaga_especialidade')!;
-  set vagaEspecialidade(String value) =>
-      setField<String>('vaga_especialidade', value);
+  String get especialidadeId => getField<String>('especialidade_id')!;
+  set especialidadeId(String value) =>
+      setField<String>('especialidade_id', value);
 
   String? get grupoId => getField<String>('grupo_id');
   set grupoId(String? value) => setField<String>('grupo_id', value);
 
-  int get index => getField<int>('Index')!;
-  set index(int value) => setField<int>('Index', value);
+  int get index => getField<int>('index')!;
+  set index(int value) => setField<int>('index', value);
 
-  String? get vagasFormarecebimento =>
-      getField<String>('vagas_formarecebimento');
-  set vagasFormarecebimento(String? value) =>
-      setField<String>('vagas_formarecebimento', value);
+  String? get formaRecebimentoId => getField<String>('forma_recebimento_id');
+  set formaRecebimentoId(String? value) =>
+      setField<String>('forma_recebimento_id', value);
 
   String? get recorrenciaId => getField<String>('recorrencia_id');
   set recorrenciaId(String? value) => setField<String>('recorrencia_id', value);

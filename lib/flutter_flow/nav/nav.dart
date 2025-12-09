@@ -97,6 +97,70 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
+          name: TermosWidget.routeName,
+          path: TermosWidget.routePath,
+          builder: (context, params) => TermosWidget(
+            inputemail: params.getParam(
+              'inputemail',
+              ParamType.String,
+            ),
+            inputphone: params.getParam(
+              'inputphone',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: PrivacidadeWidget.routeName,
+          path: PrivacidadeWidget.routePath,
+          builder: (context, params) => PrivacidadeWidget(
+            inputemail: params.getParam(
+              'inputemail',
+              ParamType.String,
+            ),
+            inputphone: params.getParam(
+              'inputphone',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: NotificacoesWidget.routeName,
+          path: NotificacoesWidget.routePath,
+          builder: (context, params) => NotificacoesWidget(
+            notificationsQuery: params.getParam<NotificationsRow>(
+              'notificationsQuery',
+              ParamType.SupabaseRow,
+              isList: true,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: LoginPhoneCodeWidget.routeName,
+          path: LoginPhoneCodeWidget.routePath,
+          builder: (context, params) => LoginPhoneCodeWidget(
+            phoneOnlynumbers: params.getParam(
+              'phoneOnlynumbers',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: LoginMagicLinkWidget.routeName,
+          path: LoginMagicLinkWidget.routePath,
+          builder: (context, params) => LoginMagicLinkWidget(),
+        ),
+        FFRoute(
+          name: LoginPasswordWidget.routeName,
+          path: LoginPasswordWidget.routePath,
+          builder: (context, params) => LoginPasswordWidget(),
+        ),
+        FFRoute(
+          name: LocalizacaoWidget.routeName,
+          path: LocalizacaoWidget.routePath,
+          builder: (context, params) => LocalizacaoWidget(),
+        ),
+        FFRoute(
           name: Cadastro2Widget.routeName,
           path: Cadastro2Widget.routePath,
           builder: (context, params) => Cadastro2Widget(
@@ -135,20 +199,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-          name: TermosWidget.routeName,
-          path: TermosWidget.routePath,
-          builder: (context, params) => TermosWidget(
-            inputemail: params.getParam(
-              'inputemail',
-              ParamType.String,
-            ),
-            inputphone: params.getParam(
-              'inputphone',
-              ParamType.String,
-            ),
-          ),
-        ),
-        FFRoute(
           name: Cadastro1Widget.routeName,
           path: Cadastro1Widget.routePath,
           builder: (context, params) => Cadastro1Widget(
@@ -164,31 +214,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             appleFullName: params.getParam<String>(
               'appleFullName',
               ParamType.String,
-              isList: true,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: PrivacidadeWidget.routeName,
-          path: PrivacidadeWidget.routePath,
-          builder: (context, params) => PrivacidadeWidget(
-            inputemail: params.getParam(
-              'inputemail',
-              ParamType.String,
-            ),
-            inputphone: params.getParam(
-              'inputphone',
-              ParamType.String,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: NotificacoesWidget.routeName,
-          path: NotificacoesWidget.routePath,
-          builder: (context, params) => NotificacoesWidget(
-            notificationsQuery: params.getParam<NotificationsRow>(
-              'notificationsQuery',
-              ParamType.SupabaseRow,
               isList: true,
             ),
           ),
@@ -214,21 +239,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => LoginPhoneWidget(),
         ),
         FFRoute(
-          name: LoginPhoneCodeWidget.routeName,
-          path: LoginPhoneCodeWidget.routePath,
-          builder: (context, params) => LoginPhoneCodeWidget(
-            phoneOnlynumbers: params.getParam(
-              'phoneOnlynumbers',
-              ParamType.String,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: LoginMagicLinkWidget.routeName,
-          path: LoginMagicLinkWidget.routePath,
-          builder: (context, params) => LoginMagicLinkWidget(),
-        ),
-        FFRoute(
             name: HistoricoWidget.routeName,
             path: HistoricoWidget.routePath,
             requireAuth: true,
@@ -247,11 +257,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: LoginEmailWidget.routeName,
           path: LoginEmailWidget.routePath,
           builder: (context, params) => LoginEmailWidget(),
-        ),
-        FFRoute(
-          name: LoginPasswordWidget.routeName,
-          path: LoginPasswordWidget.routePath,
-          builder: (context, params) => LoginPasswordWidget(),
         ),
         FFRoute(
           name: Cadastro3Widget.routeName,
@@ -360,11 +365,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: InitialPageWidget.routeName,
           path: InitialPageWidget.routePath,
           builder: (context, params) => InitialPageWidget(),
-        ),
-        FFRoute(
-          name: LocalizacaoWidget.routeName,
-          path: LocalizacaoWidget.routePath,
-          builder: (context, params) => LocalizacaoWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

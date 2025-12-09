@@ -55,12 +55,10 @@ class VagaBottomSheetWidget extends StatefulWidget {
     this.payment,
     String? avatarHospital,
     this.sector,
-    bool? showFavorite,
     this.candidates,
     this.callback,
-  })  : this.avatarHospital = avatarHospital ??
-            'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/avatarhospitais/placeholder..png',
-        this.showFavorite = showFavorite ?? false;
+  }) : this.avatarHospital = avatarHospital ??
+            'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/avatarhospitais/placeholder..png';
 
   final String? speciality;
   final double? value;
@@ -83,7 +81,6 @@ class VagaBottomSheetWidget extends StatefulWidget {
   final String? payment;
   final String avatarHospital;
   final String? sector;
-  final bool showFavorite;
   final VwVagasCandidaturasRow? candidates;
   final Future Function()? callback;
 
@@ -111,9 +108,9 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       logFirebaseEvent('VAGA_BOTTOM_SHEET_VagaBottomSheet_ON_INI');
       logFirebaseEvent('VagaBottomSheet_backend_call');
-      _model.requirements = await VagasRequisitoTable().queryRows(
+      _model.requirements = await VagasRequisitosTable().queryRows(
         queryFn: (q) => q.eqOrNull(
-          'vagas_id',
+          'vaga_id',
           widget!.jobid,
         ),
       );
@@ -122,7 +119,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
         _model.saved = await VagasSalvasTable().queryRows(
           queryFn: (q) => q
               .eqOrNull(
-                'vagas_id',
+                'vaga_id',
                 widget!.jobid,
               )
               .eqOrNull(
@@ -138,7 +135,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                 currentUserUid,
               )
               .eqOrNull(
-                'vagas_id',
+                'vaga_id',
                 widget!.jobid,
               ),
         );
@@ -149,16 +146,30 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
             currentUserUid,
           ),
         );
+        logFirebaseEvent('VagaBottomSheet_backend_call');
+        _model.favorite = await MedicosFavoritosTable().queryRows(
+          queryFn: (q) => q
+              .eqOrNull(
+                'medico_id',
+                currentUserUid,
+              )
+              .eqOrNull(
+                'grupo_id',
+                widget!.candidates?.grupoId,
+              ),
+        );
         logFirebaseEvent('VagaBottomSheet_update_component_state');
         _model.isSaved = _model.saved != null && (_model.saved)!.isNotEmpty;
         _model.isCandidate = widget!.candidates?.medicoId == currentUserUid;
-        _model.isAnnounced = widget!.candidates?.vagasStatus == 'anunciada';
+        _model.isAnnounced = widget!.candidates?.vagaStatus == 'anunciada';
         _model.isApproved =
             (widget!.candidates?.candidaturaStatus == 'APROVADO') &&
                 (widget!.candidates?.medicoId == currentUserUid);
         _model.isCheckedIn =
             _model.checkin != null && (_model.checkin)!.isNotEmpty;
         _model.isCheckedOut = _model.checkin?.firstOrNull?.checkout != null;
+        _model.isFavorite =
+            _model.favorite != null && (_model.favorite)!.isNotEmpty;
         safeSetState(() {});
       } else {
         logFirebaseEvent('VagaBottomSheet_update_component_state');
@@ -468,8 +479,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                               ].divide(SizedBox(height: FFAppConstants.Gap)),
                             ),
                           ),
-                          if (widget!.showFavorite &&
-                              (_model.isCandidate != true))
+                          if (_model.isFavorite && (_model.isCandidate != true))
                             Column(
                               mainAxisSize: MainAxisSize.max,
                               children: [
@@ -1715,7 +1725,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                       matchingRows: (rows) =>
                                                           rows
                                                               .eqOrNull(
-                                                                'vagas_id',
+                                                                'vaga_id',
                                                                 widget!.jobid,
                                                               )
                                                               .eqOrNull(
@@ -1732,7 +1742,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                         'IconButton_backend_call');
                                                     await VagasSalvasTable()
                                                         .insert({
-                                                      'vagas_id': widget!.jobid,
+                                                      'vaga_id': widget!.jobid,
                                                       'medico_id':
                                                           currentUserUid,
                                                     });
@@ -2074,13 +2084,13 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                               await VagasTable()
                                                                   .update(
                                                             data: {
-                                                              'vagas_status':
+                                                              'status':
                                                                   'fechada',
                                                             },
                                                             matchingRows:
                                                                 (rows) => rows
                                                                     .eqOrNull(
-                                                              'vagas_id',
+                                                              'id',
                                                               widget!.jobid,
                                                             ),
                                                             returnRows: true,
@@ -2088,7 +2098,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                           if (_model
                                                                   .cancelAnounce
                                                                   ?.firstOrNull
-                                                                  ?.vagasStatus ==
+                                                                  ?.status ==
                                                               'fechada') {
                                                             logFirebaseEvent(
                                                                 'IconButton_alert_dialog');
@@ -2206,13 +2216,13 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                 await VagasTable()
                                                                     .update(
                                                               data: {
-                                                                'vagas_status':
+                                                                'status':
                                                                     'anunciada',
                                                               },
                                                               matchingRows:
                                                                   (rows) => rows
                                                                       .eqOrNull(
-                                                                'vagas_id',
+                                                                'id',
                                                                 widget!.jobid,
                                                               ),
                                                               returnRows: true,
@@ -2220,7 +2230,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                             if (_model
                                                                     .anounceJob
                                                                     ?.firstOrNull
-                                                                    ?.vagasStatus ==
+                                                                    ?.status ==
                                                                 'anunciada') {
                                                               logFirebaseEvent(
                                                                   'IconButton_alert_dialog');
@@ -2565,21 +2575,17 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                             ),
                                                             FutureBuilder<
                                                                 List<
-                                                                    RequisitoTipoRow>>(
+                                                                    RequisitosRow>>(
                                                               future:
-                                                                  RequisitoTipoTable()
+                                                                  RequisitosTable()
                                                                       .queryRows(
                                                                 queryFn: (q) =>
                                                                     q.inFilterOrNull(
-                                                                  'requisito_id',
+                                                                  'id',
                                                                   _model
                                                                       .requirements
                                                                       ?.map((e) =>
-                                                                          valueOrDefault<
-                                                                              String>(
-                                                                            e.requisitoId,
-                                                                            'ids',
-                                                                          ))
+                                                                          e.requisitoId)
                                                                       .toList(),
                                                                 ),
                                                               ),
@@ -2606,8 +2612,8 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                     ),
                                                                   );
                                                                 }
-                                                                List<RequisitoTipoRow>
-                                                                    listViewRequisitoTipoRowList =
+                                                                List<RequisitosRow>
+                                                                    listViewRequisitosRowList =
                                                                     snapshot
                                                                         .data!;
 
@@ -2627,7 +2633,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                   scrollDirection:
                                                                       Axis.vertical,
                                                                   itemCount:
-                                                                      listViewRequisitoTipoRowList
+                                                                      listViewRequisitosRowList
                                                                           .length,
                                                                   separatorBuilder: (_,
                                                                           __) =>
@@ -2637,8 +2643,8 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                   itemBuilder:
                                                                       (context,
                                                                           listViewIndex) {
-                                                                    final listViewRequisitoTipoRow =
-                                                                        listViewRequisitoTipoRowList[
+                                                                    final listViewRequisitosRow =
+                                                                        listViewRequisitosRowList[
                                                                             listViewIndex];
                                                                     return Row(
                                                                       mainAxisSize:
@@ -2652,7 +2658,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                         Expanded(
                                                                           child:
                                                                               Text(
-                                                                            listViewRequisitoTipoRow.requisitoNome.maybeHandleOverflow(
+                                                                            listViewRequisitosRow.nome.maybeHandleOverflow(
                                                                               maxChars: 52,
                                                                               replacement: '…',
                                                                             ),
@@ -2684,11 +2690,11 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                           ),
                                                                           child:
                                                                               Checkbox(
-                                                                            value: _model.checkboxValueMap[listViewRequisitoTipoRow] ??=
+                                                                            value: _model.checkboxValueMap[listViewRequisitosRow] ??=
                                                                                 false,
                                                                             onChanged:
                                                                                 (newValue) async {
-                                                                              safeSetState(() => _model.checkboxValueMap[listViewRequisitoTipoRow] = newValue!);
+                                                                              safeSetState(() => _model.checkboxValueMap[listViewRequisitosRow] = newValue!);
                                                                             },
                                                                             side: (FlutterFlowTheme.of(context).primary != null)
                                                                                 ? BorderSide(
@@ -4847,164 +4853,6 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                     }
                                                                   },
                                                                 ),
-                                                              if (_model
-                                                                  .isApproved)
-                                                                Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    Builder(
-                                                                      builder: (context) =>
-                                                                          StreamBuilder<
-                                                                              List<PagamentosRow>>(
-                                                                        stream: _model.switchSupabaseStream ??= SupaFlow
-                                                                            .client
-                                                                            .from(
-                                                                                "pagamentos")
-                                                                            .stream(primaryKey: [
-                                                                              'pagamento_id'
-                                                                            ])
-                                                                            .eqOrNull(
-                                                                              'vagas_id',
-                                                                              widget!.jobid,
-                                                                            )
-                                                                            .map((list) =>
-                                                                                list.map((item) => PagamentosRow(item)).toList()),
-                                                                        builder:
-                                                                            (context,
-                                                                                snapshot) {
-                                                                          // Customize what your widget looks like when it's loading.
-                                                                          if (!snapshot
-                                                                              .hasData) {
-                                                                            return Center(
-                                                                              child: SizedBox(
-                                                                                width: 50.0,
-                                                                                height: 50.0,
-                                                                                child: CircularProgressIndicator(
-                                                                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                                                                    FlutterFlowTheme.of(context).primary,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            );
-                                                                          }
-                                                                          List<PagamentosRow>
-                                                                              switchPagamentosRowList =
-                                                                              snapshot.data!;
-
-                                                                          return Switch
-                                                                              .adaptive(
-                                                                            value: _model.switchValue ??=
-                                                                                switchPagamentosRowList.length != 0,
-                                                                            onChanged:
-                                                                                (newValue) async {
-                                                                              safeSetState(() => _model.switchValue = newValue!);
-                                                                              if (newValue!) {
-                                                                                logFirebaseEvent('VAGA_BOTTOM_SHEET_Switch_y42beszi_ON_TOG');
-                                                                                logFirebaseEvent('Switch_backend_call');
-                                                                                _model.insertPay = await PagamentosTable().insert({
-                                                                                  'medico_id': currentUserUid,
-                                                                                  'candidaturas_id': widget!.candidates?.candidaturasId,
-                                                                                  'valor': (widget!.value!).toInt(),
-                                                                                  'vagas_id': widget!.jobid,
-                                                                                });
-                                                                                if (_model.insertPay != null) {
-                                                                                  logFirebaseEvent('Switch_alert_dialog');
-                                                                                  await showDialog(
-                                                                                    context: context,
-                                                                                    builder: (dialogContext) {
-                                                                                      return Dialog(
-                                                                                        elevation: 0,
-                                                                                        insetPadding: EdgeInsets.zero,
-                                                                                        backgroundColor: Colors.transparent,
-                                                                                        alignment: AlignmentDirectional(0.0, 0.0).resolve(Directionality.of(context)),
-                                                                                        child: PositiveDialogBoxWidget(
-                                                                                          dialog: 'Pagamento confirmado!',
-                                                                                        ),
-                                                                                      );
-                                                                                    },
-                                                                                  );
-                                                                                } else {
-                                                                                  logFirebaseEvent('Switch_reset_form_fields');
-                                                                                  safeSetState(() {
-                                                                                    _model.switchValue = switchPagamentosRowList.length != 0;
-                                                                                  });
-                                                                                }
-
-                                                                                safeSetState(() {});
-                                                                              } else {
-                                                                                logFirebaseEvent('VAGA_BOTTOM_SHEET_Switch_y42beszi_ON_TOG');
-                                                                                if (switchPagamentosRowList.isNotEmpty) {
-                                                                                  logFirebaseEvent('Switch_backend_call');
-                                                                                  await PagamentosTable().delete(
-                                                                                    matchingRows: (rows) => rows
-                                                                                        .eqOrNull(
-                                                                                          'medico_id',
-                                                                                          currentUserUid,
-                                                                                        )
-                                                                                        .eqOrNull(
-                                                                                          'vagas_id',
-                                                                                          widget!.jobid,
-                                                                                        ),
-                                                                                  );
-                                                                                }
-                                                                              }
-                                                                            },
-                                                                            activeColor:
-                                                                                FlutterFlowTheme.of(context).primaryBackground,
-                                                                            activeTrackColor:
-                                                                                FlutterFlowTheme.of(context).primary,
-                                                                            inactiveTrackColor:
-                                                                                FlutterFlowTheme.of(context).accent3,
-                                                                            inactiveThumbColor:
-                                                                                FlutterFlowTheme.of(context).primaryBackground,
-                                                                          );
-                                                                        },
-                                                                      ),
-                                                                    ),
-                                                                    Column(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .max,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        Text(
-                                                                          'Pagamento recebido',
-                                                                          style: FlutterFlowTheme.of(context)
-                                                                              .titleSmall
-                                                                              .override(
-                                                                                font: GoogleFonts.geologica(
-                                                                                  fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
-                                                                                  fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
-                                                                                ),
-                                                                                letterSpacing: 0.0,
-                                                                                fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
-                                                                              ),
-                                                                        ),
-                                                                        Text(
-                                                                          'Ative para adicionar aos seus resultados',
-                                                                          style: FlutterFlowTheme.of(context)
-                                                                              .labelSmall
-                                                                              .override(
-                                                                                font: GoogleFonts.geologica(
-                                                                                  fontWeight: FlutterFlowTheme.of(context).labelSmall.fontWeight,
-                                                                                  fontStyle: FlutterFlowTheme.of(context).labelSmall.fontStyle,
-                                                                                ),
-                                                                                letterSpacing: 0.0,
-                                                                                fontWeight: FlutterFlowTheme.of(context).labelSmall.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).labelSmall.fontStyle,
-                                                                              ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ].divide(SizedBox(
-                                                                      width: FFAppConstants
-                                                                          .Gap)),
-                                                                ),
                                                             ]
                                                                 .divide(SizedBox(
                                                                     height:
@@ -5446,13 +5294,13 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                     )),
                                                         child: FutureBuilder<
                                                             List<
-                                                                VagasBeneficioRow>>(
+                                                                VagasBeneficiosRow>>(
                                                           future:
-                                                              VagasBeneficioTable()
+                                                              VagasBeneficiosTable()
                                                                   .queryRows(
                                                             queryFn: (q) =>
                                                                 q.eqOrNull(
-                                                              'vagas_id',
+                                                              'vaga_id',
                                                               widget!.jobid,
                                                             ),
                                                           ),
@@ -5478,25 +5326,25 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                 ),
                                                               );
                                                             }
-                                                            List<VagasBeneficioRow>
-                                                                conditionalBuilderVagasBeneficioRowList =
+                                                            List<VagasBeneficiosRow>
+                                                                conditionalBuilderVagasBeneficiosRowList =
                                                                 snapshot.data!;
 
                                                             return Builder(
                                                               builder:
                                                                   (context) {
-                                                                if (conditionalBuilderVagasBeneficioRowList
+                                                                if (conditionalBuilderVagasBeneficiosRowList
                                                                     .isNotEmpty) {
                                                                   return FutureBuilder<
                                                                       List<
-                                                                          BeneficioTipoRow>>(
-                                                                    future: BeneficioTipoTable()
+                                                                          BeneficiosRow>>(
+                                                                    future: BeneficiosTable()
                                                                         .queryRows(
                                                                       queryFn:
                                                                           (q) =>
                                                                               q.inFilterOrNull(
-                                                                        'beneficio_id',
-                                                                        conditionalBuilderVagasBeneficioRowList
+                                                                        'id',
+                                                                        conditionalBuilderVagasBeneficiosRowList
                                                                             .map((e) =>
                                                                                 e.beneficioId)
                                                                             .toList(),
@@ -5524,8 +5372,8 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                           ),
                                                                         );
                                                                       }
-                                                                      List<BeneficioTipoRow>
-                                                                          listViewBeneficioTipoRowList =
+                                                                      List<BeneficiosRow>
+                                                                          listViewBeneficiosRowList =
                                                                           snapshot
                                                                               .data!;
 
@@ -5544,15 +5392,15 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                         scrollDirection:
                                                                             Axis.vertical,
                                                                         itemCount:
-                                                                            listViewBeneficioTipoRowList.length,
+                                                                            listViewBeneficiosRowList.length,
                                                                         separatorBuilder:
                                                                             (_, __) =>
                                                                                 SizedBox(height: FFAppConstants.Gap),
                                                                         itemBuilder:
                                                                             (context,
                                                                                 listViewIndex) {
-                                                                          final listViewBeneficioTipoRow =
-                                                                              listViewBeneficioTipoRowList[listViewIndex];
+                                                                          final listViewBeneficiosRow =
+                                                                              listViewBeneficiosRowList[listViewIndex];
                                                                           return Row(
                                                                             mainAxisSize:
                                                                                 MainAxisSize.min,
@@ -5565,7 +5413,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                               ),
                                                                               Text(
                                                                                 valueOrDefault<String>(
-                                                                                  listViewBeneficioTipoRow.beneficioNome,
+                                                                                  listViewBeneficiosRow.nome,
                                                                                   '[benefício_nome]',
                                                                                 ).maybeHandleOverflow(
                                                                                   maxChars: 33,
@@ -6728,7 +6576,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                           var _shouldSetState = false;
                                           if (currentJwtToken != null &&
                                               currentJwtToken != '') {
-                                            if (widget!.showFavorite) {
+                                            if (_model.isFavorite) {
                                               logFirebaseEvent(
                                                   'Button_alert_dialog');
                                               await showDialog(
@@ -6982,7 +6830,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                             safeSetState(() {});
                                         },
                                   text: valueOrDefault<String>(
-                                    widget!.showFavorite &&
+                                    _model.isFavorite &&
                                             (_model.isCandidate != true)
                                         ? 'Quero esse plantão'
                                         : 'Clique e saiba mais',

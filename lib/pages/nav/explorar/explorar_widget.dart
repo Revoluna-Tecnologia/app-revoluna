@@ -78,10 +78,10 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
         requestFn: () => VwVagasCandidaturasTable().queryRows(
           queryFn: (q) => q
               .eqOrNull(
-                'vagas_status',
+                'vaga_status',
                 'aberta',
               )
-              .order('vagas_horainicio', ascending: true),
+              .order('vaga_horainicio', ascending: true),
         ),
       )
           .then((result) {
@@ -338,8 +338,8 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                               _model.variableQuery =
                                                   explorarVwVagasCandidaturasRowList
                                                       .sortedList(
-                                                          keyOf: (e) => e
-                                                              .vagasCreatedate!,
+                                                          keyOf: (e) =>
+                                                              e.vagaCreatedate!,
                                                           desc: false)
                                                       .toList()
                                                       .cast<
@@ -353,8 +353,8 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                               _model.variableQuery =
                                                   explorarVwVagasCandidaturasRowList
                                                       .sortedList(
-                                                          keyOf: (e) => e
-                                                              .vagasCreatedate!,
+                                                          keyOf: (e) =>
+                                                              e.vagaCreatedate!,
                                                           desc: true)
                                                       .toList()
                                                       .cast<
@@ -537,7 +537,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                     explorarVwVagasCandidaturasRowList
                                                         .sortedList(
                                                             keyOf: (e) =>
-                                                                e.vagasData!,
+                                                                e.vagaData!,
                                                             desc: false)
                                                         .toList()
                                                         .cast<
@@ -551,7 +551,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                     explorarVwVagasCandidaturasRowList
                                                         .sortedList(
                                                             keyOf: (e) =>
-                                                                e.vagasData!,
+                                                                e.vagaData!,
                                                             desc: true)
                                                         .toList()
                                                         .cast<
@@ -732,7 +732,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                   explorarVwVagasCandidaturasRowList
                                                       .sortedList(
                                                           keyOf: (e) =>
-                                                              e.vagasValor!,
+                                                              e.vagaValor!,
                                                           desc: false)
                                                       .toList()
                                                       .cast<
@@ -746,7 +746,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                   explorarVwVagasCandidaturasRowList
                                                       .sortedList(
                                                           keyOf: (e) =>
-                                                              e.vagasValor!,
+                                                              e.vagaValor!,
                                                           desc: true)
                                                       .toList()
                                                       .cast<
@@ -1018,8 +1018,8 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                 .sortByPayment(
                                                     explorarVwVagasCandidaturasRowList
                                                         .sortedList(
-                                                            keyOf: (e) =>
-                                                                e.vagasData!,
+                                                            keyOf: (e) => e
+                                                                .vagaDatapagamento!,
                                                             desc: false)
                                                         .toList(),
                                                     _model.ascendingOrder)
@@ -1028,9 +1028,9 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                       return (payment - job) <=
                                                           86400;
                                                     }(
-                                                        e.vagasData!
+                                                        e.vagaData!
                                                             .secondsSinceEpoch,
-                                                        e.vagasDatapagamento!
+                                                        e.vagaDatapagamento!
                                                             .secondsSinceEpoch))
                                                 .toList()
                                                 .cast<VwVagasCandidaturasRow>();
@@ -1296,6 +1296,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                     logFirebaseEvent('Icon_reset_form_fields');
                                     safeSetState(() {
                                       _model.dropDownValueController?.reset();
+                                      _model.dropDownValue = null;
                                     });
                                     logFirebaseEvent('Icon_update_page_state');
                                     _model.clearDropColor =
@@ -1342,13 +1343,12 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                       .dropDownValue!
                                                       .contains(e.hospitalId)
                                                   : true) &&
-                                              (e.vagasStatus == 'aberta') &&
-                                              (e.vagasData! >=
+                                              (e.vagaData! >=
                                                   functions.currentDate()!))
                                           .toList()
-                                          .unique((e) => e.vagasId!)
+                                          .unique((e) => e.vagaId!)
                                           .sortedList(
-                                              keyOf: (e) => e.vagasCreatedate!,
+                                              keyOf: (e) => e.vagaCreatedate!,
                                               desc: true)
                                           .toList();
                                   if (initialList.isEmpty) {
@@ -1388,19 +1388,19 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                             wrapWithModel(
                                               model: _model.cardVagasModels1
                                                   .getModel(
-                                                initialListItem.vagasId!,
+                                                initialListItem.vagaId!,
                                                 initialListIndex,
                                               ),
                                               updateCallback: () =>
                                                   safeSetState(() {}),
                                               child: CardVagasWidget(
                                                 key: Key(
-                                                  'Keyzze_${initialListItem.vagasId!}',
+                                                  'Keyzze_${initialListItem.vagaId!}',
                                                 ),
                                                 specialty: initialListItem
                                                     .especialidadeNome,
                                                 value: formatNumber(
-                                                  initialListItem.vagasValor,
+                                                  initialListItem.vagaValor,
                                                   formatType:
                                                       FormatType.decimal,
                                                   decimalType:
@@ -1409,7 +1409,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                 ),
                                                 date: dateTimeFormat(
                                                   "dd/MM",
-                                                  initialListItem.vagasData,
+                                                  initialListItem.vagaData,
                                                   locale: FFLocalizations.of(
                                                           context)
                                                       .languageCode,
@@ -1417,7 +1417,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                 datecount: 'há ${dateTimeFormat(
                                                   "relative",
                                                   initialListItem
-                                                      .vagasCreatedate,
+                                                      .vagaCreatedate,
                                                   locale: FFLocalizations.of(
                                                               context)
                                                           .languageShortCode ??
@@ -1427,7 +1427,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                 )}',
                                                 shift: '',
                                                 type: initialListItem
-                                                    .vagasTipoNome,
+                                                    .tiposVagaNome,
                                                 hospital:
                                                     functions.cleanHospitalName(
                                                         initialListItem
@@ -1435,7 +1435,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                         FFAppState()
                                                             .cleanHospital
                                                             .toList()),
-                                                vaga: initialListItem.vagasId,
+                                                vaga: initialListItem.vagaId,
                                                 avatarHospital: initialListItem
                                                     .hospitalAvatar,
                                                 showPay: false,
@@ -1453,10 +1453,10 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                       86400;
                                                 }(
                                                         initialListItem
-                                                            .vagasData!
+                                                            .vagaData!
                                                             .secondsSinceEpoch,
                                                         initialListItem
-                                                            .vagasDatapagamento!
+                                                            .vagaDatapagamento!
                                                             .secondsSinceEpoch),
                                               ),
                                             ),
@@ -1505,29 +1505,30 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                                     .especialidadeNome,
                                                             value:
                                                                 initialListItem
-                                                                    .vagasValor
+                                                                    .vagaValor
                                                                     ?.toDouble(),
                                                             hospital:
                                                                 initialListItem
                                                                     .hospitalNome,
                                                             date:
                                                                 initialListItem
-                                                                    .vagasData,
+                                                                    .vagaData,
                                                             datecreated:
                                                                 initialListItem
-                                                                    .vagasCreatedate,
+                                                                    .vagaCreatedate,
                                                             startTime:
                                                                 initialListItem
-                                                                    .vagasHorainicio
+                                                                    .vagaHorainicio
                                                                     ?.time,
                                                             endTime:
                                                                 initialListItem
-                                                                    .vagasHorafim
+                                                                    .vagaHorafim
                                                                     ?.time,
-                                                            shift: initialListItem
-                                                                .vagasPeriodoNome,
+                                                            shift:
+                                                                initialListItem
+                                                                    .periodoNome,
                                                             type: initialListItem
-                                                                .vagasTipoNome,
+                                                                .tiposVagaNome,
                                                             lat: initialListItem
                                                                 .hospitalLat,
                                                             lon: initialListItem
@@ -1537,7 +1538,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                                     .hospitalEnd,
                                                             jobid:
                                                                 initialListItem
-                                                                    .vagasId,
+                                                                    .vagaId,
                                                             contractor:
                                                                 initialListItem
                                                                     .grupoNome,
@@ -1551,32 +1552,29 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                                 initialListItem
                                                                     .escalistaEmail,
                                                             payday: initialListItem
-                                                                .vagasDatapagamento,
+                                                                .vagaDatapagamento,
                                                             payment: initialListItem
-                                                                .vagasFormarecebimentoNome,
+                                                                .formaRecebimentoNome,
                                                             avatarHospital:
                                                                 initialListItem
                                                                     .hospitalAvatar,
                                                             sector:
                                                                 initialListItem
                                                                     .setorNome,
-                                                            showFavorite:
-                                                                initialListItem
-                                                                    .medicoFavorito,
                                                             candidates: explorarVwVagasCandidaturasRowList
                                                                     .where((e) =>
-                                                                        (e.vagasId ==
+                                                                        (e.vagaId ==
                                                                             initialListItem
-                                                                                .vagasId) &&
+                                                                                .vagaId) &&
                                                                         (e.medicoId ==
                                                                             currentUserUid))
                                                                     .toList()
                                                                     .isNotEmpty
                                                                 ? explorarVwVagasCandidaturasRowList
                                                                     .where((e) =>
-                                                                        (e.vagasId ==
+                                                                        (e.vagaId ==
                                                                             initialListItem
-                                                                                .vagasId) &&
+                                                                                .vagaId) &&
                                                                         (e.medicoId ==
                                                                             currentUserUid))
                                                                     .toList()
@@ -1607,7 +1605,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                       'location':
                                                           currentUserLocationValue,
                                                       'vaga_id': initialListItem
-                                                          .vagasId,
+                                                          .vagaId,
                                                     },
                                                   );
                                                   return;
@@ -1682,11 +1680,10 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                               ? _model.dropDownValue!
                                                   .contains(e.hospitalId)
                                               : true) &&
-                                          (e.vagasStatus == 'aberta') &&
-                                          (e.vagasData! >=
+                                          (e.vagaData! >=
                                               functions.currentDate()!))
                                       .toList()
-                                      .unique((e) => e.vagasId!)
+                                      .unique((e) => e.vagaId!)
                                       .toList();
                                   if (variableList.isEmpty) {
                                     return EmptyListWidget(
@@ -1726,19 +1723,19 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                             wrapWithModel(
                                               model: _model.cardVagasModels2
                                                   .getModel(
-                                                variableListItem.vagasId!,
+                                                variableListItem.vagaId!,
                                                 variableListIndex,
                                               ),
                                               updateCallback: () =>
                                                   safeSetState(() {}),
                                               child: CardVagasWidget(
                                                 key: Key(
-                                                  'Keyxhf_${variableListItem.vagasId!}',
+                                                  'Keyxhf_${variableListItem.vagaId!}',
                                                 ),
                                                 specialty: variableListItem
                                                     .especialidadeNome,
                                                 value: formatNumber(
-                                                  variableListItem.vagasValor,
+                                                  variableListItem.vagaValor,
                                                   formatType:
                                                       FormatType.decimal,
                                                   decimalType:
@@ -1747,7 +1744,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                 ),
                                                 date: dateTimeFormat(
                                                   "dd/MM",
-                                                  variableListItem.vagasData,
+                                                  variableListItem.vagaData,
                                                   locale: FFLocalizations.of(
                                                           context)
                                                       .languageCode,
@@ -1755,7 +1752,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                 datecount: 'há ${dateTimeFormat(
                                                   "relative",
                                                   variableListItem
-                                                      .vagasCreatedate,
+                                                      .vagaCreatedate,
                                                   locale: FFLocalizations.of(
                                                               context)
                                                           .languageShortCode ??
@@ -1765,7 +1762,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                 )}',
                                                 shift: '',
                                                 type: variableListItem
-                                                    .vagasTipoNome,
+                                                    .tiposVagaNome,
                                                 hospital:
                                                     functions.cleanHospitalName(
                                                         variableListItem
@@ -1773,7 +1770,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                         FFAppState()
                                                             .cleanHospital
                                                             .toList()),
-                                                vaga: variableListItem.vagasId,
+                                                vaga: variableListItem.vagaId,
                                                 avatarHospital: variableListItem
                                                     .hospitalAvatar,
                                                 showPay: false,
@@ -1791,10 +1788,10 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                       86400;
                                                 }(
                                                         variableListItem
-                                                            .vagasData!
+                                                            .vagaData!
                                                             .secondsSinceEpoch,
                                                         variableListItem
-                                                            .vagasDatapagamento!
+                                                            .vagaDatapagamento!
                                                             .secondsSinceEpoch),
                                               ),
                                             ),
@@ -1843,29 +1840,30 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                                     .especialidadeNome,
                                                             value:
                                                                 variableListItem
-                                                                    .vagasValor
+                                                                    .vagaValor
                                                                     ?.toDouble(),
                                                             hospital:
                                                                 variableListItem
                                                                     .hospitalNome,
                                                             date:
                                                                 variableListItem
-                                                                    .vagasData,
+                                                                    .vagaData,
                                                             datecreated:
                                                                 variableListItem
-                                                                    .vagasCreatedate,
+                                                                    .vagaCreatedate,
                                                             startTime:
                                                                 variableListItem
-                                                                    .vagasHorainicio
+                                                                    .vagaHorainicio
                                                                     ?.time,
                                                             endTime:
                                                                 variableListItem
-                                                                    .vagasHorafim
+                                                                    .vagaHorafim
                                                                     ?.time,
-                                                            shift: variableListItem
-                                                                .vagasPeriodoNome,
+                                                            shift:
+                                                                variableListItem
+                                                                    .periodoNome,
                                                             type: variableListItem
-                                                                .vagasTipoNome,
+                                                                .tiposVagaNome,
                                                             lat: variableListItem
                                                                 .hospitalLat,
                                                             lon: variableListItem
@@ -1875,7 +1873,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                                     .hospitalEnd,
                                                             jobid:
                                                                 variableListItem
-                                                                    .vagasId,
+                                                                    .vagaId,
                                                             contractor:
                                                                 variableListItem
                                                                     .grupoNome,
@@ -1889,33 +1887,30 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                                 variableListItem
                                                                     .escalistaEmail,
                                                             payday: variableListItem
-                                                                .vagasDatapagamento,
+                                                                .vagaDatapagamento,
                                                             payment:
                                                                 variableListItem
-                                                                    .vagasFormarecebimentoNome,
+                                                                    .formaRecebimentoNome,
                                                             avatarHospital:
                                                                 variableListItem
                                                                     .hospitalAvatar,
                                                             sector:
                                                                 variableListItem
                                                                     .setorNome,
-                                                            showFavorite:
-                                                                variableListItem
-                                                                    .medicoFavorito,
                                                             candidates: explorarVwVagasCandidaturasRowList
                                                                     .where((e) =>
-                                                                        (e.vagasId ==
+                                                                        (e.vagaId ==
                                                                             variableListItem
-                                                                                .vagasId) &&
+                                                                                .vagaId) &&
                                                                         (e.medicoId ==
                                                                             currentUserUid))
                                                                     .toList()
                                                                     .isNotEmpty
                                                                 ? explorarVwVagasCandidaturasRowList
                                                                     .where((e) =>
-                                                                        (e.vagasId ==
+                                                                        (e.vagaId ==
                                                                             variableListItem
-                                                                                .vagasId) &&
+                                                                                .vagaId) &&
                                                                         (e.medicoId ==
                                                                             currentUserUid))
                                                                     .toList()
@@ -1947,7 +1942,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                           currentUserLocationValue,
                                                       'vaga_id':
                                                           variableListItem
-                                                              .vagasId,
+                                                              .vagaId,
                                                     },
                                                   );
                                                   return;

@@ -18,30 +18,27 @@ class MedicosPrecadastroRow extends SupabaseDataRow {
   String get id => getField<String>('id')!;
   set id(String value) => setField<String>('id', value);
 
-  String get medicoPrimeironome => getField<String>('medico_primeironome')!;
-  set medicoPrimeironome(String value) =>
-      setField<String>('medico_primeironome', value);
+  String get primeiroNome => getField<String>('primeiro_nome')!;
+  set primeiroNome(String value) => setField<String>('primeiro_nome', value);
 
-  String get medicoSobrenome => getField<String>('medico_sobrenome')!;
-  set medicoSobrenome(String value) =>
-      setField<String>('medico_sobrenome', value);
+  String get sobrenome => getField<String>('sobrenome')!;
+  set sobrenome(String value) => setField<String>('sobrenome', value);
 
-  String get medicoCrm => getField<String>('medico_crm')!;
-  set medicoCrm(String value) => setField<String>('medico_crm', value);
+  String get crm => getField<String>('crm')!;
+  set crm(String value) => setField<String>('crm', value);
 
-  String? get medicoCpf => getField<String>('medico_cpf');
-  set medicoCpf(String? value) => setField<String>('medico_cpf', value);
+  String? get cpf => getField<String>('cpf');
+  set cpf(String? value) => setField<String>('cpf', value);
 
-  String? get medicoEmail => getField<String>('medico_email');
-  set medicoEmail(String? value) => setField<String>('medico_email', value);
+  String? get email => getField<String>('email');
+  set email(String? value) => setField<String>('email', value);
 
-  String? get medicoTelefone => getField<String>('medico_telefone');
-  set medicoTelefone(String? value) =>
-      setField<String>('medico_telefone', value);
+  String? get telefone => getField<String>('telefone');
+  set telefone(String? value) => setField<String>('telefone', value);
 
-  String? get medicoEspecialidade => getField<String>('medico_especialidade');
-  set medicoEspecialidade(String? value) =>
-      setField<String>('medico_especialidade', value);
+  String? get especialidadeId => getField<String>('especialidade_id');
+  set especialidadeId(String? value) =>
+      setField<String>('especialidade_id', value);
 
   String? get createdBy => getField<String>('created_by');
   set createdBy(String? value) => setField<String>('created_by', value);
@@ -49,8 +46,8 @@ class MedicosPrecadastroRow extends SupabaseDataRow {
   DateTime get createdAt => getField<DateTime>('created_at')!;
   set createdAt(DateTime value) => setField<DateTime>('created_at', value);
 
-  String? get medicoEstado => getField<String>('medico_estado');
-  set medicoEstado(String? value) => setField<String>('medico_estado', value);
+  String? get estado => getField<String>('estado');
+  set estado(String? value) => setField<String>('estado', value);
 
   String? get razaoSocial => getField<String>('razao_social');
   set razaoSocial(String? value) => setField<String>('razao_social', value);

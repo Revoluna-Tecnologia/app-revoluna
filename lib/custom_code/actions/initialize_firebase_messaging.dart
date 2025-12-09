@@ -30,8 +30,8 @@ void _handleNotificationTap(RemoteMessage message) {
       }
 
       // Se for uma rota para vaga, usar o sistema de deeplink existente
-      if (extraData.containsKey('vagas_id')) {
-        String vagasId = extraData['vagas_id'].toString();
+      if (extraData.containsKey('vaga_id')) {
+        String vagasId = extraData['vaga_id'].toString();
         String deeplink = 'revoluna://revoluna.com/$route?id=$vagasId';
         //debugPrint('🔗 Deeplink is set: $deeplink');
         // Usar a função handleDeeplink existente

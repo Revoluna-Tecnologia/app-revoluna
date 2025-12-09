@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import '/flutter_flow/custom_functions.dart'
     as functions; // Imports custom functions
 
-Future<String?> checkInCheckOut(String vagasId, double lat, double lon,
+Future<String?> checkInCheckOut(String jobId, double lat, double lon,
     String? justification, bool inOrOut) async {
   LatLng location = await getCurrentUserLocation(
       defaultLocation: LatLng(0.0, 0.0), cached: true);
@@ -38,33 +38,62 @@ Future<String?> checkInCheckOut(String vagasId, double lat, double lon,
   final user = SupaFlow.client.auth.currentUser;
 
   try {
-    final response = inOrOut
-        ? await SupaFlow.client
+    dynamic response;
+
+    if (inOrOut) {
+      // Check-in: verificar se já existe registro para esta vaga
+      final existingRecord = await SupaFlow.client
+          .from('checkin_checkout')
+          .select()
+          .eq('vaga_id', jobId)
+          .maybeSingle();
+
+      if (existingRecord != null) {
+        // Se existe, fazer update
+        response = await SupaFlow.client
+            .from('checkin_checkout')
+            .update({
+              'medico_id': user!.id,
+              'checkin': now,
+              'checkin_latitude': latUser,
+              'checkin_longitude': lonUser,
+              'checkin_justificativa': justification,
+            })
+            .eq('vaga_id', jobId)
+            .select('checkin')
+            .single();
+      } else {
+        // Se não existe, fazer insert
+        response = await SupaFlow.client
             .from('checkin_checkout')
             .insert({
               'medico_id': user!.id,
-              'vagas_id': vagasId,
+              'vaga_id': jobId,
               'checkin': now,
               'checkin_latitude': latUser,
               'checkin_longitude': lonUser,
               'checkin_justificativa': justification,
             })
             .select('checkin')
-            .single()
-        : await SupaFlow.client
-            .from('checkin_checkout')
-            .update({
-              'checkout': now,
-              'checkout_latitude': latUser,
-              'checkout_longitude': lonUser,
-              'checkout_justificativa': justification,
-              'updated_at': now,
-              'updated_by': user!.id
-            })
-            .eq('vagas_id', vagasId)
-            .eq('medico_id', user.id)
-            .select('checkout')
             .single();
+      }
+    } else {
+      // Check-out: mantém a lógica original
+      response = await SupaFlow.client
+          .from('checkin_checkout')
+          .update({
+            'checkout': now,
+            'checkout_latitude': latUser,
+            'checkout_longitude': lonUser,
+            'checkout_justificativa': justification,
+            'updated_at': now,
+            'updated_by': user!.id
+          })
+          .eq('vaga_id', jobId)
+          .eq('medico_id', user.id)
+          .select('checkout')
+          .single();
+    }
 
     if (response != null && response is Map<String, dynamic>) {
       if (inOrOut) {

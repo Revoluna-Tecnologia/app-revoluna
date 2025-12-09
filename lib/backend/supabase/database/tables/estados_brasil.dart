@@ -2,7 +2,7 @@ import '../database.dart';
 
 class EstadosBrasilTable extends SupabaseTable<EstadosBrasilRow> {
   @override
-  String get tableName => 'estadosBrasil';
+  String get tableName => 'estados_brasil';
 
   @override
   EstadosBrasilRow createRow(Map<String, dynamic> data) =>
@@ -18,12 +18,12 @@ class EstadosBrasilRow extends SupabaseDataRow {
   int get id => getField<int>('id')!;
   set id(int value) => setField<int>('id', value);
 
-  String? get nome => getField<String>('Nome');
-  set nome(String? value) => setField<String>('Nome', value);
+  String? get nome => getField<String>('nome');
+  set nome(String? value) => setField<String>('nome', value);
 
-  String? get sigla => getField<String>('Sigla');
-  set sigla(String? value) => setField<String>('Sigla', value);
+  String? get sigla => getField<String>('sigla');
+  set sigla(String? value) => setField<String>('sigla', value);
 
-  String? get lista => getField<String>('Lista');
-  set lista(String? value) => setField<String>('Lista', value);
+  String? get lista => getField<String>('lista');
+  set lista(String? value) => setField<String>('lista', value);
 }

@@ -249,120 +249,82 @@ dynamic deserializeParam<T>(
       case ParamType.SupabaseRow:
         final data = json.decode(param) as Map<String, dynamic>;
         switch (T) {
-          case VagasBeneficioRow:
-            return VagasBeneficioRow(data);
-          case VwVagasDisponiveisRow:
-            return VwVagasDisponiveisRow(data);
-          case BannerMKTRow:
-            return BannerMKTRow(data);
-          case BeneficioTipoRow:
-            return BeneficioTipoRow(data);
-          case TipovagaRow:
-            return TipovagaRow(data);
           case SetoresRow:
             return SetoresRow(data);
           case GradesRow:
             return GradesRow(data);
+          case VagasRecorrenciasRow:
+            return VagasRecorrenciasRow(data);
+          case VwPlantoesPagamentosRow:
+            return VwPlantoesPagamentosRow(data);
           case EmailVerificationTokensRow:
             return EmailVerificationTokensRow(data);
           case EquipesMedicosRow:
             return EquipesMedicosRow(data);
           case EquipesRow:
             return EquipesRow(data);
-          case TiposDocumentosRow:
-            return TiposDocumentosRow(data);
+          case VagasRequisitosRow:
+            return VagasRequisitosRow(data);
           case CleanHospitalRow:
             return CleanHospitalRow(data);
           case CandidaturasRow:
             return CandidaturasRow(data);
-          case PeriodoRow:
-            return PeriodoRow(data);
-          case VwTodasCandidaturasRow:
-            return VwTodasCandidaturasRow(data);
           case EspecialidadesRow:
             return EspecialidadesRow(data);
-          case LocalMedicoRow:
-            return LocalMedicoRow(data);
-          case VwVagasEspecialidadeRow:
-            return VwVagasEspecialidadeRow(data);
-          case SistemaLogsRow:
-            return SistemaLogsRow(data);
-          case VwVagasDiasContagemRow:
-            return VwVagasDiasContagemRow(data);
-          case VwCandidaturasPendentesRow:
-            return VwCandidaturasPendentesRow(data);
           case VwVagasAbertasRow:
             return VwVagasAbertasRow(data);
+          case BeneficiosRow:
+            return BeneficiosRow(data);
           case CheckinCheckoutNofiticationsRow:
             return CheckinCheckoutNofiticationsRow(data);
           case VagasSalvasRow:
             return VagasSalvasRow(data);
-          case VwVagasGradeInfoRow:
-            return VwVagasGradeInfoRow(data);
           case MedicosRow:
             return MedicosRow(data);
-          case EstadosBrasilRow:
-            return EstadosBrasilRow(data);
-          case HospitalRow:
-            return HospitalRow(data);
-          case CarteiraDigitalRow:
-            return CarteiraDigitalRow(data);
-          case VwCandidaturasPorDiaRow:
-            return VwCandidaturasPorDiaRow(data);
-          case VwDistribuicaoEspecialidadesRow:
-            return VwDistribuicaoEspecialidadesRow(data);
-          case VagasRequisitoRow:
-            return VagasRequisitoRow(data);
-          case VwVagasPorMesRow:
-            return VwVagasPorMesRow(data);
+          case PeriodosRow:
+            return PeriodosRow(data);
+          case WhatsappNumberRow:
+            return WhatsappNumberRow(data);
+          case GruposRow:
+            return GruposRow(data);
+          case CodigosAreaRow:
+            return CodigosAreaRow(data);
           case CheckinCheckoutRow:
             return CheckinCheckoutRow(data);
-          case GrupoRow:
-            return GrupoRow(data);
+          case EstadosBrasilRow:
+            return EstadosBrasilRow(data);
           case VwFolhaPagamentoRow:
             return VwFolhaPagamentoRow(data);
           case FormasRecebimentoRow:
             return FormasRecebimentoRow(data);
-          case RequisitoTipoRow:
-            return RequisitoTipoRow(data);
+          case VagasBeneficiosRow:
+            return VagasBeneficiosRow(data);
           case PagamentosRow:
             return PagamentosRow(data);
-          case VagasRecorrenciaRow:
-            return VagasRecorrenciaRow(data);
-          case VwOcupacaoPlantoesRow:
-            return VwOcupacaoPlantoesRow(data);
+          case TiposVagaRow:
+            return TiposVagaRow(data);
+          case RequisitosRow:
+            return RequisitosRow(data);
           case VwRelatorioFolhapagamentoRow:
             return VwRelatorioFolhapagamentoRow(data);
-          case WhatsappnumberRow:
-            return WhatsappnumberRow(data);
-          case VwUsuariosPorDiaRow:
-            return VwUsuariosPorDiaRow(data);
           case MedicosFavoritosRow:
             return MedicosFavoritosRow(data);
           case HospitalGeofencingRow:
             return HospitalGeofencingRow(data);
-          case VagasCompletoRow:
-            return VagasCompletoRow(data);
-          case ValidacaoDocumentosRow:
-            return ValidacaoDocumentosRow(data);
           case VwVagasCandidaturasRow:
             return VwVagasCandidaturasRow(data);
           case VagasRow:
             return VagasRow(data);
+          case EscalistasRow:
+            return EscalistasRow(data);
           case MedicosPrecadastroRow:
             return MedicosPrecadastroRow(data);
           case UserProfileRow:
             return UserProfileRow(data);
-          case CodigosdeareaRow:
-            return CodigosdeareaRow(data);
-          case VwDashboardMetricsRow:
-            return VwDashboardMetricsRow(data);
-          case VwGrupoNomeRow:
-            return VwGrupoNomeRow(data);
-          case EscalistaRow:
-            return EscalistaRow(data);
-          case LocalRow:
-            return LocalRow(data);
+          case HospitaisRow:
+            return HospitaisRow(data);
+          case BannerMktRow:
+            return BannerMktRow(data);
           case NotificationsRow:
             return NotificationsRow(data);
           default:

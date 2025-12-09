@@ -88,14 +88,14 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                 currentUserUid,
               )
               .neqOrNull(
-                'vagas_status',
+                'vaga_status',
                 'cancelada',
               )
               .gteOrNull(
-                'vagas_data',
+                'vaga_data',
                 supaSerialize<DateTime>(functions.currentDate()),
               )
-              .order('vagas_horainicio', ascending: true),
+              .order('vaga_horainicio', ascending: true),
         ),
       )
           .then((result) {
@@ -302,6 +302,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                               safeSetState(() {
                                                 _model.dropDownValueController
                                                     ?.reset();
+                                                _model.dropDownValue = null;
                                               });
                                             },
                                             text: '',
@@ -427,12 +428,9 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                               _model.variableQuery =
                                                   historicoVwVagasCandidaturasRowList
                                                       .sortedList(
-                                                          keyOf: (e) => e
-                                                              .vagasCreatedate!,
+                                                          keyOf: (e) =>
+                                                              e.vagaCreatedate!,
                                                           desc: true)
-                                                      .where((e) =>
-                                                          e.vagasStatus !=
-                                                          'cancelada')
                                                       .toList()
                                                       .cast<
                                                           VwVagasCandidaturasRow>();
@@ -444,6 +442,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                               safeSetState(() {
                                                 _model.dropDownValueController
                                                     ?.reset();
+                                                _model.dropDownValue = null;
                                               });
                                             },
                                             text: '',
@@ -572,11 +571,8 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                   historicoVwVagasCandidaturasRowList
                                                       .sortedList(
                                                           keyOf: (e) =>
-                                                              e.vagasData!,
+                                                              e.vagaData!,
                                                           desc: false)
-                                                      .where((e) =>
-                                                          e.vagasStatus !=
-                                                          'cancelada')
                                                       .toList()
                                                       .cast<
                                                           VwVagasCandidaturasRow>();
@@ -588,6 +584,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                               safeSetState(() {
                                                 _model.dropDownValueController
                                                     ?.reset();
+                                                _model.dropDownValue = null;
                                               });
                                             },
                                             text: '',
@@ -714,8 +711,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                               _model.variableQuery = _model
                                                   .variableQuery
                                                   .sortedList(
-                                                      keyOf: (e) =>
-                                                          e.vagasData!,
+                                                      keyOf: (e) => e.vagaData!,
                                                       desc: false)
                                                   .toList()
                                                   .cast<
@@ -728,6 +724,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                               safeSetState(() {
                                                 _model.dropDownValueController
                                                     ?.reset();
+                                                _model.dropDownValue = null;
                                               });
                                             },
                                             text: '',
@@ -1077,6 +1074,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                     logFirebaseEvent('Icon_reset_form_fields');
                                     safeSetState(() {
                                       _model.dropDownValueController?.reset();
+                                      _model.dropDownValue = null;
                                     });
                                     logFirebaseEvent('Icon_update_page_state');
                                     _model.clearDropColor = Color(4293256677);
@@ -1380,7 +1378,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                     'REPROVADO') ||
                                                                 (e.candidaturaStatus ==
                                                                     'PENDENTE')
-                                                            ? (e.vagasData! >=
+                                                            ? (e.vagaData! >=
                                                                 functions.currentDate()!)
                                                             : true))
                                                     .toList();
@@ -1411,7 +1409,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                           model: _model
                                                               .cardVagasModels1
                                                               .getModel(
-                                                            listItem.vagasId!,
+                                                            listItem.vagaId!,
                                                             listIndex,
                                                           ),
                                                           updateCallback: () =>
@@ -1420,13 +1418,13 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                           child:
                                                               CardVagasWidget(
                                                             key: Key(
-                                                              'Key6n4_${listItem.vagasId!}',
+                                                              'Key6n4_${listItem.vagaId!}',
                                                             ),
                                                             specialty: listItem
                                                                 .especialidadeNome,
                                                             value: formatNumber(
                                                               listItem
-                                                                  .vagasValor,
+                                                                  .vagaValor,
                                                               formatType:
                                                                   FormatType
                                                                       .decimal,
@@ -1438,8 +1436,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                             date:
                                                                 dateTimeFormat(
                                                               "dd/MM",
-                                                              listItem
-                                                                  .vagasData,
+                                                              listItem.vagaData,
                                                               locale: FFLocalizations
                                                                       .of(context)
                                                                   .languageCode,
@@ -1448,7 +1445,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                 'há ${dateTimeFormat(
                                                               "relative",
                                                               listItem
-                                                                  .vagasCreatedate,
+                                                                  .vagaCreatedate,
                                                               locale: FFLocalizations.of(
                                                                           context)
                                                                       .languageShortCode ??
@@ -1458,7 +1455,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                             )}',
                                                             shift: '',
                                                             type: listItem
-                                                                .vagasTipoNome,
+                                                                .tiposVagaNome,
                                                             hospital: functions.cleanHospitalName(
                                                                 listItem
                                                                     .hospitalNome!,
@@ -1467,8 +1464,8 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                         e.terms)
                                                                     .withoutNulls
                                                                     .toList()),
-                                                            vaga: listItem
-                                                                .vagasId,
+                                                            vaga:
+                                                                listItem.vagaId,
                                                             colorPay: listItem
                                                                         .pagamentoValor !=
                                                                     null
@@ -1499,10 +1496,10 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                   86400;
                                                             }(
                                                                 listItem
-                                                                    .vagasData!
+                                                                    .vagaData!
                                                                     .secondsSinceEpoch,
                                                                 listItem
-                                                                    .vagasDatapagamento!
+                                                                    .vagaDatapagamento!
                                                                     .secondsSinceEpoch),
                                                             checkColor: () {
                                                               if ((listItem
@@ -1578,24 +1575,24 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                         speciality:
                                                                             listItem.especialidadeNome,
                                                                         value: listItem
-                                                                            .vagasValor
+                                                                            .vagaValor
                                                                             ?.toDouble(),
                                                                         hospital:
                                                                             listItem.hospitalNome,
                                                                         date: listItem
-                                                                            .vagasData,
+                                                                            .vagaData,
                                                                         datecreated:
-                                                                            listItem.vagasCreatedate,
+                                                                            listItem.vagaCreatedate,
                                                                         startTime: listItem
-                                                                            .vagasHorainicio
+                                                                            .vagaHorainicio
                                                                             ?.time,
                                                                         endTime: listItem
-                                                                            .vagasHorafim
+                                                                            .vagaHorafim
                                                                             ?.time,
                                                                         shift: listItem
-                                                                            .vagasPeriodoNome,
+                                                                            .periodoNome,
                                                                         type: listItem
-                                                                            .vagasTipoNome,
+                                                                            .tiposVagaNome,
                                                                         lat: listItem
                                                                             .hospitalLat,
                                                                         lon: listItem
@@ -1603,7 +1600,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                         address:
                                                                             listItem.hospitalEnd,
                                                                         jobid: listItem
-                                                                            .vagasId,
+                                                                            .vagaId,
                                                                         contractor:
                                                                             listItem.grupoNome,
                                                                         contractorName:
@@ -1613,19 +1610,15 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                         contractorEmail:
                                                                             listItem.escalistaEmail,
                                                                         payday:
-                                                                            listItem.vagasDatapagamento,
+                                                                            listItem.vagaDatapagamento,
                                                                         payment:
-                                                                            listItem.vagasFormarecebimentoNome,
+                                                                            listItem.formaRecebimentoNome,
                                                                         avatarHospital:
                                                                             listItem.hospitalAvatar,
                                                                         sector:
                                                                             listItem.setorNome,
-                                                                        showFavorite: _model.candidacyStatus != null &&
-                                                                                _model.candidacyStatus != ''
-                                                                            ? false
-                                                                            : listItem.medicoFavorito,
-                                                                        candidates: historicoVwVagasCandidaturasRowList.where((e) => (e.vagasId == listItem.vagasId) && (e.medicoId == currentUserUid)).toList().isNotEmpty
-                                                                            ? historicoVwVagasCandidaturasRowList.where((e) => (e.vagasId == listItem.vagasId) && (e.medicoId == currentUserUid)).toList().firstOrNull
+                                                                        candidates: historicoVwVagasCandidaturasRowList.where((e) => (e.vagaId == listItem.vagaId) && (e.medicoId == currentUserUid)).toList().isNotEmpty
+                                                                            ? historicoVwVagasCandidaturasRowList.where((e) => (e.vagaId == listItem.vagaId) && (e.medicoId == currentUserUid)).toList().firstOrNull
                                                                             : listItem,
                                                                         callback:
                                                                             () async {},
@@ -1729,11 +1722,11 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                     'REPROVADO') ||
                                                                 (e.candidaturaStatus ==
                                                                     'PENDENTE')
-                                                            ? (e.vagasData! >=
+                                                            ? (e.vagaData! >=
                                                                 functions.currentDate()!)
                                                             : true))
                                                     .toList()
-                                                    .sortedList(keyOf: (e) => e.candidatosCreatedate!, desc: true)
+                                                    .sortedList(keyOf: (e) => e.candidaturaCreatedate!, desc: true)
                                                     .toList();
                                                 if (list.isEmpty) {
                                                   return EmptyListWidget(
@@ -1762,7 +1755,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                           model: _model
                                                               .cardVagasModels2
                                                               .getModel(
-                                                            listItem.vagasId!,
+                                                            listItem.vagaId!,
                                                             listIndex,
                                                           ),
                                                           updateCallback: () =>
@@ -1771,13 +1764,13 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                           child:
                                                               CardVagasWidget(
                                                             key: Key(
-                                                              'Keyjb5_${listItem.vagasId!}',
+                                                              'Keyjb5_${listItem.vagaId!}',
                                                             ),
                                                             specialty: listItem
                                                                 .especialidadeNome,
                                                             value: formatNumber(
                                                               listItem
-                                                                  .vagasValor,
+                                                                  .vagaValor,
                                                               formatType:
                                                                   FormatType
                                                                       .decimal,
@@ -1789,8 +1782,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                             date:
                                                                 dateTimeFormat(
                                                               "dd/MM",
-                                                              listItem
-                                                                  .vagasData,
+                                                              listItem.vagaData,
                                                               locale: FFLocalizations
                                                                       .of(context)
                                                                   .languageCode,
@@ -1799,7 +1791,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                 'há ${dateTimeFormat(
                                                               "relative",
                                                               listItem
-                                                                  .vagasCreatedate,
+                                                                  .vagaCreatedate,
                                                               locale: FFLocalizations.of(
                                                                           context)
                                                                       .languageShortCode ??
@@ -1808,9 +1800,9 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                       .languageCode,
                                                             )}',
                                                             shift: listItem
-                                                                .vagasPeriodoNome,
+                                                                .periodoNome,
                                                             type: listItem
-                                                                .vagasTipoNome,
+                                                                .tiposVagaNome,
                                                             hospital: functions.cleanHospitalName(
                                                                 listItem
                                                                     .hospitalNome!,
@@ -1820,7 +1812,8 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                     .withoutNulls
                                                                     .toList()),
                                                             vaga: listItem
-                                                                .vagasId,
+                                                                .vagaData
+                                                                ?.toString(),
                                                             colorPay: listItem
                                                                         .pagamentoValor !=
                                                                     null
@@ -1851,10 +1844,10 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                   86400;
                                                             }(
                                                                 listItem
-                                                                    .vagasData!
+                                                                    .vagaData!
                                                                     .secondsSinceEpoch,
                                                                 listItem
-                                                                    .vagasDatapagamento!
+                                                                    .vagaDatapagamento!
                                                                     .secondsSinceEpoch),
                                                             checkColor: () {
                                                               if ((listItem
@@ -1930,24 +1923,24 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                         speciality:
                                                                             listItem.especialidadeNome,
                                                                         value: listItem
-                                                                            .vagasValor
+                                                                            .vagaValor
                                                                             ?.toDouble(),
                                                                         hospital:
                                                                             listItem.hospitalNome,
                                                                         date: listItem
-                                                                            .vagasData,
+                                                                            .vagaData,
                                                                         datecreated:
-                                                                            listItem.vagasCreatedate,
+                                                                            listItem.vagaCreatedate,
                                                                         startTime: listItem
-                                                                            .vagasHorainicio
+                                                                            .vagaHorainicio
                                                                             ?.time,
                                                                         endTime: listItem
-                                                                            .vagasHorafim
+                                                                            .vagaHorafim
                                                                             ?.time,
                                                                         shift: listItem
-                                                                            .vagasPeriodoNome,
+                                                                            .periodoNome,
                                                                         type: listItem
-                                                                            .vagasTipoNome,
+                                                                            .tiposVagaNome,
                                                                         lat: listItem
                                                                             .hospitalLat,
                                                                         lon: listItem
@@ -1955,7 +1948,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                         address:
                                                                             listItem.hospitalEnd,
                                                                         jobid: listItem
-                                                                            .vagasId,
+                                                                            .vagaId,
                                                                         contractor:
                                                                             listItem.grupoNome,
                                                                         contractorName:
@@ -1965,19 +1958,15 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                         contractorEmail:
                                                                             listItem.escalistaEmail,
                                                                         payday:
-                                                                            listItem.vagasDatapagamento,
+                                                                            listItem.vagaDatapagamento,
                                                                         payment:
-                                                                            listItem.vagasFormarecebimentoNome,
+                                                                            listItem.formaRecebimentoNome,
                                                                         avatarHospital:
                                                                             listItem.hospitalAvatar,
                                                                         sector:
                                                                             listItem.setorNome,
-                                                                        showFavorite: _model.candidacyStatus != null &&
-                                                                                _model.candidacyStatus != ''
-                                                                            ? false
-                                                                            : listItem.medicoFavorito,
-                                                                        candidates: historicoVwVagasCandidaturasRowList.where((e) => (e.vagasId == listItem.vagasId) && (e.medicoId == currentUserUid)).toList().isNotEmpty
-                                                                            ? historicoVwVagasCandidaturasRowList.where((e) => (e.vagasId == listItem.vagasId) && (e.medicoId == currentUserUid)).toList().firstOrNull
+                                                                        candidates: historicoVwVagasCandidaturasRowList.where((e) => (e.vagaId == listItem.vagaId) && (e.medicoId == currentUserUid)).toList().isNotEmpty
+                                                                            ? historicoVwVagasCandidaturasRowList.where((e) => (e.vagaId == listItem.vagaId) && (e.medicoId == currentUserUid)).toList().firstOrNull
                                                                             : listItem,
                                                                         callback:
                                                                             () async {},

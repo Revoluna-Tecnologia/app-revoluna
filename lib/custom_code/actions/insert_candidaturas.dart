@@ -19,12 +19,12 @@ Future<String?> insertCandidaturas(
         .from('candidaturas')
         .insert({
           'medico_id': medicoId,
-          'vagas_id': vagasId,
-          'candidatura_status': 'PENDENTE',
-          'candidaturas_updateby': medicoId,
-          'vagas_valor': vagasValor.toInt(),
+          'vaga_id': vagasId,
+          'status': 'PENDENTE',
+          'updated_by': medicoId,
+          'vaga_valor': vagasValor.toInt(),
         })
-        .select('candidaturas_id')
+        .select('id')
         .single();
 
     return 'success';

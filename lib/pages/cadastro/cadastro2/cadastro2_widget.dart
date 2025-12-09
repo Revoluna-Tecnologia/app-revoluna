@@ -266,7 +266,7 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                             requestFn: () =>
                                 _model.cadastroForm2SupabaseStream ??= SupaFlow
                                     .client
-                                    .from("estadosBrasil")
+                                    .from("estados_brasil")
                                     .stream(primaryKey: [
                               'id'
                             ]).map((list) => list
@@ -297,13 +297,12 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                               autovalidateMode: AutovalidateMode.disabled,
                               child: StreamBuilder<List<EspecialidadesRow>>(
                                 stream: FFAppState().especialidades(
-                                  requestFn: () =>
-                                      _model.containerSupabaseStream ??=
-                                          SupaFlow.client
-                                              .from("especialidades")
-                                              .stream(primaryKey: [
-                                    'especialidade_id'
-                                  ]).map((list) => list
+                                  requestFn: () => _model
+                                          .containerSupabaseStream ??=
+                                      SupaFlow.client
+                                          .from("especialidades")
+                                          .stream(primaryKey: ['id']).map(
+                                              (list) => list
                                                   .map((item) =>
                                                       EspecialidadesRow(item))
                                                   .toList()),
@@ -1424,8 +1423,8 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                               .toList()),
                                                       optionLabels:
                                                           cadastroForm2EstadosBrasilRowList
-                                                              .map((e) =>
-                                                                  e.lista)
+                                                              .map(
+                                                                  (e) => e.nome)
                                                               .withoutNulls
                                                               .toList(),
                                                       onChanged: (val) async {
@@ -1994,14 +1993,14 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                               int>(null),
                                                       options: List<int>.from(
                                                           containerEspecialidadesRowList
-                                                              .map((e) => e
-                                                                  .especialidadeIndex)
+                                                              .map((e) =>
+                                                                  e.index)
                                                               .withoutNulls
                                                               .toList()),
                                                       optionLabels:
                                                           containerEspecialidadesRowList
-                                                              .map((e) => e
-                                                                  .especialidadeNome)
+                                                              .map(
+                                                                  (e) => e.nome)
                                                               .withoutNulls
                                                               .toList(),
                                                       onChanged: (val) async {
@@ -2680,6 +2679,8 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                     _model
                                                                         .dropdownEspecialidadesValueController
                                                                         ?.value = 21;
+                                                                    _model.dropdownEspecialidadesValue =
+                                                                        21;
                                                                   });
                                                                 }
                                                                 logFirebaseEvent(
@@ -2810,7 +2811,7 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                       containerEspecialidadesRowList
                                                                           .elementAtOrNull(
                                                                               _model.dropdownEspecialidadesValue!)
-                                                                          ?.especialidadeId,
+                                                                          ?.id,
                                                                       ParamType
                                                                           .String,
                                                                     ),

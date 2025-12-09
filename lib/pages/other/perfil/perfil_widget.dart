@@ -67,8 +67,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
         ),
       );
       logFirebaseEvent('Perfil_update_page_state');
-      _model.formatedDate =
-          _model.queryMedicos?.firstOrNull?.medicoDatanascimento;
+      _model.formatedDate = _model.queryMedicos?.firstOrNull?.dataNascimento;
       safeSetState(() {});
     });
 
@@ -181,7 +180,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                     decoration: BoxDecoration(),
                     child: FutureBuilder<List<EspecialidadesRow>>(
                       future: EspecialidadesTable().queryRows(
-                        queryFn: (q) => q,
+                        queryFn: (q) => q.order('index', ascending: true),
                       ),
                       builder: (context, snapshot) {
                         // Customize what your widget looks like when it's loading.
@@ -931,7 +930,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                         .firstNameTextController ??=
                                                                     TextEditingController(
                                                                   text: perfilMedicosRow
-                                                                      ?.medicoPrimeironome,
+                                                                      ?.primeiroNome,
                                                                 ),
                                                                 focusNode: _model
                                                                     .firstNameFocusNode,
@@ -1214,7 +1213,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                         .lastNameTextController ??=
                                                                     TextEditingController(
                                                                   text: perfilMedicosRow
-                                                                      ?.medicoSobrenome,
+                                                                      ?.sobrenome,
                                                                 ),
                                                                 focusNode: _model
                                                                     .lastNameFocusNode,
@@ -1614,8 +1613,9 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                             controller: _model
                                                                     .eMailTextController ??=
                                                                 TextEditingController(
-                                                              text: perfilMedicosRow
-                                                                  ?.medicoEmail,
+                                                              text:
+                                                                  perfilMedicosRow
+                                                                      ?.email,
                                                             ),
                                                             focusNode: _model
                                                                 .eMailFocusNode,
@@ -1811,11 +1811,12 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                               .Gap)),
                                                     ),
                                                     FutureBuilder<
-                                                        List<CodigosdeareaRow>>(
-                                                      future:
-                                                          CodigosdeareaTable()
-                                                              .queryRows(
-                                                        queryFn: (q) => q,
+                                                        List<CodigosAreaRow>>(
+                                                      future: CodigosAreaTable()
+                                                          .queryRows(
+                                                        queryFn: (q) => q.order(
+                                                            'index',
+                                                            ascending: true),
                                                       ),
                                                       builder:
                                                           (context, snapshot) {
@@ -1838,8 +1839,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                             ),
                                                           );
                                                         }
-                                                        List<CodigosdeareaRow>
-                                                            containerCodigosdeareaRowList =
+                                                        List<CodigosAreaRow>
+                                                            containerCodigosAreaRowList =
                                                             snapshot.data!;
 
                                                         return Container(
@@ -1931,11 +1932,11 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                 ),
                                                                 options: List<
                                                                         int>.from(
-                                                                    containerCodigosdeareaRowList
+                                                                    containerCodigosAreaRowList
                                                                         .map((e) =>
                                                                             e.index)
                                                                         .toList()),
-                                                                optionLabels: containerCodigosdeareaRowList
+                                                                optionLabels: containerCodigosAreaRowList
                                                                     .map((e) =>
                                                                         e.lista)
                                                                     .withoutNulls
@@ -2133,8 +2134,8 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                           _model.campoTelefoneTextController ??=
                                                                               TextEditingController(
                                                                         text: functions.aplicarmascara(
-                                                                            perfilMedicosRow?.medicoTelefone,
-                                                                            containerCodigosdeareaRowList.elementAtOrNull(containerUserProfileRow!.areacodeIndex)!.formato!),
+                                                                            perfilMedicosRow?.telefone,
+                                                                            containerCodigosAreaRowList.elementAtOrNull(containerUserProfileRow!.areacodeIndex)!.formato!),
                                                                       ),
                                                                       focusNode:
                                                                           _model
@@ -2507,7 +2508,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                       dateTimeFormat(
                                                                     "dd/MM/yyyy",
                                                                     perfilMedicosRow
-                                                                        ?.medicoDatanascimento,
+                                                                        ?.dataNascimento,
                                                                     locale: FFLocalizations.of(
                                                                             context)
                                                                         .languageCode,
@@ -2877,6 +2878,9 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                     FlutterFlowTheme.of(
                                                                             context)
                                                                         .accent4;
+                                                                _model.formatedDate =
+                                                                    _model
+                                                                        .datePicked;
                                                                 safeSetState(
                                                                     () {});
                                                               },
@@ -3022,8 +3026,9 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                 controller: _model
                                                                         .cpfTextController ??=
                                                                     TextEditingController(
-                                                                  text: perfilMedicosRow
-                                                                      ?.medicoCpf,
+                                                                  text:
+                                                                      perfilMedicosRow
+                                                                          ?.cpf,
                                                                 ),
                                                                 focusNode: _model
                                                                     .cpfFocusNode,
@@ -3481,7 +3486,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                   int>(
                                                             _model.dropdownEstadosValue ??=
                                                                 containerUserProfileRow
-                                                                    ?.uFindex,
+                                                                    ?.ufIndex,
                                                           ),
                                                           options: List<
                                                                   int>.from(
@@ -3694,10 +3699,10 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                               text: '${(String crm) {
                                                                         return crm
                                                                             .split('-')[0];
-                                                                      }(perfilMedicosRow!.medicoCrm!)}' ==
+                                                                      }(perfilMedicosRow!.crm!)}' ==
                                                                       'estudante'
                                                                   ? ''
-                                                                  : perfilMedicosRow?.medicoCrm,
+                                                                  : perfilMedicosRow?.crm,
                                                             ),
                                                             focusNode: _model
                                                                 .crmFocusNode,
@@ -4010,20 +4015,14 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                           options: List<
                                                                   int>.from(
                                                               formEspecialidadesRowList
-                                                                  .map((e) => e
-                                                                      .especialidadeIndex)
+                                                                  .map((e) =>
+                                                                      e.index)
                                                                   .withoutNulls
-                                                                  .toList()
-                                                                  .sortedList(
-                                                                      keyOf:
-                                                                          (e) =>
-                                                                              e,
-                                                                      desc:
-                                                                          false)),
+                                                                  .toList()),
                                                           optionLabels:
                                                               formEspecialidadesRowList
-                                                                  .map((e) => e
-                                                                      .especialidadeNome)
+                                                                  .map((e) =>
+                                                                      e.nome)
                                                                   .withoutNulls
                                                                   .toList(),
                                                           onChanged:
@@ -4304,8 +4303,9 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                             controller: _model
                                                                     .rqeTextController ??=
                                                                 TextEditingController(
-                                                              text: perfilMedicosRow
-                                                                  ?.medicoRqe,
+                                                              text:
+                                                                  perfilMedicosRow
+                                                                      ?.rqe,
                                                             ),
                                                             focusNode: _model
                                                                 .rqeFocusNode,
@@ -5401,9 +5401,9 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                               'profilepicture':
                                                                   FFAppState()
                                                                       .profilepicture,
-                                                              'UFindex': _model
+                                                              'uf_index': _model
                                                                   .dropdownEstadosValue,
-                                                              'specialtyIndex':
+                                                              'specialty_index':
                                                                   _model
                                                                       .dropdownEspecialidadesValue,
                                                             },
@@ -5421,55 +5421,46 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                               await MedicosTable()
                                                                   .update(
                                                             data: {
-                                                              'medico_primeironome':
+                                                              'primeiro_nome':
                                                                   _model
                                                                       .firstNameTextController
                                                                       .text,
-                                                              'medico_sobrenome':
-                                                                  _model
-                                                                      .lastNameTextController
-                                                                      .text,
-                                                              'medico_genero':
-                                                                  _model
-                                                                      .radioButtonValue,
-                                                              'medico_cpf': _model
+                                                              'sobrenome': _model
+                                                                  .lastNameTextController
+                                                                  .text,
+                                                              'genero': _model
+                                                                  .radioButtonValue,
+                                                              'cpf': _model
                                                                   .cpfTextController
                                                                   .text,
-                                                              'medico_datanascimento':
+                                                              'data_nascimento':
                                                                   supaSerialize<
                                                                           DateTime>(
                                                                       _model
                                                                           .formatedDate),
-                                                              'medico_crm': _model
+                                                              'crm': _model
                                                                   .crmTextController
                                                                   .text,
-                                                              'medico_especialidade':
+                                                              'especialidade_id':
                                                                   formEspecialidadesRowList
                                                                       .elementAtOrNull(
                                                                           _model
                                                                               .dropdownEspecialidadesValue!)
-                                                                      ?.especialidadeId,
-                                                              'medico_estado':
-                                                                  containerEstadosBrasilRowList
-                                                                      .elementAtOrNull(
-                                                                          _model
-                                                                              .dropdownEstadosValue!)
-                                                                      ?.sigla,
-                                                              'medico_rqe': (_model.rqeTextController.text ==
-                                                                              null ||
-                                                                          _model.rqeTextController.text ==
-                                                                              '') &&
-                                                                      (_model.rqeTextController
-                                                                              .text ==
-                                                                          'Não informado')
-                                                                  ? 'Não informado'
-                                                                  : _model
-                                                                      .rqeTextController
-                                                                      .text,
-                                                              'medico_updateat':
+                                                                      ?.id,
+                                                              'estado': containerEstadosBrasilRowList
+                                                                  .elementAtOrNull(
+                                                                      _model
+                                                                          .dropdownEstadosValue!)
+                                                                  ?.sigla,
+                                                              'rqe': _model
+                                                                  .rqeTextController
+                                                                  .text,
+                                                              'update_at':
                                                                   supaSerialize<
                                                                           DateTime>(
                                                                       getCurrentTimestamp),
+                                                              'update_by':
+                                                                  currentUserUid,
                                                             },
                                                             matchingRows:
                                                                 (rows) => rows

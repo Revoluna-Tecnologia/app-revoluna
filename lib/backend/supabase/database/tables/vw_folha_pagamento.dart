@@ -15,11 +15,11 @@ class VwFolhaPagamentoRow extends SupabaseDataRow {
   @override
   SupabaseTable get table => VwFolhaPagamentoTable();
 
-  String? get vagasId => getField<String>('vagas_id');
-  set vagasId(String? value) => setField<String>('vagas_id', value);
+  String? get vagaId => getField<String>('vaga_id');
+  set vagaId(String? value) => setField<String>('vaga_id', value);
 
-  DateTime? get vagasData => getField<DateTime>('vagas_data');
-  set vagasData(DateTime? value) => setField<DateTime>('vagas_data', value);
+  DateTime? get vagaData => getField<DateTime>('vaga_data');
+  set vagaData(DateTime? value) => setField<DateTime>('vaga_data', value);
 
   String? get periodoNome => getField<String>('periodo_nome');
   set periodoNome(String? value) => setField<String>('periodo_nome', value);
@@ -32,30 +32,42 @@ class VwFolhaPagamentoRow extends SupabaseDataRow {
   set horarioFim(PostgresTime? value) =>
       setField<PostgresTime>('horario_fim', value);
 
-  int? get vagasValor => getField<int>('vagas_valor');
-  set vagasValor(int? value) => setField<int>('vagas_valor', value);
+  int? get vagaValor => getField<int>('vaga_valor');
+  set vagaValor(int? value) => setField<int>('vaga_valor', value);
 
-  DateTime? get vagasDatapagamento => getField<DateTime>('vagas_datapagamento');
-  set vagasDatapagamento(DateTime? value) =>
-      setField<DateTime>('vagas_datapagamento', value);
+  DateTime? get vagaDatapagamento => getField<DateTime>('vaga_datapagamento');
+  set vagaDatapagamento(DateTime? value) =>
+      setField<DateTime>('vaga_datapagamento', value);
+
+  String? get grupoId => getField<String>('grupo_id');
+  set grupoId(String? value) => setField<String>('grupo_id', value);
 
   String? get formaRecebimento => getField<String>('forma_recebimento');
   set formaRecebimento(String? value) =>
       setField<String>('forma_recebimento', value);
 
+  String? get hospitalId => getField<String>('hospital_id');
+  set hospitalId(String? value) => setField<String>('hospital_id', value);
+
   String? get hospitalNome => getField<String>('hospital_nome');
   set hospitalNome(String? value) => setField<String>('hospital_nome', value);
 
-  String? get vagasEspecialidade => getField<String>('vagas_especialidade');
-  set vagasEspecialidade(String? value) =>
-      setField<String>('vagas_especialidade', value);
+  String? get especialidadeId => getField<String>('especialidade_id');
+  set especialidadeId(String? value) =>
+      setField<String>('especialidade_id', value);
+
+  String? get especialidadeNome => getField<String>('especialidade_nome');
+  set especialidadeNome(String? value) =>
+      setField<String>('especialidade_nome', value);
+
+  String? get setorId => getField<String>('setor_id');
+  set setorId(String? value) => setField<String>('setor_id', value);
 
   String? get setorNome => getField<String>('setor_nome');
   set setorNome(String? value) => setField<String>('setor_nome', value);
 
-  String? get candidaturasId => getField<String>('candidaturas_id');
-  set candidaturasId(String? value) =>
-      setField<String>('candidaturas_id', value);
+  String? get candidaturaId => getField<String>('candidatura_id');
+  set candidaturaId(String? value) => setField<String>('candidatura_id', value);
 
   String? get medicoId => getField<String>('medico_id');
   set medicoId(String? value) => setField<String>('medico_id', value);
@@ -68,10 +80,10 @@ class VwFolhaPagamentoRow extends SupabaseDataRow {
   set candidaturaStatus(String? value) =>
       setField<String>('candidatura_status', value);
 
-  DateTime? get candidatosDataconfirmacao =>
-      getField<DateTime>('candidatos_dataconfirmacao');
-  set candidatosDataconfirmacao(DateTime? value) =>
-      setField<DateTime>('candidatos_dataconfirmacao', value);
+  DateTime? get candidaturaDataConfirmacao =>
+      getField<DateTime>('candidatura_data_confirmacao');
+  set candidaturaDataConfirmacao(DateTime? value) =>
+      setField<DateTime>('candidatura_data_confirmacao', value);
 
   String? get medicoPrimeironome => getField<String>('medico_primeironome');
   set medicoPrimeironome(String? value) =>

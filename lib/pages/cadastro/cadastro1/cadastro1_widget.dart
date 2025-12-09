@@ -157,6 +157,7 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                       logFirebaseEvent('BackTopBar_reset_form_fields');
                       safeSetState(() {
                         _model.dropCodigoPaisValueController?.reset();
+                        _model.dropCodigoPaisValue = null;
                       });
                       logFirebaseEvent('BackTopBar_reset_form_fields');
                       safeSetState(() {
@@ -368,9 +369,9 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                   ),
                 ),
                 Expanded(
-                  child: FutureBuilder<List<CodigosdeareaRow>>(
-                    future: CodigosdeareaTable().queryRows(
-                      queryFn: (q) => q.order('Index', ascending: true),
+                  child: FutureBuilder<List<CodigosAreaRow>>(
+                    future: CodigosAreaTable().queryRows(
+                      queryFn: (q) => q.order('index', ascending: true),
                     ),
                     builder: (context, snapshot) {
                       // Customize what your widget looks like when it's loading.
@@ -387,7 +388,7 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                           ),
                         );
                       }
-                      List<CodigosdeareaRow> containerCodigosdeareaRowList =
+                      List<CodigosAreaRow> containerCodigosAreaRowList =
                           snapshot.data!;
 
                       return Container(
@@ -1751,11 +1752,11 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                         .inputAreacodeIndex,
                                               ),
                                               options: List<int>.from(
-                                                  containerCodigosdeareaRowList
+                                                  containerCodigosAreaRowList
                                                       .map((e) => e.index)
                                                       .toList()),
                                               optionLabels:
-                                                  containerCodigosdeareaRowList
+                                                  containerCodigosAreaRowList
                                                       .map((e) => e.lista)
                                                       .withoutNulls
                                                       .toList(),
@@ -1942,7 +1943,7 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                 _model
                                                                     .campoTelefoneTextController
                                                                     .text,
-                                                                containerCodigosdeareaRowList
+                                                                containerCodigosAreaRowList
                                                                     .elementAtOrNull(
                                                                         _model
                                                                             .dropCodigoPaisValue!)!
@@ -1980,7 +1981,7 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                           _model
                                                               .campoTelefoneTextController
                                                               .text,
-                                                          containerCodigosdeareaRowList
+                                                          containerCodigosAreaRowList
                                                               .elementAtOrNull(
                                                                   _model
                                                                       .dropCodigoPaisValue!)!
@@ -2146,7 +2147,7 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                         _model
                                                                             .campoTelefoneTextController
                                                                             .text,
-                                                                        containerCodigosdeareaRowList
+                                                                        containerCodigosAreaRowList
                                                                             .elementAtOrNull(_model.dropCodigoPaisValue!)!
                                                                             .formato!)!;
                                                                   });
@@ -2738,7 +2739,7 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                 (alertDialogContext) {
                                                               return AlertDialog(
                                                                 title: Text(
-                                                                    '${containerCodigosdeareaRowList.elementAtOrNull(_model.dropCodigoPaisValue!)?.codigo} ${_model.campoTelefoneTextController.text}'),
+                                                                    '${containerCodigosAreaRowList.elementAtOrNull(_model.dropCodigoPaisValue!)?.codigo} ${_model.campoTelefoneTextController.text}'),
                                                                 content: Text(
                                                                     'Precisamos confirmar seu número de telefone. Tem certeza de que é o número correto?'),
                                                                 actions: [
@@ -2779,7 +2780,7 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                       return var1.replaceAll(
                                                           RegExp(r'[^0-9]'),
                                                           '');
-                                                    }('${containerCodigosdeareaRowList.elementAtOrNull(_model.dropCodigoPaisValue!)?.codigo}${_model.campoTelefoneTextController.text}'),
+                                                    }('${containerCodigosAreaRowList.elementAtOrNull(_model.dropCodigoPaisValue!)?.codigo}${_model.campoTelefoneTextController.text}'),
                                                   );
 
                                                   _shouldSetState = true;
@@ -2877,7 +2878,7 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                         return var1.replaceAll(
                                                             RegExp(r'[^0-9]'),
                                                             '');
-                                                      }('${containerCodigosdeareaRowList.elementAtOrNull(_model.dropCodigoPaisValue!)?.codigo}${_model.campoTelefoneTextController.text}'),
+                                                      }('${containerCodigosAreaRowList.elementAtOrNull(_model.dropCodigoPaisValue!)?.codigo}${_model.campoTelefoneTextController.text}'),
                                                     );
 
                                                     _shouldSetState = true;
@@ -2918,9 +2919,9 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                                           RegExp(
                                                                               r'[^0-9]'),
                                                                           '');
-                                                                }('${containerCodigosdeareaRowList.elementAtOrNull(_model.dropCodigoPaisValue!)?.codigo}${_model.campoTelefoneTextController.text}'),
+                                                                }('${containerCodigosAreaRowList.elementAtOrNull(_model.dropCodigoPaisValue!)?.codigo}${_model.campoTelefoneTextController.text}'),
                                                                 phoneFormated:
-                                                                    '${containerCodigosdeareaRowList.elementAtOrNull(_model.dropCodigoPaisValue!)?.codigo} ${_model.campoTelefoneTextController.text}',
+                                                                    '${containerCodigosAreaRowList.elementAtOrNull(_model.dropCodigoPaisValue!)?.codigo} ${_model.campoTelefoneTextController.text}',
                                                               ),
                                                             ),
                                                           );
@@ -2936,7 +2937,7 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                                                             'Button_update_app_state');
                                                         FFAppState()
                                                                 .inputAreacode =
-                                                            containerCodigosdeareaRowList
+                                                            containerCodigosAreaRowList
                                                                 .elementAtOrNull(
                                                                     _model
                                                                         .dropCodigoPaisValue!)!
