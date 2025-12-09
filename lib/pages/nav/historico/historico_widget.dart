@@ -1618,12 +1618,8 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                             listItem.hospitalAvatar,
                                                                         sector:
                                                                             listItem.setorNome,
-                                                                        showFavorite: _model.candidacyStatus != null &&
-                                                                                _model.candidacyStatus != ''
-                                                                            ? false
-                                                                            : listItem.medicoFavorito,
-                                                                        candidates: historicoVwVagasCandidaturasRowList.where((e) => (e.vagasId == listItem.vagasId) && (e.medicoId == currentUserUid)).toList().isNotEmpty
-                                                                            ? historicoVwVagasCandidaturasRowList.where((e) => (e.vagasId == listItem.vagasId) && (e.medicoId == currentUserUid)).toList().firstOrNull
+                                                                        candidates: historicoVwVagasCandidaturasRowList.where((e) => (e.vagaId == listItem.vagaId) && (e.medicoId == currentUserUid)).toList().isNotEmpty
+                                                                            ? historicoVwVagasCandidaturasRowList.where((e) => (e.vagaId == listItem.vagaId) && (e.medicoId == currentUserUid)).toList().firstOrNull
                                                                             : listItem,
                                                                         callback:
                                                                             () async {},
@@ -1970,12 +1966,8 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                             listItem.hospitalAvatar,
                                                                         sector:
                                                                             listItem.setorNome,
-                                                                        showFavorite: _model.candidacyStatus != null &&
-                                                                                _model.candidacyStatus != ''
-                                                                            ? false
-                                                                            : listItem.medicoFavorito,
-                                                                        candidates: historicoVwVagasCandidaturasRowList.where((e) => (e.vagasId == listItem.vagasId) && (e.medicoId == currentUserUid)).toList().isNotEmpty
-                                                                            ? historicoVwVagasCandidaturasRowList.where((e) => (e.vagasId == listItem.vagasId) && (e.medicoId == currentUserUid)).toList().firstOrNull
+                                                                        candidates: historicoVwVagasCandidaturasRowList.where((e) => (e.vagaId == listItem.vagaId) && (e.medicoId == currentUserUid)).toList().isNotEmpty
+                                                                            ? historicoVwVagasCandidaturasRowList.where((e) => (e.vagaId == listItem.vagaId) && (e.medicoId == currentUserUid)).toList().firstOrNull
                                                                             : listItem,
                                                                         callback:
                                                                             () async {},

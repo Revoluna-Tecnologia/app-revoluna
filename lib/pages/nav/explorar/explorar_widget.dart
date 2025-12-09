@@ -1560,9 +1560,6 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                             sector:
                                                                 initialListItem
                                                                     .setorNome,
-                                                            showFavorite:
-                                                                initialListItem
-                                                                    .medicoFavorito,
                                                             candidates: explorarVwVagasCandidaturasRowList
                                                                     .where((e) =>
                                                                         (e.vagaId ==
@@ -1900,9 +1897,6 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                             sector:
                                                                 variableListItem
                                                                     .setorNome,
-                                                            showFavorite:
-                                                                variableListItem
-                                                                    .medicoFavorito,
                                                             candidates: explorarVwVagasCandidaturasRowList
                                                                     .where((e) =>
                                                                         (e.vagaId ==

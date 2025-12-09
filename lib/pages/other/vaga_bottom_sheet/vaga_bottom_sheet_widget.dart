@@ -55,12 +55,10 @@ class VagaBottomSheetWidget extends StatefulWidget {
     this.payment,
     String? avatarHospital,
     this.sector,
-    bool? showFavorite,
-        this.candidates,
+    this.candidates,
     this.callback,
-  })  : this.avatarHospital = avatarHospital ??
-            'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/avatarhospitais/placeholder..png',
-        this.showFavorite = showFavorite ?? false;
+  }) : this.avatarHospital = avatarHospital ??
+            'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/avatarhospitais/placeholder..png';
 
   final String? speciality;
   final double? value;
@@ -83,7 +81,6 @@ class VagaBottomSheetWidget extends StatefulWidget {
   final String? payment;
   final String avatarHospital;
   final String? sector;
-  final bool showFavorite;
   final VwVagasCandidaturasRow? candidates;
   final Future Function()? callback;
 
@@ -171,6 +168,8 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
         _model.isCheckedIn =
             _model.checkin != null && (_model.checkin)!.isNotEmpty;
         _model.isCheckedOut = _model.checkin?.firstOrNull?.checkout != null;
+        _model.isFavorite =
+            _model.favorite != null && (_model.favorite)!.isNotEmpty;
         safeSetState(() {});
       } else {
         logFirebaseEvent('VagaBottomSheet_update_component_state');
@@ -480,8 +479,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                               ].divide(SizedBox(height: FFAppConstants.Gap)),
                             ),
                           ),
-                          if (widget!.showFavorite &&
-                              (_model.isCandidate != true))
+                          if (_model.isFavorite && (_model.isCandidate != true))
                             Column(
                               mainAxisSize: MainAxisSize.max,
                               children: [
@@ -6736,7 +6734,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                           var _shouldSetState = false;
                                           if (currentJwtToken != null &&
                                               currentJwtToken != '') {
-                                            if (widget!.showFavorite) {
+                                            if (_model.isFavorite) {
                                               logFirebaseEvent(
                                                   'Button_alert_dialog');
                                               await showDialog(
@@ -6990,7 +6988,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                             safeSetState(() {});
                                         },
                                   text: valueOrDefault<String>(
-                                    widget!.showFavorite &&
+                                    _model.isFavorite &&
                                             (_model.isCandidate != true)
                                         ? 'Quero esse plantão'
                                         : 'Clique e saiba mais',

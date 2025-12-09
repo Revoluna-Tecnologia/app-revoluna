@@ -45,6 +45,8 @@ class VagaBottomSheetModel extends FlutterFlowModel<VagaBottomSheetWidget> {
 
   bool isCheckedOut = false;
 
+  bool isFavorite = false;
+
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Backend Call - Query Rows] action in VagaBottomSheet widget.
