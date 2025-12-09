@@ -9,8 +9,6 @@ import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import 'index.dart'; // Imports other custom actions
-
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:device_calendar/device_calendar.dart' as device_calendar;
 import 'package:permission_handler/permission_handler.dart';
@@ -45,6 +43,13 @@ Future addToCalendar(
 
   // Define a data de fim se não foi fornecida (1 hora após o início)
   endDate ??= startDate.add(const Duration(hours: 1));
+
+  // Verifica se o plantão atravessa a meia-noite
+  // Se o horário de término for menor que o de início, adiciona 1 dia à data de fim
+  if (endDate.hour < startDate.hour ||
+      (endDate.hour == startDate.hour && endDate.minute < startDate.minute)) {
+    endDate = endDate.add(const Duration(days: 1));
+  }
 
   // Cria o evento
   final Event event = Event(
