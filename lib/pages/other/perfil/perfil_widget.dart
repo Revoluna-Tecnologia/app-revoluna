@@ -180,7 +180,7 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                     decoration: BoxDecoration(),
                     child: FutureBuilder<List<EspecialidadesRow>>(
                       future: EspecialidadesTable().queryRows(
-                        queryFn: (q) => q,
+                        queryFn: (q) => q.order('index', ascending: true),
                       ),
                       builder: (context, snapshot) {
                         // Customize what your widget looks like when it's loading.
@@ -1813,8 +1813,10 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                     FutureBuilder<
                                                         List<CodigosAreaRow>>(
                                                       future: CodigosAreaTable()
-                                                              .queryRows(
-                                                        queryFn: (q) => q,
+                                                          .queryRows(
+                                                        queryFn: (q) => q.order(
+                                                            'index',
+                                                            ascending: true),
                                                       ),
                                                       builder:
                                                           (context, snapshot) {
