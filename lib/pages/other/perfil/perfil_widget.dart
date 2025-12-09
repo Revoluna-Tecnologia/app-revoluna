@@ -2876,6 +2876,9 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                     FlutterFlowTheme.of(
                                                                             context)
                                                                         .accent4;
+                                                                _model.formatedDate =
+                                                                    _model
+                                                                        .datePicked;
                                                                 safeSetState(
                                                                     () {});
                                                               },
