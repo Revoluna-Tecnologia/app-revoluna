@@ -353,13 +353,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   _model.requestCompleted1 = false;
                                 });
                                 await _model.waitForRequestCompleted1();
-                                logFirebaseEvent(
-                                    'Column_refresh_database_request');
-                                safeSetState(() {
-                                  FFAppState().clearEstadosCache();
-                                  _model.requestCompleted2 = false;
-                                });
-                                await _model.waitForRequestCompleted2();
                               },
                               child: SingleChildScrollView(
                                 physics: const AlwaysScrollableScrollPhysics(),
@@ -409,11 +402,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                               openVagas:
                                                   homePageVwVagasCandidaturasRowList
                                                       .where((e) =>
-                                                          (e.vagasStatus ==
-                                                              'aberta') &&
-                                                          (e.hospitalEstado ==
-                                                              FFAppState()
-                                                                  .estadoUF))
+                                                          e.hospitalEstado ==
+                                                          FFAppState().estadoUF)
                                                       .toList()
                                                       .map((e) => e.vagaData)
                                                       .withoutNulls
@@ -973,9 +963,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                               (e.hospitalEstado ==
                                                                   FFAppState()
                                                                       .estadoUF) &&
-                                                              (e.vagasStatus ==
-                                                                  'aberta') &&
-                                                              (e.vagasData ==
+                                                              (e.vagaData ==
                                                                   FFAppState()
                                                                       .selectedDay))
                                                           .toList()
@@ -991,14 +979,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                           .toList()),
                                                       optionLabels: homePageVwVagasCandidaturasRowList
                                                           .where((e) =>
-                                                              (e.vagasStatus ==
-                                                                  'aberta') &&
-                                                              (e.vagasData ==
-                                                                  FFAppState()
-                                                                      .selectedDay) &&
                                                               (e.hospitalEstado ==
                                                                   FFAppState()
-                                                                      .estadoUF))
+                                                                      .estadoUF) &&
+                                                              (e.vagaData ==
+                                                                  FFAppState()
+                                                                      .selectedDay))
                                                           .toList()
                                                           .unique((e) => e
                                                               .especialidadeId!)
@@ -1092,10 +1078,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                             homePageVwVagasCandidaturasRowList
                                                                 .where((e) =>
                                                                     e.vagaData ==
-                                                                        FFAppState()
-                                                                            .selectedDay) &&
-                                                                    (e.vagasStatus ==
-                                                                        'aberta'))
+                                                                    FFAppState()
+                                                                        .selectedDay)
                                                                 .toList()
                                                                 .unique((e) => e
                                                                     .hospitalEstado!)
@@ -1131,24 +1115,26 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                 FFAppState()
                                                                     .estadoUF,
                                                           ),
-                                                          options: List<String>.from(homePageVwVagasCandidaturasRowList
-                                                              .where((e) =>
-                                                                  (e.vagasStatus ==
-                                                                      'aberta') &&
-                                                                  (e.vagasData ==
+                                                          options: List<
+                                                                  String>.from(
+                                                              homePageVwVagasCandidaturasRowList
+                                                                  .where((e) =>
+                                                                      e.vagaData ==
                                                                       FFAppState()
-                                                                          .selectedDay))
-                                                              .toList()
-                                                              .unique((e) => e
-                                                                  .hospitalEstado!)
-                                                              .map((e) => e
-                                                                  .hospitalEstado)
-                                                              .withoutNulls
-                                                              .toList()
-                                                              .sortedList(
-                                                                  keyOf: (e) =>
-                                                                      e,
-                                                                  desc: false)),
+                                                                          .selectedDay)
+                                                                  .toList()
+                                                                  .unique((e) => e
+                                                                      .hospitalEstado!)
+                                                                  .map((e) => e
+                                                                      .hospitalEstado)
+                                                                  .withoutNulls
+                                                                  .toList()
+                                                                  .sortedList(
+                                                                      keyOf:
+                                                                          (e) =>
+                                                                              e,
+                                                                      desc:
+                                                                          false)),
                                                           optionLabels:
                                                               dropDownEstadosBrasilRowList
                                                                   .sortedList(

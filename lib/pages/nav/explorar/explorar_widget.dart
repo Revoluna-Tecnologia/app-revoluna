@@ -1679,8 +1679,7 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                               ? _model.dropDownValue!
                                                   .contains(e.hospitalId)
                                               : true) &&
-                                          (e.vagasStatus == 'aberta') &&
-                                          (e.vagasData! >=
+                                          (e.vagaData! >=
                                               functions.currentDate()!))
                                       .toList()
                                       .unique((e) => e.vagaId!)

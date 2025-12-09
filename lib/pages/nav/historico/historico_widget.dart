@@ -430,9 +430,6 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                           keyOf: (e) =>
                                                               e.vagaCreatedate!,
                                                           desc: true)
-                                                      .where((e) =>
-                                                          e.vagasStatus !=
-                                                          'cancelada')
                                                       .toList()
                                                       .cast<
                                                           VwVagasCandidaturasRow>();
@@ -574,9 +571,6 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                           keyOf: (e) =>
                                                               e.vagaData!,
                                                           desc: false)
-                                                      .where((e) =>
-                                                          e.vagasStatus !=
-                                                          'cancelada')
                                                       .toList()
                                                       .cast<
                                                           VwVagasCandidaturasRow>();

@@ -1087,9 +1087,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                               (e.hospitalEstado ==
                                                                   FFAppState()
                                                                       .estadoUF) &&
-                                                              (e.vagasStatus ==
-                                                                  'aberta') &&
-                                                              (e.vagasData ==
+                                                              (e.vagaData ==
                                                                   FFAppState()
                                                                       .selectedDay))
                                                           .toList()
@@ -1105,9 +1103,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                           .toList()),
                                                       optionLabels: initialPageVwVagasAbertasRowList
                                                           .where((e) =>
-                                                              (e.vagasStatus ==
-                                                                  'aberta') &&
-                                                              (e.vagasData ==
+                                                              (e.vagaData ==
                                                                   FFAppState()
                                                                       .selectedDay) &&
                                                               (e.hospitalEstado ==
@@ -1206,10 +1202,8 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                             initialPageVwVagasAbertasRowList
                                                                 .where((e) =>
                                                                     e.vagaData ==
-                                                                        FFAppState()
-                                                                            .selectedDay) &&
-                                                                    (e.vagasStatus ==
-                                                                        'aberta'))
+                                                                    FFAppState()
+                                                                        .selectedDay)
                                                                 .toList()
                                                                 .unique((e) => e
                                                                     .hospitalEstado!)
@@ -1252,26 +1246,26 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                     .estadoUF
                                                                 : 'SP',
                                                           ),
-                                                          options: List<String>.from(initialPageVwVagasAbertasRowList
-                                                              .where((e) =>
-                                                                  (e.vagasStatus ==
-                                                                      'aberta') &&
-                                                                  (e.vagasData ==
+                                                          options: List<
+                                                                  String>.from(
+                                                              initialPageVwVagasAbertasRowList
+                                                                  .where((e) =>
+                                                                      e.vagaData ==
                                                                       FFAppState()
-                                                                          .selectedDay))
-                                                              .toList()
-                                                              .unique((e) => e
-                                                                  .hospitalEstado!)
-                                                              .map((e) => e
-                                                                  .hospitalEstado)
-                                                              .withoutNulls
-                                                              .toList()
-                                                              .sortedList(
-                                                                  keyOf:
-(e) =>
-                                                                      e,
-                                                                  desc:
-false)),
+                                                                          .selectedDay)
+                                                                  .toList()
+                                                                  .unique((e) => e
+                                                                      .hospitalEstado!)
+                                                                  .map((e) => e
+                                                                      .hospitalEstado)
+                                                                  .withoutNulls
+                                                                  .toList()
+                                                                  .sortedList(
+                                                                      keyOf:
+                                                                          (e) =>
+                                                                              e,
+                                                                      desc:
+                                                                          false)),
                                                           optionLabels:
                                                               dropDownEstadosBrasilRowList
                                                                   .sortedList(
@@ -1425,8 +1419,6 @@ false)),
                                                                   (e.hospitalEstado ==
                                                                       FFAppState()
                                                                           .estadoUF) &&
-                                                                  (e.vagasStatus ==
-                                                                      'aberta') &&
                                                                   (e.especialidadeId ==
                                                                       _model
                                                                           .dropDownValue1))
@@ -1680,9 +1672,7 @@ false)),
                                                                           .selectedDay) &&
                                                                   (e.hospitalEstado ==
                                                                       FFAppState()
-                                                                          .estadoUF) &&
-                                                                  (e.vagasStatus ==
-                                                                      'aberta'))
+                                                                          .estadoUF))
                                                               .toList();
                                                           if (defaultList
                                                               .isEmpty) {
