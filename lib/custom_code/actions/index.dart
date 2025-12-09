@@ -18,7 +18,7 @@ export 'insert_candidaturas.dart' show insertCandidaturas;
 export 'check_in_check_out.dart' show checkInCheckOut;
 export 'mark_app_as_loaded.dart' show markAppAsLoaded;
 export 'launch_whats_app_chat.dart' show launchWhatsAppChat;
-export 'initialize_deeplinks.dart' show initializeDeeplinks;
 export 'load_clean_hospital_terms.dart' show loadCleanHospitalTerms;
 export 'initialize_selected_day.dart' show initializeSelectedDay;
 export 'request_location_permission.dart' show requestLocationPermission;
+export 'initialize_deeplinks.dart' show initializeDeeplinks;

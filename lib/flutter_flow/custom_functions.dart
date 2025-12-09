@@ -136,6 +136,46 @@ String? distanceCalc(
   }
 }
 
+LatLng? map(
+  double lat,
+  double lon,
+) {
+  return LatLng.new(lat, lon);
+}
+
+DateTime? currentDate() {
+  DateTime now = new DateTime.now();
+  return new DateTime(now.year, now.month, now.day);
+}
+
+String cleanHospitalName(
+  String hospitalName,
+  List<String> termsToRemove,
+) {
+  String cleanName = hospitalName.trim();
+
+  // Remove os termos da lista, preservando case das outras palavras
+  for (String term in termsToRemove) {
+    // Regex para remover o termo no início, no final ou isolado
+    final RegExp regex =
+        RegExp('\\b${RegExp.escape(term)}\\b', caseSensitive: false);
+    cleanName = cleanName.replaceAll(regex, '').trim();
+  }
+
+  // Remove espaços múltiplos e vírgulas/hífen no início ou final
+  cleanName = cleanName
+      .replaceAll(RegExp(r'\s+'), ' ')
+      .replaceAll(RegExp(r'^[,\-\s]+|[,\-\s]+$'), '')
+      .trim();
+
+  // Se o nome ficou vazio após a limpeza, retorna o nome original
+  if (cleanName.isEmpty) {
+    return hospitalName.trim();
+  }
+
+  return cleanName.replaceAll('Hospital', 'H.');
+}
+
 List<VwVagasCandidaturasRow> sortByLocation(
   LatLng location,
   List<VwVagasCandidaturasRow> vagas,
@@ -199,8 +239,8 @@ List<VwVagasCandidaturasRow> sortByLocation(
     }
 
     // Se as distâncias forem iguais, ordena por horário de início
-    DateTime? timeA = a.vagasHorainicio?.time;
-    DateTime? timeB = b.vagasHorainicio?.time;
+    DateTime? timeA = a.vagaHorainicio?.time;
+    DateTime? timeB = b.vagaHorainicio?.time;
 
     // Coloca vagas sem horário no final
     if (timeA == null && timeB == null) return 0;
@@ -277,8 +317,8 @@ List<VwVagasAbertasRow> sortByLocationInitial(
     }
 
     // Se as distâncias forem iguais, ordena por horário de início
-    DateTime? timeA = a.vagasHorainicio?.time;
-    DateTime? timeB = b.vagasHorainicio?.time;
+    DateTime? timeA = a.vagaHorainicio?.time;
+    DateTime? timeB = b.vagaHorainicio?.time;
 
     // Coloca vagas sem horário no final
     if (timeA == null && timeB == null) return 0;
@@ -307,52 +347,12 @@ List<VwVagasCandidaturasRow> sortByPayment(
 
   // Ordena por data pagamento
   sortedVagas.sort((a, b) {
-    int daysA = receiveDays(a.vagasData, a.vagasDatapagamento);
-    int daysB = receiveDays(b.vagasData, b.vagasDatapagamento);
+    int daysA = receiveDays(a.vagaData, a.vagaDatapagamento);
+    int daysB = receiveDays(b.vagaData, b.vagaDatapagamento);
 
     // Se ascending for true, ordena crescente (mais próximo primeiro)
     // Se ascending for false, ordena decrescente (mais distante primeiro)
     return ascending ? daysA.compareTo(daysB) : daysB.compareTo(daysA);
   });
   return sortedVagas;
-}
-
-LatLng? map(
-  double lat,
-  double lon,
-) {
-  return LatLng.new(lat, lon);
-}
-
-DateTime? currentDate() {
-  DateTime now = new DateTime.now();
-  return new DateTime(now.year, now.month, now.day);
-}
-
-String cleanHospitalName(
-  String hospitalName,
-  List<String> termsToRemove,
-) {
-  String cleanName = hospitalName.trim();
-
-  // Remove os termos da lista, preservando case das outras palavras
-  for (String term in termsToRemove) {
-    // Regex para remover o termo no início, no final ou isolado
-    final RegExp regex =
-        RegExp('\\b${RegExp.escape(term)}\\b', caseSensitive: false);
-    cleanName = cleanName.replaceAll(regex, '').trim();
-  }
-
-  // Remove espaços múltiplos e vírgulas/hífen no início ou final
-  cleanName = cleanName
-      .replaceAll(RegExp(r'\s+'), ' ')
-      .replaceAll(RegExp(r'^[,\-\s]+|[,\-\s]+$'), '')
-      .trim();
-
-  // Se o nome ficou vazio após a limpeza, retorna o nome original
-  if (cleanName.isEmpty) {
-    return hospitalName.trim();
-  }
-
-  return cleanName.replaceAll('Hospital', 'H.');
 }
