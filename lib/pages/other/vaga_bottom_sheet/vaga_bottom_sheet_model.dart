@@ -48,13 +48,15 @@ class VagaBottomSheetModel extends FlutterFlowModel<VagaBottomSheetWidget> {
   ///  State fields for stateful widgets in this component.
 
   // Stores action output result for [Backend Call - Query Rows] action in VagaBottomSheet widget.
-  List<VagasRequisitoRow>? requirements;
+  List<VagasRequisitosRow>? requirements;
   // Stores action output result for [Backend Call - Query Rows] action in VagaBottomSheet widget.
   List<VagasSalvasRow>? saved;
   // Stores action output result for [Backend Call - Query Rows] action in VagaBottomSheet widget.
   List<CheckinCheckoutRow>? checkin;
   // Stores action output result for [Backend Call - Query Rows] action in VagaBottomSheet widget.
   List<MedicosRow>? medicoinfo;
+  // Stores action output result for [Backend Call - Query Rows] action in VagaBottomSheet widget.
+  List<MedicosFavoritosRow>? favorite;
   // Stores action output result for [Backend Call - Update Row(s)] action in IconButton widget.
   List<VagasRow>? cancelAnounce;
   // Stores action output result for [Alert Dialog - Custom Dialog] action in IconButton widget.
@@ -65,8 +67,8 @@ class VagaBottomSheetModel extends FlutterFlowModel<VagaBottomSheetWidget> {
   late ExpandableController expandableRequisitosExpandableController;
 
   // State field(s) for Checkbox widget.
-  Map<RequisitoTipoRow, bool> checkboxValueMap = {};
-  List<RequisitoTipoRow> get checkboxCheckedItems =>
+  Map<RequisitosRow, bool> checkboxValueMap = {};
+  List<RequisitosRow> get checkboxCheckedItems =>
       checkboxValueMap.entries.where((e) => e.value).map((e) => e.key).toList();
 
   // State field(s) for expandable_contratante widget.
@@ -85,11 +87,6 @@ class VagaBottomSheetModel extends FlutterFlowModel<VagaBottomSheetWidget> {
   // State field(s) for epandable_pagamento widget.
   late ExpandableController epandablePagamentoExpandableController;
 
-  // State field(s) for Switch widget.
-  bool? switchValue;
-  Stream<List<PagamentosRow>>? switchSupabaseStream;
-  // Stores action output result for [Backend Call - Insert Row] action in Switch widget.
-  PagamentosRow? insertPay;
   // State field(s) for expandable_beneficios widget.
   late ExpandableController expandableBeneficiosExpandableController;
 

@@ -73,11 +73,11 @@ class InitialPageModel extends FlutterFlowModel<InitialPageWidget> {
 
   /// Query cache managers for this widget.
 
-  final _bannersManager = FutureRequestManager<List<BannerMKTRow>>();
-  Future<List<BannerMKTRow>> banners({
+  final _bannersManager = FutureRequestManager<List<BannerMktRow>>();
+  Future<List<BannerMktRow>> banners({
     String? uniqueQueryKey,
     bool? overrideCache,
-    required Future<List<BannerMKTRow>> Function() requestFn,
+    required Future<List<BannerMktRow>> Function() requestFn,
   }) =>
       _bannersManager.performRequest(
         uniqueQueryKey: uniqueQueryKey,

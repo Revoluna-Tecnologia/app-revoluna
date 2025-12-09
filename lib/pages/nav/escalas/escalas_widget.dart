@@ -119,10 +119,10 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                             'APROVADO',
                           )
                           .neqOrNull(
-                            'vagas_status',
+                            'vaga_status',
                             'cancelada',
                           )
-                          .order('vagas_horainicio', ascending: true),
+                          .order('vaga_horainicio', ascending: true),
                     ),
                   )
                       .then((result) {
@@ -255,17 +255,16 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                                       e.medicoId ==
                                                       currentUserUid)
                                                   .toList()
-                                                  .map((e) => e.vagasData)
+                                                .map((e) => e.vagaData)
                                                   .withoutNulls
                                                   .toList(),
                                           weekViewEnabled: _model.calendarView,
                                           announcedVagas:
                                               containerVwVagasCandidaturasRowList
                                                   .where((e) =>
-                                                      e.vagasStatus ==
-                                                      'anunciada')
+                                                    e.vagaStatus == 'anunciada')
                                                   .toList()
-                                                  .map((e) => e.vagasData)
+                                                .map((e) => e.vagaData)
                                                   .withoutNulls
                                                   .toList(),
                                           callback: () async {},
@@ -273,8 +272,7 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                       ),
                                       ToggleIcon(
                                         onPressed: () async {
-                                          safeSetState(() =>
-                                              _model.calendarView =
+                                        safeSetState(() => _model.calendarView =
                                                   !_model.calendarView);
                                         },
                                         value: _model.calendarView,
@@ -338,7 +336,7 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                             final hospitais =
                                                 containerVwVagasCandidaturasRowList
                                                     .where((e) =>
-                                                        e.vagasData ==
+                                                          (e.vagaData ==
                                                         FFAppState()
                                                             .selectedDay)
                                                     .toList()
@@ -437,9 +435,7 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                                         builder: (context) {
                                                           final setores = containerVwVagasCandidaturasRowList
                                                               .where((e) =>
-                                                                  (e.vagasData ==
-                                                                      FFAppState()
-                                                                          .selectedDay) &&
+                                                                    (e.vagaData == FFAppState().selectedDay) &&
                                                                   (e.hospitalId ==
                                                                       hospitaisItem
                                                                           .hospitalId))
@@ -519,7 +515,7 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                                                               (e.vagasData == FFAppState().selectedDay) &&
                                                                               (e.setorId == setoresItem.setorId))
                                                                           .toList()
-                                                                          .unique((e) => e.vagasId!)
+                                                                            .unique((e) => e.vagaId!)
                                                                           .toList();
                                                                       if (plantoes
                                                                           .isEmpty) {
@@ -538,34 +534,34 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                                                             children: [
                                                                               wrapWithModel(
                                                                                 model: _model.cardEscalaModels.getModel(
-                                                                                  plantoesItem.vagasId!,
+                                                                                    plantoesItem.vagaId!,
                                                                                   plantoesIndex,
                                                                                 ),
                                                                                 updateCallback: () => safeSetState(() {}),
                                                                                 child: CardEscalaWidget(
                                                                                   key: Key(
-                                                                                    'Key7o5_${plantoesItem.vagasId!}',
+                                                                                      'Key7o5_${plantoesItem.vagaId!}',
                                                                                   ),
-                                                                                  shift: plantoesItem.vagasPeriodoNome,
-                                                                                  type: plantoesItem.vagasTipoNome,
+                                                                                    shift: plantoesItem.periodoNome,
+                                                                                    type: plantoesItem.tiposVagaNome,
                                                                                   start: dateTimeFormat(
                                                                                     "Hm",
-                                                                                    plantoesItem.vagasHorainicio?.time,
+                                                                                      plantoesItem.vagaHorainicio?.time,
                                                                                     locale: FFLocalizations.of(context).languageCode,
                                                                                   ),
                                                                                   end: dateTimeFormat(
                                                                                     "Hm",
-                                                                                    plantoesItem.vagasHorafim?.time,
+                                                                                      plantoesItem.vagaHorafim?.time,
                                                                                     locale: FFLocalizations.of(context).languageCode,
                                                                                   ),
-                                                                                  drName: plantoesItem.vagasStatus == 'aberta'
+                                                                                    drName: plantoesItem.vagaStatus == 'aberta'
                                                                                       ? 'Vaga aberta'
                                                                                       : valueOrDefault<String>(
-                                                                                          '${plantoesItem.medicoPrimeironome} ${plantoesItem.medicoSobrenome}',
+                                                                                            '${plantoesItem.medicoPrimeiroNome} ${plantoesItem.medicoSobrenome}',
                                                                                           'Vaga aberta',
                                                                                         ),
                                                                                   avatarMedico: valueOrDefault<String>(
-                                                                                    plantoesItem.vagasStatus == 'aberta'
+                                                                                      plantoesItem.vagaStatus == 'aberta'
                                                                                         ? 'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png'
                                                                                         : valueOrDefault<String>(
                                                                                             listUserProfileRowList.where((e) => e.id == plantoesItem.medicoId).toList().firstOrNull?.profilepicture,
@@ -574,8 +570,8 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                                                                     'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
                                                                                   ),
                                                                                   sector: plantoesItem.setorNome,
-                                                                                  openJob: (plantoesItem.vagasStatus == 'aberta') || (plantoesItem.vagasStatus == 'anunciada'),
-                                                                                  isDisabled: !((plantoesItem.medicoId == currentUserUid) || ((plantoesItem.vagasStatus == 'aberta') && (plantoesItem.vagasData! >= functions.currentDate()!)) || ((plantoesItem.vagasStatus == 'anunciada') && (plantoesItem.vagasData! >= functions.currentDate()!))),
+                                                                                    openJob: (plantoesItem.vagaStatus == 'aberta') || (plantoesItem.vagaStatus == 'anunciada'),
+                                                                                    isDisabled: !((plantoesItem.medicoId == currentUserUid) || ((plantoesItem.vagaStatus == 'aberta') && (plantoesItem.vagaData! >= functions.currentDate()!)) || ((plantoesItem.vagaStatus == 'anunciada') && (plantoesItem.vagaData! >= functions.currentDate()!))),
                                                                                   showpay: plantoesItem.medicoId == currentUserUid,
                                                                                   colorpay: valueOrDefault<Color>(
                                                                                     plantoesItem.pagamentoValor != null ? FlutterFlowTheme.of(context).tertiary : FlutterFlowTheme.of(context).accent2,
@@ -594,7 +590,7 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                                                               ),
                                                                               if (true)
                                                                                 FFButtonWidget(
-                                                                                  onPressed: !((plantoesItem.medicoId == currentUserUid) || ((plantoesItem.vagasStatus == 'aberta') && (plantoesItem.vagasData! >= functions.currentDate()!)) || ((plantoesItem.vagasStatus == 'anunciada') && (plantoesItem.vagasData! >= functions.currentDate()!)))
+                                                                                    onPressed: !((plantoesItem.medicoId == currentUserUid) || ((plantoesItem.vagaStatus == 'aberta') && (plantoesItem.vagaData! >= functions.currentDate()!)) || ((plantoesItem.vagaStatus == 'anunciada') && (plantoesItem.vagaData! >= functions.currentDate()!)))
                                                                                       ? null
                                                                                       : () async {
                                                                                           logFirebaseEvent('ESCALAS_PAGE__BTN_ON_TAP');
@@ -614,24 +610,24 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                                                                                   padding: MediaQuery.viewInsetsOf(context),
                                                                                                   child: VagaBottomSheetWidget(
                                                                                                     speciality: plantoesItem.especialidadeNome,
-                                                                                                    value: plantoesItem.vagasValor?.toDouble(),
+                                                                                                    value: plantoesItem.vagaValor?.toDouble(),
                                                                                                     hospital: plantoesItem.hospitalNome,
-                                                                                                    date: plantoesItem.vagasData,
-                                                                                                    datecreated: plantoesItem.vagasCreatedate,
-                                                                                                    startTime: plantoesItem.vagasHorainicio?.time,
-                                                                                                    endTime: plantoesItem.vagasHorafim?.time,
-                                                                                                    shift: plantoesItem.vagasPeriodoNome,
-                                                                                                    type: plantoesItem.vagasTipoNome,
+                                                                                                    date: plantoesItem.vagaData,
+                                                                                                    datecreated: plantoesItem.vagaCreatedate,
+                                                                                                    startTime: plantoesItem.vagaHorainicio?.time,
+                                                                                                    endTime: plantoesItem.vagaHorafim?.time,
+                                                                                                    shift: plantoesItem.periodoNome,
+                                                                                                    type: plantoesItem.tiposVagaNome,
                                                                                                     address: plantoesItem.hospitalEnd,
                                                                                                     lat: plantoesItem.hospitalLat,
                                                                                                     lon: plantoesItem.hospitalLog,
-                                                                                                    jobid: plantoesItem.vagasId,
+                                                                                                    jobid: plantoesItem.vagaId,
                                                                                                     contractor: plantoesItem.grupoNome,
                                                                                                     contractorName: plantoesItem.escalistaNome,
                                                                                                     contractorPhone: plantoesItem.escalistaTelefone,
                                                                                                     contractorEmail: plantoesItem.escalistaEmail,
-                                                                                                    payday: plantoesItem.vagasDatapagamento,
-                                                                                                    payment: plantoesItem.vagasFormarecebimentoNome,
+                                                                                                    payday: plantoesItem.vagaDatapagamento,
+                                                                                                    payment: plantoesItem.formaRecebimentoNome,
                                                                                                     avatarHospital: plantoesItem.hospitalAvatar,
                                                                                                     sector: plantoesItem.setorNome,
                                                                                                     candidates: plantoesItem,

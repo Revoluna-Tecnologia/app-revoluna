@@ -160,9 +160,9 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      FutureBuilder<List<CodigosdeareaRow>>(
-                        future: CodigosdeareaTable().queryRows(
-                          queryFn: (q) => q.order('Index', ascending: true),
+                      FutureBuilder<List<CodigosAreaRow>>(
+                        future: CodigosAreaTable().queryRows(
+                          queryFn: (q) => q.order('index', ascending: true),
                         ),
                         builder: (context, snapshot) {
                           // Customize what your widget looks like when it's loading.
@@ -179,8 +179,8 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                               ),
                             );
                           }
-                          List<CodigosdeareaRow>
-                              loginPhoneFormValCodigosdeareaRowList =
+                          List<CodigosAreaRow>
+                              loginPhoneFormValCodigosAreaRowList =
                               snapshot.data!;
 
                           return Form(
@@ -213,19 +213,13 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                           _model.dropCodigoPaisValue ??= 0,
                                         ),
                                         options: List<int>.from(
-                                            loginPhoneFormValCodigosdeareaRowList
-                                                .map((e) => valueOrDefault<int>(
-                                                      e.index,
-                                                      0,
-                                                    ))
+                                            loginPhoneFormValCodigosAreaRowList
+                                                .map((e) => e.index)
                                                 .toList()),
                                         optionLabels:
-                                            loginPhoneFormValCodigosdeareaRowList
-                                                .map((e) =>
-                                                    valueOrDefault<String>(
-                                                      e.lista,
-                                                      'Brasil (+55)',
-                                                    ))
+                                            loginPhoneFormValCodigosAreaRowList
+                                                .map((e) => e.lista)
+                                                .withoutNulls
                                                 .toList(),
                                         onChanged: (val) async {
                                           safeSetState(() =>
@@ -385,7 +379,7 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                         _model
                                                             .campoTelefoneTextController
                                                             .text,
-                                                        loginPhoneFormValCodigosdeareaRowList
+                                                        loginPhoneFormValCodigosAreaRowList
                                                             .elementAtOrNull(_model
                                                                 .dropCodigoPaisValue!)!
                                                             .formato!)!;
@@ -520,7 +514,7 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                                 _model
                                                                     .campoTelefoneTextController
                                                                     .text,
-                                                                loginPhoneFormValCodigosdeareaRowList
+                                                                loginPhoneFormValCodigosAreaRowList
                                                                     .elementAtOrNull(
                                                                         _model
                                                                             .dropCodigoPaisValue!)!
@@ -605,7 +599,7 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                               ),
                                           maxLines: null,
                                           maxLength:
-                                              loginPhoneFormValCodigosdeareaRowList
+                                              loginPhoneFormValCodigosAreaRowList
                                                   .elementAtOrNull(_model
                                                       .dropCodigoPaisValue!)
                                                   ?.caracteresMax,
@@ -684,7 +678,7 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                             _model.phoneOnlynumbers =
                                                 '${(String var1) {
                                               return var1.replaceFirst('+', '');
-                                            }(loginPhoneFormValCodigosdeareaRowList.elementAtOrNull(_model.dropCodigoPaisValue!)!.codigo!)}${(String var1) {
+                                            }(loginPhoneFormValCodigosAreaRowList.elementAtOrNull(_model.dropCodigoPaisValue!)!.codigo!)}${(String var1) {
                                               return var1.replaceAll(
                                                   RegExp(r'\D'), '');
                                             }(_model.campoTelefoneTextController.text)}';
@@ -704,7 +698,7 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                 .campoTelefoneTextController
                                                 .text;
                                             FFAppState().inputAreacode =
-                                                loginPhoneFormValCodigosdeareaRowList
+                                                loginPhoneFormValCodigosAreaRowList
                                                     .elementAtOrNull(_model
                                                         .dropCodigoPaisValue!)!
                                                     .codigo!;
@@ -755,7 +749,7 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                   queryFn: (q) => q.eqOrNull(
                                                     'id',
                                                     _model.queryUser
-                                                        ?.firstOrNull?.uFindex,
+                                                        ?.firstOrNull?.ufIndex,
                                                   ),
                                                 );
                                                 _shouldSetState = true;
@@ -779,8 +773,10 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                           .firstOrNull!
                                                           .profilepicture!;
                                                   FFAppState().estadoUFIndex =
-                                                      _model.queryUser!
-                                                          .firstOrNull!.uFindex;
+                                                      _model
+                                                          .queryUser!
+                                                          .firstOrNull!
+                                                          .areacodeIndex;
                                                   FFAppState()
                                                           .specialialityIndex =
                                                       _model
@@ -878,6 +874,7 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                               _model
                                                   .dropCodigoPaisValueController
                                                   ?.reset();
+                                              _model.dropCodigoPaisValue = null;
                                             });
                                             if (_shouldSetState)
                                               safeSetState(() {});
