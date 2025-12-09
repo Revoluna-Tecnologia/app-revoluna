@@ -1,5 +1,78 @@
 # Histórico de Versões - Revoluna
 
+## [2.2.3] - 09/12/2025
+
+### ✨ **Novas Funcionalidades**
+
+#### 📊 **Nova View de Pagamentos**
+- **`vw_plantoes_pagamentos`**: Nova view para consolidar plantões e recebimentos
+
+---
+
+### 🐛 **Correções de Bugs**
+
+#### 🕒 **Check-in/Check-out**
+- **Sem Duplicidade**: Reutiliza o registro existente de `checkin_checkout` por vaga em vez de inserir novas linhas
+
+#### 📅 **Calendário**
+- **Eventos de Meia-Noite**: Corrigida verificação para eventos que atravessam a meia-noite na função de adicionar ao calendário
+
+#### 👤 **Perfil**
+- **Data de Nascimento**: Corrigida atualização de data de nascimento no perfil
+
+---
+
+### 🔄 **Melhorias e Refatorações**
+
+#### 🗃️ **Normalização do Schema Supabase**
+- **Pluralização e Limpeza**: Tabelas e views atualizadas para a nova convenção (`beneficios`, `periodos`, `requisitos`, `tipos_vaga`, `vagas_beneficios`, `vagas_requisitos`, `hospitais`, `grupos`, `vagas_recorrencias`, `whatsapp_number`, `codigos_area`, `escalistas`), removendo artefatos legados (ex.: `carteira_digital`, `validacao_documentos`, `sistema_logs`, `vagas_completo`, views antigas `vw_*`)
+- **Modelos Sincronizados**: Classes de dados revisadas (`vagas`, `medicos`, `pagamentos`, `especialidades`, `candidaturas`, etc.) com novos campos/nomes alinhados ao banco
+- **Views Atualizadas**: `vw_vagas_abertas` e `vw_vagas_candidaturas` reescritas para refletir status e relacionamentos atuais
+- **Funções Customizadas**: Nomes de campos atualizados em `initialize_deeplinks`, `insert_candidaturas`, `check_in_check_out` e `conciergenumber` para consistência com o novo schema
+
+#### 📱 **Listagens e UI de Vagas/Agenda**
+- **Fontes Unificadas**: Home, Explorar, Escalas, Histórico, Perfil e Header agora consomem `VwVagasCandidaturas`/`VwVagasAbertas` com ordenação por horário, filtros de status e refresh por cache do `FFAppState`
+- **Bottom Sheet Enriquecido**: Detalhes de vaga exibem contratante, forma de recebimento, valores e geolocalização usando os novos campos
+- **Médico Favorito**: Página de vagas consulta na abertura se o médico é favorito. A informação foi removida da view pois era uma coluna que demandava muito esforço do banco de dados.
+- **Lógica Simplificada**: Remoção de filtros desnecessários na consulta de candidaturas em Escalas
+
+#### 🎛️ **Formulários e Filtros**
+- **Reset de Dropdowns**: Dropdowns são redefinidos como nulo ao resetar formulários nas páginas Explorar e Histórico
+- **Listas Ordenadas**: Listas de seleção de especialidades e códigos de área ordenadas alfabeticamente no Perfil
+
+#### 💳 **Pagamentos**
+- **Responsabilidade Transferida**: Removido switch de pagamento da página de vagas — a responsabilidade de marcar pagamento foi passada para o Houston (lado do contratante)
+
+#### 🧹 **Limpeza de Código**
+- **Queries Otimizadas**: Remoção de lógica redundante de requisições no banco de dados
+- **Reorganização**: Limpeza geral e reorganização de código
+- **Obsolescências**: Removidos componente e função não utilizadas mais no código
+- **Organização**: Componente de loading migrado para pasta adequada
+
+---
+
+### 🔧 **Configurações e Build**
+
+#### 📦 **Atualizações de Dependências**
+- **flutter_inappwebview_android**: 1.1.8 → 1.1.9+1
+- **flutter_inappwebview_ios**: 1.1.5 → 1.1.6
+- Atualização automática de dependências FlutterFlow
+
+---
+
+### 📊 **Estatísticas da Versão 2.2.3**
+
+- **Total de Commits**: 15
+- **Arquivos Modificados**: 98
+- **Linhas Adicionadas**: ~2.300
+- **Linhas Removidas**: ~3.400
+- **Net Change**: -1.100 linhas (limpeza e consolidação)
+
+#### 🎯 **Impactos Principais**
+- **Check-in/out**: Fluxo mais confiável com validação de GPS
+- **Schema**: Banco normalizado e alinhado com convenções
+- **Manutenibilidade**: Código mais limpo, menos duplicação
+
 ## [2.2.2] - 20/11/2025
 
 ### ✨ **Novas Funcionalidades**
