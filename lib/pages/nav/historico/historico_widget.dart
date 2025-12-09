@@ -302,6 +302,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                               safeSetState(() {
                                                 _model.dropDownValueController
                                                     ?.reset();
+                                                _model.dropDownValue = null;
                                               });
                                             },
                                             text: '',
@@ -441,6 +442,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                               safeSetState(() {
                                                 _model.dropDownValueController
                                                     ?.reset();
+                                                _model.dropDownValue = null;
                                               });
                                             },
                                             text: '',
@@ -582,6 +584,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                               safeSetState(() {
                                                 _model.dropDownValueController
                                                     ?.reset();
+                                                _model.dropDownValue = null;
                                               });
                                             },
                                             text: '',
@@ -721,6 +724,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                               safeSetState(() {
                                                 _model.dropDownValueController
                                                     ?.reset();
+                                                _model.dropDownValue = null;
                                               });
                                             },
                                             text: '',
@@ -1070,6 +1074,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                     logFirebaseEvent('Icon_reset_form_fields');
                                     safeSetState(() {
                                       _model.dropDownValueController?.reset();
+                                      _model.dropDownValue = null;
                                     });
                                     logFirebaseEvent('Icon_update_page_state');
                                     _model.clearDropColor = Color(4293256677);
