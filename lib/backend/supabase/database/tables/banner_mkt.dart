@@ -1,18 +1,18 @@
 import '../database.dart';
 
-class BannerMKTTable extends SupabaseTable<BannerMKTRow> {
+class BannerMktTable extends SupabaseTable<BannerMktRow> {
   @override
-  String get tableName => 'bannerMKT';
+  String get tableName => 'banner_mkt';
 
   @override
-  BannerMKTRow createRow(Map<String, dynamic> data) => BannerMKTRow(data);
+  BannerMktRow createRow(Map<String, dynamic> data) => BannerMktRow(data);
 }
 
-class BannerMKTRow extends SupabaseDataRow {
-  BannerMKTRow(Map<String, dynamic> data) : super(data);
+class BannerMktRow extends SupabaseDataRow {
+  BannerMktRow(Map<String, dynamic> data) : super(data);
 
   @override
-  SupabaseTable get table => BannerMKTTable();
+  SupabaseTable get table => BannerMktTable();
 
   int get id => getField<int>('id')!;
   set id(int value) => setField<int>('id', value);
@@ -20,8 +20,8 @@ class BannerMKTRow extends SupabaseDataRow {
   DateTime get createdAt => getField<DateTime>('created_at')!;
   set createdAt(DateTime value) => setField<DateTime>('created_at', value);
 
-  int? get pageIndex => getField<int>('page index');
-  set pageIndex(int? value) => setField<int>('page index', value);
+  int? get pageIndex => getField<int>('page_index');
+  set pageIndex(int? value) => setField<int>('page_index', value);
 
   String? get imgpath => getField<String>('imgpath');
   set imgpath(String? value) => setField<String>('imgpath', value);
@@ -29,6 +29,6 @@ class BannerMKTRow extends SupabaseDataRow {
   String? get description => getField<String>('description');
   set description(String? value) => setField<String>('description', value);
 
-  String? get url => getField<String>('URL');
-  set url(String? value) => setField<String>('URL', value);
+  String? get url => getField<String>('url');
+  set url(String? value) => setField<String>('url', value);
 }

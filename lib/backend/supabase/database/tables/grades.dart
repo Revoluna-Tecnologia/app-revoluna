@@ -53,4 +53,7 @@ class GradesRow extends SupabaseDataRow {
 
   String? get updatedBy => getField<String>('updated_by');
   set updatedBy(String? value) => setField<String>('updated_by', value);
+
+  int? get ordem => getField<int>('ordem');
+  set ordem(int? value) => setField<int>('ordem', value);
 }

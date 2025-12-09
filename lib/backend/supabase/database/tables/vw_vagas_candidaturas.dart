@@ -18,62 +18,59 @@ class VwVagasCandidaturasRow extends SupabaseDataRow {
   int? get idx => getField<int>('idx');
   set idx(int? value) => setField<int>('idx', value);
 
-  String? get vagasId => getField<String>('vagas_id');
-  set vagasId(String? value) => setField<String>('vagas_id', value);
+  String? get vagaId => getField<String>('vaga_id');
+  set vagaId(String? value) => setField<String>('vaga_id', value);
 
-  DateTime? get vagasData => getField<DateTime>('vagas_data');
-  set vagasData(DateTime? value) => setField<DateTime>('vagas_data', value);
+  DateTime? get vagaData => getField<DateTime>('vaga_data');
+  set vagaData(DateTime? value) => setField<DateTime>('vaga_data', value);
 
-  DateTime? get vagasCreatedate => getField<DateTime>('vagas_createdate');
-  set vagasCreatedate(DateTime? value) =>
-      setField<DateTime>('vagas_createdate', value);
+  DateTime? get vagaCreatedate => getField<DateTime>('vaga_createdate');
+  set vagaCreatedate(DateTime? value) =>
+      setField<DateTime>('vaga_createdate', value);
 
-  String? get vagasStatus => getField<String>('vagas_status');
-  set vagasStatus(String? value) => setField<String>('vagas_status', value);
+  String? get vagaStatus => getField<String>('vaga_status');
+  set vagaStatus(String? value) => setField<String>('vaga_status', value);
 
-  int? get vagasValor => getField<int>('vagas_valor');
-  set vagasValor(int? value) => setField<int>('vagas_valor', value);
+  int? get vagaValor => getField<int>('vaga_valor');
+  set vagaValor(int? value) => setField<int>('vaga_valor', value);
 
-  PostgresTime? get vagasHorainicio =>
-      getField<PostgresTime>('vagas_horainicio');
-  set vagasHorainicio(PostgresTime? value) =>
-      setField<PostgresTime>('vagas_horainicio', value);
+  PostgresTime? get vagaHorainicio => getField<PostgresTime>('vaga_horainicio');
+  set vagaHorainicio(PostgresTime? value) =>
+      setField<PostgresTime>('vaga_horainicio', value);
 
-  PostgresTime? get vagasHorafim => getField<PostgresTime>('vagas_horafim');
-  set vagasHorafim(PostgresTime? value) =>
-      setField<PostgresTime>('vagas_horafim', value);
+  PostgresTime? get vagaHorafim => getField<PostgresTime>('vaga_horafim');
+  set vagaHorafim(PostgresTime? value) =>
+      setField<PostgresTime>('vaga_horafim', value);
 
-  DateTime? get vagasDatapagamento => getField<DateTime>('vagas_datapagamento');
-  set vagasDatapagamento(DateTime? value) =>
-      setField<DateTime>('vagas_datapagamento', value);
+  DateTime? get vagaDatapagamento => getField<DateTime>('vaga_datapagamento');
+  set vagaDatapagamento(DateTime? value) =>
+      setField<DateTime>('vaga_datapagamento', value);
 
-  String? get vagasPeriodo => getField<String>('vagas_periodo');
-  set vagasPeriodo(String? value) => setField<String>('vagas_periodo', value);
+  String? get periodoId => getField<String>('periodo_id');
+  set periodoId(String? value) => setField<String>('periodo_id', value);
 
-  String? get vagasPeriodoNome => getField<String>('vagas_periodo_nome');
-  set vagasPeriodoNome(String? value) =>
-      setField<String>('vagas_periodo_nome', value);
+  String? get periodoNome => getField<String>('periodo_nome');
+  set periodoNome(String? value) => setField<String>('periodo_nome', value);
 
-  String? get vagasTipo => getField<String>('vagas_tipo');
-  set vagasTipo(String? value) => setField<String>('vagas_tipo', value);
+  String? get tiposVagaId => getField<String>('tipos_vaga_id');
+  set tiposVagaId(String? value) => setField<String>('tipos_vaga_id', value);
 
-  String? get vagasTipoNome => getField<String>('vagas_tipo_nome');
-  set vagasTipoNome(String? value) =>
-      setField<String>('vagas_tipo_nome', value);
+  String? get tiposVagaNome => getField<String>('tipos_vaga_nome');
+  set tiposVagaNome(String? value) =>
+      setField<String>('tipos_vaga_nome', value);
 
-  String? get vagasFormarecebimento =>
-      getField<String>('vagas_formarecebimento');
-  set vagasFormarecebimento(String? value) =>
-      setField<String>('vagas_formarecebimento', value);
+  String? get formaRecebimentoId => getField<String>('forma_recebimento_id');
+  set formaRecebimentoId(String? value) =>
+      setField<String>('forma_recebimento_id', value);
 
-  String? get vagasFormarecebimentoNome =>
-      getField<String>('vagas_formarecebimento_nome');
-  set vagasFormarecebimentoNome(String? value) =>
-      setField<String>('vagas_formarecebimento_nome', value);
+  String? get formaRecebimentoNome =>
+      getField<String>('forma_recebimento_nome');
+  set formaRecebimentoNome(String? value) =>
+      setField<String>('forma_recebimento_nome', value);
 
-  String? get vagasObservacoes => getField<String>('vagas_observacoes');
-  set vagasObservacoes(String? value) =>
-      setField<String>('vagas_observacoes', value);
+  String? get vagaObservacoes => getField<String>('vaga_observacoes');
+  set vagaObservacoes(String? value) =>
+      setField<String>('vaga_observacoes', value);
 
   String? get hospitalId => getField<String>('hospital_id');
   set hospitalId(String? value) => setField<String>('hospital_id', value);
@@ -132,9 +129,8 @@ class VwVagasCandidaturasRow extends SupabaseDataRow {
   String? get grupoNome => getField<String>('grupo_nome');
   set grupoNome(String? value) => setField<String>('grupo_nome', value);
 
-  String? get candidaturasId => getField<String>('candidaturas_id');
-  set candidaturasId(String? value) =>
-      setField<String>('candidaturas_id', value);
+  String? get candidaturaId => getField<String>('candidatura_id');
+  set candidaturaId(String? value) => setField<String>('candidatura_id', value);
 
   int? get totalCandidaturas => getField<int>('total_candidaturas');
   set totalCandidaturas(int? value) =>
@@ -144,26 +140,26 @@ class VwVagasCandidaturasRow extends SupabaseDataRow {
   set candidaturaStatus(String? value) =>
       setField<String>('candidatura_status', value);
 
-  DateTime? get candidatosCreatedate =>
-      getField<DateTime>('candidatos_createdate');
-  set candidatosCreatedate(DateTime? value) =>
-      setField<DateTime>('candidatos_createdate', value);
+  DateTime? get candidaturaCreatedate =>
+      getField<DateTime>('candidatura_createdate');
+  set candidaturaCreatedate(DateTime? value) =>
+      setField<DateTime>('candidatura_createdate', value);
 
-  String? get candidaturasUpdateby => getField<String>('candidaturas_updateby');
-  set candidaturasUpdateby(String? value) =>
-      setField<String>('candidaturas_updateby', value);
+  String? get candidaturaUpdateby => getField<String>('candidatura_updateby');
+  set candidaturaUpdateby(String? value) =>
+      setField<String>('candidatura_updateby', value);
 
-  DateTime? get candidaturasUpdateat =>
-      getField<DateTime>('candidaturas_updateat');
-  set candidaturasUpdateat(DateTime? value) =>
-      setField<DateTime>('candidaturas_updateat', value);
+  DateTime? get candidaturaUpdatedat =>
+      getField<DateTime>('candidatura_updatedat');
+  set candidaturaUpdatedat(DateTime? value) =>
+      setField<DateTime>('candidatura_updatedat', value);
 
   String? get medicoId => getField<String>('medico_id');
   set medicoId(String? value) => setField<String>('medico_id', value);
 
-  String? get medicoPrimeironome => getField<String>('medico_primeironome');
-  set medicoPrimeironome(String? value) =>
-      setField<String>('medico_primeironome', value);
+  String? get medicoPrimeiroNome => getField<String>('medico_primeiro_nome');
+  set medicoPrimeiroNome(String? value) =>
+      setField<String>('medico_primeiro_nome', value);
 
   String? get medicoSobrenome => getField<String>('medico_sobrenome');
   set medicoSobrenome(String? value) =>
@@ -194,9 +190,6 @@ class VwVagasCandidaturasRow extends SupabaseDataRow {
 
   bool? get vagaSalva => getField<bool>('vaga_salva');
   set vagaSalva(bool? value) => setField<bool>('vaga_salva', value);
-
-  bool? get medicoFavorito => getField<bool>('medico_favorito');
-  set medicoFavorito(bool? value) => setField<bool>('medico_favorito', value);
 
   DateTime? get checkin => getField<DateTime>('checkin');
   set checkin(DateTime? value) => setField<DateTime>('checkin', value);

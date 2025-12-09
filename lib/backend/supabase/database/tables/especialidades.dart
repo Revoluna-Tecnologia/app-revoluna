@@ -15,20 +15,15 @@ class EspecialidadesRow extends SupabaseDataRow {
   @override
   SupabaseTable get table => EspecialidadesTable();
 
-  String get especialidadeId => getField<String>('especialidade_id')!;
-  set especialidadeId(String value) =>
-      setField<String>('especialidade_id', value);
+  String get id => getField<String>('id')!;
+  set id(String value) => setField<String>('id', value);
 
-  DateTime? get especialidadeCreatedAt =>
-      getField<DateTime>('especialidade_created_at');
-  set especialidadeCreatedAt(DateTime? value) =>
-      setField<DateTime>('especialidade_created_at', value);
+  DateTime? get createdAt => getField<DateTime>('created_at');
+  set createdAt(DateTime? value) => setField<DateTime>('created_at', value);
 
-  String? get especialidadeNome => getField<String>('especialidade_nome');
-  set especialidadeNome(String? value) =>
-      setField<String>('especialidade_nome', value);
+  String? get nome => getField<String>('nome');
+  set nome(String? value) => setField<String>('nome', value);
 
-  int? get especialidadeIndex => getField<int>('especialidade_index');
-  set especialidadeIndex(int? value) =>
-      setField<int>('especialidade_index', value);
+  int? get index => getField<int>('index');
+  set index(int? value) => setField<int>('index', value);
 }

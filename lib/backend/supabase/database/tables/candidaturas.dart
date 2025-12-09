@@ -14,41 +14,33 @@ class CandidaturasRow extends SupabaseDataRow {
   @override
   SupabaseTable get table => CandidaturasTable();
 
-  String get candidaturasId => getField<String>('candidaturas_id')!;
-  set candidaturasId(String value) =>
-      setField<String>('candidaturas_id', value);
+  String get id => getField<String>('id')!;
+  set id(String value) => setField<String>('id', value);
 
-  DateTime? get candidatosCreatedate =>
-      getField<DateTime>('candidatos_createdate');
-  set candidatosCreatedate(DateTime? value) =>
-      setField<DateTime>('candidatos_createdate', value);
+  DateTime? get createdAt => getField<DateTime>('created_at');
+  set createdAt(DateTime? value) => setField<DateTime>('created_at', value);
 
-  DateTime? get candidatosDataconfirmacao =>
-      getField<DateTime>('candidatos_dataconfirmacao');
-  set candidatosDataconfirmacao(DateTime? value) =>
-      setField<DateTime>('candidatos_dataconfirmacao', value);
+  DateTime? get dataConfirmacao => getField<DateTime>('data_confirmacao');
+  set dataConfirmacao(DateTime? value) =>
+      setField<DateTime>('data_confirmacao', value);
 
   String get medicoId => getField<String>('medico_id')!;
   set medicoId(String value) => setField<String>('medico_id', value);
 
-  String get vagasId => getField<String>('vagas_id')!;
-  set vagasId(String value) => setField<String>('vagas_id', value);
+  String get vagaId => getField<String>('vaga_id')!;
+  set vagaId(String value) => setField<String>('vaga_id', value);
 
-  String get candidaturaStatus => getField<String>('candidatura_status')!;
-  set candidaturaStatus(String value) =>
-      setField<String>('candidatura_status', value);
+  String get status => getField<String>('status')!;
+  set status(String value) => setField<String>('status', value);
 
-  DateTime? get candidaturasUpdateat =>
-      getField<DateTime>('candidaturas_updateat');
-  set candidaturasUpdateat(DateTime? value) =>
-      setField<DateTime>('candidaturas_updateat', value);
+  DateTime? get updatedAt => getField<DateTime>('updated_at');
+  set updatedAt(DateTime? value) => setField<DateTime>('updated_at', value);
 
-  String? get candidaturasUpdateby => getField<String>('candidaturas_updateby');
-  set candidaturasUpdateby(String? value) =>
-      setField<String>('candidaturas_updateby', value);
+  String? get updatedBy => getField<String>('updated_by');
+  set updatedBy(String? value) => setField<String>('updated_by', value);
 
-  int get vagasValor => getField<int>('vagas_valor')!;
-  set vagasValor(int value) => setField<int>('vagas_valor', value);
+  int get vagaValor => getField<int>('vaga_valor')!;
+  set vagaValor(int value) => setField<int>('vaga_valor', value);
 
   String? get medicoPrecadastroId => getField<String>('medico_precadastro_id');
   set medicoPrecadastroId(String? value) =>

@@ -20,8 +20,8 @@ class VagasSalvasRow extends SupabaseDataRow {
   DateTime get createdAt => getField<DateTime>('created_at')!;
   set createdAt(DateTime value) => setField<DateTime>('created_at', value);
 
-  String get vagasId => getField<String>('vagas_id')!;
-  set vagasId(String value) => setField<String>('vagas_id', value);
+  String get vagaId => getField<String>('vaga_id')!;
+  set vagaId(String value) => setField<String>('vaga_id', value);
 
   String get medicoId => getField<String>('medico_id')!;
   set medicoId(String value) => setField<String>('medico_id', value);

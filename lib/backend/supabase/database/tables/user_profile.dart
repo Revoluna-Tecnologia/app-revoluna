@@ -33,14 +33,14 @@ class UserProfileRow extends SupabaseDataRow {
   String? get gender => getField<String>('gender');
   set gender(String? value) => setField<String>('gender', value);
 
-  int get areacodeIndex => getField<int>('areacodeIndex')!;
-  set areacodeIndex(int value) => setField<int>('areacodeIndex', value);
+  int get areacodeIndex => getField<int>('areacode_index')!;
+  set areacodeIndex(int value) => setField<int>('areacode_index', value);
 
-  int get uFindex => getField<int>('UFindex')!;
-  set uFindex(int value) => setField<int>('UFindex', value);
+  int get ufIndex => getField<int>('uf_index')!;
+  set ufIndex(int value) => setField<int>('uf_index', value);
 
-  int get specialtyIndex => getField<int>('specialtyIndex')!;
-  set specialtyIndex(int value) => setField<int>('specialtyIndex', value);
+  int get specialtyIndex => getField<int>('specialty_index')!;
+  set specialtyIndex(int value) => setField<int>('specialty_index', value);
 
   String? get fcmToken => getField<String>('fcm_token');
   set fcmToken(String? value) => setField<String>('fcm_token', value);

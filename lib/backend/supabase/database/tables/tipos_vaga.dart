@@ -1,27 +1,27 @@
 import '../database.dart';
 
-class SetoresTable extends SupabaseTable<SetoresRow> {
+class TiposVagaTable extends SupabaseTable<TiposVagaRow> {
   @override
-  String get tableName => 'setores';
+  String get tableName => 'tipos_vaga';
 
   @override
-  SetoresRow createRow(Map<String, dynamic> data) => SetoresRow(data);
+  TiposVagaRow createRow(Map<String, dynamic> data) => TiposVagaRow(data);
 }
 
-class SetoresRow extends SupabaseDataRow {
-  SetoresRow(Map<String, dynamic> data) : super(data);
+class TiposVagaRow extends SupabaseDataRow {
+  TiposVagaRow(Map<String, dynamic> data) : super(data);
 
   @override
-  SupabaseTable get table => SetoresTable();
+  SupabaseTable get table => TiposVagaTable();
 
   String get id => getField<String>('id')!;
   set id(String value) => setField<String>('id', value);
 
-  String get nome => getField<String>('nome')!;
-  set nome(String value) => setField<String>('nome', value);
-
   DateTime get createdAt => getField<DateTime>('created_at')!;
   set createdAt(DateTime value) => setField<DateTime>('created_at', value);
+
+  String? get nome => getField<String>('nome');
+  set nome(String? value) => setField<String>('nome', value);
 
   DateTime get updatedAt => getField<DateTime>('updated_at')!;
   set updatedAt(DateTime value) => setField<DateTime>('updated_at', value);

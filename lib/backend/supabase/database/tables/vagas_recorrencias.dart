@@ -1,22 +1,22 @@
 import '../database.dart';
 
-class VagasRecorrenciaTable extends SupabaseTable<VagasRecorrenciaRow> {
+class VagasRecorrenciasTable extends SupabaseTable<VagasRecorrenciasRow> {
   @override
-  String get tableName => 'vagas_recorrencia';
+  String get tableName => 'vagas_recorrencias';
 
   @override
-  VagasRecorrenciaRow createRow(Map<String, dynamic> data) =>
-      VagasRecorrenciaRow(data);
+  VagasRecorrenciasRow createRow(Map<String, dynamic> data) =>
+      VagasRecorrenciasRow(data);
 }
 
-class VagasRecorrenciaRow extends SupabaseDataRow {
-  VagasRecorrenciaRow(Map<String, dynamic> data) : super(data);
+class VagasRecorrenciasRow extends SupabaseDataRow {
+  VagasRecorrenciasRow(Map<String, dynamic> data) : super(data);
 
   @override
-  SupabaseTable get table => VagasRecorrenciaTable();
+  SupabaseTable get table => VagasRecorrenciasTable();
 
-  String get recorrenciaId => getField<String>('recorrencia_id')!;
-  set recorrenciaId(String value) => setField<String>('recorrencia_id', value);
+  String get id => getField<String>('id')!;
+  set id(String value) => setField<String>('id', value);
 
   DateTime? get createdAt => getField<DateTime>('created_at');
   set createdAt(DateTime? value) => setField<DateTime>('created_at', value);

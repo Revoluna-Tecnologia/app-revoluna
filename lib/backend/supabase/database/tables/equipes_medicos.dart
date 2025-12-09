@@ -15,8 +15,8 @@ class EquipesMedicosRow extends SupabaseDataRow {
   @override
   SupabaseTable get table => EquipesMedicosTable();
 
-  String? get equipesId => getField<String>('equipes_id');
-  set equipesId(String? value) => setField<String>('equipes_id', value);
+  String? get equipeId => getField<String>('equipe_id');
+  set equipeId(String? value) => setField<String>('equipe_id', value);
 
   String get medicoId => getField<String>('medico_id')!;
   set medicoId(String value) => setField<String>('medico_id', value);
