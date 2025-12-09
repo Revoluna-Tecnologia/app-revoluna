@@ -1,5 +1,26 @@
 # Histórico de Versões - Revoluna
 
+## [2.2.3] - 09/12/2025
+
+### 🐛 **Correções de Bugs**
+
+#### 🕒 **Check-in/Check-out**
+- **Sem Duplicidade**: Reutiliza o registro existente de `checkin_checkout` por vaga em vez de inserir novas linhas
+
+---
+
+### 🔄 **Melhorias e Refatorações**
+
+#### 🗃️ **Normalização do Schema Supabase**
+- **Pluralização e Limpeza**: Tabelas e views atualizadas para a nova convenção (`beneficios`, `periodos`, `requisitos`, `tipos_vaga`, `vagas_beneficios`, `vagas_requisitos`, `hospitais`, `grupos`, `vagas_recorrencias`, `whatsapp_number`), removendo artefatos legados (ex.: `carteira_digital`, `validacao_documentos`, views antigas `vw_*`)
+- **Modelos Sincronizados**: Classes de dados revisadas (`vagas`, `medicos`, `pagamentos`, `especialidades`, `candidaturas`, etc.) com novos campos/nomes alinhados ao banco
+- **Views Atualizadas**: `vw_vagas_abertas` e `vw_vagas_candidaturas` reescritas para refletir status e relacionamentos atuais
+
+#### 📱 **Listagens e UI de Vagas/Agenda**
+- **Fontes Unificadas**: Home, Explorar, Escalas, Histórico, Perfil e Header agora consomem `VwVagasCandidaturas`/`VwVagasAbertas` com ordenação por horário, filtros de status e refresh por cache do `FFAppState`
+- **Bottom Sheet Enriquecido**: Detalhes de vaga exibem contratante, forma de recebimento, valores e geolocalização usando os novos campos
+- **Loadings Centralizados**: Componentes de loading migrados para `components/loading/*`, removendo `custom_circular_progress` duplicado
+
 ## [2.2.2] - 20/11/2025
 
 ### ✨ **Novas Funcionalidades**
