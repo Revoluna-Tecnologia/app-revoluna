@@ -101,42 +101,32 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(
-                  valueOrDefault<double>(
-                    FFAppConstants.halfGap,
-                    0.0,
-                  ),
+            Container(
+              width: 70.0,
+              height: 70.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(valueOrDefault<double>(
+                  FFAppConstants.borderM,
                   0.0,
-                  valueOrDefault<double>(
-                    FFAppConstants.halfGap,
-                    0.0,
-                  ),
-                  0.0),
-              child: Container(
-                width: 70.0,
-                height: 70.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(valueOrDefault<double>(
-                    FFAppConstants.borderM,
-                    0.0,
-                  )),
-                  border: Border.all(
-                    color: FlutterFlowTheme.of(context).accent2,
-                    width: 1.0,
-                  ),
+                )),
+                border: Border.all(
+                  color: FlutterFlowTheme.of(context).accent2,
+                  width: 1.0,
                 ),
-                alignment: AlignmentDirectional(0.0, 0.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(valueOrDefault<double>(
-                    FFAppConstants.borderM,
-                    0.0,
-                  )),
-                  child: Image.network(
-                    valueOrDefault<String>(
-                      widget!.avatarHospital,
-                      'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/avatarhospitais//placeholder..png',
-                    ),
+              ),
+              alignment: AlignmentDirectional(0.0, 0.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(valueOrDefault<double>(
+                  FFAppConstants.borderM,
+                  0.0,
+                )),
+                child: Image.network(
+                  widget!.avatarHospital!,
+                  width: double.infinity,
+                  height: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Image.asset(
+                    'assets/images/error_image.png',
                     width: double.infinity,
                     height: double.infinity,
                     fit: BoxFit.cover,
@@ -167,13 +157,14 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                     children: [
                       Row(
                         mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
                             valueOrDefault<String>(
                               widget!.specialty,
                               '[Especialidade]',
                             ).maybeHandleOverflow(
-                              maxChars: 26,
+                              maxChars: 18,
                               replacement: '…',
                             ),
                             maxLines: 1,
@@ -196,6 +187,7 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                                       .titleMedium
                                       .fontStyle,
                                 ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                           Text(
                             '•',
@@ -220,18 +212,24 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                                       .fontStyle,
                                 ),
                           ),
-                          Text(
-                            valueOrDefault<String>(
-                              widget!.hospital,
-                              '[hospital]',
-                            ).maybeHandleOverflow(
-                              maxChars: 18,
-                              replacement: '…',
-                            ),
-                            style: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  font: GoogleFonts.geologica(
+                          Expanded(
+                            child: Text(
+                              valueOrDefault<String>(
+                                widget!.hospital,
+                                '[hospital]',
+                              ),
+                              style: FlutterFlowTheme.of(context)
+                                  .labelMedium
+                                  .override(
+                                    font: GoogleFonts.geologica(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .labelMedium
                                         .fontWeight,
@@ -239,19 +237,14 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                                         .labelMedium
                                         .fontStyle,
                                   ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ].divide(SizedBox(width: FFAppConstants.halfGap)),
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           AutoSizeText(
                             valueOrDefault<String>(
@@ -381,6 +374,7 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                                                   .labelMedium
                                                   .fontStyle,
                                         ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ],
                               ),
@@ -433,6 +427,7 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                                             .labelMedium
                                             .fontStyle,
                                       ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ].divide(SizedBox(width: 1.0)),
                             ),
@@ -477,6 +472,7 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                                           .labelMedium
                                           .fontStyle,
                                     ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ].divide(SizedBox(width: 1.0)),
                           ),
@@ -488,7 +484,7 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
               ),
             ),
             Container(
-              width: MediaQuery.sizeOf(context).width * 0.097,
+              width: MediaQuery.sizeOf(context).width * 0.06,
               decoration: BoxDecoration(),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
