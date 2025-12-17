@@ -869,12 +869,12 @@ class _LoginPhoneWidgetState extends State<LoginPhoneWidget> {
                                                   ?.clear();
                                             });
                                             logFirebaseEvent(
-                                                'Button_reset_form_fields');
+                                                'Button_set_form_field');
                                             safeSetState(() {
                                               _model
                                                   .dropCodigoPaisValueController
-                                                  ?.reset();
-                                              _model.dropCodigoPaisValue = null;
+                                                  ?.value = 0;
+                                              _model.dropCodigoPaisValue = 0;
                                             });
                                             if (_shouldSetState)
                                               safeSetState(() {});
