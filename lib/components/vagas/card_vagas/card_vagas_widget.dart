@@ -115,23 +115,46 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                 ),
               ),
               alignment: AlignmentDirectional(0.0, 0.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(valueOrDefault<double>(
-                  FFAppConstants.borderM,
-                  0.0,
-                )),
-                child: Image.network(
-                  widget!.avatarHospital!,
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Image.asset(
-                    'assets/images/error_image.png',
-                    width: double.infinity,
-                    height: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+              child: Builder(
+                builder: (context) {
+                  if (widget!.avatarHospital != null &&
+                      widget!.avatarHospital != '') {
+                    return ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(valueOrDefault<double>(
+                        FFAppConstants.borderM,
+                        0.0,
+                      )),
+                      child: Image.network(
+                        widget!.avatarHospital!,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset(
+                          'assets/images/error_image.png',
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  } else {
+                    return ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(valueOrDefault<double>(
+                        FFAppConstants.borderM,
+                        0.0,
+                      )),
+                      child: Image.asset(
+                        'assets/images/hospitalAvatar.png',
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }
+                },
               ),
             ),
             Expanded(

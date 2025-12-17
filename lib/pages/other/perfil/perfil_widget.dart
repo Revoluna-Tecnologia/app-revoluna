@@ -359,11 +359,102 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                   Stack(
                                                     alignment:
                                                         AlignmentDirectional(
-                                                            1.0, 1.0),
+                                                            0.0, 1.0),
                                                     children: [
                                                       Builder(
                                                         builder: (context) {
-                                                          if (_model
+                                                          if (FFAppState()
+                                                                      .profilepicture !=
+                                                                  null &&
+                                                              FFAppState()
+                                                                      .profilepicture !=
+                                                                  '') {
+                                                            return Builder(
+                                                              builder:
+                                                                  (context) {
+                                                                if (_model.uploadedLocalFile_uploadedPic !=
+                                                                        null &&
+                                                                    (_model
+                                                                            .uploadedLocalFile_uploadedPic
+                                                                            .bytes
+                                                                            ?.isNotEmpty ??
+                                                                        false)) {
+                                                                  return Container(
+                                                                    width:
+                                                                        120.0,
+                                                                    height:
+                                                                        120.0,
+                                                                    clipBehavior:
+                                                                        Clip.antiAlias,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      shape: BoxShape
+                                                                          .circle,
+                                                                    ),
+                                                                    child: Image
+                                                                        .memory(
+                                                                      _model.uploadedLocalFile_uploadedPic
+                                                                              .bytes ??
+                                                                          Uint8List.fromList(
+                                                                              []),
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                    ),
+                                                                  );
+                                                                } else {
+                                                                  return Builder(
+                                                                    builder:
+                                                                        (context) {
+                                                                      if (FFAppState().profilepicture !=
+                                                                              null &&
+                                                                          FFAppState().profilepicture !=
+                                                                              '') {
+                                                                        return Container(
+                                                                          width:
+                                                                              120.0,
+                                                                          height:
+                                                                              120.0,
+                                                                          clipBehavior:
+                                                                              Clip.antiAlias,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            shape:
+                                                                                BoxShape.circle,
+                                                                          ),
+                                                                          child:
+                                                                              Image.network(
+                                                                            FFAppState().profilepicture,
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                          ),
+                                                                        );
+                                                                      } else {
+                                                                        return Container(
+                                                                          width:
+                                                                              120.0,
+                                                                          height:
+                                                                              120.0,
+                                                                          clipBehavior:
+                                                                              Clip.antiAlias,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            shape:
+                                                                                BoxShape.circle,
+                                                                          ),
+                                                                          child:
+                                                                              Image.asset(
+                                                                            'assets/images/Avatar.png',
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                          ),
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                  );
+                                                                }
+                                                              },
+                                                            );
+                                                          } else if (_model
                                                               .isDataUploading_uploadedPic) {
                                                             return Lottie.asset(
                                                               'assets/jsons/81EfiEihcA.json',
@@ -377,126 +468,65 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                   .contain,
                                                               animate: true,
                                                             );
-                                                          } else if (_model
-                                                                      .uploadedLocalFile_uploadedPic !=
-                                                                  null &&
-                                                              (_model
-                                                                      .uploadedLocalFile_uploadedPic
-                                                                      .bytes
-                                                                      ?.isNotEmpty ??
-                                                                  false)) {
-                                                            return Hero(
-                                                              tag:
-                                                                  valueOrDefault<
-                                                                      String>(
-                                                                FFAppState()
-                                                                    .profilepicture,
-                                                                'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                                                              ),
-                                                              transitionOnUserGestures:
-                                                                  true,
-                                                              child: Container(
-                                                                width: 120.0,
-                                                                height: 120.0,
-                                                                clipBehavior: Clip
-                                                                    .antiAlias,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                                child: Image
-                                                                    .memory(
-                                                                  _model.uploadedLocalFile_uploadedPic
-                                                                          .bytes ??
-                                                                      Uint8List
-                                                                          .fromList(
-                                                                              []),
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                  errorBuilder: (context,
-                                                                          error,
-                                                                          stackTrace) =>
-                                                                      Image
-                                                                          .asset(
-                                                                    'assets/images/error_image.png',
-                                                                    fit: BoxFit
-                                                                        .cover,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            );
                                                           } else {
-                                                            return Hero(
-                                                              tag:
-                                                                  valueOrDefault<
-                                                                      String>(
-                                                                FFAppState()
-                                                                    .profilepicture,
-                                                                'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                                                              ),
-                                                              transitionOnUserGestures:
-                                                                  true,
+                                                            return Align(
+                                                              alignment:
+                                                                  AlignmentDirectional(
+                                                                      0.0, 0.0),
                                                               child: Container(
                                                                 width: 120.0,
                                                                 height: 120.0,
-                                                                clipBehavior: Clip
-                                                                    .antiAlias,
                                                                 decoration:
                                                                     BoxDecoration(
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryBackground,
                                                                   shape: BoxShape
                                                                       .circle,
                                                                 ),
-                                                                child: Image
-                                                                    .network(
-                                                                  valueOrDefault<
-                                                                      String>(
-                                                                    FFAppState()
-                                                                        .profilepicture,
-                                                                    'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                                                                  ),
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                  errorBuilder: (context,
-                                                                          error,
-                                                                          stackTrace) =>
-                                                                      Image
-                                                                          .asset(
-                                                                    'assets/images/error_image.png',
-                                                                    fit: BoxFit
-                                                                        .cover,
-                                                                  ),
+                                                                child: Icon(
+                                                                  FFIcons
+                                                                      .kupload,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primary,
+                                                                  size: 40.0,
                                                                 ),
                                                               ),
                                                             );
                                                           }
                                                         },
                                                       ),
-                                                      Container(
-                                                        width:
-                                                            MediaQuery.sizeOf(
-                                                                        context)
-                                                                    .width *
-                                                                0.07,
-                                                        height:
-                                                            MediaQuery.sizeOf(
-                                                                        context)
-                                                                    .width *
-                                                                0.07,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryText,
-                                                          shape:
-                                                              BoxShape.circle,
-                                                        ),
-                                                        child: Icon(
-                                                          FFIcons.kedit2,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryBackground,
-                                                          size: 15.0,
+                                                      Align(
+                                                        alignment:
+                                                            AlignmentDirectional(
+                                                                0.3, 0.0),
+                                                        child: Container(
+                                                          width:
+                                                              MediaQuery.sizeOf(
+                                                                          context)
+                                                                      .width *
+                                                                  0.07,
+                                                          height:
+                                                              MediaQuery.sizeOf(
+                                                                          context)
+                                                                      .width *
+                                                                  0.07,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .secondaryText,
+                                                            shape:
+                                                                BoxShape.circle,
+                                                          ),
+                                                          child: Icon(
+                                                            FFIcons.kedit2,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryBackground,
+                                                            size: 15.0,
+                                                          ),
                                                         ),
                                                       ),
                                                       FFButtonWidget(

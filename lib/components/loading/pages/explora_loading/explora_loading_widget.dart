@@ -80,32 +80,50 @@ class _ExploraLoadingWidgetState extends State<ExploraLoadingWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Hero(
-                      tag: valueOrDefault<String>(
-                        FFAppState().profilepicture,
-                        'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                      ),
-                      transitionOnUserGestures: true,
-                      child: Container(
-                        width: MediaQuery.sizeOf(context).width * 0.145,
-                        height: MediaQuery.sizeOf(context).width * 0.145,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                        ),
-                        child: Image.network(
-                          valueOrDefault<String>(
-                            FFAppState().profilepicture,
-                            'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                          ),
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              Image.asset(
-                            'assets/images/error_image.png',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
+                    Builder(
+                      builder: (context) {
+                        if (FFAppState().profilepicture != null &&
+                            FFAppState().profilepicture != '') {
+                          return Hero(
+                            tag: FFAppState().profilepicture,
+                            transitionOnUserGestures: true,
+                            child: Container(
+                              width: MediaQuery.sizeOf(context).width * 0.14,
+                              height: MediaQuery.sizeOf(context).width * 0.14,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: Image.network(
+                                FFAppState().profilepicture,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Image.asset(
+                                  'assets/images/error_image.png',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          return Hero(
+                            tag: 'perfilHero',
+                            transitionOnUserGestures: true,
+                            child: Container(
+                              width: MediaQuery.sizeOf(context).width * 0.14,
+                              height: MediaQuery.sizeOf(context).width * 0.14,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: Image.asset(
+                                'assets/images/Avatar.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        }
+                      },
                     ),
                     Expanded(
                       child: Column(

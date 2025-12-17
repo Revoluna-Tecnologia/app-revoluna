@@ -53,12 +53,11 @@ class VagaBottomSheetWidget extends StatefulWidget {
     this.contractorEmail,
     this.payday,
     this.payment,
-    String? avatarHospital,
+    this.avatarHospital,
     this.sector,
     this.candidates,
     this.callback,
-  }) : this.avatarHospital = avatarHospital ??
-            'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/avatarhospitais/placeholder..png';
+  });
 
   final String? speciality;
   final double? value;
@@ -79,7 +78,7 @@ class VagaBottomSheetWidget extends StatefulWidget {
   final String? contractorEmail;
   final DateTime? payday;
   final String? payment;
-  final String avatarHospital;
+  final String? avatarHospital;
   final String? sector;
   final VwVagasCandidaturasRow? candidates;
   final Future Function()? callback;
@@ -425,21 +424,41 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                           width: 1.0,
                                         ),
                                       ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                            valueOrDefault<double>(
-                                          FFAppConstants.borderM,
-                                          0.0,
-                                        )),
-                                        child: Image.network(
-                                          valueOrDefault<String>(
-                                            widget!.avatarHospital,
-                                            'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/avatarhospitais//placeholder..png',
-                                          ),
-                                          width: double.infinity,
-                                          height: double.infinity,
-                                          fit: BoxFit.cover,
-                                        ),
+                                      child: Builder(
+                                        builder: (context) {
+                                          if (widget!.avatarHospital != null &&
+                                              widget!.avatarHospital != '') {
+                                            return ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      valueOrDefault<double>(
+                                                FFAppConstants.borderM,
+                                                0.0,
+                                              )),
+                                              child: Image.network(
+                                                widget!.avatarHospital!,
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            );
+                                          } else {
+                                            return ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      valueOrDefault<double>(
+                                                FFAppConstants.borderM,
+                                                0.0,
+                                              )),
+                                              child: Image.asset(
+                                                'assets/images/hospitalAvatar.png',
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            );
+                                          }
+                                        },
                                       ),
                                     ),
                                     Expanded(

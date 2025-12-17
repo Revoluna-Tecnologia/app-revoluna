@@ -572,15 +572,7 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                                                                             '${plantoesItem.medicoPrimeiroNome} ${plantoesItem.medicoSobrenome}',
                                                                                             'Vaga aberta',
                                                                                           ),
-                                                                                    avatarMedico: valueOrDefault<String>(
-                                                                                      plantoesItem.vagaStatus == 'aberta'
-                                                                                          ? 'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png'
-                                                                                          : valueOrDefault<String>(
-                                                                                              listUserProfileRowList.where((e) => e.id == plantoesItem.medicoId).toList().firstOrNull?.profilepicture,
-                                                                                              'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                                                                                            ),
-                                                                                      'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                                                                                    ),
+                                                                                    avatarMedico: listUserProfileRowList.where((e) => e.id == plantoesItem.medicoId).toList().firstOrNull?.profilepicture != null && listUserProfileRowList.where((e) => e.id == plantoesItem.medicoId).toList().firstOrNull?.profilepicture != '' ? listUserProfileRowList.where((e) => e.id == plantoesItem.medicoId).toList().firstOrNull?.profilepicture : null,
                                                                                     sector: plantoesItem.setorNome,
                                                                                     openJob: (plantoesItem.vagaStatus == 'aberta') || (plantoesItem.vagaStatus == 'anunciada'),
                                                                                     isDisabled: !((plantoesItem.medicoId == currentUserUid) || ((plantoesItem.vagaStatus == 'aberta') && (plantoesItem.vagaData! >= functions.currentDate()!)) || ((plantoesItem.vagaStatus == 'anunciada') && (plantoesItem.vagaData! >= functions.currentDate()!))),
