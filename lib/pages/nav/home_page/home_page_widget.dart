@@ -1604,8 +1604,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                         .cardVagasModels3
                                                                         .getModel(
                                                                       homeOpenList2Item
-                                                                          .vagaData!
-                                                                          .toString(),
+                                                                          .vagaId!,
                                                                       homeOpenList2Index,
                                                                     ),
                                                                     updateCallback: () =>
@@ -1614,7 +1613,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                     child:
                                                                         CardVagasWidget(
                                                                       key: Key(
-                                                                        'Key0i9_${homeOpenList2Item.vagaData!.toString()}',
+                                                                        'Key0i9_${homeOpenList2Item.vagaId!}',
                                                                       ),
                                                                       specialty:
                                                                           homeOpenList2Item

@@ -1453,7 +1453,8 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                           context)
                                                                       .languageCode,
                                                             )}',
-                                                            shift: '',
+                                                            shift: listItem
+                                                                .periodoNome,
                                                             type: listItem
                                                                 .tiposVagaNome,
                                                             hospital: functions.cleanHospitalName(
@@ -1811,9 +1812,8 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                                         e.terms)
                                                                     .withoutNulls
                                                                     .toList()),
-                                                            vaga: listItem
-                                                                .vagaData
-                                                                ?.toString(),
+                                                            vaga:
+                                                                listItem.vagaId,
                                                             colorPay: listItem
                                                                         .pagamentoValor !=
                                                                     null
