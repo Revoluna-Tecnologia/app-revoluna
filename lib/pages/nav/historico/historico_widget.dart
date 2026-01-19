@@ -2,7 +2,7 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/components/header/header_widget.dart';
-import '/components/loading/lista_plantoes_loading/lista_plantoes_loading_widget.dart';
+import '/components/loading/pages/historico_loading/historico_loading_widget.dart';
 import '/components/vagas/card_vagas/card_vagas_widget.dart';
 import '/components/vagas/empty_list/empty_list_widget.dart';
 import '/flutter_flow/flutter_flow_calendar.dart';
@@ -107,17 +107,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
         if (!snapshot.hasData) {
           return Scaffold(
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-            body: Center(
-              child: SizedBox(
-                width: 50.0,
-                height: 50.0,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    FlutterFlowTheme.of(context).primary,
-                  ),
-                ),
-              ),
-            ),
+            body: HistoricoLoadingWidget(),
           );
         }
         List<VwVagasCandidaturasRow> historicoVwVagasCandidaturasRowList =
@@ -1105,7 +1095,17 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                         builder: (context, snapshot) {
                           // Customize what your widget looks like when it's loading.
                           if (!snapshot.hasData) {
-                            return ListaPlantoesLoadingWidget();
+                            return Center(
+                              child: SizedBox(
+                                width: 50.0,
+                                height: 50.0,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).primary,
+                                  ),
+                                ),
+                              ),
+                            );
                           }
                           List<CleanHospitalRow> containerCleanHospitalRowList =
                               snapshot.data!;

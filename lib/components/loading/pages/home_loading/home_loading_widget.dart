@@ -1,11 +1,16 @@
+import '/components/header/header_widget.dart';
 import '/components/loading/calendar_loading/calendar_loading_widget.dart';
-import '/components/loading/lista_home_loading/lista_home_loading_widget.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/components/loading/card_vagas_loading/card_vagas_loading_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'home_loading_model.dart';
@@ -18,8 +23,11 @@ class HomeLoadingWidget extends StatefulWidget {
   State<HomeLoadingWidget> createState() => _HomeLoadingWidgetState();
 }
 
-class _HomeLoadingWidgetState extends State<HomeLoadingWidget> {
+class _HomeLoadingWidgetState extends State<HomeLoadingWidget>
+    with TickerProviderStateMixin {
   late HomeLoadingModel _model;
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void setState(VoidCallback callback) {
@@ -31,6 +39,22 @@ class _HomeLoadingWidgetState extends State<HomeLoadingWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => HomeLoadingModel());
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        loop: true,
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          ShimmerEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            color: Color(0x80FFFFFF),
+            angle: 0.524,
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -42,8 +66,6 @@ class _HomeLoadingWidgetState extends State<HomeLoadingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
@@ -58,103 +80,16 @@ class _HomeLoadingWidgetState extends State<HomeLoadingWidget> {
                     FFAppConstants.doubleGap,
                     0.0,
                   ),
-                  valueOrDefault<double>(
-                    FFAppConstants.doubleGap,
-                    0.0,
-                  ),
+                  0.0,
                   valueOrDefault<double>(
                     FFAppConstants.doubleGap,
                     0.0,
                   ),
                   0.0),
-              child: Container(
-                width: double.infinity,
-                height: MediaQuery.sizeOf(context).height * 0.07,
-                decoration: BoxDecoration(
-                  color: FlutterFlowTheme.of(context).primaryBackground,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Builder(
-                      builder: (context) {
-                        if (FFAppState().profilepicture != null &&
-                            FFAppState().profilepicture != '') {
-                          return Hero(
-                            tag: FFAppState().profilepicture,
-                            transitionOnUserGestures: true,
-                            child: Container(
-                              width: MediaQuery.sizeOf(context).width * 0.14,
-                              height: MediaQuery.sizeOf(context).width * 0.14,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              child: Image.network(
-                                FFAppState().profilepicture,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Image.asset(
-                                  'assets/images/error_image.png',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          );
-                        } else {
-                          return Hero(
-                            tag: 'perfilHero',
-                            transitionOnUserGestures: true,
-                            child: Container(
-                              width: MediaQuery.sizeOf(context).width * 0.14,
-                              height: MediaQuery.sizeOf(context).width * 0.14,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              child: Image.asset(
-                                'assets/images/Avatar.png',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: MediaQuery.sizeOf(context).width * 0.19,
-                            height: MediaQuery.sizeOf(context).height * 0.02,
-                            decoration: BoxDecoration(),
-                          ),
-                          Container(
-                            width: MediaQuery.sizeOf(context).width * 0.3,
-                            height: MediaQuery.sizeOf(context).height * 0.025,
-                            decoration: BoxDecoration(),
-                          ),
-                        ].divide(SizedBox(height: 2.0)),
-                      ),
-                    ),
-                    FlutterFlowIconButton(
-                      borderRadius: 60.0,
-                      buttonSize: 52.0,
-                      icon: Icon(
-                        Icons.menu_rounded,
-                        color: FlutterFlowTheme.of(context).primary,
-                        size: 40.0,
-                      ),
-                      onPressed: () {
-                        print('IconButton pressed ...');
-                      },
-                    ),
-                  ].divide(SizedBox(width: FFAppConstants.doubleGap)),
-                ),
+              child: wrapWithModel(
+                model: _model.headerModel,
+                updateCallback: () => safeSetState(() {}),
+                child: HeaderWidget(),
               ),
             ),
             Expanded(
@@ -167,16 +102,127 @@ class _HomeLoadingWidgetState extends State<HomeLoadingWidget> {
                       updateCallback: () => safeSetState(() {}),
                       child: CalendarLoadingWidget(),
                     ),
-                    wrapWithModel(
-                      model: _model.listaHomeLoadingModel,
-                      updateCallback: () => safeSetState(() {}),
-                      child: ListaHomeLoadingWidget(),
+                    Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            FaIcon(
+                              FontAwesomeIcons.solidCircle,
+                              color: FlutterFlowTheme.of(context).accent2,
+                              size: 14.0,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context).accent2,
+                              ),
+                              child: Text(
+                                'Plantões disponíveis',
+                                style: FlutterFlowTheme.of(context)
+                                    .titleMedium
+                                    .override(
+                                      font: GoogleFonts.geologica(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .titleMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .titleMedium
+                                            .fontStyle,
+                                      ),
+                                      color:
+                                          FlutterFlowTheme.of(context).accent2,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .titleMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .titleMedium
+                                          .fontStyle,
+                                    ),
+                              ),
+                            ),
+                          ]
+                              .divide(SizedBox(width: FFAppConstants.Gap))
+                              .addToStart(
+                                  SizedBox(width: FFAppConstants.doubleGap))
+                              .addToEnd(
+                                  SizedBox(width: FFAppConstants.doubleGap)),
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.05,
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context).accent2,
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.05,
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context).accent2,
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                              ),
+                            ),
+                          ]
+                              .divide(SizedBox(width: FFAppConstants.Gap))
+                              .around(SizedBox(width: FFAppConstants.Gap)),
+                        ),
+                      ]
+                          .divide(SizedBox(height: FFAppConstants.Gap))
+                          .around(SizedBox(height: FFAppConstants.Gap)),
+                    ).animateOnPageLoad(
+                        animationsMap['columnOnPageLoadAnimation']!),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel1,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
+                            ),
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel2,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
+                            ),
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel3,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
+                            ),
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel4,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
+                            ),
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel5,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
+                            ),
+                          ].divide(SizedBox(height: 2.0)),
+                        ),
+                      ),
                     ),
-                  ].divide(SizedBox(height: FFAppConstants.doubleGap)),
+                  ],
                 ),
               ),
             ),
-          ].divide(SizedBox(height: FFAppConstants.doubleGap)),
+          ],
         ),
       ),
     );

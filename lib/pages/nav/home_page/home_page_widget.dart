@@ -2,8 +2,9 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
+import '/components/dropdown_loading_widget.dart';
 import '/components/header/header_widget.dart';
-import '/components/loading/dropdown_loading/dropdown_loading_widget.dart';
+import '/components/loading/pages/home_loading/home_loading_widget.dart';
 import '/components/vagas/card_vagas/card_vagas_widget.dart';
 import '/components/vagas/empty_list/empty_list_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
@@ -169,17 +170,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         if (!snapshot.hasData) {
           return Scaffold(
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-            body: Center(
-              child: SizedBox(
-                width: 50.0,
-                height: 50.0,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    FlutterFlowTheme.of(context).primary,
-                  ),
-                ),
-              ),
-            ),
+            body: HomeLoadingWidget(),
           );
         }
         List<VwVagasCandidaturasRow> homePageVwVagasCandidaturasRowList =
@@ -295,17 +286,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   builder: (context, snapshot) {
                     // Customize what your widget looks like when it's loading.
                     if (!snapshot.hasData) {
-                      return Center(
-                        child: SizedBox(
-                          width: 50.0,
-                          height: 50.0,
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              FlutterFlowTheme.of(context).primary,
-                            ),
-                          ),
-                        ),
-                      );
+                      return HomeLoadingWidget();
                     }
                     List<VwVagasCandidaturasRow>
                         containerVwVagasCandidaturasRowList = snapshot.data!;

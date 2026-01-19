@@ -1,8 +1,8 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
-import '/components/loading/banner_loading/banner_loading_widget.dart';
-import '/components/loading/dropdown_loading/dropdown_loading_widget.dart';
+import '/components/dropdown_loading_widget.dart';
+import '/components/loading/pages/initial_loading/initial_loading_widget.dart';
 import '/components/vagas/card_vagas_initial/card_vagas_initial_widget.dart';
 import '/components/vagas/empty_list/empty_list_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
@@ -100,17 +100,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
         if (!snapshot.hasData) {
           return Scaffold(
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-            body: Center(
-              child: SizedBox(
-                width: 50.0,
-                height: 50.0,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    FlutterFlowTheme.of(context).primary,
-                  ),
-                ),
-              ),
-            ),
+            body: InitialLoadingWidget(),
           );
         }
         List<VwVagasAbertasRow> initialPageVwVagasAbertasRowList =
@@ -482,7 +472,21 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                         builder: (context, snapshot) {
                                           // Customize what your widget looks like when it's loading.
                                           if (!snapshot.hasData) {
-                                            return BannerLoadingWidget();
+                                            return Center(
+                                              child: SizedBox(
+                                                width: 50.0,
+                                                height: 50.0,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
                                           }
                                           List<BannerMktRow>
                                               bannerBannerMktRowList =

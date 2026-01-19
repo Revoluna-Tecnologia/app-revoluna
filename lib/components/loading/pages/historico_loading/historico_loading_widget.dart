@@ -1,27 +1,26 @@
-import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/components/header/header_widget.dart';
+import '/components/loading/card_vagas_loading/card_vagas_loading_widget.dart';
+import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/form_field_controller.dart';
 import 'dart:ui';
-import '/custom_code/actions/index.dart' as actions;
-import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'plantoes_loading_model.dart';
-export 'plantoes_loading_model.dart';
+import 'historico_loading_model.dart';
+export 'historico_loading_model.dart';
 
-class PlantoesLoadingWidget extends StatefulWidget {
-  const PlantoesLoadingWidget({super.key});
+class HistoricoLoadingWidget extends StatefulWidget {
+  const HistoricoLoadingWidget({super.key});
 
   @override
-  State<PlantoesLoadingWidget> createState() => _PlantoesLoadingWidgetState();
+  State<HistoricoLoadingWidget> createState() => _HistoricoLoadingWidgetState();
 }
 
-class _PlantoesLoadingWidgetState extends State<PlantoesLoadingWidget> {
-  late PlantoesLoadingModel _model;
-
-  bool expandableListenerRegistered = false;
+class _HistoricoLoadingWidgetState extends State<HistoricoLoadingWidget> {
+  late HistoricoLoadingModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -32,10 +31,7 @@ class _PlantoesLoadingWidgetState extends State<PlantoesLoadingWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => PlantoesLoadingModel());
-
-    _model.expandableExpandableController =
-        ExpandableController(initialExpanded: false);
+    _model = createModel(context, () => HistoricoLoadingModel());
   }
 
   @override
@@ -47,8 +43,6 @@ class _PlantoesLoadingWidgetState extends State<PlantoesLoadingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
@@ -63,122 +57,21 @@ class _PlantoesLoadingWidgetState extends State<PlantoesLoadingWidget> {
                     FFAppConstants.doubleGap,
                     0.0,
                   ),
+                  0.0,
                   valueOrDefault<double>(
                     FFAppConstants.doubleGap,
                     0.0,
                   ),
-                  valueOrDefault<double>(
-                    FFAppConstants.doubleGap,
-                    0.0,
-                  ),
-                  valueOrDefault<double>(
-                    FFAppConstants.Gap,
-                    0.0,
-                  )),
-              child: Container(
-                width: double.infinity,
-                height: MediaQuery.sizeOf(context).height * 0.07,
-                decoration: BoxDecoration(
-                  color: FlutterFlowTheme.of(context).primaryBackground,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Builder(
-                      builder: (context) {
-                        if (FFAppState().profilepicture != null &&
-                            FFAppState().profilepicture != '') {
-                          return Hero(
-                            tag: FFAppState().profilepicture,
-                            transitionOnUserGestures: true,
-                            child: Container(
-                              width: MediaQuery.sizeOf(context).width * 0.14,
-                              height: MediaQuery.sizeOf(context).width * 0.14,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              child: Image.network(
-                                FFAppState().profilepicture,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Image.asset(
-                                  'assets/images/error_image.png',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          );
-                        } else {
-                          return Hero(
-                            tag: 'perfilHero',
-                            transitionOnUserGestures: true,
-                            child: Container(
-                              width: MediaQuery.sizeOf(context).width * 0.14,
-                              height: MediaQuery.sizeOf(context).width * 0.14,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              child: Image.asset(
-                                'assets/images/Avatar.png',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: MediaQuery.sizeOf(context).width * 0.19,
-                            height: MediaQuery.sizeOf(context).height * 0.02,
-                            decoration: BoxDecoration(),
-                          ),
-                          Container(
-                            width: MediaQuery.sizeOf(context).width * 0.3,
-                            height: MediaQuery.sizeOf(context).height * 0.025,
-                            decoration: BoxDecoration(),
-                          ),
-                        ].divide(SizedBox(height: 2.0)),
-                      ),
-                    ),
-                    FlutterFlowIconButton(
-                      borderRadius: 60.0,
-                      buttonSize: 52.0,
-                      icon: Icon(
-                        Icons.menu_rounded,
-                        color: FlutterFlowTheme.of(context).primary,
-                        size: 40.0,
-                      ),
-                      onPressed: () {
-                        print('IconButton pressed ...');
-                      },
-                    ),
-                  ].divide(SizedBox(width: FFAppConstants.doubleGap)),
-                ),
+                  0.0),
+              child: wrapWithModel(
+                model: _model.headerModel,
+                updateCallback: () => safeSetState(() {}),
+                child: HeaderWidget(),
               ),
             ),
             Container(
               decoration: BoxDecoration(
                 color: FlutterFlowTheme.of(context).primaryBackground,
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 4.0,
-                    color: Color(0x26A369ED),
-                    offset: Offset(
-                      0.0,
-                      6.0,
-                    ),
-                    spreadRadius: 2.0,
-                  )
-                ],
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -200,7 +93,7 @@ class _PlantoesLoadingWidgetState extends State<PlantoesLoadingWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Meus plantões',
+                          'Histórico',
                           style:
                               FlutterFlowTheme.of(context).titleLarge.override(
                                     font: GoogleFonts.geologica(
@@ -239,12 +132,12 @@ class _PlantoesLoadingWidgetState extends State<PlantoesLoadingWidget> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Icon(
-                                  FFIcons.kheart,
+                                  FFIcons.kclock,
                                   color: FlutterFlowTheme.of(context).accent3,
                                   size: 25.0,
                                 ),
                                 Text(
-                                  'Salvos',
+                                  'Histórico',
                                   textAlign: TextAlign.center,
                                   style: FlutterFlowTheme.of(context)
                                       .labelMedium
@@ -280,12 +173,12 @@ class _PlantoesLoadingWidgetState extends State<PlantoesLoadingWidget> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Icon(
-                                  FFIcons.kclock,
+                                  FFIcons.kheart,
                                   color: FlutterFlowTheme.of(context).accent3,
                                   size: 25.0,
                                 ),
                                 Text(
-                                  'Em análise',
+                                  'Salvos',
                                   textAlign: TextAlign.center,
                                   style: FlutterFlowTheme.of(context)
                                       .labelMedium
@@ -454,191 +347,223 @@ class _PlantoesLoadingWidgetState extends State<PlantoesLoadingWidget> {
                       ),
                     ].divide(SizedBox(height: FFAppConstants.halfGap)),
                   ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(
+                        valueOrDefault<double>(
+                          FFAppConstants.doubleGap,
+                          0.0,
+                        ),
+                        0.0,
+                        valueOrDefault<double>(
+                          FFAppConstants.doubleGap,
+                          0.0,
+                        ),
+                        valueOrDefault<double>(
+                          FFAppConstants.Gap,
+                          0.0,
+                        )),
+                    child: Stack(
+                      alignment: AlignmentDirectional(1.0, 0.0),
+                      children: [
+                        Align(
+                          alignment: AlignmentDirectional(-1.0, 0.0),
+                          child: Container(
+                            height: MediaQuery.sizeOf(context).height * 0.045,
+                            decoration: BoxDecoration(),
+                            child: FlutterFlowDropDown<String>(
+                              multiSelectController:
+                                  _model.dropDownValueController ??=
+                                      FormListFieldController<String>(null),
+                              options: List<String>.from(['0']),
+                              optionLabels: [''],
+                              width: MediaQuery.sizeOf(context).width * 0.8,
+                              maxHeight:
+                                  MediaQuery.sizeOf(context).height * 0.45,
+                              searchHintTextStyle: FlutterFlowTheme.of(context)
+                                  .labelMedium
+                                  .override(
+                                    font: GoogleFonts.geologica(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontStyle,
+                                    ),
+                                    fontSize: 14.0,
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                    lineHeight: 1.0,
+                                  ),
+                              searchTextStyle: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    font: GoogleFonts.geologica(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
+                                  ),
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    font: GoogleFonts.geologica(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
+                                    lineHeight: 1.0,
+                                  ),
+                              hintText: 'Todos hospitais',
+                              searchHintText: 'Pesquisar...',
+                              searchCursorColor: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              icon: Icon(
+                                Icons.keyboard_arrow_down_rounded,
+                                color: FlutterFlowTheme.of(context).primary,
+                                size: 35.0,
+                              ),
+                              fillColor: FlutterFlowTheme.of(context)
+                                  .primaryBackground,
+                              elevation: 2.0,
+                              borderColor:
+                                  FlutterFlowTheme.of(context).secondary,
+                              borderWidth: 0.0,
+                              borderRadius: FFAppConstants.borderS,
+                              margin: EdgeInsetsDirectional.fromSTEB(
+                                  valueOrDefault<double>(
+                                    FFAppConstants.Gap,
+                                    0.0,
+                                  ),
+                                  0.0,
+                                  valueOrDefault<double>(
+                                    FFAppConstants.Gap,
+                                    0.0,
+                                  ),
+                                  0.0),
+                              hidesUnderline: true,
+                              isOverButton: false,
+                              isSearchable: true,
+                              isMultiSelect: true,
+                              onMultiSelectChanged: (val) => safeSetState(
+                                  () => _model.dropDownValue = val),
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          FFIcons.kxSquare,
+                          color: FlutterFlowTheme.of(context).accent2,
+                          size: 24.0,
+                        ),
+                      ],
+                    ),
+                  ),
                 ]
                     .divide(SizedBox(height: FFAppConstants.doubleGap))
                     .addToEnd(SizedBox(height: FFAppConstants.Gap)),
               ),
             ),
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: FlutterFlowTheme.of(context).primaryBackground,
-                ),
-                child: SingleChildScrollView(
-                  child: Column(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(
                             valueOrDefault<double>(
-                              FFAppConstants.Gap,
+                              FFAppConstants.doubleGap,
                               0.0,
                             ),
+                            0.0,
                             0.0,
                             valueOrDefault<double>(
                               FFAppConstants.Gap,
                               0.0,
-                            ),
-                            0.0),
-                        child: Builder(builder: (_) {
-                          if (!expandableListenerRegistered) {
-                            expandableListenerRegistered = true;
-                            _model.expandableExpandableController.addListener(
-                              () async {
-                                logFirebaseEvent(
-                                    'PLANTOES_LOADING_Expandable_l39d7v35_ON_');
-                                logFirebaseEvent('Expandable_custom_action');
-                                await actions.refreshPlantoesList(
-                                  context,
-                                );
-                              },
-                            );
-                          }
-                          return Container(
-                            width: double.infinity,
-                            color:
-                                FlutterFlowTheme.of(context).primaryBackground,
-                            child: ExpandableNotifier(
-                              controller: _model.expandableExpandableController,
-                              child: ExpandablePanel(
-                                header: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      valueOrDefault<double>(
-                                        FFAppConstants.doubleGap,
-                                        0.0,
-                                      ),
-                                      0.0,
-                                      0.0,
-                                      0.0),
-                                  child: Text(
-                                    'Filtrar por data',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          font: GoogleFonts.geologica(
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontStyle,
-                                          ),
-                                          color: FlutterFlowTheme.of(context)
-                                              .primary,
-                                          letterSpacing: 0.0,
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyMedium
-                                                  .fontStyle,
-                                        ),
-                                  ),
-                                ),
-                                collapsed: Container(
-                                  width: double.infinity,
-                                  height: 0.0,
-                                  decoration: BoxDecoration(),
-                                ),
-                                expanded: Container(),
-                                theme: ExpandableThemeData(
-                                  tapHeaderToExpand: true,
-                                  tapBodyToExpand: false,
-                                  tapBodyToCollapse: false,
-                                  headerAlignment:
-                                      ExpandablePanelHeaderAlignment.center,
-                                  hasIcon: true,
-                                  iconColor:
-                                      FlutterFlowTheme.of(context).primary,
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
+                            )),
+                        child: Container(
+                          width: MediaQuery.sizeOf(context).width * 0.8,
+                          height: MediaQuery.sizeOf(context).height * 0.01,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context).accent2,
+                          ),
                         ),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      child: SingleChildScrollView(
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                            Container(
-                              width: double.infinity,
-                              height: MediaQuery.sizeOf(context).height * 0.15,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .primaryBackground,
-                                borderRadius: BorderRadius.circular(
-                                    valueOrDefault<double>(
-                                  FFAppConstants.borderM,
-                                  0.0,
-                                )),
-                              ),
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel1,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
                             ),
-                            Container(
-                              width: double.infinity,
-                              height: MediaQuery.sizeOf(context).height * 0.15,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .primaryBackground,
-                                borderRadius: BorderRadius.circular(
-                                    valueOrDefault<double>(
-                                  FFAppConstants.borderM,
-                                  0.0,
-                                )),
-                              ),
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel2,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
                             ),
-                            Container(
-                              width: double.infinity,
-                              height: MediaQuery.sizeOf(context).height * 0.15,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .primaryBackground,
-                                borderRadius: BorderRadius.circular(
-                                    valueOrDefault<double>(
-                                  FFAppConstants.borderM,
-                                  0.0,
-                                )),
-                              ),
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel3,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
                             ),
-                            Container(
-                              width: double.infinity,
-                              height: MediaQuery.sizeOf(context).height * 0.15,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .primaryBackground,
-                                borderRadius: BorderRadius.circular(
-                                    valueOrDefault<double>(
-                                  FFAppConstants.borderM,
-                                  0.0,
-                                )),
-                              ),
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel4,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
                             ),
-                            Container(
-                              width: double.infinity,
-                              height: MediaQuery.sizeOf(context).height * 0.15,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .primaryBackground,
-                                borderRadius: BorderRadius.circular(
-                                    valueOrDefault<double>(
-                                  FFAppConstants.borderM,
-                                  0.0,
-                                )),
-                              ),
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel5,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
                             ),
-                          ].divide(SizedBox(height: 2.0)),
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel6,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
+                            ),
+                          ]
+                              .divide(SizedBox(height: 2.0))
+                              .around(SizedBox(height: 2.0)),
                         ),
                       ),
-                    ].divide(SizedBox(height: FFAppConstants.Gap)),
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ].divide(SizedBox(height: FFAppConstants.Gap)),

@@ -2,6 +2,8 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/components/header/header_widget.dart';
+import '/components/loading/escala_list_loading/escala_list_loading_widget.dart';
+import '/components/loading/pages/escalas_loading/escalas_loading_widget.dart';
 import '/components/vagas/card_escala/card_escala_widget.dart';
 import '/components/vagas/empty_list/empty_list_widget.dart';
 import '/components/vagas/empty_list_houston/empty_list_houston_widget.dart';
