@@ -249,6 +249,7 @@ class _InitialLoadingWidgetState extends State<InitialLoadingWidget>
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                       ),
                       child: SingleChildScrollView(
+                        primary: false,
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           children: [

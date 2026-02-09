@@ -186,6 +186,7 @@ class _HomeLoadingWidgetState extends State<HomeLoadingWidget>
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                       ),
                       child: SingleChildScrollView(
+                        primary: false,
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           children: [
