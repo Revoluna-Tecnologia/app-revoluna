@@ -92,20 +92,37 @@ class _CardEscalaWidgetState extends State<CardEscalaWidget> {
               )),
             ),
             alignment: AlignmentDirectional(0.0, 0.0),
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: Image.network(
-                valueOrDefault<String>(
-                  widget!.avatarMedico,
-                  'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                ),
-                fit: BoxFit.cover,
-              ),
+            child: Builder(
+              builder: (context) {
+                if (widget!.avatarMedico != null &&
+                    widget!.avatarMedico != '') {
+                  return Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image.network(
+                      widget!.avatarMedico!,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                } else {
+                  return Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image.asset(
+                      'assets/images/Avatar.png',
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }
+              },
             ),
           ),
           Column(

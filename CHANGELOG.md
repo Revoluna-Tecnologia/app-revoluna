@@ -1,5 +1,61 @@
 # Histórico de Versões - Revoluna
 
+## [2.2.4] - 17/12/2025
+
+### 🐛 **Correções de Bugs**
+
+#### 📱 **Login por Telefone**
+- **Reset de Campos**: Corrigida lógica de redefinição de campos no formulário de login por telefone
+
+#### 📋 **Cards de Vagas**
+- **Passagem de Dados**: Corrigidas passagens de informação para cards de vagas nas páginas Home e Histórico
+
+---
+
+### 🔄 **Melhorias e Refatorações**
+
+#### 🖼️ **Imagens e Assets**
+- **Fallback Local**: Substituídos fallbacks de imagens remotas por arquivos locais em 15+ componentes para melhor performance e confiabilidade
+- **Banner de Escala**: Adicionado banner local (GIF) para lista vazia na página de escalas
+- **Avatar Hospital**: Novo asset local `hospitalAvatar.png` para fallback de imagens de hospitais
+
+#### 🎨 **Interface**
+- **CardVagas**: Melhorias de layout e tratamento de overflow no componente
+
+#### 🔄 **Componentes de Loading**
+- **Reforma Completa**: Componentes de loading reformados para estado de loading reativados e componentes obsoletos removidos
+
+---
+
+### 🔧 **Configurações e Build**
+
+#### 🔒 **Segurança**
+- **Variáveis de Ambiente**: Proteção do arquivo `environment.json` via `.gitignore`, com adição de arquivo de exemplo
+
+#### 📱 **Android**
+- **Edge-to-Edge**: Aplicação de borda em tela cheia para Android (configuração automática FlutterFlow)
+
+#### 🧹 **Limpeza**
+- **Arquivos Obsoletos**: Removido arquivo `PR_NOTES_2.2.3.md`
+- **Componente Radio Button**: Atualização automática do FlutterFlow
+
+---
+
+### 📊 **Estatísticas da Versão 2.2.4**
+
+- **Total de Commits**: 9
+- **Arquivos Modificados**: 31
+- **Linhas Adicionadas**: ~778
+- **Linhas Removidas**: ~577
+- **Net Change**: +201 linhas
+
+#### 🎯 **Impactos Principais**
+- **Performance**: Imagens locais reduzem dependência de rede
+- **Segurança**: Variáveis de ambiente protegidas
+- **Estabilidade**: Correções em fluxos de login e exibição de vagas
+
+---
+
 ## [2.2.3] - 09/12/2025
 
 ### ✨ **Novas Funcionalidades**

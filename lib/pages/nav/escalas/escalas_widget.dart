@@ -2,6 +2,8 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
 import '/components/header/header_widget.dart';
+import '/components/loading/escala_list_loading/escala_list_loading_widget.dart';
+import '/components/loading/pages/escalas_loading/escalas_loading_widget.dart';
 import '/components/vagas/card_escala/card_escala_widget.dart';
 import '/components/vagas/empty_list/empty_list_widget.dart';
 import '/components/vagas/empty_list_houston/empty_list_houston_widget.dart';
@@ -128,17 +130,7 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                   builder: (context, snapshot) {
                     // Customize what your widget looks like when it's loading.
                     if (!snapshot.hasData) {
-                      return Center(
-                        child: SizedBox(
-                          width: 50.0,
-                          height: 50.0,
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              FlutterFlowTheme.of(context).primary,
-                            ),
-                          ),
-                        ),
-                      );
+                      return EscalasLoadingWidget();
                     }
                     List<VwVagasCandidaturasRow>
                         containerVwVagasCandidaturasRowList = snapshot.data!;
@@ -308,19 +300,7 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                 builder: (context, snapshot) {
                                   // Customize what your widget looks like when it's loading.
                                   if (!snapshot.hasData) {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 50.0,
-                                        height: 50.0,
-                                        child: CircularProgressIndicator(
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                            FlutterFlowTheme.of(context)
-                                                .primary,
-                                          ),
-                                        ),
-                                      ),
-                                    );
+                                    return EscalaListLoadingWidget();
                                   }
                                   List<UserProfileRow> listUserProfileRowList =
                                       snapshot.data!;
@@ -572,15 +552,7 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                                                                                             '${plantoesItem.medicoPrimeiroNome} ${plantoesItem.medicoSobrenome}',
                                                                                             'Vaga aberta',
                                                                                           ),
-                                                                                    avatarMedico: valueOrDefault<String>(
-                                                                                      plantoesItem.vagaStatus == 'aberta'
-                                                                                          ? 'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png'
-                                                                                          : valueOrDefault<String>(
-                                                                                              listUserProfileRowList.where((e) => e.id == plantoesItem.medicoId).toList().firstOrNull?.profilepicture,
-                                                                                              'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                                                                                            ),
-                                                                                      'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                                                                                    ),
+                                                                                    avatarMedico: listUserProfileRowList.where((e) => e.id == plantoesItem.medicoId).toList().firstOrNull?.profilepicture != null && listUserProfileRowList.where((e) => e.id == plantoesItem.medicoId).toList().firstOrNull?.profilepicture != '' ? listUserProfileRowList.where((e) => e.id == plantoesItem.medicoId).toList().firstOrNull?.profilepicture : null,
                                                                                     sector: plantoesItem.setorNome,
                                                                                     openJob: (plantoesItem.vagaStatus == 'aberta') || (plantoesItem.vagaStatus == 'anunciada'),
                                                                                     isDisabled: !((plantoesItem.medicoId == currentUserUid) || ((plantoesItem.vagaStatus == 'aberta') && (plantoesItem.vagaData! >= functions.currentDate()!)) || ((plantoesItem.vagaStatus == 'anunciada') && (plantoesItem.vagaData! >= functions.currentDate()!))),

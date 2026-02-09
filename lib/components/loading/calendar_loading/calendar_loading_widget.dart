@@ -45,15 +45,11 @@ class _CalendarLoadingWidgetState extends State<CalendarLoadingWidget> {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Container(
+          custom_widgets.CustomCalendar(
             width: MediaQuery.sizeOf(context).width * 1.0,
-            height: MediaQuery.sizeOf(context).height * 0.15,
-            child: custom_widgets.CustomCalendar(
-              width: MediaQuery.sizeOf(context).width * 1.0,
-              height: MediaQuery.sizeOf(context).height * 0.15,
-              weekViewEnabled: true,
-              callback: () async {},
-            ),
+            height: MediaQuery.sizeOf(context).height * 0.1,
+            weekViewEnabled: true,
+            callback: () async {},
           ),
           Container(
             width: 40.0,

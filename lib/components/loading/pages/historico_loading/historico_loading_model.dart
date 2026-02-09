@@ -6,19 +6,19 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'dart:ui';
-import 'explora_loading_widget.dart' show ExploraLoadingWidget;
+import 'historico_loading_widget.dart' show HistoricoLoadingWidget;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class ExploraLoadingModel extends FlutterFlowModel<ExploraLoadingWidget> {
+class HistoricoLoadingModel extends FlutterFlowModel<HistoricoLoadingWidget> {
   ///  State fields for stateful widgets in this component.
 
   // Model for Header component.
   late HeaderModel headerModel;
   // State field(s) for DropDown widget.
-  String? dropDownValue;
-  FormFieldController<String>? dropDownValueController;
+  List<String>? dropDownValue;
+  FormFieldController<List<String>>? dropDownValueController;
   // Model for cardVagasLoading component.
   late CardVagasLoadingModel cardVagasLoadingModel1;
   // Model for cardVagasLoading component.

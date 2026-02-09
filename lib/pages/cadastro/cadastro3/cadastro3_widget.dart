@@ -357,10 +357,7 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                                   shape: BoxShape.circle,
                                                 ),
                                                 child: Image.network(
-                                                  valueOrDefault<String>(
-                                                    FFAppState().profilepicture,
-                                                    'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                                                  ),
+                                                  FFAppState().profilepicture,
                                                   fit: BoxFit.cover,
                                                   errorBuilder: (context, error,
                                                           stackTrace) =>
@@ -663,7 +660,7 @@ class _Cadastro3WidgetState extends State<Cadastro3Widget> {
                                       logFirebaseEvent(
                                           'Button_update_app_state');
                                       FFAppState().profilepicture =
-                                          'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png';
+                                          '${FFDevEnvironmentValues().supabaseUrl}/storage/v1/object/public/profilepictures//Avatar.png';
                                       FFAppState().update(() {});
                                       logFirebaseEvent(
                                           'Button_update_page_state');

@@ -1,5 +1,5 @@
 import '/components/loading/calendar_loading/calendar_loading_widget.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/components/loading/escala_list_loading/escala_list_loading_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -14,14 +14,19 @@ class EscalasLoadingModel extends FlutterFlowModel<EscalasLoadingWidget> {
 
   // Model for calendarLoading component.
   late CalendarLoadingModel calendarLoadingModel;
+  // Model for escalaListLoading component.
+  late EscalaListLoadingModel escalaListLoadingModel;
 
   @override
   void initState(BuildContext context) {
     calendarLoadingModel = createModel(context, () => CalendarLoadingModel());
+    escalaListLoadingModel =
+        createModel(context, () => EscalaListLoadingModel());
   }
 
   @override
   void dispose() {
     calendarLoadingModel.dispose();
+    escalaListLoadingModel.dispose();
   }
 }

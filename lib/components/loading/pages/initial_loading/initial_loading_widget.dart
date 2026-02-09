@@ -1,11 +1,14 @@
-import '/components/loading/banner_loading/banner_loading_widget.dart';
 import '/components/loading/calendar_loading/calendar_loading_widget.dart';
-import '/components/loading/lista_home_loading/lista_home_loading_widget.dart';
+import '/components/loading/card_vagas_loading/card_vagas_loading_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +22,11 @@ class InitialLoadingWidget extends StatefulWidget {
   State<InitialLoadingWidget> createState() => _InitialLoadingWidgetState();
 }
 
-class _InitialLoadingWidgetState extends State<InitialLoadingWidget> {
+class _InitialLoadingWidgetState extends State<InitialLoadingWidget>
+    with TickerProviderStateMixin {
   late InitialLoadingModel _model;
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void setState(VoidCallback callback) {
@@ -32,6 +38,22 @@ class _InitialLoadingWidgetState extends State<InitialLoadingWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => InitialLoadingModel());
+
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        loop: true,
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          ShimmerEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            color: Color(0x80FFFFFF),
+            angle: 0.524,
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -136,31 +158,43 @@ class _InitialLoadingWidgetState extends State<InitialLoadingWidget> {
                                                       .fontStyle,
                                             ),
                                       ),
-                                      Hero(
-                                        tag: valueOrDefault<String>(
-                                          FFAppState().profilepicture,
-                                          'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                                        ),
-                                        transitionOnUserGestures: true,
-                                        child: Container(
-                                          clipBehavior: Clip.antiAlias,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Image.network(
-                                            valueOrDefault<String>(
-                                              FFAppState().profilepicture,
-                                              'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                                            ),
-                                            fit: BoxFit.cover,
-                                            errorBuilder:
-                                                (context, error, stackTrace) =>
-                                                    Image.asset(
-                                              'assets/images/error_image.png',
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
+                                      Builder(
+                                        builder: (context) {
+                                          if (FFAppState().profilepicture !=
+                                                  null &&
+                                              FFAppState().profilepicture !=
+                                                  '') {
+                                            return Hero(
+                                              tag: FFAppState().profilepicture,
+                                              transitionOnUserGestures: true,
+                                              child: Container(
+                                                clipBehavior: Clip.antiAlias,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Image.network(
+                                                  FFAppState().profilepicture,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            return Hero(
+                                              tag: 'perfilHero',
+                                              transitionOnUserGestures: true,
+                                              child: Container(
+                                                clipBehavior: Clip.antiAlias,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Image.asset(
+                                                  'assets/images/Avatar.png',
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
                                       ),
                                     ].divide(
                                         SizedBox(width: FFAppConstants.Gap)),
@@ -184,21 +218,68 @@ class _InitialLoadingWidgetState extends State<InitialLoadingWidget> {
                             0.0,
                           ),
                           0.0),
-                      child: wrapWithModel(
-                        model: _model.bannerLoadingModel,
-                        updateCallback: () => safeSetState(() {}),
-                        child: BannerLoadingWidget(),
-                      ),
+                      child: ClipRRect(
+                        borderRadius:
+                            BorderRadius.circular(valueOrDefault<double>(
+                          FFAppConstants.borderM,
+                          0.0,
+                        )),
+                        child: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: MediaQuery.sizeOf(context).height * 0.2,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context).accent2,
+                            borderRadius:
+                                BorderRadius.circular(valueOrDefault<double>(
+                              FFAppConstants.borderM,
+                              0.0,
+                            )),
+                          ),
+                        ),
+                      ).animateOnPageLoad(
+                          animationsMap['containerOnPageLoadAnimation']!),
                     ),
                     wrapWithModel(
                       model: _model.calendarLoadingModel,
                       updateCallback: () => safeSetState(() {}),
                       child: CalendarLoadingWidget(),
                     ),
-                    wrapWithModel(
-                      model: _model.listaHomeLoadingModel,
-                      updateCallback: () => safeSetState(() {}),
-                      child: ListaHomeLoadingWidget(),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel1,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
+                            ),
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel2,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
+                            ),
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel3,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
+                            ),
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel4,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
+                            ),
+                            wrapWithModel(
+                              model: _model.cardVagasLoadingModel5,
+                              updateCallback: () => safeSetState(() {}),
+                              child: CardVagasLoadingWidget(),
+                            ),
+                          ].divide(SizedBox(height: 2.0)),
+                        ),
+                      ),
                     ),
                   ].divide(SizedBox(height: FFAppConstants.doubleGap)),
                 ),

@@ -1,8 +1,8 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
-import '/components/loading/banner_loading/banner_loading_widget.dart';
-import '/components/loading/dropdown_loading/dropdown_loading_widget.dart';
+import '/components/dropdown_loading_widget.dart';
+import '/components/loading/pages/initial_loading/initial_loading_widget.dart';
 import '/components/vagas/card_vagas_initial/card_vagas_initial_widget.dart';
 import '/components/vagas/empty_list/empty_list_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
@@ -100,17 +100,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
         if (!snapshot.hasData) {
           return Scaffold(
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-            body: Center(
-              child: SizedBox(
-                width: 50.0,
-                height: 50.0,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    FlutterFlowTheme.of(context).primary,
-                  ),
-                ),
-              ),
-            ),
+            body: InitialLoadingWidget(),
           );
         }
         List<VwVagasAbertasRow> initialPageVwVagasAbertasRowList =
@@ -312,11 +302,8 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                             .profilepicture !=
                                                         '') {
                                                   return Hero(
-                                                    tag: valueOrDefault<String>(
-                                                      FFAppState()
-                                                          .profilepicture,
-                                                      'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                                                    ),
+                                                    tag: FFAppState()
+                                                        .profilepicture,
                                                     transitionOnUserGestures:
                                                         true,
                                                     child: Container(
@@ -326,37 +313,22 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                         shape: BoxShape.circle,
                                                       ),
                                                       child: Image.network(
-                                                        valueOrDefault<String>(
-                                                          FFAppState()
-                                                              .profilepicture,
-                                                          'https://hxgbaruenomkfeeafmff.supabase.co/storage/v1/object/public/profilepictures//Avatar.png',
-                                                        ),
+                                                        FFAppState()
+                                                            .profilepicture,
                                                         fit: BoxFit.cover,
-                                                        errorBuilder: (context,
-                                                                error,
-                                                                stackTrace) =>
-                                                            Image.asset(
-                                                          'assets/images/error_image.png',
-                                                          fit: BoxFit.cover,
-                                                        ),
                                                       ),
                                                     ),
                                                   );
                                                 } else {
-                                                  return Hero(
-                                                    tag: 'perfilHero',
-                                                    transitionOnUserGestures:
-                                                        true,
-                                                    child: Container(
-                                                      clipBehavior:
-                                                          Clip.antiAlias,
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                      ),
-                                                      child: Image.asset(
-                                                        'assets/images/Avatar.png',
-                                                        fit: BoxFit.cover,
-                                                      ),
+                                                  return Container(
+                                                    clipBehavior:
+                                                        Clip.antiAlias,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Image.asset(
+                                                      'assets/images/Avatar.png',
+                                                      fit: BoxFit.cover,
                                                     ),
                                                   );
                                                 }
@@ -500,7 +472,21 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                         builder: (context, snapshot) {
                                           // Customize what your widget looks like when it's loading.
                                           if (!snapshot.hasData) {
-                                            return BannerLoadingWidget();
+                                            return Center(
+                                              child: SizedBox(
+                                                width: 50.0,
+                                                height: 50.0,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
                                           }
                                           List<BannerMktRow>
                                               bannerBannerMktRowList =
@@ -1456,79 +1442,82 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                                                       filteredListIndex];
                                                               return Stack(
                                                                 children: [
-                                                                  wrapWithModel(
-                                                                    model: _model
-                                                                        .cardVagasInitialModels1
-                                                                        .getModel(
-                                                                      filteredListItem
-                                                                          .vagaId!,
-                                                                      filteredListIndex,
-                                                                    ),
-                                                                    updateCallback: () =>
-                                                                        safeSetState(
-                                                                            () {}),
-                                                                    updateOnChange:
-                                                                        true,
+                                                                  Align(
+                                                                    alignment:
+                                                                        AlignmentDirectional(
+                                                                            0.0,
+                                                                            0.0),
                                                                     child:
-                                                                        CardVagasInitialWidget(
-                                                                      key: Key(
-                                                                        'Key0nl_${filteredListItem.vagaId!}',
+                                                                        wrapWithModel(
+                                                                      model: _model
+                                                                          .cardVagasInitialModels1
+                                                                          .getModel(
+                                                                        filteredListItem
+                                                                            .vagaId!,
+                                                                        filteredListIndex,
                                                                       ),
-                                                                      specialty:
+                                                                      updateCallback:
+                                                                          () =>
+                                                                              safeSetState(() {}),
+                                                                      updateOnChange:
+                                                                          true,
+                                                                      child:
+                                                                          CardVagasInitialWidget(
+                                                                        key:
+                                                                            Key(
+                                                                          'Key0nl_${filteredListItem.vagaId!}',
+                                                                        ),
+                                                                        specialty:
+                                                                            filteredListItem.especialidadeNome,
+                                                                        value:
+                                                                            formatNumber(
                                                                           filteredListItem
-                                                                              .especialidadeNome,
-                                                                      value:
-                                                                          formatNumber(
-                                                                        filteredListItem
-                                                                            .vagaValor,
-                                                                        formatType:
-                                                                            FormatType.decimal,
-                                                                        decimalType:
-                                                                            DecimalType.commaDecimal,
-                                                                        currency:
-                                                                            'R\$',
+                                                                              .vagaValor,
+                                                                          formatType:
+                                                                              FormatType.decimal,
+                                                                          decimalType:
+                                                                              DecimalType.commaDecimal,
+                                                                          currency:
+                                                                              'R\$',
+                                                                        ),
+                                                                        time:
+                                                                            '${dateTimeFormat(
+                                                                          "H",
+                                                                          filteredListItem
+                                                                              .vagaHorainicio
+                                                                              ?.time,
+                                                                          locale:
+                                                                              FFLocalizations.of(context).languageCode,
+                                                                        )}h-${dateTimeFormat(
+                                                                          "H",
+                                                                          filteredListItem
+                                                                              .vagaHorafim
+                                                                              ?.time,
+                                                                          locale:
+                                                                              FFLocalizations.of(context).languageCode,
+                                                                        )}h',
+                                                                        datecount:
+                                                                            'há ${dateTimeFormat(
+                                                                          "relative",
+                                                                          filteredListItem
+                                                                              .vagaCreatedate,
+                                                                          locale:
+                                                                              FFLocalizations.of(context).languageShortCode ?? FFLocalizations.of(context).languageCode,
+                                                                        )}',
+                                                                        shift: filteredListItem
+                                                                            .periodoNome,
+                                                                        type: filteredListItem
+                                                                            .tiposVagaNome,
+                                                                        hospital: functions.cleanHospitalName(
+                                                                            filteredListItem.hospitalNome!,
+                                                                            FFAppState().cleanHospital.toList()),
+                                                                        vaga: filteredListItem
+                                                                            .vagaId,
+                                                                        avatarHospital:
+                                                                            filteredListItem.hospitalAvatar,
+                                                                        sector:
+                                                                            filteredListItem.setorNome,
                                                                       ),
-                                                                      time:
-                                                                          '${dateTimeFormat(
-                                                                        "H",
-                                                                        filteredListItem
-                                                                            .vagaHorainicio
-                                                                            ?.time,
-                                                                        locale:
-                                                                            FFLocalizations.of(context).languageCode,
-                                                                      )}h-${dateTimeFormat(
-                                                                        "H",
-                                                                        filteredListItem
-                                                                            .vagaHorafim
-                                                                            ?.time,
-                                                                        locale:
-                                                                            FFLocalizations.of(context).languageCode,
-                                                                      )}h',
-                                                                      datecount:
-                                                                          'há ${dateTimeFormat(
-                                                                        "relative",
-                                                                        filteredListItem
-                                                                            .vagaCreatedate,
-                                                                        locale: FFLocalizations.of(context).languageShortCode ??
-                                                                            FFLocalizations.of(context).languageCode,
-                                                                      )}',
-                                                                      shift: filteredListItem
-                                                                          .periodoNome,
-                                                                      type: filteredListItem
-                                                                          .tiposVagaNome,
-                                                                      hospital: functions.cleanHospitalName(
-                                                                          filteredListItem
-                                                                              .hospitalNome!,
-                                                                          FFAppState()
-                                                                              .cleanHospital
-                                                                              .toList()),
-                                                                      vaga: filteredListItem
-                                                                          .vagaId,
-                                                                      avatarHospital:
-                                                                          filteredListItem
-                                                                              .hospitalAvatar,
-                                                                      sector: filteredListItem
-                                                                          .setorNome,
                                                                     ),
                                                                   ),
                                                                   if (true)
