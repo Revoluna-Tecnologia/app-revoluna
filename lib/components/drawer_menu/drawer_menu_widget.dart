@@ -239,7 +239,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                               ),
                             }.withoutNulls,
                             extra: <String, dynamic>{
-                              kTransitionInfoKey: TransitionInfo(
+                              '__transition_info__': TransitionInfo(
                                 hasTransition: true,
                                 transitionType: PageTransitionType.rightToLeft,
                               ),
@@ -376,7 +376,7 @@ class _DrawerMenuWidgetState extends State<DrawerMenuWidget> {
                           context.pushNamed(
                             TermosWidget.routeName,
                             extra: <String, dynamic>{
-                              kTransitionInfoKey: TransitionInfo(
+                              '__transition_info__': TransitionInfo(
                                 hasTransition: true,
                                 transitionType: PageTransitionType.rightToLeft,
                               ),

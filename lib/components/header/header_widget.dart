@@ -126,7 +126,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                         context.pushNamed(
                           PerfilWidget.routeName,
                           extra: <String, dynamic>{
-                            kTransitionInfoKey: TransitionInfo(
+                            '__transition_info__': TransitionInfo(
                               hasTransition: true,
                               transitionType: PageTransitionType.rightToLeft,
                               duration: Duration(milliseconds: 500),

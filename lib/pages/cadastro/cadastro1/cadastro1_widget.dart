@@ -209,7 +209,7 @@ class _Cadastro1WidgetState extends State<Cadastro1Widget> {
                         LoginPhoneWidget.routeName,
                         context.mounted,
                         extra: <String, dynamic>{
-                          kTransitionInfoKey: TransitionInfo(
+                          '__transition_info__': TransitionInfo(
                             hasTransition: true,
                             transitionType: PageTransitionType.leftToRight,
                           ),
