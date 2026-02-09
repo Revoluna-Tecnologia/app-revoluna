@@ -183,15 +183,20 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
     });
 
     _model.expandableRequisitosExpandableController =
-        ExpandableController(initialExpanded: true);
+        ExpandableController(initialExpanded: true)
+          ..addListener(() => safeSetState(() {}));
     _model.expandableContratanteExpandableController =
-        ExpandableController(initialExpanded: false);
+        ExpandableController(initialExpanded: false)
+          ..addListener(() => safeSetState(() {}));
     _model.expandableComochegarExpandableController =
-        ExpandableController(initialExpanded: false);
+        ExpandableController(initialExpanded: false)
+          ..addListener(() => safeSetState(() {}));
     _model.epandablePagamentoExpandableController =
-        ExpandableController(initialExpanded: false);
+        ExpandableController(initialExpanded: false)
+          ..addListener(() => safeSetState(() {}));
     _model.expandableBeneficiosExpandableController =
-        ExpandableController(initialExpanded: false);
+        ExpandableController(initialExpanded: false)
+          ..addListener(() => safeSetState(() {}));
   }
 
   @override
