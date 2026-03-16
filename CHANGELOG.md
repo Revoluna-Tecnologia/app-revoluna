@@ -1,5 +1,73 @@
 # Histórico de Versões - Revoluna
 
+## [2.3.0] - 16/03/2026
+
+### ✨ **Novas Funcionalidades**
+
+#### 🤖 **Suporte a Vagas da IA Jull.ia**
+- **Nova Origem de Vagas**: O app agora trata corretamente vagas enviadas ao banco de dados pela IA Jull.ia
+- **Vagas sem Data**: Adicionado suporte a vagas com data indefinida usando tratamento específico no estado e nas consultas
+- **Período da Vaga**: Listagens passam a exibir `periodoNome` como turno quando esse dado vier da nova fonte
+
+---
+
+### 🎨 **Melhorias de Interface e Experiência**
+
+#### 📋 **Cards e Listagens de Vagas**
+- **Fallbacks de Exibição**: Cards agora mostram `Valor a combinar` quando o valor vier zerado
+- **Data Opcional**: Separadores e textos foram ajustados para lidar corretamente com vagas sem data definida
+- **Layout Mais Robusto**: Melhorias de ellipsis e distribuição do conteúdo para acomodar melhor os dados vindos da Jull.ia
+
+#### 🧾 **Detalhe da Vaga**
+- **Mensagens Contextuais**: Bottom sheet agora exibe `Data a combinar`, `A combinar` e outros fallbacks quando informações não vierem preenchidas
+- **Contato e Contratante**: Ajustado o tratamento de nome, telefone e informações do contratante quando a vaga vier com dados ausentes ou genéricos
+- **WhatsApp**: Texto compartilhado pelo botão de contato atualizado para refletir corretamente vagas da Jull.ia
+- **Prazo de Pagamento**: Ajustada a exibição do prazo para casos como pagamento em até 24h
+
+#### 📱 **Header**
+- **Espaçamento no Android**: Adicionado padding extra no header para melhorar o encaixe visual no topo da tela
+
+---
+
+### 🔄 **Melhorias e Refatorações**
+
+#### 🧹 **Limpeza de Código**
+- **Custom Function Removida**: Removida função não utilizada de ordenação inicial por localização
+- **Imports Duplicados**: Limpeza de código obsoleto em custom actions
+
+#### 🛠️ **Depuração**
+- **Nova Action**: Adicionada a custom action `console_log` para facilitar depurações rápidas durante desenvolvimento
+
+---
+
+### 🔧 **Configurações e Build**
+
+#### 📦 **Versão e Dependências**
+- **Versão do App**: Atualizada para `2.3.0+1`
+- **Lockfile**: Dependências sincronizadas no `pubspec.lock`
+
+---
+
+### 📊 **Estatísticas da Versão 2.3.0**
+
+- **Total de Commits**: 7
+- **Arquivos Modificados**: 14
+- **Commits Principais**:
+  - suporte a vagas sem data no estado e nas consultas
+  - fallbacks de exibição nos cards de vagas
+  - fallbacks no detalhe de vagas da Jull.ia
+  - padding extra no header
+  - action `console_log` para depuração
+  - remoção de código obsoleto
+  - atualização de versão e dependências
+
+#### 🎯 **Impactos Principais**
+- **Compatibilidade**: O app passa a exibir corretamente vagas enviadas pela Jull.ia
+- **UX**: Melhor tratamento para dados incompletos ou opcionais
+- **Manutenibilidade**: Código legado removido e utilitário simples de debug adicionado
+
+---
+
 ## [2.2.4] - 17/12/2025
 
 ### 🐛 **Correções de Bugs**
