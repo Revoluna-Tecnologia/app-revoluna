@@ -664,51 +664,6 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                     .tertiary,
                                                                 size: 20.0,
                                                               ),
-                                                              suffixIcon: _model
-                                                                      .birthDateTextController!
-                                                                      .text
-                                                                      .isNotEmpty
-                                                                  ? InkWell(
-                                                                      onTap:
-                                                                          () async {
-                                                                        _model
-                                                                            .birthDateTextController
-                                                                            ?.clear();
-                                                                        logFirebaseEvent(
-                                                                            'CADASTRO2_BirthDate_ON_TEXTFIELD_CHANGE');
-                                                                        if (_model.birthDateTextController.text !=
-                                                                            '') {
-                                                                          logFirebaseEvent(
-                                                                              'BirthDate_update_page_state');
-                                                                          _model.birthdateborder =
-                                                                              FlutterFlowTheme.of(context).primaryText;
-                                                                          safeSetState(
-                                                                              () {});
-                                                                          return;
-                                                                        } else {
-                                                                          logFirebaseEvent(
-                                                                              'BirthDate_update_page_state');
-                                                                          _model.birthdateborder =
-                                                                              FlutterFlowTheme.of(context).accent2;
-                                                                          safeSetState(
-                                                                              () {});
-                                                                          return;
-                                                                        }
-
-                                                                        safeSetState(
-                                                                            () {});
-                                                                      },
-                                                                      child:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .clear,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .accent3,
-                                                                        size:
-                                                                            14.0,
-                                                                      ),
-                                                                    )
-                                                                  : null,
                                                             ),
                                                             style: FlutterFlowTheme
                                                                     .of(context)
@@ -1759,10 +1714,13 @@ class _Cadastro2WidgetState extends State<Cadastro2Widget> {
                                                                   : FlutterFlowTheme.of(
                                                                           context)
                                                                       .primaryBackground,
-                                                              suffixIcon: _model
-                                                                      .crmTextController!
-                                                                      .text
-                                                                      .isNotEmpty
+                                                              suffixIcon: !(_model
+                                                                              .checkboxValue ==
+                                                                          true) &&
+                                                                      _model
+                                                                          .crmTextController!
+                                                                          .text
+                                                                          .isNotEmpty
                                                                   ? InkWell(
                                                                       onTap:
                                                                           () async {
