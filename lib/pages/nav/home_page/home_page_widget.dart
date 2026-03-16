@@ -276,6 +276,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             'medico_id',
                             currentUserUid,
                           )
+                          .neqOrNull(
+                            'vaga_status',
+                            'cancelada',
+                          )
                           .order('vaga_horainicio', ascending: true),
                     ),
                   )

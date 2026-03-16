@@ -1396,15 +1396,21 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                       FormatType.decimal,
                                                   decimalType:
                                                       DecimalType.commaDecimal,
-                                                  currency: 'R\$ ',
+                                                  currency: 'R\$',
                                                 ),
-                                                date: dateTimeFormat(
-                                                  "dd/MM",
-                                                  initialListItem.vagaData,
-                                                  locale: FFLocalizations.of(
-                                                          context)
-                                                      .languageCode,
-                                                ),
+                                                date: initialListItem
+                                                            .vagaData ==
+                                                        FFAppState().nodate
+                                                    ? ''
+                                                    : dateTimeFormat(
+                                                        "dd/MM",
+                                                        initialListItem
+                                                            .vagaData,
+                                                        locale:
+                                                            FFLocalizations.of(
+                                                                    context)
+                                                                .languageCode,
+                                                      ),
                                                 datecount: 'há ${dateTimeFormat(
                                                   "relative",
                                                   initialListItem
@@ -1416,7 +1422,8 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                               context)
                                                           .languageCode,
                                                 )}',
-                                                shift: '',
+                                                shift:
+                                                    initialListItem.periodoNome,
                                                 type: initialListItem
                                                     .tiposVagaNome,
                                                 hospital:
@@ -1731,15 +1738,21 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                       FormatType.decimal,
                                                   decimalType:
                                                       DecimalType.commaDecimal,
-                                                  currency: 'R\$ ',
+                                                  currency: 'R\$',
                                                 ),
-                                                date: dateTimeFormat(
-                                                  "dd/MM",
-                                                  variableListItem.vagaData,
-                                                  locale: FFLocalizations.of(
-                                                          context)
-                                                      .languageCode,
-                                                ),
+                                                date: variableListItem
+                                                            .vagaData ==
+                                                        FFAppState().nodate
+                                                    ? '\'\"\"'
+                                                    : dateTimeFormat(
+                                                        "dd/MM",
+                                                        variableListItem
+                                                            .vagaData,
+                                                        locale:
+                                                            FFLocalizations.of(
+                                                                    context)
+                                                                .languageCode,
+                                                      ),
                                                 datecount: 'há ${dateTimeFormat(
                                                   "relative",
                                                   variableListItem
@@ -1751,7 +1764,8 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
                                                               context)
                                                           .languageCode,
                                                 )}',
-                                                shift: '',
+                                                shift: variableListItem
+                                                    .periodoNome,
                                                 type: variableListItem
                                                     .tiposVagaNome,
                                                 hospital:

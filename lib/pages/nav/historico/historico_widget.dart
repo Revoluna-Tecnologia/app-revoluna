@@ -61,6 +61,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
     if (currentUserLocationValue == null) {
       return Container(
         color: FlutterFlowTheme.of(context).primaryBackground,
@@ -1431,16 +1432,21 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                               decimalType:
                                                                   DecimalType
                                                                       .commaDecimal,
-                                                              currency: 'R\$ ',
+                                                              currency: 'R\$',
                                                             ),
-                                                            date:
-                                                                dateTimeFormat(
-                                                              "dd/MM",
-                                                              listItem.vagaData,
-                                                              locale: FFLocalizations
-                                                                      .of(context)
-                                                                  .languageCode,
-                                                            ),
+                                                            date: listItem
+                                                                        .vagaData ==
+                                                                    FFAppState()
+                                                                        .nodate
+                                                                ? ''
+                                                                : dateTimeFormat(
+                                                                    "dd/MM",
+                                                                    listItem
+                                                                        .vagaData,
+                                                                    locale: FFLocalizations.of(
+                                                                            context)
+                                                                        .languageCode,
+                                                                  ),
                                                             datecount:
                                                                 'há ${dateTimeFormat(
                                                               "relative",
@@ -1778,16 +1784,21 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
                                                               decimalType:
                                                                   DecimalType
                                                                       .commaDecimal,
-                                                              currency: 'R\$ ',
+                                                              currency: 'R\$',
                                                             ),
-                                                            date:
-                                                                dateTimeFormat(
-                                                              "dd/MM",
-                                                              listItem.vagaData,
-                                                              locale: FFLocalizations
-                                                                      .of(context)
-                                                                  .languageCode,
-                                                            ),
+                                                            date: listItem
+                                                                        .vagaData ==
+                                                                    FFAppState()
+                                                                        .nodate
+                                                                ? ''
+                                                                : dateTimeFormat(
+                                                                    "dd/MM",
+                                                                    listItem
+                                                                        .vagaData,
+                                                                    locale: FFLocalizations.of(
+                                                                            context)
+                                                                        .languageCode,
+                                                                  ),
                                                             datecount:
                                                                 'há ${dateTimeFormat(
                                                               "relative",
