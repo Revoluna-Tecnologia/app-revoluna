@@ -182,19 +182,26 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            valueOrDefault<String>(
-                              widget!.specialty,
-                              '[Especialidade]',
-                            ).maybeHandleOverflow(
-                              maxChars: 18,
-                              replacement: '…',
-                            ),
-                            maxLines: 1,
-                            style: FlutterFlowTheme.of(context)
-                                .titleMedium
-                                .override(
-                                  font: GoogleFonts.geologica(
+                          Flexible(
+                            flex: 2,
+                            child: Text(
+                              valueOrDefault<String>(
+                                widget!.specialty,
+                                '[Especialidade]',
+                              ),
+                              maxLines: 1,
+                              style: FlutterFlowTheme.of(context)
+                                  .titleMedium
+                                  .override(
+                                    font: GoogleFonts.geologica(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .titleMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .titleMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .titleMedium
                                         .fontWeight,
@@ -202,15 +209,8 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                                         .titleMedium
                                         .fontStyle,
                                   ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .fontStyle,
-                                ),
-                            overflow: TextOverflow.ellipsis,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                           Text(
                             '•',
@@ -269,11 +269,79 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          AutoSizeText(
-                            valueOrDefault<String>(
-                              widget!.date,
-                              '[dd/mm]',
+                          if (widget!.date != '')
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                AutoSizeText(
+                                  valueOrDefault<String>(
+                                    widget!.date,
+                                    '[dd/mm]',
+                                  ),
+                                  style: FlutterFlowTheme.of(context)
+                                      .titleMedium
+                                      .override(
+                                        font: GoogleFonts.geologica(
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .titleMedium
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .titleMedium
+                                                  .fontStyle,
+                                        ),
+                                        letterSpacing: 0.0,
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .titleMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .titleMedium
+                                            .fontStyle,
+                                      ),
+                                ),
+                                Text(
+                                  widget!.date == '' ? '' : '•',
+                                  textAlign: TextAlign.center,
+                                  style: FlutterFlowTheme.of(context)
+                                      .labelSmall
+                                      .override(
+                                        font: GoogleFonts.geologica(
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelSmall
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelSmall
+                                                  .fontStyle,
+                                        ),
+                                        letterSpacing: 0.0,
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelSmall
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelSmall
+                                            .fontStyle,
+                                      ),
+                                ),
+                              ]
+                                  .divide(
+                                      SizedBox(width: FFAppConstants.halfGap))
+                                  .addToEnd(
+                                      SizedBox(width: FFAppConstants.halfGap)),
                             ),
+                          Text(
+                            valueOrDefault<String>(
+                                      widget!.value,
+                                      '[R\$ 0.000,00]',
+                                    ) ==
+                                    'R\$0,00'
+                                ? 'Valor a combinar'
+                                : valueOrDefault<String>(
+                                    widget!.value,
+                                    '[R\$ 0.000,00]',
+                                  ),
                             style: FlutterFlowTheme.of(context)
                                 .titleMedium
                                 .override(
@@ -294,55 +362,7 @@ class _CardVagasWidgetState extends State<CardVagasWidget> {
                                       .fontStyle,
                                 ),
                           ),
-                          Text(
-                            '•',
-                            textAlign: TextAlign.center,
-                            style: FlutterFlowTheme.of(context)
-                                .labelSmall
-                                .override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelSmall
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelSmall
-                                        .fontStyle,
-                                  ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelSmall
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelSmall
-                                      .fontStyle,
-                                ),
-                          ),
-                          Text(
-                            valueOrDefault<String>(
-                              widget!.value,
-                              '[R\$ 0.000,00]',
-                            ),
-                            style: FlutterFlowTheme.of(context)
-                                .titleMedium
-                                .override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontStyle,
-                                  ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .fontStyle,
-                                ),
-                          ),
-                        ].divide(SizedBox(width: FFAppConstants.halfGap)),
+                        ],
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.max,
