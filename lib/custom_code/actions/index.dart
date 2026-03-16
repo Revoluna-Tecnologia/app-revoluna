@@ -22,3 +22,4 @@ export 'initialize_selected_day.dart' show initializeSelectedDay;
 export 'request_location_permission.dart' show requestLocationPermission;
 export 'check_in_check_out.dart' show checkInCheckOut;
 export 'initialize_deeplinks.dart' show initializeDeeplinks;
+export 'console_log.dart' show consoleLog;
