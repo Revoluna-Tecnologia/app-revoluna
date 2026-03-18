@@ -1,5 +1,15 @@
 # Histórico de Versões - Revoluna
 
+## [2.3.1] - 18/03/2026
+
+### 🐛 **Correções**
+
+#### 📋 **Detalhe da Vaga**
+- **Comparação de Data "Sem Data"**: Corrigida a comparação com `nodate` no bottom sheet de vagas, que falhava por diferença de fuso horário. Agora a comparação é feita via `dateTimeFormat` em vez de comparação direta de `DateTime`
+- **Reorganização de Condicionais**: Ajustada a ordem dos blocos condicionais de prazo de pagamento para tratar corretamente vagas com data "a combinar"
+
+---
+
 ## [2.3.0] - 16/03/2026
 
 ### ✨ **Novas Funcionalidades**
