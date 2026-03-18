@@ -16,11 +16,11 @@ export '/pages/cadastro/cadastro2/cadastro2_widget.dart' show Cadastro2Widget;
 export '/pages/cadastro/cadastro1/cadastro1_widget.dart' show Cadastro1Widget;
 export '/pages/other/perfil/perfil_widget.dart' show PerfilWidget;
 export '/pages/login/login_phone/login_phone_widget.dart' show LoginPhoneWidget;
-export '/pages/nav/historico/historico_widget.dart' show HistoricoWidget;
 export '/pages/login/login_email/login_email_widget.dart' show LoginEmailWidget;
 export '/pages/cadastro/cadastro3/cadastro3_widget.dart' show Cadastro3Widget;
-export '/pages/nav/explorar/explorar_widget.dart' show ExplorarWidget;
 export '/pages/nav/escalas/escalas_widget.dart' show EscalasWidget;
-export '/pages/nav/home_page/home_page_widget.dart' show HomePageWidget;
 export '/pages/nav/initial_page/initial_page_widget.dart'
     show InitialPageWidget;
+export '/pages/nav/historico/historico_widget.dart' show HistoricoWidget;
+export '/pages/nav/explorar/explorar_widget.dart' show ExplorarWidget;
+export '/pages/nav/home_page/home_page_widget.dart' show HomePageWidget;
