@@ -2710,42 +2710,6 @@ class _PerfilWidgetState extends State<PerfilWidget> {
                                                                         .transparent,
                                                                     size: 20.0,
                                                                   ),
-                                                                  suffixIcon: _model
-                                                                          .birthDateTextController!
-                                                                          .text
-                                                                          .isNotEmpty
-                                                                      ? InkWell(
-                                                                          onTap:
-                                                                              () async {
-                                                                            _model.birthDateTextController?.clear();
-                                                                            logFirebaseEvent('PERFIL_BirthDate_ON_TEXTFIELD_CHANGE');
-                                                                            if (_model.birthDateTextController.text != null &&
-                                                                                _model.birthDateTextController.text != '') {
-                                                                              logFirebaseEvent('BirthDate_update_page_state');
-                                                                              _model.birthborder = FlutterFlowTheme.of(context).primaryText;
-                                                                              safeSetState(() {});
-                                                                            } else {
-                                                                              logFirebaseEvent('BirthDate_update_page_state');
-                                                                              _model.birthborder = FlutterFlowTheme.of(context).accent2;
-                                                                              safeSetState(() {});
-                                                                            }
-
-                                                                            logFirebaseEvent('BirthDate_update_page_state');
-                                                                            _model.hasChanged =
-                                                                                true;
-                                                                            safeSetState(() {});
-                                                                            safeSetState(() {});
-                                                                          },
-                                                                          child:
-                                                                              Icon(
-                                                                            Icons.clear,
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).accent3,
-                                                                            size:
-                                                                                14.0,
-                                                                          ),
-                                                                        )
-                                                                      : null,
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)

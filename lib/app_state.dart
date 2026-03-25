@@ -328,6 +328,12 @@ class FFAppState extends ChangeNotifier {
     secureStorage.delete(key: 'ff_CRMCheck');
   }
 
+  DateTime? _nodate = DateTime.fromMillisecondsSinceEpoch(4102369200000);
+  DateTime? get nodate => _nodate;
+  set nodate(DateTime? value) {
+    _nodate = value;
+  }
+
   final _cleanHospitalTermsManager =
       StreamRequestManager<List<CleanHospitalRow>>();
   Stream<List<CleanHospitalRow>> cleanHospitalTerms({

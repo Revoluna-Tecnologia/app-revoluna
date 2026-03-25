@@ -1,7 +1,7 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
-import '/components/dropdown_loading_widget.dart';
+import '/components/loading/dropdown_loading/dropdown_loading_widget.dart';
 import '/components/loading/pages/initial_loading/initial_loading_widget.dart';
 import '/components/vagas/card_vagas_initial/card_vagas_initial_widget.dart';
 import '/components/vagas/empty_list/empty_list_widget.dart';
@@ -347,7 +347,7 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                                             context.pushNamed(
                                               LoginPhoneWidget.routeName,
                                               extra: <String, dynamic>{
-                                                kTransitionInfoKey:
+                                                '__transition_info__':
                                                     TransitionInfo(
                                                   hasTransition: true,
                                                   transitionType:

@@ -239,21 +239,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => LoginPhoneWidget(),
         ),
         FFRoute(
-            name: HistoricoWidget.routeName,
-            path: HistoricoWidget.routePath,
-            requireAuth: true,
-            builder: (context, params) => params.isEmpty
-                ? NavBarPage(initialPage: 'Historico')
-                : NavBarPage(
-                    initialPage: 'Historico',
-                    page: HistoricoWidget(
-                      fromhome: params.getParam(
-                        'fromhome',
-                        ParamType.bool,
-                      ),
-                    ),
-                  )),
-        FFRoute(
           name: LoginEmailWidget.routeName,
           path: LoginEmailWidget.routePath,
           builder: (context, params) => LoginEmailWidget(),
@@ -329,16 +314,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-            name: ExplorarWidget.routeName,
-            path: ExplorarWidget.routePath,
-            requireAuth: true,
-            builder: (context, params) => params.isEmpty
-                ? NavBarPage(initialPage: 'Explorar')
-                : NavBarPage(
-                    initialPage: 'Explorar',
-                    page: ExplorarWidget(),
-                  )),
-        FFRoute(
           name: EscalasWidget.routeName,
           path: EscalasWidget.routePath,
           requireAuth: true,
@@ -352,6 +327,36 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 ),
         ),
         FFRoute(
+          name: InitialPageWidget.routeName,
+          path: InitialPageWidget.routePath,
+          builder: (context, params) => InitialPageWidget(),
+        ),
+        FFRoute(
+            name: HistoricoWidget.routeName,
+            path: HistoricoWidget.routePath,
+            requireAuth: true,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'Historico')
+                : NavBarPage(
+                    initialPage: 'Historico',
+                    page: HistoricoWidget(
+                      fromhome: params.getParam(
+                        'fromhome',
+                        ParamType.bool,
+                      ),
+                    ),
+                  )),
+        FFRoute(
+            name: ExplorarWidget.routeName,
+            path: ExplorarWidget.routePath,
+            requireAuth: true,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'Explorar')
+                : NavBarPage(
+                    initialPage: 'Explorar',
+                    page: ExplorarWidget(),
+                  )),
+        FFRoute(
             name: HomePageWidget.routeName,
             path: HomePageWidget.routePath,
             requireAuth: true,
@@ -360,12 +365,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 : NavBarPage(
                     initialPage: 'HomePage',
                     page: HomePageWidget(),
-                  )),
-        FFRoute(
-          name: InitialPageWidget.routeName,
-          path: InitialPageWidget.routePath,
-          builder: (context, params) => InitialPageWidget(),
-        )
+                  ))
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
 
@@ -562,6 +562,7 @@ class FFRoute {
           return transitionInfo.hasTransition
               ? CustomTransitionPage(
                   key: state.pageKey,
+                  name: state.name,
                   child: child,
                   transitionDuration: transitionInfo.duration,
                   transitionsBuilder:
@@ -579,7 +580,8 @@ class FFRoute {
                     child,
                   ),
                 )
-              : MaterialPage(key: state.pageKey, child: child);
+              : MaterialPage(
+                  key: state.pageKey, name: state.name, child: child);
         },
         routes: routes,
       );

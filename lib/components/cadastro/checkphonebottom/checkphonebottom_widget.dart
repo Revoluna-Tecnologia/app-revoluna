@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_timer.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
+import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:flutter/material.dart';
@@ -261,6 +262,9 @@ class _CheckphonebottomWidgetState extends State<CheckphonebottomWidget> {
                                 FlutterFlowTheme.of(context).primaryText,
                             obscureText: false,
                             keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
                             pinTheme: PinTheme(
                               fieldHeight: valueOrDefault<double>(
                                 MediaQuery.sizeOf(context).height * 0.06,

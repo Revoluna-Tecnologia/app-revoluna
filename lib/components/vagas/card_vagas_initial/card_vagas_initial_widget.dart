@@ -175,19 +175,26 @@ class _CardVagasInitialWidgetState extends State<CardVagasInitialWidget> {
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Text(
-                            valueOrDefault<String>(
-                              widget!.specialty,
-                              '[Especialidade]',
-                            ).maybeHandleOverflow(
-                              maxChars: 26,
-                              replacement: '…',
-                            ),
-                            maxLines: 1,
-                            style: FlutterFlowTheme.of(context)
-                                .titleMedium
-                                .override(
-                                  font: GoogleFonts.geologica(
+                          Flexible(
+                            flex: 2,
+                            child: Text(
+                              valueOrDefault<String>(
+                                widget!.specialty,
+                                '[Especialidade]',
+                              ),
+                              maxLines: 1,
+                              style: FlutterFlowTheme.of(context)
+                                  .titleMedium
+                                  .override(
+                                    font: GoogleFonts.geologica(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .titleMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .titleMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .titleMedium
                                         .fontWeight,
@@ -195,14 +202,8 @@ class _CardVagasInitialWidgetState extends State<CardVagasInitialWidget> {
                                         .titleMedium
                                         .fontStyle,
                                   ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .fontStyle,
-                                ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                           Text(
                             '•',
@@ -227,18 +228,24 @@ class _CardVagasInitialWidgetState extends State<CardVagasInitialWidget> {
                                       .fontStyle,
                                 ),
                           ),
-                          Text(
-                            valueOrDefault<String>(
-                              widget!.hospital,
-                              '[hospital]',
-                            ).maybeHandleOverflow(
-                              maxChars: 18,
-                              replacement: '…',
-                            ),
-                            style: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  font: GoogleFonts.geologica(
+                          Expanded(
+                            child: Text(
+                              valueOrDefault<String>(
+                                widget!.hospital,
+                                '[hospital]',
+                              ),
+                              style: FlutterFlowTheme.of(context)
+                                  .labelMedium
+                                  .override(
+                                    font: GoogleFonts.geologica(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .labelMedium
                                         .fontWeight,
@@ -246,14 +253,8 @@ class _CardVagasInitialWidgetState extends State<CardVagasInitialWidget> {
                                         .labelMedium
                                         .fontStyle,
                                   ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ].divide(SizedBox(width: FFAppConstants.halfGap)),
                       ),
@@ -310,9 +311,15 @@ class _CardVagasInitialWidgetState extends State<CardVagasInitialWidget> {
                           ),
                           Text(
                             valueOrDefault<String>(
-                              widget!.value,
-                              '[R\$ 0.000,00]',
-                            ),
+                                      widget!.value,
+                                      '[R\$ 0.000,00]',
+                                    ) ==
+                                    'R\$0,00'
+                                ? 'Valor a combinar'
+                                : valueOrDefault<String>(
+                                    widget!.value,
+                                    'Não informado',
+                                  ),
                             style: FlutterFlowTheme.of(context)
                                 .titleMedium
                                 .override(

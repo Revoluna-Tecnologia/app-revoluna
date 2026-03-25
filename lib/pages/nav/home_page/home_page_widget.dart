@@ -2,8 +2,8 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/dialogs/negative_informative_box/negative_informative_box_widget.dart';
 import '/components/drawer_menu/drawer_menu_widget.dart';
-import '/components/dropdown_loading_widget.dart';
 import '/components/header/header_widget.dart';
+import '/components/loading/dropdown_loading/dropdown_loading_widget.dart';
 import '/components/loading/pages/home_loading/home_loading_widget.dart';
 import '/components/vagas/card_vagas/card_vagas_widget.dart';
 import '/components/vagas/empty_list/empty_list_widget.dart';
@@ -275,6 +275,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           .eqOrNull(
                             'medico_id',
                             currentUserUid,
+                          )
+                          .neqOrNull(
+                            'vaga_status',
+                            'cancelada',
                           )
                           .order('vaga_horainicio', ascending: true),
                     ),

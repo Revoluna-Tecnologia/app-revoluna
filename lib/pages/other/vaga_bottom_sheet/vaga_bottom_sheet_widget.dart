@@ -183,15 +183,20 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
     });
 
     _model.expandableRequisitosExpandableController =
-        ExpandableController(initialExpanded: true);
+        ExpandableController(initialExpanded: true)
+          ..addListener(() => safeSetState(() {}));
     _model.expandableContratanteExpandableController =
-        ExpandableController(initialExpanded: false);
+        ExpandableController(initialExpanded: false)
+          ..addListener(() => safeSetState(() {}));
     _model.expandableComochegarExpandableController =
-        ExpandableController(initialExpanded: false);
+        ExpandableController(initialExpanded: false)
+          ..addListener(() => safeSetState(() {}));
     _model.epandablePagamentoExpandableController =
-        ExpandableController(initialExpanded: false);
+        ExpandableController(initialExpanded: false)
+          ..addListener(() => safeSetState(() {}));
     _model.expandableBeneficiosExpandableController =
-        ExpandableController(initialExpanded: false);
+        ExpandableController(initialExpanded: false)
+          ..addListener(() => safeSetState(() {}));
   }
 
   @override
@@ -351,12 +356,15 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                           ),
                                     ),
                                     Text(
-                                      formatNumber(
-                                        widget!.value,
-                                        formatType: FormatType.decimal,
-                                        decimalType: DecimalType.commaDecimal,
-                                        currency: 'R\$ ',
-                                      ),
+                                      widget!.value == 0.0
+                                          ? 'Valor a combinar'
+                                          : formatNumber(
+                                              widget!.value,
+                                              formatType: FormatType.decimal,
+                                              decimalType:
+                                                  DecimalType.commaDecimal,
+                                              currency: 'R\$ ',
+                                            ),
                                       maxLines: 1,
                                       style: FlutterFlowTheme.of(context)
                                           .headlineMedium
@@ -594,23 +602,37 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    RichText(
-                                      textScaler:
-                                          MediaQuery.of(context).textScaler,
-                                      text: TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text: dateTimeFormat(
-                                              "EEEE",
-                                              widget!.date,
-                                              locale:
-                                                  FFLocalizations.of(context)
-                                                      .languageCode,
-                                            ),
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleMedium
-                                                .override(
-                                                  font: GoogleFonts.geologica(
+                                    Builder(
+                                      builder: (context) {
+                                        if (widget!.date ==
+                                            FFAppState().nodate) {
+                                          return RichText(
+                                            textScaler: MediaQuery.of(context)
+                                                .textScaler,
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Data a combinar',
+                                                  style: TextStyle(),
+                                                )
+                                              ],
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .titleMedium
+                                                  .override(
+                                                    font: GoogleFonts.geologica(
+                                                      fontWeight:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleMedium
+                                                              .fontWeight,
+                                                      fontStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleMedium
+                                                              .fontStyle,
+                                                    ),
+                                                    letterSpacing: 0.0,
                                                     fontWeight:
                                                         FlutterFlowTheme.of(
                                                                 context)
@@ -622,31 +644,109 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                             .titleMedium
                                                             .fontStyle,
                                                   ),
-                                                  letterSpacing: 0.0,
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleMedium
-                                                          .fontStyle,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          );
+                                        } else {
+                                          return RichText(
+                                            textScaler: MediaQuery.of(context)
+                                                .textScaler,
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: dateTimeFormat(
+                                                    "EEEE",
+                                                    widget!.date,
+                                                    locale: FFLocalizations.of(
+                                                            context)
+                                                        .languageCode,
+                                                  ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .titleMedium
+                                                      .override(
+                                                        font: GoogleFonts
+                                                            .geologica(
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleMedium
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleMedium
+                                                                  .fontStyle,
+                                                        ),
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleMedium
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleMedium
+                                                                .fontStyle,
+                                                      ),
                                                 ),
-                                          ),
-                                          TextSpan(
-                                            text: ', ${dateTimeFormat(
-                                              "dd/MM/yyyy",
-                                              widget!.date,
-                                              locale:
-                                                  FFLocalizations.of(context)
-                                                      .languageCode,
-                                            )}',
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleMedium
-                                                .override(
-                                                  font: GoogleFonts.geologica(
+                                                TextSpan(
+                                                  text: ', ${dateTimeFormat(
+                                                    "dd/MM/yyyy",
+                                                    widget!.date,
+                                                    locale: FFLocalizations.of(
+                                                            context)
+                                                        .languageCode,
+                                                  )}',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .titleMedium
+                                                      .override(
+                                                        font: GoogleFonts
+                                                            .geologica(
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleMedium
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleMedium
+                                                                  .fontStyle,
+                                                        ),
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleMedium
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleMedium
+                                                                .fontStyle,
+                                                      ),
+                                                )
+                                              ],
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .titleMedium
+                                                  .override(
+                                                    font: GoogleFonts.geologica(
+                                                      fontWeight:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleMedium
+                                                              .fontWeight,
+                                                      fontStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .titleMedium
+                                                              .fontStyle,
+                                                    ),
+                                                    letterSpacing: 0.0,
                                                     fontWeight:
                                                         FlutterFlowTheme.of(
                                                                 context)
@@ -658,45 +758,11 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                             .titleMedium
                                                             .fontStyle,
                                                   ),
-                                                  letterSpacing: 0.0,
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .titleMedium
-                                                          .fontStyle,
-                                                ),
-                                          )
-                                        ],
-                                        style: FlutterFlowTheme.of(context)
-                                            .titleMedium
-                                            .override(
-                                              font: GoogleFonts.geologica(
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleMedium
-                                                        .fontStyle,
-                                              ),
-                                              letterSpacing: 0.0,
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleMedium
-                                                      .fontStyle,
                                             ),
-                                      ),
-                                      textAlign: TextAlign.center,
+                                            textAlign: TextAlign.center,
+                                          );
+                                        }
+                                      },
                                     ),
                                   ].divide(
                                       SizedBox(width: FFAppConstants.halfGap)),
@@ -3060,15 +3126,24 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                               ),
                                                               Text(
                                                                 valueOrDefault<
-                                                                    String>(
-                                                                  widget!
-                                                                      .contractor,
-                                                                  '[contractor]',
-                                                                ).maybeHandleOverflow(
-                                                                  maxChars: 27,
-                                                                  replacement:
-                                                                      '…',
-                                                                ),
+                                                                            String>(
+                                                                          widget!
+                                                                              .contractor,
+                                                                          'Não informado',
+                                                                        ) ==
+                                                                        'Vagas Externas (Julia)'
+                                                                    ? 'Não informado'
+                                                                    : valueOrDefault<
+                                                                        String>(
+                                                                        widget!
+                                                                            .contractor,
+                                                                        'Não informado',
+                                                                      ).maybeHandleOverflow(
+                                                                        maxChars:
+                                                                            27,
+                                                                        replacement:
+                                                                            '…',
+                                                                      ),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodyMedium
@@ -3147,7 +3222,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                         String>(
                                                                       widget!
                                                                           .contractorName,
-                                                                      '[contractorName]',
+                                                                      'Não informado',
                                                                     ).maybeHandleOverflow(
                                                                       maxChars:
                                                                           28,
@@ -4535,7 +4610,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                           String>(
                                                                         widget!
                                                                             .payment,
-                                                                        '[payment]',
+                                                                        'A combinar',
                                                                       ),
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
@@ -4619,13 +4694,22 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                               ),
                                                                         ),
                                                                         TextSpan(
-                                                                          text:
-                                                                              dateTimeFormat(
-                                                                            "dd/MM/yyyy",
-                                                                            widget!.payday,
-                                                                            locale:
-                                                                                FFLocalizations.of(context).languageCode,
-                                                                          ),
+                                                                          text: dateTimeFormat(
+                                                                                    "dd/MM/yyyy",
+                                                                                    widget!.payday,
+                                                                                    locale: FFLocalizations.of(context).languageCode,
+                                                                                  ) ==
+                                                                                  dateTimeFormat(
+                                                                                    "dd/MM/yyyy",
+                                                                                    FFAppState().nodate,
+                                                                                    locale: FFLocalizations.of(context).languageCode,
+                                                                                  )
+                                                                              ? 'A combinar'
+                                                                              : dateTimeFormat(
+                                                                                  "dd/MM/yyyy",
+                                                                                  widget!.payday,
+                                                                                  locale: FFLocalizations.of(context).languageCode,
+                                                                                ),
                                                                           style:
                                                                               TextStyle(),
                                                                         )
@@ -4664,7 +4748,94 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                 Builder(
                                                                   builder:
                                                                       (context) {
-                                                                    if (((widget!.payday!.secondsSinceEpoch.toDouble() - widget!.date!.secondsSinceEpoch.toDouble()) /
+                                                                    if (dateTimeFormat(
+                                                                          "dd/MM/yyyy",
+                                                                          widget!
+                                                                              .payday,
+                                                                          locale:
+                                                                              FFLocalizations.of(context).languageCode,
+                                                                        ) ==
+                                                                        dateTimeFormat(
+                                                                          "dd/MM/yyyy",
+                                                                          FFAppState()
+                                                                              .nodate,
+                                                                          locale:
+                                                                              FFLocalizations.of(context).languageCode,
+                                                                        )) {
+                                                                      return Row(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children:
+                                                                            [
+                                                                          Padding(
+                                                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                                                0.0,
+                                                                                2.0,
+                                                                                0.0,
+                                                                                0.0),
+                                                                            child:
+                                                                                Text(
+                                                                              '●',
+                                                                              textAlign: TextAlign.center,
+                                                                              style: FlutterFlowTheme.of(context).titleSmall.override(
+                                                                                    font: GoogleFonts.geologica(
+                                                                                      fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                                      fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                                    ),
+                                                                                    fontSize: 6.0,
+                                                                                    letterSpacing: 0.0,
+                                                                                    fontWeight: FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                                                                                  ),
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            'A combinar',
+                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  font: GoogleFonts.geologica(
+                                                                                    fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                  ),
+                                                                                  letterSpacing: 0.0,
+                                                                                  fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                  fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                ),
+                                                                          ),
+                                                                          FFButtonWidget(
+                                                                            onPressed:
+                                                                                () {
+                                                                              print('Button pressed ...');
+                                                                            },
+                                                                            text:
+                                                                                '',
+                                                                            options:
+                                                                                FFButtonOptions(
+                                                                              height: 20.0,
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                                                              iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                                                              color: Color(0x00A369ED),
+                                                                              textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                    font: GoogleFonts.geologica(
+                                                                                      fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                      fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                    ),
+                                                                                    color: FlutterFlowTheme.of(context).tertiary,
+                                                                                    letterSpacing: 0.0,
+                                                                                    fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
+                                                                                    fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                                                  ),
+                                                                              elevation: 0.0,
+                                                                              borderRadius: BorderRadius.circular(valueOrDefault<double>(
+                                                                                FFAppConstants.borderS,
+                                                                                0.0,
+                                                                              )),
+                                                                            ),
+                                                                            showLoadingIndicator:
+                                                                                false,
+                                                                          ),
+                                                                        ].divide(SizedBox(width: FFAppConstants.halfGap)),
+                                                                      );
+                                                                    } else if (((widget!.payday!.secondsSinceEpoch.toDouble() - widget!.date!.secondsSinceEpoch.toDouble()) /
                                                                             86400) >
                                                                         1.0) {
                                                                       return Row(
@@ -4824,7 +4995,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                                             ),
                                                                           ),
                                                                           Text(
-                                                                            'No mesmo dia',
+                                                                            'Em até 24h',
                                                                             style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                   font: GoogleFonts.geologica(
                                                                                     fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
@@ -6709,16 +6880,16 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                       .launchWhatsAppChat(
                                                 '${"Olá, encontrei essa vaga de plantão na Revoluna.\n\n"}${(String? speciality) {
                                                   return "*$speciality*\n";
-                                                }(widget!.speciality)}${(String value) {
-                                                  return "_" + value + "_\n";
-                                                }(formatNumber(
-                                                  widget!.value,
-                                                  formatType:
-                                                      FormatType.decimal,
-                                                  decimalType:
-                                                      DecimalType.commaDecimal,
-                                                  currency: 'R\$ ',
-                                                ))}${(String? hospital) {
+                                                }(widget!.speciality)}${widget!.value == 0.0 ? ("_" + "Valor a combinar" + "_\n") : ((String value) {
+                                                    return "_" + value + "_\n";
+                                                  }(formatNumber(
+                                                    widget!.value,
+                                                    formatType:
+                                                        FormatType.decimal,
+                                                    decimalType: DecimalType
+                                                        .commaDecimal,
+                                                    currency: 'R\$ ',
+                                                  )))}${(String? hospital) {
                                                   return "$hospital\n";
                                                 }(widget!.hospital)}${(String? date) {
                                                   return "$date\n";
@@ -6754,7 +6925,7 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
                                                 (widget!.contractorPhone ==
                                                                 null ||
                                                             widget!.contractorPhone ==
-                                                                '') &&
+                                                                '') ||
                                                         (widget!.contractorPhone ==
                                                             'Não informado')
                                                     ? FFAppState().concierge

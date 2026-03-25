@@ -47,235 +47,150 @@ class _HeaderWidgetState extends State<HeaderWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
-    return FutureBuilder<List<VwVagasCandidaturasRow>>(
-      future: FFAppState().vagasMedico(
-        requestFn: () => VwVagasCandidaturasTable().queryRows(
-          queryFn: (q) => q
-              .eqOrNull(
-                'medico_id',
-                currentUserUid,
-              )
-              .order('vaga_horainicio', ascending: true),
-        ),
-      ),
-      builder: (context, snapshot) {
-        // Customize what your widget looks like when it's loading.
-        if (!snapshot.hasData) {
-          return HeaderLoadingWidget();
-        }
-        List<VwVagasCandidaturasRow> containerVwVagasCandidaturasRowList =
-            snapshot.data!;
-
-        return Container(
-          width: double.infinity,
-          height: MediaQuery.sizeOf(context).height * 0.09,
-          decoration: BoxDecoration(
-            color: FlutterFlowTheme.of(context).primaryBackground,
+    return Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(
+          0.0,
+          valueOrDefault<double>(
+            isAndroid ? FFAppConstants.doubleGap : 0.0,
+            0.0,
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                width: MediaQuery.sizeOf(context).width * 0.14,
-                height: MediaQuery.sizeOf(context).height * 0.7,
-                child: Stack(
-                  alignment: AlignmentDirectional(0.0, 0.0),
-                  children: [
-                    Builder(
-                      builder: (context) {
-                        if (FFAppState().profilepicture != null &&
-                            FFAppState().profilepicture != '') {
-                          return Hero(
-                            tag: FFAppState().profilepicture,
-                            transitionOnUserGestures: true,
-                            child: Container(
+          0.0,
+          0.0),
+      child: FutureBuilder<List<VwVagasCandidaturasRow>>(
+        future: FFAppState().vagasMedico(
+          requestFn: () => VwVagasCandidaturasTable().queryRows(
+            queryFn: (q) => q
+                .eqOrNull(
+                  'medico_id',
+                  currentUserUid,
+                )
+                .order('vaga_horainicio', ascending: true),
+          ),
+        ),
+        builder: (context, snapshot) {
+          // Customize what your widget looks like when it's loading.
+          if (!snapshot.hasData) {
+            return HeaderLoadingWidget();
+          }
+          List<VwVagasCandidaturasRow> containerVwVagasCandidaturasRowList =
+              snapshot.data!;
+
+          return Container(
+            width: double.infinity,
+            height: MediaQuery.sizeOf(context).height * 0.09,
+            decoration: BoxDecoration(
+              color: FlutterFlowTheme.of(context).primaryBackground,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: MediaQuery.sizeOf(context).width * 0.14,
+                  height: MediaQuery.sizeOf(context).height * 0.7,
+                  child: Stack(
+                    alignment: AlignmentDirectional(0.0, 0.0),
+                    children: [
+                      Builder(
+                        builder: (context) {
+                          if (FFAppState().profilepicture != null &&
+                              FFAppState().profilepicture != '') {
+                            return Hero(
+                              tag: FFAppState().profilepicture,
+                              transitionOnUserGestures: true,
+                              child: Container(
+                                width: MediaQuery.sizeOf(context).width * 0.14,
+                                height: MediaQuery.sizeOf(context).width * 0.14,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Image.network(
+                                  FFAppState().profilepicture,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Container(
                               width: MediaQuery.sizeOf(context).width * 0.14,
                               height: MediaQuery.sizeOf(context).width * 0.14,
                               clipBehavior: Clip.antiAlias,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                               ),
-                              child: Image.network(
-                                FFAppState().profilepicture,
+                              child: Image.asset(
+                                'assets/images/Avatar.png',
                                 fit: BoxFit.cover,
                               ),
-                            ),
-                          );
-                        } else {
-                          return Container(
-                            width: MediaQuery.sizeOf(context).width * 0.14,
-                            height: MediaQuery.sizeOf(context).width * 0.14,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: Image.asset(
-                              'assets/images/Avatar.png',
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                    FFButtonWidget(
-                      onPressed: () async {
-                        logFirebaseEvent('HEADER_COMP__BTN_ON_TAP');
-                        logFirebaseEvent('Button_navigate_to');
+                            );
+                          }
+                        },
+                      ),
+                      FFButtonWidget(
+                        onPressed: () async {
+                          logFirebaseEvent('HEADER_COMP__BTN_ON_TAP');
+                          logFirebaseEvent('Button_navigate_to');
 
-                        context.pushNamed(
-                          PerfilWidget.routeName,
-                          extra: <String, dynamic>{
-                            kTransitionInfoKey: TransitionInfo(
-                              hasTransition: true,
-                              transitionType: PageTransitionType.rightToLeft,
-                              duration: Duration(milliseconds: 500),
-                            ),
-                          },
-                        );
-                      },
-                      text: '',
-                      options: FFButtonOptions(
-                        width: double.infinity,
-                        height: double.infinity,
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        iconPadding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        color: Color(0x00A369ED),
-                        textStyle:
-                            FlutterFlowTheme.of(context).titleSmall.override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .titleSmall
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleSmall
-                                        .fontStyle,
-                                  ),
-                                  color: Colors.white,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .fontStyle,
-                                ),
-                        elevation: 0.0,
-                        borderRadius: BorderRadius.circular(100.0),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Builder(
-                      builder: (context) {
-                        if (FFAppState().gender == 'Prefiro não informar') {
-                          return Text(
-                            FFAppState().displayName,
-                            textAlign: TextAlign.start,
-                            maxLines: 1,
-                            style: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .titleSmall
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleSmall
-                                        .fontStyle,
-                                  ),
-                                  fontSize: 16.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .fontStyle,
-                                ),
+                          context.pushNamed(
+                            PerfilWidget.routeName,
+                            extra: <String, dynamic>{
+                              '__transition_info__': TransitionInfo(
+                                hasTransition: true,
+                                transitionType: PageTransitionType.rightToLeft,
+                                duration: Duration(milliseconds: 500),
+                              ),
+                            },
                           );
-                        } else {
-                          return Text(
-                            '${FFAppState().gender} ${FFAppState().displayName}',
-                            textAlign: TextAlign.start,
-                            maxLines: 1,
-                            style: FlutterFlowTheme.of(context)
-                                .titleMedium
-                                .override(
-                                  font: GoogleFonts.geologica(
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontStyle,
-                                  ),
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .fontStyle,
-                                ),
-                          );
-                        }
-                      },
-                    ),
-                    if (containerVwVagasCandidaturasRowList
-                            .where((e) =>
-                                (e.candidaturaStatus == 'APROVADO') &&
-                                functions.inThisWeek(e.vagaData!))
-                            .toList()
-                            .length >
-                        0)
-                      RichText(
-                        textScaler: MediaQuery.of(context).textScaler,
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Você tem ',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodySmall
-                                  .override(
+                        },
+                        text: '',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: double.infinity,
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          color: Color(0x00A369ED),
+                          textStyle:
+                              FlutterFlowTheme.of(context).titleSmall.override(
                                     font: GoogleFonts.geologica(
                                       fontWeight: FlutterFlowTheme.of(context)
-                                          .bodySmall
+                                          .titleSmall
                                           .fontWeight,
                                       fontStyle: FlutterFlowTheme.of(context)
-                                          .bodySmall
+                                          .titleSmall
                                           .fontStyle,
                                     ),
+                                    color: Colors.white,
                                     letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
-                                        .bodySmall
+                                        .titleSmall
                                         .fontWeight,
                                     fontStyle: FlutterFlowTheme.of(context)
-                                        .bodySmall
+                                        .titleSmall
                                         .fontStyle,
                                   ),
-                            ),
-                            TextSpan(
-                              text: formatNumber(
-                                containerVwVagasCandidaturasRowList
-                                    .where((e) =>
-                                        (e.candidaturaStatus == 'APROVADO') &&
-                                        functions.inThisWeek(e.vagaData!))
-                                    .toList()
-                                    .length,
-                                formatType: FormatType.custom,
-                                format: '0',
-                                locale: '',
-                              ),
+                          elevation: 0.0,
+                          borderRadius: BorderRadius.circular(100.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Builder(
+                        builder: (context) {
+                          if (FFAppState().gender == 'Prefiro não informar') {
+                            return Text(
+                              FFAppState().displayName,
+                              textAlign: TextAlign.start,
+                              maxLines: 1,
                               style: FlutterFlowTheme.of(context)
                                   .titleSmall
                                   .override(
@@ -287,8 +202,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                                           .titleSmall
                                           .fontStyle,
                                     ),
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    fontSize: 12.0,
+                                    fontSize: 16.0,
                                     letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .titleSmall
@@ -297,182 +211,281 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                                         .titleSmall
                                         .fontStyle,
                                   ),
-                            ),
-                            TextSpan(
-                              text: ' ',
-                              style: TextStyle(),
-                            ),
-                            TextSpan(
-                              text: formatNumber(
-                                        containerVwVagasCandidaturasRowList
-                                            .where((e) =>
-                                                (e.candidaturaStatus ==
-                                                    'APROVADO') &&
-                                                functions
-                                                    .inThisWeek(e.vagaData!))
-                                            .toList()
-                                            .length,
-                                        formatType: FormatType.custom,
-                                        format: '0',
-                                        locale: '',
-                                      ) ==
-                                      '1'
-                                  ? 'plantão'
-                                  : 'plantões',
+                            );
+                          } else {
+                            return Text(
+                              '${FFAppState().gender} ${FFAppState().displayName}',
+                              textAlign: TextAlign.start,
+                              maxLines: 1,
                               style: FlutterFlowTheme.of(context)
-                                  .titleSmall
+                                  .titleMedium
                                   .override(
                                     font: GoogleFonts.geologica(
                                       fontWeight: FlutterFlowTheme.of(context)
-                                          .titleSmall
+                                          .titleMedium
                                           .fontWeight,
                                       fontStyle: FlutterFlowTheme.of(context)
-                                          .titleSmall
-                                          .fontStyle,
-                                    ),
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    fontSize: 12.0,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .titleSmall
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleSmall
-                                        .fontStyle,
-                                  ),
-                            ),
-                            TextSpan(
-                              text: ' essa semana',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    font: GoogleFonts.geologica(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .fontStyle,
-                                    ),
-                                    fontSize: 12.0,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .fontStyle,
-                                  ),
-                            )
-                          ],
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    font: GoogleFonts.geologica(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .bodyMedium
+                                          .titleMedium
                                           .fontStyle,
                                     ),
                                     letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
-                                        .bodyMedium
+                                        .titleMedium
                                         .fontWeight,
                                     fontStyle: FlutterFlowTheme.of(context)
-                                        .bodyMedium
+                                        .titleMedium
                                         .fontStyle,
                                   ),
-                        ),
+                            );
+                          }
+                        },
                       ),
-                  ],
-                ),
-              ),
-              Container(
-                width: MediaQuery.sizeOf(context).width * 0.12,
-                height: MediaQuery.sizeOf(context).height * 0.06,
-                child: Stack(
-                  alignment: AlignmentDirectional(0.0, 0.0),
-                  children: [
-                    Icon(
-                      Icons.menu_rounded,
-                      color: FlutterFlowTheme.of(context).primary,
-                      size: 37.0,
-                    ),
-                    if (FFAppState().unreadNotifications)
-                      Align(
-                        alignment: AlignmentDirectional(0.9, -1.9),
-                        child: Text(
-                          '•',
-                          textAlign: TextAlign.center,
-                          style: FlutterFlowTheme.of(context)
-                              .labelSmall
-                              .override(
-                                font: GoogleFonts.geologica(
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .labelSmall
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelSmall
-                                      .fontStyle,
-                                ),
-                                color: FlutterFlowTheme.of(context).tertiary,
-                                fontSize: 27.0,
-                                letterSpacing: 0.0,
-                                fontWeight: FlutterFlowTheme.of(context)
-                                    .labelSmall
-                                    .fontWeight,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .labelSmall
-                                    .fontStyle,
+                      if (containerVwVagasCandidaturasRowList
+                              .where((e) =>
+                                  (e.candidaturaStatus == 'APROVADO') &&
+                                  functions.inThisWeek(e.vagaData!))
+                              .toList()
+                              .length >
+                          0)
+                        RichText(
+                          textScaler: MediaQuery.of(context).textScaler,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Você tem ',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                      font: GoogleFonts.geologica(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .bodySmall
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodySmall
+                                            .fontStyle,
+                                      ),
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodySmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodySmall
+                                          .fontStyle,
+                                    ),
                               ),
-                        ),
-                      ),
-                    FFButtonWidget(
-                      onPressed: () async {
-                        logFirebaseEvent('HEADER_COMP__BTN_ON_TAP');
-                        logFirebaseEvent('Button_drawer');
-                        Scaffold.of(context).openEndDrawer();
-                      },
-                      text: '',
-                      options: FFButtonOptions(
-                        width: MediaQuery.sizeOf(context).width * 0.12,
-                        height: MediaQuery.sizeOf(context).height * 0.06,
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 0.0, 16.0, 0.0),
-                        iconPadding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        color: Color(0x00A369ED),
-                        textStyle:
-                            FlutterFlowTheme.of(context).titleSmall.override(
+                              TextSpan(
+                                text: formatNumber(
+                                  containerVwVagasCandidaturasRowList
+                                      .where((e) =>
+                                          (e.candidaturaStatus == 'APROVADO') &&
+                                          functions.inThisWeek(e.vagaData!))
+                                      .toList()
+                                      .length,
+                                  formatType: FormatType.custom,
+                                  format: '0',
+                                  locale: '',
+                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .override(
+                                      font: GoogleFonts.geologica(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .titleSmall
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .titleSmall
+                                            .fontStyle,
+                                      ),
+                                      color:
+                                          FlutterFlowTheme.of(context).primary,
+                                      fontSize: 12.0,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontStyle,
+                                    ),
+                              ),
+                              TextSpan(
+                                text: ' ',
+                                style: TextStyle(),
+                              ),
+                              TextSpan(
+                                text: formatNumber(
+                                          containerVwVagasCandidaturasRowList
+                                              .where((e) =>
+                                                  (e.candidaturaStatus ==
+                                                      'APROVADO') &&
+                                                  functions
+                                                      .inThisWeek(e.vagaData!))
+                                              .toList()
+                                              .length,
+                                          formatType: FormatType.custom,
+                                          format: '0',
+                                          locale: '',
+                                        ) ==
+                                        '1'
+                                    ? 'plantão'
+                                    : 'plantões',
+                                style: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .override(
+                                      font: GoogleFonts.geologica(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .titleSmall
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .titleSmall
+                                            .fontStyle,
+                                      ),
+                                      color:
+                                          FlutterFlowTheme.of(context).primary,
+                                      fontSize: 12.0,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontStyle,
+                                    ),
+                              ),
+                              TextSpan(
+                                text: ' essa semana',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      font: GoogleFonts.geologica(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontStyle,
+                                      ),
+                                      fontSize: 12.0,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
+                              )
+                            ],
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
                                   font: GoogleFonts.geologica(
                                     fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
+                                  ),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .fontStyle,
+                                ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.sizeOf(context).width * 0.12,
+                  height: MediaQuery.sizeOf(context).height * 0.06,
+                  child: Stack(
+                    alignment: AlignmentDirectional(0.0, 0.0),
+                    children: [
+                      Icon(
+                        Icons.menu_rounded,
+                        color: FlutterFlowTheme.of(context).primary,
+                        size: 37.0,
+                      ),
+                      if (FFAppState().unreadNotifications)
+                        Align(
+                          alignment: AlignmentDirectional(0.9, -1.9),
+                          child: Text(
+                            '•',
+                            textAlign: TextAlign.center,
+                            style: FlutterFlowTheme.of(context)
+                                .labelSmall
+                                .override(
+                                  font: GoogleFonts.geologica(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelSmall
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelSmall
+                                        .fontStyle,
+                                  ),
+                                  color: FlutterFlowTheme.of(context).tertiary,
+                                  fontSize: 27.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelSmall
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelSmall
+                                      .fontStyle,
+                                ),
+                          ),
+                        ),
+                      FFButtonWidget(
+                        onPressed: () async {
+                          logFirebaseEvent('HEADER_COMP__BTN_ON_TAP');
+                          logFirebaseEvent('Button_drawer');
+                          Scaffold.of(context).openEndDrawer();
+                        },
+                        text: '',
+                        options: FFButtonOptions(
+                          width: MediaQuery.sizeOf(context).width * 0.12,
+                          height: MediaQuery.sizeOf(context).height * 0.06,
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              16.0, 0.0, 16.0, 0.0),
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          color: Color(0x00A369ED),
+                          textStyle:
+                              FlutterFlowTheme.of(context).titleSmall.override(
+                                    font: GoogleFonts.geologica(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontStyle,
+                                    ),
+                                    color: Colors.white,
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
                                         .titleSmall
                                         .fontWeight,
                                     fontStyle: FlutterFlowTheme.of(context)
                                         .titleSmall
                                         .fontStyle,
                                   ),
-                                  color: Colors.white,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .fontStyle,
-                                ),
-                        elevation: 0.0,
-                        borderRadius: BorderRadius.circular(8.0),
+                          elevation: 0.0,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ].divide(SizedBox(width: FFAppConstants.Gap)),
-          ),
-        );
-      },
+              ].divide(SizedBox(width: FFAppConstants.Gap)),
+            ),
+          );
+        },
+      ),
     );
   }
 }

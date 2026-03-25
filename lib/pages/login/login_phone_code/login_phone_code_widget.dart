@@ -8,6 +8,7 @@ import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/permissions_util.dart';
 import '/index.dart';
+import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:flutter/gestures.dart';
@@ -496,6 +497,9 @@ class _LoginPhoneCodeWidgetState extends State<LoginPhoneCodeWidget> {
                                       FlutterFlowTheme.of(context).primaryText,
                                   obscureText: false,
                                   keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   pinTheme: PinTheme(
                                     fieldHeight: valueOrDefault<double>(
                                       MediaQuery.sizeOf(context).height * 0.06,
