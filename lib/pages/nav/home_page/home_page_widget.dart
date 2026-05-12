@@ -153,12 +153,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       future: FFAppState()
           .vagasAbertas(
         requestFn: () => VwVagasCandidaturasTable().queryRows(
-          queryFn: (q) => q
-              .eqOrNull(
-                'vaga_status',
-                'aberta',
-              )
-              .order('vaga_horainicio', ascending: true),
+          queryFn: (q) => q.eqOrNull(
+            'vaga_status',
+            'aberta',
+          ),
         ),
       )
           .then((result) {
@@ -238,10 +236,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context).primary,
                             borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(30.0),
-                              bottomRight: Radius.circular(30.0),
                               topLeft: Radius.circular(30.0),
                               topRight: Radius.circular(30.0),
+                              bottomLeft: Radius.circular(30.0),
+                              bottomRight: Radius.circular(30.0),
                             ),
                           ),
                         ),
@@ -279,8 +277,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           .neqOrNull(
                             'vaga_status',
                             'cancelada',
-                          )
-                          .order('vaga_horainicio', ascending: true),
+                          ),
                     ),
                   )
                       .then((result) {

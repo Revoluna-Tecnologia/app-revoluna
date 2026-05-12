@@ -115,12 +115,10 @@ class _EscalasWidgetState extends State<EscalasWidget> {
                   future: FFAppState()
                       .vagasEscala(
                     requestFn: () => VwVagasCandidaturasTable().queryRows(
-                      queryFn: (q) => q
-                          .neqOrNull(
-                            'vaga_status',
-                            'cancelada',
-                          )
-                          .order('vaga_horainicio', ascending: true),
+                      queryFn: (q) => q.neqOrNull(
+                        'vaga_status',
+                        'cancelada',
+                      ),
                     ),
                   )
                       .then((result) {
