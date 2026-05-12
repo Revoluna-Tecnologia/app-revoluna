@@ -168,10 +168,10 @@ class _InitialPageWidgetState extends State<InitialPageWidget> {
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context).primary,
                             borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(30.0),
-                              bottomRight: Radius.circular(30.0),
                               topLeft: Radius.circular(30.0),
                               topRight: Radius.circular(30.0),
+                              bottomLeft: Radius.circular(30.0),
+                              bottomRight: Radius.circular(30.0),
                             ),
                           ),
                         ),
