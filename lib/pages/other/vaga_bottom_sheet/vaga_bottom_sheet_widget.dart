@@ -213,8 +213,6 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
     return SafeArea(
       child: ClipRRect(
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(0.0),
-          bottomRight: Radius.circular(0.0),
           topLeft: Radius.circular(valueOrDefault<double>(
             FFAppConstants.borderM,
             0.0,
@@ -229,8 +227,6 @@ class _VagaBottomSheetWidgetState extends State<VagaBottomSheetWidget> {
           decoration: BoxDecoration(
             color: FlutterFlowTheme.of(context).primaryBackground,
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(0.0),
-              bottomRight: Radius.circular(0.0),
               topLeft: Radius.circular(valueOrDefault<double>(
                 FFAppConstants.borderM,
                 0.0,

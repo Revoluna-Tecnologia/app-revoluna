@@ -77,12 +77,10 @@ class _ExplorarWidgetState extends State<ExplorarWidget> {
       future: FFAppState()
           .vagasAbertas(
         requestFn: () => VwVagasCandidaturasTable().queryRows(
-          queryFn: (q) => q
-              .eqOrNull(
-                'vaga_status',
-                'aberta',
-              )
-              .order('vaga_horainicio', ascending: true),
+          queryFn: (q) => q.eqOrNull(
+            'vaga_status',
+            'aberta',
+          ),
         ),
       )
           .then((result) {

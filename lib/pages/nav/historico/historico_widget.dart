@@ -95,8 +95,7 @@ class _HistoricoWidgetState extends State<HistoricoWidget> {
               .gteOrNull(
                 'vaga_data',
                 supaSerialize<DateTime>(functions.currentDate()),
-              )
-              .order('vaga_horainicio', ascending: true),
+              ),
         ),
       )
           .then((result) {
