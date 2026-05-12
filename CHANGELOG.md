@@ -1,5 +1,58 @@
 # Histórico de Versões - Revoluna
 
+## [2.3.2] - 12/05/2026
+
+### ✨ **Novas Funcionalidades**
+
+#### 📝 **Cadastro**
+- **Validação de Idade**: Adicionada validação de idade mínima no campo de data de nascimento da tela de cadastro, com mensagem de erro contextual
+
+---
+
+### 🐛 **Correções**
+
+#### 🔄 **Navegação**
+- **Serialização de Datas**: Corrigida atualização de parâmetros de navegação que perdiam datas ao serializar/desserializar entre páginas do FlutterFlow
+
+---
+
+### 🔄 **Melhorias e Refatorações**
+
+#### 📋 **Listagens de Vagas**
+- **Ordenação no Servidor**: Removida ordenação client-side das queries de vagas em Escalas, Explorar, Histórico e Home — a ordenação passa a ser feita diretamente no banco de dados
+
+#### 🧹 **Limpeza de Código**
+- **Arredondamento de Bordas**: Removidas redundâncias de `borderRadius` em componentes e páginas (checkemail, checkphone, initial, localização, paywall e bottom sheet de vagas)
+- **main.dart**: Pequenos ajustes de limpeza no código gerado pelo FlutterFlow
+
+---
+
+### 🔧 **Configurações e Build**
+
+#### 📦 **Dependências**
+- **Atualizações do FlutterFlow**: Atualizações de dependências e ajustes em `flutter_flow_drop_down.dart` e `flutter_flow_widgets.dart`
+- **pubspec.yaml**: Versões de pacotes sincronizadas
+
+---
+
+### 📊 **Estatísticas da Versão 2.3.2**
+
+- **Total de Commits**: 6
+- **Commits Principais**:
+  - validação de idade no cadastro
+  - correção de serialização de datas na navegação
+  - atualizações de dependências do FlutterFlow
+  - remoção de ordenação client-side das queries de vagas
+  - limpeza de redundâncias de border radius
+  - limpeza geral de código FlutterFlow
+
+#### 🎯 **Impactos Principais**
+- **UX**: Cadastro mais robusto com validação de idade e navegação preservando datas corretamente
+- **Performance**: Ordenação de vagas delegada ao banco, reduzindo trabalho no cliente
+- **Manutenibilidade**: Código FlutterFlow mais limpo e dependências atualizadas
+
+---
+
 ## [2.3.1] - 18/03/2026
 
 ### 🐛 **Correções**
